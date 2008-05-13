@@ -300,7 +300,7 @@ namespace Tomboy.TaskManager {
 					iter.BackwardChar();
 					foreach (Gtk.TextTag t2 in iter.Tags)
 					{
-						if (t2.Name != null && t2.Name.Equals("duedate"))
+						if (t2.Name != null && t2.Name.Equals("duedate") && args.Text.Contains (Environment.NewLine))
 						{
 							fix_list.Add (new FixUndoAction (this));
 							return;
