@@ -1,0 +1,14 @@
+\newenvironment{objects}{
+\begin{tabular}{|p{6cm} p{9cm}|}
+\hline
+{\bf Name} &
+{\bf Description} \\ 
+\hline 
+\hline
+}
+{\end{tabular} \newline\newline}
+
+\newcommand{\object}[2]{
+\smallskip {\bf #1} \smallskip & 
+\smallskip #2 \smallskip \\ 
+\hline}
