@@ -12,3 +12,39 @@
 \smallskip {\bf #1} \smallskip & 
 \smallskip #2 \smallskip \\ 
 \hline}
+
+
+\newenvironment{revision_table}{
+\begin{tabular}{|p{2cm} p{2cm} p{6cm} p{4cm}|}
+\hline
+{\bf Date} &
+{\bf Version} &
+{\bf Description} &
+{\bf Authors} \\ 
+\hline 
+\hline
+}
+{\end{tabular} \newline\newline}
+
+\newcommand{\revision}[4]{
+\smallskip {#1} \smallskip & 
+\smallskip {#2} \smallskip &
+\smallskip {#3} \smallskip &
+\smallskip {#4} \smallskip \\ 
+\hline}
+
+
+
+\newcounter{req}
+\setcounter{req}{0}
+
+\newenvironment{requirement}[1]{
+	\noindent \hrulefill\\\\
+	\addtocounter{req}{1}
+	{\noindent \bf Requirement ID:} \thereq \\
+	{\noindent \bf Requirement Title:} #1\\
+}{}
+
+\newcommand{\desc}[1]{{\noindent \bf Description:} #1\\}
+\newcommand{\priority}[1]{{\noindent \bf Priority:} #1\\}
+\newcommand{\riskref}[1]{{\noindent \bf Risk References:} #1\\}
