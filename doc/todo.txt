@@ -1,0 +1,2 @@
+- TaskList/Task List/TaskLists/Task Management harmonization
+- Spell checking

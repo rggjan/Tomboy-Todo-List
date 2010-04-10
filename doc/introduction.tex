@@ -1,20 +1,16 @@
 \subsection{Purpose}
 \label{intro:purpose}
-This document specifies the Software Requirements Specification for the Task Management for Tomboy Project. 
-It describes scope of the system, both functional and non-functional requirements for the software, design constraints and system interfaces.
+This document specifies the Software Requirements Specification for the TaskList for Tomboy Project.
+It describes scope of the system, both functional and non-functional requirements for the software, system interfaces and existing previous solutions.
 
 
 \subsection{Scope}
 \label{intro:scope}
-The project TaskList is an Addin for Tomboy that will provide the functionality of writing simple task lists. The user should be able to create, manage and edit those lists within individual tomboy notes. 
-There should be the possibility to enhance simple task list entries with optional arguments such as due dates, priority etc, create subtasks and list the contents of some collection of tasks or tasklists.  
+The project TaskList is an Addin for Tomboy that will provide the functionality of writing simple task lists. The user should be able to create, manage and edit those lists within individual Tomboy notes.
 
-The user should be able to use tomboy with the Addin intuitively for daily usage. The Addin itself will be fully integrated into Tomboy and therefore ...
+There should be the possibility to enhance simple task list entries with optional arguments such as due dates, priority etc. Also, the creation of subtasks and the listing of the contents of collections of tasks and tasklists should be included.
 
-\textit{Identify by name the software product to be produced (e.g., Host DBMS, Report Generator, etc.)
-Explain what the product will and will not do
-Describe application of the software: goals and benefits
-Establish relation with higher-level system requirements if any}
+Eventually, the user should be able to use Tomboy intuitively as a task management system for daily usage, without prior explanation or documentation. The Addin itself will be fully integrated into Tomboy and there will be no need to learning how to use new tools or GUIs.
 
 \subsection{Definitions, acronyms and abbreviations}
 \label{intro:definitions}
@@ -33,23 +29,37 @@ Establish relation with higher-level system requirements if any}
 \label{intro:glossary}
 
 \begin{objects}
-	% Make sure to maintain alphabetical order
-	\object{Addin}{An extension for a particular Product.}
+	% Make sure to maintain alphabetical order TODO => order these ;-)
+	\object{Addin}{An extension for a particular Product that can be enabled and disabled, as needed.}
 	\object{Cross Platform}{Attribute conferred to computer software which is implemented and inter-operates on multiple computer platforms.}
 	\object{C-Sharp}{Programming Language for the CLI Standard.}
 	\object{GIMP ToolKit}{A cross platform widget library for creating GUIs.}
+	\object{GNOME}{A desktop environment (a graphical user interface that runs on top of a computer operating system) composed entirely of free and open source software.}
 	\object{GTK Sharp}{GTK Language Bindings for C\#}
 	\object{Mono}{Cross Platform .NET Compatible Open Source implementation of the CLI Standard.}
-	\object{Task}{An activity.}
-	\object{Tomboy}{A desktop note-taking application for Linux and Unix written in C\# using Mono.}
-	\object{User}{Any Person who uses the Program.}
+	\object{Task}{A single activity that can be checked off when finished. Can possibly include Subtasks.}
+	\object{Subtask}{A Task that has to be finished in order for another Task to be able to complete.}
+	\object{Task List}{A collection of Tasks that may or may not be related.}
+	\object{Tomboy}{A free and open-source desktop notetaking application written for Unix-like (including Mac OS X) and Microsoft Windows systems. Tomboy is part of GNOME and written in C\# using Gtk\#.}
+	\object{User}{Any Person who uses Tomboy.}
 	\object{.NET Framework}{Microsofts Implementation of the CLI Standard.}
 \end{objects}
 
 
-
 \subsection{References}
 \label{intro:references}
+%TODO insert link to requirements PDF, and possibly E-Mail conversations with Max / Sandy
 
 \subsection{Overview}
-\label{intro:overview}
+\label{intro:overview} %TODO crosscheck and specify the text below
+Chapter 2 defines the general product functions, intended application, constraints to be respected and
+the assumption made in order to define requirements.
+
+Chapter 3 specifies functional (Section 3.1) and non-functional requirements (all other sections),
+usability, reliability, security, performance and maintainability considerations and requirements to a
+level of detail sufficient to enable designers to design a system to satisfy these requirements and
+testers to test that the system satisfies these requirements.
+
+Chapter 4 contains index, appendices and supporting information.
+
+The document is structured according to the IEEE 830-1998 standard [IEEE-830].
