@@ -34,6 +34,21 @@
 \hline}
 
 
+\newenvironment{reference_table}{
+\begin{tabular}{|p{6cm} p{9cm}|}
+\hline
+{\bf Reference \& Document Title} &
+{\bf Version} \\
+\hline 
+\hline
+}
+{\end{tabular} \newline\newline}
+
+\newcommand{\reference}[2]{
+\smallskip {#1} \smallskip & 
+\smallskip {#2} \smallskip \\
+\hline}
+
 
 \newcounter{req}
 \setcounter{req}{0}
