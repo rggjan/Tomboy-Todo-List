@@ -1,13 +1,20 @@
-\subsection{Current Solution}
+\subsection{Current and Previous Solutions}
 \label{description:solution}
 Currently Tomboy has the functionality to create bullet lists in Notes and and with help of the Backlink Addin (which is shipped with the default Tomboy installation) to add Hyperlinks between different Notes. This allows the user to create simple Tasklists through Bulletlist and through linking a single task to another Note to create subtasks. This functionality is also shown in the GUI Mockup in Figure \ref{gui}.
 
-The idea of adding extended task management capability to Tomboy is not new and has been done before already:\\
-There is a project (realized as an Addin) for task management, called \textit{Tasks}, created by Boyd Timothy
-for quite some time. However, this was removed in Version 0.9.3 of Tomboy, because there were too many problems with the existing implementation\footnote{\url{http://lists.beatniksoftware.com/pipermail/tomboy-list-beatniksoftware.com/2008-January/000540.html}}. Timothy abandoned the code and created a new program called \textit{Tasque}\footnote{\url{http://live.gnome.org/Tasque}} with its main focus just on task management.
+\subsubsection{Tasks} The idea of adding extended task management capability to Tomboy is not new and has been done before already:
 
+There is a project (realized as an Addin) for task management, called \textit{Tasks}, created by Boyd Timothy for quite some time. However, this was removed in Version 0.9.3 of Tomboy, because there were too many problems with the existing implementation\footnote{\url{http://lists.beatniksoftware.com/pipermail/tomboy-list-beatniksoftware.com/2008-January/000540.html}}. Timothy abandoned the code and created a new program called \textit{Tasque}\footnote{\url{http://live.gnome.org/Tasque}} with its main focus just on task management.
+
+\subsubsection{TaskLists}
 In 2009 a new Addin was initiated by Sandy Armstrong. This unfinished project, called \textit{TaskLists}\footnote{\url{http://gitorious.org/~sandy/tomboy/sandys-tomboy/commits/task-lists2}} is still in a very early phase and has not much functionality yet. At the moment nobody is regularly working on it.
 
+\subsubsection{Others}
+Also, there are various inofficial Addins that all have only a very small part of the functionality that we would like to implement. Examples are the Todo %TODO: Links, ...
+list Addin and the \textit{tasklist} Addin\footnote{\url{http://www.ediweissmann.com/taskslist/}}.
+
+\subsubsection{Conclusion}
+\label{integration}
 That being said, we can conclude that there was a lot of effort done in the past to give Tomboy some more advanced capability of handling task lists than just plain bullet lists, the solution that was created at the beginning was too different from Tomboy to be acceptable. It was a totally separate task management UI in Tomboy that was not integrated in the existing note structure at all. The Tasks Addin added additional GUI elements within Tomboy that made it look more like a separate application besides Tomboy instead of really integrating itself in Tomboy.
 
 Our goal is to finish such a project up to a stable and working solution (in terms of \textit{bug-freeness} and \textit{usability}) that is fully integrated into Tomboys existing concepts and easy and simple to use, such that it could hopefully accepted to be included in the Tomboy project and  shipped with future Tomboy releases.
@@ -66,9 +73,9 @@ We look at two types of users:
 
 \subsection{Constraints}
 \label{description:constraints}
-The Addin itself should obey all criterias (standards and guidelines) imposed by the GNOME and Tomboy projects (SEE ?). %TODO
+The Addin itself should obey all criterias (standards and guidelines) imposed by the GNOME and Tomboy projects (Tomboy Styleguide, \ref{styleguide}).
 
-Besides the coding guidelines this includes mainly design aspects, such as simplicity and easyness of use, and full integration into Tomboy (see also \ref{?}).
+Besides the coding guidelines this includes mainly design aspects, such as simplicity and easyness of use, and full integration into Tomboy (see also \ref{integration}).
 
 
 \subsection{Assumptions and Dependencies}

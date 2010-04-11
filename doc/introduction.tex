@@ -36,7 +36,7 @@ This is how the final result could look like. Figure \ref{gui} is only a draft, 
 \label{intro:glossary}
 
 \begin{objects}
-	% Make sure to maintain alphabetical order TODO => order these ;-)
+	% Make sure to maintain alphabetical order
 	\object{Addin}{An extension for a particular Product that can be enabled and disabled, as needed.}
 	\object{Cross Platform}{Attribute conferred to computer software which is implemented and inter-operates on multiple computer platforms.}
 	\object{C-Sharp}{Programming Language for the CLI Standard.}
@@ -45,8 +45,8 @@ This is how the final result could look like. Figure \ref{gui} is only a draft, 
 	\object{GNOME}{A desktop environment (a graphical user interface that runs on top of a computer operating system) composed entirely of free and open source software.}
 	\object{GTK Sharp}{GTK Language Bindings for C\#}
 	\object{Mono}{Cross Platform .NET Compatible Open Source implementation of the CLI Standard.}
-	\object{Task}{A single activity that can be checked off when finished. Can possibly include Subtasks.}
 	\object{Subtask}{A Task that has to be finished in order for another Task to be able to complete.}
+	\object{Task}{A single activity that can be checked off when finished. Can possibly include Subtasks.}
 	\object{Task List}{A collection of Tasks that may or may not be related.}
 	\object{Tomboy}{A free and open-source desktop notetaking application written for Unix-like (including Mac OS X) and Microsoft Windows systems. Tomboy is part of GNOME and written in C\# using Gtk\#.}
 	\object{User}{Any Person who uses Tomboy.}
@@ -62,19 +62,15 @@ The following table defines the list of all documents referenced elsewhere in th
 %TODO Lücke
 
 \begin{reference_table}
-	\reference{Tomboy Styleguide}{ \url{http://projects.gnome.org/tomboy/TODO} }
+	\reference{Tomboy Styleguide}{\label{styleguide} \url{http://projects.gnome.org/tomboy/TODO} }
 \end{reference_table}
 
 
 \subsection{Overview}
-\label{intro:overview} %TODO crosscheck and specify the text below
+\label{intro:overview}
 \begin{itemize}
-	\item \hyperref[description]{Chapter 2} defines the general product functions, intended application, constraints to be respected and
-	the assumption made in order to define requirements.
-	\item \hyperref[requirements]{Chapter 3} specifies functional (Section 3.1) and non-functional requirements (all other sections),
-	usability, reliability, security, performance and maintainability considerations and requirements to a
-	level of detail sufficient to enable designers to design a system to satisfy these requirements and
-	testers to test that the system satisfies these requirements.
-	\item \hyperref[appendix]{Chapter 4} and \hyperref[index]{Chapter 5} contains index, appendices and supporting information.
+  \item Chapter \ref{description} defines the general product functions, intended application, constraints to be respected and the assumption made in order to define requirements.
+  \item Chapter \ref{requirements} specifies functional (section \ref{requirements:functional}) and non-functional requirements (sections \ref{requirements:nonfunctional_start} to \ref{requirements:nonfunctional_end}), usability, reliability, security, performance and maintainability considerations and requirements to a level of detail sufficient to enable designers to design a system to satisfy these requirements and testers to test that the system satisfies these requirements. %TODO everything mentioned really there?
+  \item Chapter \ref{appendix} and Chapter \ref{index} contain index, appendices and supporting information.
 \end{itemize}
-The document is structured according to the IEEE 830-1998 standard [IEEE-830].
+The document is structured according to the IEEE 830-1998 standard [IEEE-830]. %TODO really?
