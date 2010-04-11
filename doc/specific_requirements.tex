@@ -22,7 +22,43 @@ A requirement has the following properties:
 
 \subsection{Functional Requirements}
 \label{requirements:functional}
-	
+
+\begin{requirement}{Introducing Tasks}
+    \desc{The system shall provide the user with the capability of adding a Task in Tomboy Notes.}
+    \priority{1}
+    \riskref{C}
+\end{requirement}
+
+\begin{requirement}{Grouping Tasks together}
+    \desc{The system shall provide the user with the possibility to group certain tasks together in a list called a task list.}
+    \priority{1}
+    \riskref{C}
+\end{requirement}
+
+\begin{requirement}{Priorities for Tasks}
+    \desc{The user can optionally add priorities to individual tasks and task lists.}
+    \priority{1}
+    \riskref{H}
+\end{requirement}
+
+\begin{requirement}{Due Dates for Tasks}
+    \desc{The user can optionally add due dates to individual tasks and task lists.}
+    \priority{1}
+    \riskref{H}
+\end{requirement}
+
+\begin{requirement}{Subtasks}
+    \desc{The system provides the user with the ability to model a task as a complex task consisting of possibly multiple subtasks.}
+    \priority{1}
+    \riskref{H}
+\end{requirement}
+
+\begin{requirement}{Exporting Tasks}
+    \desc{The system provides a function to export all tasks in all notes and their corresponding information in an XML format.}
+    \priority{3}
+    \riskref{L}
+\end{requirement}
+
 
     \subsubsection{Entity Diagram}
     The following diagram shows all defined entities from the requirements above and their relations.
@@ -51,29 +87,31 @@ A requirement has the following properties:
     \begin{requirement}{Edit Task List}
       \desc{The user can add, remove and change single task list items by directly editing the task list in the note itself.}
       \priority{1}
-      \riskref{C}
-    \end{requirement}
-
-    \begin{requirement}{Priority}
-      \desc{The user can optionally add and change priorities to individual tasks and task lists.}
-      \priority{1}
       \riskref{H}
     \end{requirement}
 
-    \begin{requirement}{Due date}
-      \desc{The user can optionally add and change due dates to individual tasks and task lists, indicating when these should be finished. The system visualizes to the user when items are near or even over their due date.}
-      \priority{1}
-      \riskref{H}
+    \begin{requirement}{Due date visualization}
+      \desc{The user should be able to set / change the due date for a task directly in the corresponding Tomboy note. 
+      The system shall visualize to the user when items are near or even over their due date.}
+      \priority{2}
+      \riskref{M}
+    \end{requirement}
+    
+    \begin{requirement}{Priority visualization}
+      \desc{The user should be able to change the priority for a task directly in the corresponding Tomboy note. 
+      The system shall visualize to the user the priority of a task and how important the task is in relation to other tasks in the same task list.}
+      \priority{2}
+      \riskref{M}
     \end{requirement}
 
     \begin{requirement}{Create Subtasks}
-      \desc{The user can optionally add subtasks to individual tasks. These subtasks are in principal linked notes, but can themselves contain tasks and task lists.}
+      \desc{The user can optionally create a task consisting of one or multiple other task lists considered as sub tasks for this particular task.}
       \priority{1}
       \riskref{H}
     \end{requirement}
 
     \begin{requirement}{Show / hide completed Tasks}
-      \desc{The user has various possibilities to handle completed tasks. He can show them crossed out, he can hide them, and he can possibly show them after the completed tasks. }
+      \desc{The user gets various possibilities to handle completed tasks. He can show them crossed out, he can hide them, and he can show them after the completed tasks. }
       \priority{2}
       \riskref{M}
     \end{requirement}
@@ -84,7 +122,14 @@ A requirement has the following properties:
       \riskref{L}
     \end{requirement}
 
-	
+    \begin{requirement}{Filter Notes}
+      \desc{The user can query for a list of notes by setting some constraints which involve searching for notes who have unfinished or contain 
+      tasks which are over their corresponding due date.}
+      \priority{2}
+      \riskref{M}
+    \end{requirement}
+
+
 	\subsubsection{Software Interfaces}
 	\label{requirements:interfaces:software}
         %TODO => export (xml, evolution, tasque, ...)
