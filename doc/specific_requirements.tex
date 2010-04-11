@@ -73,7 +73,12 @@
 
     \subsubsection{Supported Operating Systems}
     \label{requirements:os}
-    %TODO: ...	
+    \begin{requirement}{Platform independance}
+      \desc{The Addin will work on any system with a working installation of Tomboy (as defined in ?)}
+      \priority{2}
+      \riskref{M}
+%TODO: where is this defined, anyway? (Version etc)
+    \end{requirement}
 
 \subsection{Nonfunctional Requirements}
 \label{requirements:nonfunctional}
@@ -81,13 +86,25 @@
     \subsubsection{Licensing Requirements}
     \label{requirements:nonfunctional_start}
     \label{requirements:license}
-    %TODO: ...
+    %TODO: Not sure this is really necessary!
+    \begin{requirement}{license compliance}
+      \desc{The project will comply to any restrictions imposed by Tomboy/GNOME licensing.}
+      \priority{2}
+      \riskref{M}
+    \end{requirement}
 
 
     \subsubsection{Language}
     \label{requirements:language}
-    %TODO: ...
+    \begin{requirement}{Default language}
+      \desc{All system messages, texts, log entries and help documentation must by default be in English.}
+      \priority{1}
+    \end{requirement}
 
+   
+    \begin{requirement}{Translations}
+      \desc{The Addin will integrate the built in language support and will therefore enable anyone being capable of writing Tomboy/Gnome translations to add additional language translations to the project}
+    \end{requirement}
 
     \begin{requirement}{Interface Requirement}
       \desc{insert description}
@@ -101,7 +118,15 @@
 
     \subsubsection{Design Constraints}
     \label{requirements:constraints}
+
+    \begin{requirement}{Standard compliance}
+      \desc{The project will be seen as part of Tomboy and will therefore comply to any existing standards and regulations imposed by Tomboy itself or the GNOME project}
+      \priority{2}
+      \riskref{L}
+    \end{requirement}
+
     % => modules (textbuffer, note gui, notes window gui)
+    % I don't really see this being a design constraint (constraint = Auflage/Bedingung) - Gabriel
 
     \subsubsection{Quality Requirements}
     \label{requirements:quality}
