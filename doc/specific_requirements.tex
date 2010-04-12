@@ -144,11 +144,18 @@ A requirement has the following properties:
     % TODO => export (xml, evolution, tasque, ...)
     % => Tomboy (save, ...)
 
+    \label{requirements:interfaces:software:tomboy}
+    \begin{requirement}{Tomboy Version}
+      \desc{The addin shall be designed for Tomboy version 1.2.0. Future and past releases of Tomboy are available in the official git repository\footnote{\url{http://git.gnome.org/browse/tomboy/}}}
+      \priority{1}
+      \riskref{H}
+    \end{requirement}
+
 
     \subsubsection{Supported Operating Systems}
     \label{requirements:os}
     \begin{requirement}{Platform independance}
-      \desc{The Addin will work on any oerating system with a working installation of Tomboy (as defined in ?)}
+      \desc{The Addin will work on any oerating system with a working installation of Tomboy (as defined in \ref{requirements:interfaces:software:tomboy})}
       \priority{2}
       \riskref{M}
 %TODO: where is this defined, anyway? (Version etc)
@@ -195,6 +202,10 @@ A requirement has the following properties:
 
     \subsubsection{Performance}
     \label{requirements:performance}
+
+    \begin{requirement}{Response times}
+      \desc{The basic task operations (Introducing and grouping of tasks and adding due dates and priorities to tasks see \ref{requirements:interfaces:user}) shall not take longer than 3 seconds}
+    \end{requirement}
 
     \subsubsection{Deployment}
     \label{requirements:deployment}
