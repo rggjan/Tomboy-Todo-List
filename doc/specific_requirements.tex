@@ -1,7 +1,7 @@
 This section contains all software requirements both functional and non-functional.
 A requirement has the following properties:
 \begin{itemize}
-	\item[\bf{Requirement ID}] Uniquely identifies requirement within all TaskList documents.
+	\item[\bf{ID}] Uniquely identifies requirement within all TaskList documents.
 	\item[\bf{Title}] Gives the requirement a symbolic name.
 	\item[\bf{Description}] The definition of the requirement.
 	\item[\bf{Priority}] Defines the order in which the requirements should be implemented. Priorities are designated from highest to lowest.
@@ -76,7 +76,7 @@ A requirement has the following properties:
 
 
 
-    \subsubsection{User Interface} %Jan
+    \subsubsection{User Interface}
     \label{requirements:interfaces:user}
 
     \begin{requirement}{Create Task List}
@@ -137,9 +137,6 @@ A requirement has the following properties:
         %     => Tomboy (save, ...)
 
 
-	%\subsubsection{Communication Interfaces}
-	%\label{requirements:interfaces:communication}
-
     \subsubsection{Supported Operating Systems}
     \label{requirements:os}
     \begin{requirement}{Platform independance}
@@ -156,6 +153,7 @@ A requirement has the following properties:
     \label{requirements:nonfunctional_start}
     \label{requirements:license}
     %TODO: Not sure this is really necessary!
+    %Jan: I would mention GPL and add it to the appendix
     \begin{requirement}{license compliance}
       \desc{The project will comply to any restrictions imposed by Tomboy/GNOME licensing.}
       \priority{2}
@@ -172,18 +170,9 @@ A requirement has the following properties:
 
    
     \begin{requirement}{Translations}
-      \desc{The Addin will integrate the built in language support and will therefore enable anyone being capable of writing Tomboy/Gnome translations to add additional language translations to the project}
+      \desc{The Addin will integrate the built in language support and will therefore enable anyone being capable of writing Tomboy/Gnome translations to add additional language translations to the project.}
+    %TODO priority etc. missing
     \end{requirement}
-
-    \begin{requirement}{Interface Requirement}
-      \desc{insert description}
-      \priority{1}
-      \riskref{C}
-    \end{requirement}
-
-
-    %\subsection{Performance Requirements}
-    %\label{requirements:performance}
 
     \subsubsection{Design Constraints}
     \label{requirements:constraints}
@@ -192,12 +181,15 @@ A requirement has the following properties:
       \desc{The project will be seen as part of Tomboy and will therefore comply to any existing standards and regulations imposed by Tomboy itself or the GNOME project}
       \priority{1}
       \riskref{M}
+      %TODO link
     \end{requirement}
 
     % => modules (textbuffer, note gui, notes window gui)
     % I don't really see this being a design constraint (constraint = Auflage/Bedingung) - Gabriel
+    % OK, then put it somewhere else...
 
     % -- I don't think this should be called this way. better have concrete subsubsections e.g. reliability (see below) - Gabriel
+    % -- OK, fill it in! - Jan
     %\subsubsection{Quality Requirements}
     %\label{requirements:quality}
     
@@ -205,9 +197,7 @@ A requirement has the following properties:
     \label{requirements:reliability}
     \begin{requirement}{}  
     \end{requirement}
+    %TODO fill in
     % => Bugs, unit tests
-
-    %\subsection{Other Requirements}
-    %\label{requirements:other}
 
     \label{requirements:nonfunctional_end}

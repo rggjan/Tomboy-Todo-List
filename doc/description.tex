@@ -5,15 +5,15 @@ Currently Tomboy has the functionality to create bullet lists in Notes and with 
 \subsubsection{Tasks} The idea of adding extended task management capability to Tomboy is not new and has been done before already:
 
 There is a project (realized as an Addin) for task management, called \textit{Tasks}, created by Boyd Timothy for quite some time. However, this was removed in Version 0.9.3 of Tomboy, because there were too many problems with the existing implementation\footnote{\url{http://lists.beatniksoftware.com/pipermail/tomboy-list-beatniksoftware.com/2008-January/000540.html}}, i.e. bugs and missing integration into Tomboy.
-%TODO: is this really that important? 
+%TODO: is this really that important? Yes, I think it shows how it was really too much a new application and not an Addin. Please remove this todo if you agree...
 Timothy abandoned the code and created a new program called \textit{Tasque}\footnote{\url{http://live.gnome.org/Tasque}} with its main focus just on task management.
 
 \subsubsection{TaskLists}
 In 2009 a new Addin was initiated by Sandy Armstrong. This unfinished project, called \textit{TaskLists}\footnote{\url{http://gitorious.org/~sandy/tomboy/sandys-tomboy/commits/task-lists2}} is still in a very early phase and has not much functionality yet. At the moment nobody is regularly working on it.
 
 \subsubsection{Others}
-Also, there are various inofficial Addins that all have only a very small part of the functionality that we would like to implement. Examples are the Todo %TODO: Links, ...
-list Addin and the \textit{tasklist} Addin\footnote{\url{http://www.ediweissmann.com/taskslist/}}.
+Also, there are various inofficial Addins that all have only a very small part of the functionality that we would like to implement. Examples are the \textit{Tomboy-Todo}
+Addin \footnote{\url{http://romain.blogreen.org/Projects/Tomboy-Todo}} and the \textit{tasklist} Addin\footnote{\url{http://www.ediweissmann.com/taskslist/}}.
 
 \subsubsection{Conclusion}
 \label{integration}
@@ -28,12 +28,12 @@ Our goal is to finish such a project up to a stable and working solution (in ter
   \begin{itemize}
     \item The first one is the obvious user interface that the user sees within Tomboy.
     \item The representation of our data will be integrated in Tomboy Note files. That means, persistent storage of the Tasks must be accomplished as XML files using the structures already existing.
-      %TODO: How is this different to the next point?
+      %TODO: How is this different to the next point? Above it saved within Tomboy notes, and in a format only readable by Tomboy. Below _only_ the TaskLists are exported, in a format that other task list applications understand. Please clarify if this is unclear...
     \item Saving and retrieving data (for example, import and export of notes from/to other note taking applications) will be done using XML.
   \end{itemize}
 
   Figure \ref{perspective} shows the Product perspective of the TaskList Addin. Since it's really an extension for the Tomboy Application it is placed in Tomboy itself where it will communicate with some of Tomboys internal elements (as shown by arrows). Further the Addin will rely directly on some of the GTK\# Widgets.
-  \begin{figure}[h]
+  \begin{figure}[ht]
     \includegraphics[width=\textwidth]{graphics/product_perspective_diagram.png}
     \caption{TaskList Product Perspective}
     \label{perspective}
@@ -58,8 +58,8 @@ Our goal is to finish such a project up to a stable and working solution (in ter
     \subsubsection*{Unsupported Functions}
       \label{description:functions:unsupported}
       \begin{itemize}
-        \item Does not introduce additional GUI window elements or external tools within or outside of Tomboy.
-          %TODO: Is this really a 'function'(ality)?
+        \item Does not introduce additional GUI window elements or external tools within or outside of Tomboy (see \ref{integration} for the reason of that).
+          %TODO: Is this really a 'function'(ality)? Yes, according to \ref{integration}. Please remove this todo if you agree...
         \item Does not support on-the-fly synchronization with external tools or clients except for manual export.
         \item Does not support importing tasks from other Task manager tools.
       \end{itemize}
@@ -84,4 +84,3 @@ Besides the coding guidelines this includes mainly design aspects, such as simpl
 
 \subsection{Assumptions and Dependencies}
 \label{description:assumptions}
-
