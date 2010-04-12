@@ -131,10 +131,18 @@ A requirement has the following properties:
     \end{requirement}
 
 
-	\subsubsection{Software Interfaces}
-	\label{requirements:interfaces:software}
-        %TODO => export (xml, evolution, tasque, ...)
-        %     => Tomboy (save, ...)
+    \subsubsection{System Interfaces}
+    \label{requirements:interfaces:system}
+    \begin{requirement}{Tomboy directories}
+      \desc{All user data will be stored in the \textit{standard Tomboy configuration directories}\footnote{\url{http://live.gnome.org/Tomboy/Directories}}}
+      \priority{1}
+      \riskref{H}
+    \end{requirement}
+
+    \subsubsection{Software Interfaces}
+    \label{requirements:interfaces:software}
+    % TODO => export (xml, evolution, tasque, ...)
+    % => Tomboy (save, ...)
 
 
     \subsubsection{Supported Operating Systems}
@@ -149,36 +157,73 @@ A requirement has the following properties:
 \subsection{Nonfunctional Requirements}
 \label{requirements:nonfunctional}
 
-    \subsubsection{Licensing Requirements}
+    %TODO fill in
+    % => Bugs, unit tests
+
+    \subsubsection{Usability}
     \label{requirements:nonfunctional_start}
-    \label{requirements:license}
-    %TODO: Not sure this is really necessary!
-    %Jan: I would mention GPL and add it to the appendix
-    \begin{requirement}{license compliance}
-      \desc{The project will comply to any restrictions imposed by Tomboy/GNOME licensing.}
-      \priority{2}
-      \riskref{M}
-    \end{requirement}
-
-
-    \subsubsection{Language}
-    \label{requirements:language}
-    \begin{requirement}{Default language}
-      \desc{All system messages, texts, log entries and help documentation must by default be in English.}
+    \label{requirements:usability}
+        \begin{requirement}{Default language}
+      \desc{All system messages, texts, log entries and help documentation must by default be available in English.}
       \priority{1}
+      \riskref{M}
     \end{requirement}
 
    
     \begin{requirement}{Translations}
-      \desc{The Addin will integrate the built in language support and will therefore enable anyone being capable of writing Tomboy/Gnome translations to add additional language translations to the project.}
-    %TODO priority etc. missing
+      \desc{Tomboy uses the internationalization and localization library \textit{GNU gettext}\footnote{\url{http://www.gnu.org/software/gettext/}}. 
+        The Addin will integrate this built-in language support and will therefore enable anyone being capable of writing Tomboy/Gnome translations to add additional language translations to the project.}
+      \priority{2}
+      \riskref{M}
     \end{requirement}
+    
+
+    \subsubsection{Reliability}
+    \label{requirements:reliability}
+    \begin{requirement}{Failures}
+      \desc{The project does not have any point of failure that will cause Tomboy to crash or freeze.}
+      \priority{1}
+      \riskref{H}
+    \end{requirement}
+    
+    \begin{requirement}{Logging}
+      \desc{The Addin provides log information about performing critical code segments and encountered errors.
+        The Addin shall provide full information about failures and errors if not logged by Tomboy itself.
+        This information shall include: time of failure, origin (subsystem or component) where a failure occurred, severity and description of error or failure. 
+        Diagnostic information will be logged and saved in the text file tomboy.log in the standard directory for Tomboy configuration information (See \ref{requirements:interfaces:system}).}
+    \end{requirement}
+
+    \subsubsection{Performance}
+    \label{requirements:performance}
+
+    \subsubsection{Deployment}
+    \label{requirements:deployment}
+    \begin{requirement}{Installation from library}
+      The Addin can be installed by compiling the corresponding library into the Addin directory of Tomboy (See \ref{requirements:interfaces:system}).
+    \end{requirement}
+
+    \begin{requirement}{Activation of the Addin}
+      Once a working copy of the .dll from (%TODO: link above
+      ) is in the corresponding directory or included into the source of the project, Tomboy will automatically detect the Addin and supply the Addin register of the preferences menu with the possibility to enable it.
+      %Todo: possibly go into detail here
+    \end{requirement}
+
+    \subsubsection{Licensing Requirements}
+    \label{requirements:license}
+    %TODO: Not sure this is really necessary!
+    %Jan: I would mention GPL and add it to the appendix
+    \begin{requirement}{license compliance}
+      \desc{Tomboy uses the \textit{GNU Lesser GPL}\footnote{\url{http://www.gnu.org/licenses/lgpl.txt}}. 
+        To be consistent, the project will adapt this license for any source code.}
+      \priority{1}
+      \riskref{M}
+    \end{requirement}
+
 
     \subsubsection{Design Constraints}
     \label{requirements:constraints}
-
     \begin{requirement}{Standard compliance}
-      \desc{The project will be seen as part of Tomboy and will therefore comply to any existing standards and regulations imposed by Tomboy itself or the GNOME project}
+      \desc{The project will be seen as part of Tomboy and will therefore comply to any existing standards and regulations imposed by Tomboy itself or the GNOME project. This }
       \priority{1}
       \riskref{M}
       %TODO link
@@ -187,17 +232,5 @@ A requirement has the following properties:
     % => modules (textbuffer, note gui, notes window gui)
     % I don't really see this being a design constraint (constraint = Auflage/Bedingung) - Gabriel
     % OK, then put it somewhere else...
-
-    % -- I don't think this should be called this way. better have concrete subsubsections e.g. reliability (see below) - Gabriel
-    % -- OK, fill it in! - Jan
-    %\subsubsection{Quality Requirements}
-    %\label{requirements:quality}
-    
-    \subsubsection{Reliability}
-    \label{requirements:reliability}
-    \begin{requirement}{}  
-    \end{requirement}
-    %TODO fill in
-    % => Bugs, unit tests
 
     \label{requirements:nonfunctional_end}
