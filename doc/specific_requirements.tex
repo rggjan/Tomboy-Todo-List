@@ -1,7 +1,7 @@
 This section contains all software requirements both functional and non-functional.
 A requirement has the following properties:
 \begin{itemize}
-	\item[\bf{ID}] Uniquely identifies requirement within all TaskManager documents.
+	\item[\bf{ID}] Uniquely identifies requirement within all TaskList documents.
 	\item[\bf{Title}] Gives the requirement a symbolic name.
 	\item[\bf{Description}] The definition of the requirement.
 	\item[\bf{Priority}] Defines the order in which the requirements should be implemented. Priorities are designated from highest to lowest.
@@ -24,36 +24,44 @@ A requirement has the following properties:
 \label{requirements:functional}
 
 \begin{requirement}{Introducing Tasks}
+	\label{requirements:functional:tasks}
     \desc{The system shall provide the user with the capability of adding a Task in Tomboy Notes.}
     \priority{1}
     \riskref{C}
 \end{requirement}
 
 \begin{requirement}{Grouping Tasks together}
+	\label{requirements:functional:grouping_tasks}
     \desc{The system shall provide the user with the possibility to group certain tasks together in a list called a task list.}
     \priority{1}
     \riskref{C}
 \end{requirement}
 
 \begin{requirement}{Priorities for Tasks}
+	\label{requirements:functional:task_priority}
     \desc{The user can optionally add priorities to individual tasks and task lists.}
     \priority{1}
     \riskref{H}
 \end{requirement}
 
 \begin{requirement}{Due Dates for Tasks}
+	\label{requirements:functional:task_due_date}
     \desc{The user can optionally add due dates to individual tasks and task lists.}
     \priority{1}
     \riskref{H}
 \end{requirement}
 
+% TODO make this according to our issue discussion
 \begin{requirement}{Subtasks}
+	\label{requirements:functional:subtask}
     \desc{The system provides the user with the ability to model a task as a complex task consisting of possibly multiple subtasks.}
     \priority{1}
     \riskref{H}
 \end{requirement}
 
+% TODO what format?
 \begin{requirement}{Exporting Tasks}
+	\label{requirements:functional:export}
     \desc{The system provides a function to export all tasks in all notes and their corresponding information in an XML format.}
     \priority{3}
     \riskref{L}
@@ -63,12 +71,12 @@ A requirement has the following properties:
     \subsubsection{Entity Diagram}
     The following diagram shows all defined entities from the requirements above and their relations.
     As we can see a Task is basically modeled as a string and - if its a more complex task - can link to other notes.
-    \begin{figure}[ht]
+    \begin{figure}[h]
     	% TODO remove the grey licensing text in the diagram by using the software with a valid license key
       % I don't think that is possible without paying -> Just export it to pic with some dummy elements above and cut it in GIMP or something
 	    \centering
         \includegraphics[width=0.5\textwidth]{graphics/entity_diagram.png}
-        \caption{TaskManager entities and relations}
+        \caption{TaskList entities and relations}
         \label{entities_relations}
     \end{figure}
     
@@ -80,25 +88,30 @@ A requirement has the following properties:
     \label{requirements:interfaces:user}
 
     \begin{requirement}{Create Task List}
+    \label{requirements:interfaces:user:create_tasklist}
       \desc{The user shall be able to create a new task list with a button or a shortcut text, like ``[]''. These lists expand automatically and contain individual tasks that can be marked as done.}
       \priority{1}
       \riskref{C}
     \end{requirement}
 
     \begin{requirement}{Edit Task List}
-      \desc{The user can add, remove and change single task list items by directly editing the task list in the note itself.}
+    \label{requirements:interfaces:user:edit_tasklist}
+      \desc{The user can add, remove and change single task list items by directly editing the task list in the note itself.
+			A task description can be edited by directly editing the text. Setting the due date, priority and done flag will be realized through embedded GTK\# widgets. A task will be removed automatically from the task list if the user deletes the text describing the task and the corresponding line in the editor. A task list will be removed if there are no more tasks in the list.}
       \priority{1}
       \riskref{H}
     \end{requirement}
 
     \begin{requirement}{Due date visualization}
-      \desc{The user should be able to set / change the due date for a task directly in the corresponding Tomboy note. 
+      \label{requirements:interfaces:user:due_date}
+      \desc{The user should be able to set / change the due date for a task directly in the corresponding Tomboy note.      
       The system shall visualize to the user when items are near or even over their due date.}
       \priority{2}
       \riskref{M}
     \end{requirement}
     
     \begin{requirement}{Priority visualization}
+      \label{requirements:interfaces:user:priority}
       \desc{The user should be able to change the priority for a task directly in the corresponding Tomboy note. 
       The system shall visualize to the user the priority of a task and how important the task is in relation to other tasks in the same task list.}
       \priority{2}
@@ -106,25 +119,29 @@ A requirement has the following properties:
     \end{requirement}
 
     \begin{requirement}{Create Subtasks}
+      \label{requirements:interfaces:user:subtasks}
       \desc{The user can optionally create a task consisting of one or multiple other task lists considered as sub tasks for this particular task.}
       \priority{1}
       \riskref{H}
     \end{requirement}
 
     \begin{requirement}{Show / hide completed Tasks}
+      \label{requirements:interfaces:user:show_hide}
       \desc{The user gets various possibilities to handle completed tasks. He can show them crossed out, he can hide them, and he can show them after the completed tasks. }
       \priority{2}
       \riskref{M}
     \end{requirement}
 
     \begin{requirement}{Reorder Task Lists}
+      \label{requirements:interfaces:user:reorder}
       \desc{The user has the possibility to order the task lists according to various criteria, like due date, priority, date added etc.}
       \priority{2}
       \riskref{L}
     \end{requirement}
 
     \begin{requirement}{Filter Notes}
-      \desc{The user can query for a list of notes by setting some constraints which involve searching for notes who have unfinished or contain 
+      \label{requirements:interfaces:user:filter}
+      \desc{The user can query for a list of notes by setting constraints which involve searching for notes who have unfinished tasks or contain 
       tasks which are over their corresponding due date.}
       \priority{2}
       \riskref{M}
@@ -134,24 +151,36 @@ A requirement has the following properties:
     \subsubsection{System Interfaces}
     \label{requirements:interfaces:system}
     \begin{requirement}{Tomboy directories}
+	  \label{requirements:interfaces:system:directories}
       \desc{All user data will be stored in the \textit{standard Tomboy configuration directories}\footnote{\url{http://live.gnome.org/Tomboy/Directories}}}
       \priority{1}
       \riskref{H}
     \end{requirement}
 
+
     \subsubsection{Software Interfaces}
     \label{requirements:interfaces:software}
 
-    \label{requirements:interfaces:software:tomboy}
+    % TODO => export (xml, evolution, tasque, ...)
+    \begin{requirement}{Tasks Persistence}
+	  \label{requirements:interfaces:software:persistence}
+      \desc{All the necessary information about tasks and tasks list will be made persistent using the provided facilities by Tomboy to store note information. The XML format used by Tomboy to store notes will be extended with additional attributes as necessary to suite our needs.}
+      \priority{1}
+      \riskref{C}
+    \end{requirement}
+
     \begin{requirement}{Tomboy Version}
+	  \label{requirements:interfaces:software:tomboy:version}
       \desc{The addin shall be designed for Tomboy version 1.2.0. Future and past releases of Tomboy are available in the official git repository\footnote{\url{http://git.gnome.org/browse/tomboy/}}}
       \priority{1}
       \riskref{H}
     \end{requirement}
 
+
     \subsubsection{Supported Operating Systems}
     \label{requirements:os}
     \begin{requirement}{Platform independance}
+      \label{requirements:os:independance}
       \desc{The Addin will work on any oerating system with a working installation of Tomboy (as defined in \ref{requirements:interfaces:software:tomboy})}
       \priority{2}
       \riskref{M}
@@ -167,7 +196,8 @@ A requirement has the following properties:
     \subsubsection{Usability}
     \label{requirements:nonfunctional_start}
     \label{requirements:usability}
-        \begin{requirement}{Default language}
+    \begin{requirement}{Default language}
+      \label{requirements:usability:default_language}
       \desc{All system messages, texts, log entries and help documentation must by default be available in English.}
       \priority{1}
       \riskref{M}
@@ -175,6 +205,7 @@ A requirement has the following properties:
 
    
     \begin{requirement}{Translations}
+      \label{requirements:usability:translations}
       \desc{Tomboy uses the internationalization and localization library \textit{GNU gettext}\footnote{\url{http://www.gnu.org/software/gettext/}}. 
         The Addin will integrate this built-in language support and will therefore enable anyone being capable of writing Tomboy/Gnome translations to add additional language translations to the project.}
       \priority{2}
@@ -182,6 +213,7 @@ A requirement has the following properties:
     \end{requirement}
 
     \begin{requirement}{Documentation}
+      \label{requirements:usability:documentation}
       \desc{The Addin will provide an online documentation (currently available on the git, but designed to fit into the manual files of tomboy) that will list all available functionalities and enable the computer experienced user to use the all possible functionalities after reading the corresponding section}
       %TODO: Will we do a help documentation? ;)
       \priority{1}
@@ -191,12 +223,14 @@ A requirement has the following properties:
     \subsubsection{Reliability}
     \label{requirements:reliability}
     \begin{requirement}{Failures}
+      \label{requirements:reliability:failures}
       \desc{The project does not have any point of failure that will cause Tomboy to crash or freeze.}
       \priority{1}
       \riskref{H}
     \end{requirement}
     
     \begin{requirement}{Logging}
+      \label{requirements:reliability:logging}
       \desc{The Addin provides log information about performing critical code segments and encountered errors.
         The Addin shall provide full information about failures and errors if not logged by Tomboy itself.
         This information shall include: time of failure, origin (subsystem or component) where a failure occurred, severity and description of error or failure. 
@@ -209,28 +243,33 @@ A requirement has the following properties:
     \begin{requirement}{Optimisation platform}
       %TODO: maybe merge this into system description?
       % Not even sure this is necessary but I thought need to be precise about which computers should fulfill the performance requirements
+      \label{requirements:performance:optimisation}
       \desc{The optimisation platform (description of computers that will fulfill the performance requirements) is any nowadays personal computer with at least 1GB of RAM, 1.5GHz CPU and more than 30GB of hard disk with Windows (XP or newer release), Ubuntu or derivates (current (TODO: fill in current version), or Debian}
       \priority{1}
       \riskref{M}
     \end{requirement}
 
     \begin{requirement}{Response times}
+      \label{requirements:performance:responsetime}
       \desc{The basic task operations (Introducing and grouping of tasks and adding due dates and priorities to tasks see \ref{requirements:interfaces:user}) shall not take longer than 3 seconds}
       \priority{1}
       \riskref{M}
     \end{requirement}
 
     \begin{requirement}{Initialising Tomboy}
+      \label{requirements:performance:initialization}
       \desc{Initialising Tomboy (startup) may not be delayed by more than 2 seconds on a }
     \end{requirement}
 
     \subsubsection{Deployment}
     \label{requirements:deployment}
     \begin{requirement}{Installation from library}
+      \label{requirements:deployment:installation}
       The Addin can be installed by compiling the corresponding library into the Addin directory of Tomboy (See \ref{requirements:interfaces:system}).
     \end{requirement}
 
     \begin{requirement}{Activation of the Addin}
+      \label{requirements:deployment:activation}
       Once a working copy of the .dll from \ref{requirements:deployment} is in the corresponding directory or included into the source of the project, Tomboy will automatically detect the Addin and supply the Addin register of the preferences menu with the possibility to enable it.
       %Todo: possibly go into detail here
     \end{requirement}
@@ -240,6 +279,7 @@ A requirement has the following properties:
     %TODO: Not sure this is really necessary!
     %Jan: I would mention GPL and add it to the appendix
     \begin{requirement}{license compliance}
+      \label{requirements:license:compliance}
       \desc{Tomboy uses the \textit{GNU Lesser GPL}\footnote{\url{http://www.gnu.org/licenses/lgpl.txt}}. 
         To be consistent, the project will adapt this license for any source code.}
       \priority{1}
@@ -250,6 +290,7 @@ A requirement has the following properties:
     \subsubsection{Design Constraints}
     \label{requirements:constraints}
     \begin{requirement}{Standard compliance}
+      \label{requirements:constraints:standards}
       \desc{The project will be seen as part of Tomboy and will therefore comply to any existing standards and regulations imposed by Tomboy itself or the GNOME project. This will most notably include language support (\ref{requirements:usability}) and licensing (\ref{requirements:license}), but also requirements like style guidelines\footnote{\url{http://developer.gnome.org/doc/guides/programming-guidelines/index.html}} and design philosophy\footnote{\url{http://library.gnome.org/devel/hig-book/stable/}}}
       \priority{1}
       \riskref{M}

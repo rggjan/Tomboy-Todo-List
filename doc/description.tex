@@ -9,16 +9,22 @@ Since those earlier projects directly influenced some of our design decisions wi
 
 \subsection{Product Perspective}
 \label{description:perspective}
-  The project TaskManager for Tomboy will be part of the Tomboy project. There will be three main interfaces:
-
+  The project TaskManager for Tomboy will be part of the Tomboy project.\\
+  Figure \ref{perspective} shows the Product perspective of the TaskManager Addin. Since it's really an extension for Tomboy it is placed in
+  the Addins section of Tomboy itself where it will communicate with some of Tomboys internal elements (as shown by connecting lines).
   \begin{itemize}
-    \item The first one is the obvious user interface that the user sees within Tomboy.
-    \item The representation of our data will be integrated in Tomboy Note files. That means, persistent storage of the Tasks must be accomplished as XML files using the structures already existing.
-    %TODO: Mention this structure
-    \item Exporting data, to be read from/to other note taking applications. Will be done using XML.
+    \item TaskManager will directly customize the Tomboy NoteWriter user interface in a way that the user can write task lists in notes 
+	(this functionality can be seen in Figure \ref{gui}. To achieve this TaskManager will  directly rely on some of the 
+	Widgets in the GTK\# library. The corresponding requirements for this are documented in section \ref{requirements:interfaces:user}.
+    \item Opening an existing note should also load the defined task lists with tasks and display them automatically in the note - in other words:
+    tasks have to be made persistent.
+	We  will save the task informations by using the storage facilities available by Tomboy and probably extend
+    the currently used XML format to store notes. This functionality is covered in section \ref{requirements:interfaces:software:persistence}.
+    \item Last but not least TaskManager will give the user a way find notes with open tasks or tasks that are overdue. This means we have to modify
+    the existing Note Browser user interface. This functionality is covered in requirement Filter notes in section \ref{requirements:interfaces:user:filter}.
   \end{itemize}
 
-  Figure \ref{perspective} shows the Product perspective of the TaskManager Addin. Since it's really an extension for the Tomboy Application it is placed in Tomboy itself where it will communicate with some of Tomboys internal elements (as shown by arrows). Further the Addin will rely directly on some of the GTK\# Widgets.
+
   \begin{figure}[ht]
     \includegraphics[width=\textwidth]{graphics/product_perspective_diagram.png}
     \caption{TaskManager Product Perspective}
