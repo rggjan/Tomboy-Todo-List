@@ -59,6 +59,7 @@ A requirement has the following properties:
     \riskref{H}
 \end{requirement}
 
+% TODO what format?
 \begin{requirement}{Exporting Tasks}
 	\label{requirements:functional:export}
     \desc{The system provides a function to export all tasks in all notes and their corresponding information in an XML format.}
@@ -155,12 +156,18 @@ A requirement has the following properties:
       \riskref{H}
     \end{requirement}
 
+
     \subsubsection{Software Interfaces}
     \label{requirements:interfaces:software}
-    % TODO => export (xml, evolution, tasque, ...)
-    % => Tomboy (save, ...)
 
-    \label{requirements:interfaces:software:tomboy}
+    % TODO => export (xml, evolution, tasque, ...)
+    \begin{requirement}{Tasks Persistence}
+	  \label{requirements:interfaces:software:persistence}
+      \desc{All the necessary information about tasks and tasks list will be made persistent using the provided facilities by Tomboy to store note information. The XML format used by Tomboy to store notes will be extended with additional attributes as necessary to suite our needs.}
+      \priority{1}
+      \riskref{C}
+    \end{requirement}
+
     \begin{requirement}{Tomboy Version}
 	  \label{requirements:interfaces:software:tomboy:version}
       \desc{The addin shall be designed for Tomboy version 1.2.0. Future and past releases of Tomboy are available in the official git repository\footnote{\url{http://git.gnome.org/browse/tomboy/}}}
