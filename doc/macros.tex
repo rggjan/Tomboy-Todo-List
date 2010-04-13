@@ -53,13 +53,21 @@
 \newcounter{req}
 \setcounter{req}{0}
 
+
 \newenvironment{requirement}[1]{
+  \begin{samepage}
 	\noindent \hrulefill\\\\
 	\addtocounter{req}{1}
 	{\noindent \bf Requirement ID:} R.\thereq \\
 	{\noindent \bf Requirement Title:} #1\\
-}{}
+
+
+}{\end{samepage}}
+
 
 \newcommand{\desc}[1]{{\noindent \bf Description:} #1\\}
 \newcommand{\priority}[1]{{\noindent \bf Priority:} #1\\}
-\newcommand{\riskref}[1]{{\noindent \bf Risk References:} #1\\}
+\newcommand{\riskref}[1]{{\noindent \bf Risk References:} #1\\}	
+
+
+	
