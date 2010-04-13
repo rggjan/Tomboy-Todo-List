@@ -215,7 +215,6 @@ A requirement has the following properties:
     \begin{requirement}{Documentation}
       \label{requirements:usability:documentation}
       \desc{The Addin will provide an online documentation (currently available on the git, but designed to fit into the manual files of tomboy) that will list all available functionalities and enable the computer experienced user to use the all possible functionalities after reading the corresponding section}
-      %TODO: Will we do a help documentation? ;)
       \priority{1}
       \riskref{M}
     \end{requirement}
@@ -259,6 +258,26 @@ A requirement has the following properties:
     \begin{requirement}{Initialising Tomboy}
       \label{requirements:performance:initialization}
       \desc{Initialising Tomboy (startup) may not be delayed by more than 2 seconds on a }
+      \priority{1}
+      \riskref{M}
+    \end{requirement}
+
+    \subsubsection{Maintainability}
+    \label{requirements:maintainability}
+    %TODO: Not sure this is necessary, but it's good to mention anyway, don't you think?
+    \label{requirements:maintainability:github}
+    \begin{requirement}{Git repository}
+      \desc{The project's source code will be available on \url{git://github.org/rggjan/Tomboy-Todo-List}}
+      \priority{1}
+      \riskref{M}
+    \end{requirement}
+
+    \label{requirements:maintainability:codedoc}
+    %TODO: Agree on this
+    \begin{requirement}
+      \desc{All source code will be available in a documented version introducing XML comments as defined by the ECMA C# standard.
+      %TODO: Link
+}
     \end{requirement}
 
     \subsubsection{Deployment}
