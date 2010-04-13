@@ -271,14 +271,15 @@ A requirement has the following properties:
 
     \begin{requirement}{Response times}
       \label{requirements:performance:responsetime}
-      \desc{The basic task operations (Introducing and grouping of tasks and adding due dates and priorities to tasks see \ref{requirements:interfaces:user}) shall not take longer than 3 seconds}
+      \desc{The basic task operations (Introducing and grouping of tasks and adding due dates and priorities to tasks see \ref{requirements:interfaces:user}) shall not take longer than 1 second.}
+      %TODO: Why 1 second
       \priority{1}
       \riskref{M}
     \end{requirement}
 
     \begin{requirement}{Initialising Tomboy}
       \label{requirements:performance:initialization}
-      \desc{Initialising Tomboy (startup) may not be delayed by more than 2 seconds on a }
+      \desc{Initialising Tomboy (startup) may not take longer than twice as long as without the Addin on the platform as described in \ref{requirements:performance:optimisation}, since the splash screen is already a bit long and loading takes a while.}
       \priority{1}
       \riskref{M}
     \end{requirement}
