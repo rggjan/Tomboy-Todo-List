@@ -30,8 +30,7 @@ Our goal is to finish such a project up to a stable and working solution (in ter
   \begin{itemize}
     \item The first one is the obvious user interface that the user sees within Tomboy.
     \item The representation of our data will be integrated in Tomboy Note files. That means, persistent storage of the Tasks must be accomplished as XML files using the structures already existing.
-      %TODO: How is this different to the next point? Above it saved within Tomboy notes, and in a format only readable by Tomboy. Below _only_ the TaskLists are exported, in a format that other task list applications understand. Please clarify if this is unclear...
-    \item Saving and retrieving data (for example, import and export of notes from/to other note taking applications) will be done using XML.
+    \item Exporting data, to be read from/to other note taking applications. Will be done using XML.
   \end{itemize}
 
   Figure \ref{perspective} shows the Product perspective of the TaskList Addin. Since it's really an extension for the Tomboy Application it is placed in Tomboy itself where it will communicate with some of Tomboys internal elements (as shown by arrows). Further the Addin will rely directly on some of the GTK\# Widgets.
