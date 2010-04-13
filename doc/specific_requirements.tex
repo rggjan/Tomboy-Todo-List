@@ -101,11 +101,21 @@ A requirement has the following properties:
       \priority{1}
       \riskref{H}
     \end{requirement}
+    
+    \begin{requirement}{Setting a Due date}
+      \label{requirements:interfaces:user:due_date:set}
+      \desc{The user is able to set a due date for a single task or an entire task list by adding a widget for the due date over a menu button and/or a shortcut text. The Widget will be located somwhere next to the task/task list.}
+      \priority{2}
+      \riskref{M}
+    \end{requirement}
+
 
     \begin{requirement}{Due date visualization}
       \label{requirements:interfaces:user:due_date}
-      \desc{The user should be able to set / change the due date for a task directly in the corresponding Tomboy note.      
-      The system shall visualize to the user when items are near or even over their due date.}
+      \desc{
+      The system will visualize the due date (if set) to the user. It will further, based on the current date, change the text color of the date if it is
+      far in the future it will be green, if the day is in a near future or even in the past the text color will be red.
+      }
       \priority{2}
       \riskref{M}
     \end{requirement}
