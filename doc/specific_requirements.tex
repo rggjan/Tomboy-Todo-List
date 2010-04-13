@@ -1,7 +1,7 @@
 This section contains all software requirements both functional and non-functional.
 A requirement has the following properties:
 \begin{itemize}
-	\item[\bf{ID}] Uniquely identifies requirement within all TaskList documents.
+	\item[\bf{ID}] Uniquely identifies requirement within all TaskManager documents.
 	\item[\bf{Title}] Gives the requirement a symbolic name.
 	\item[\bf{Description}] The definition of the requirement.
 	\item[\bf{Priority}] Defines the order in which the requirements should be implemented. Priorities are designated from highest to lowest.
@@ -63,12 +63,12 @@ A requirement has the following properties:
     \subsubsection{Entity Diagram}
     The following diagram shows all defined entities from the requirements above and their relations.
     As we can see a Task is basically modeled as a string and - if its a more complex task - can link to other notes.
-    \begin{figure}[h]
+    \begin{figure}[ht]
     	% TODO remove the grey licensing text in the diagram by using the software with a valid license key
       % I don't think that is possible without paying -> Just export it to pic with some dummy elements above and cut it in GIMP or something
 	    \centering
         \includegraphics[width=0.5\textwidth]{graphics/entity_diagram.png}
-        \caption{TaskList entities and relations}
+        \caption{TaskManager entities and relations}
         \label{entities_relations}
     \end{figure}
     
@@ -141,8 +141,6 @@ A requirement has the following properties:
 
     \subsubsection{Software Interfaces}
     \label{requirements:interfaces:software}
-    % TODO => export (xml, evolution, tasque, ...)
-    % => Tomboy (save, ...)
 
     \label{requirements:interfaces:software:tomboy}
     \begin{requirement}{Tomboy Version}
@@ -150,7 +148,6 @@ A requirement has the following properties:
       \priority{1}
       \riskref{H}
     \end{requirement}
-
 
     \subsubsection{Supported Operating Systems}
     \label{requirements:os}

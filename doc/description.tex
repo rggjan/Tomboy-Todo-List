@@ -1,6 +1,6 @@
 \subsection{Current and Previous Solutions}
 \label{description:solution}
-Currently Tomboy has the functionality to create bullet lists in Notes and with help of the Backlink Addin (which is shipped with the default Tomboy installation) to add Hyperlinks between different Notes. This allows the user to create simple Tasklists through Bulletlist and through linking a single task to another Note to create subtasks. This functionality is also shown in the GUI Mockup in Figure \ref{gui}.
+Currently Tomboy has the functionality to create bullet lists in Notes and with help of the Backlink Addin (which is shipped with the default Tomboy installation) to add Hyperlinks between different Notes. This allows the user to create simple task lists through Bulletlist and through linking a single task to another Note to create subtasks. This functionality is also shown in the GUI Mockup in Figure \ref{gui}.
 
 % I commented this, so the information does not get lost to revisit this section.
 % \subsubsection{Tasks} The idea of adding extended task management capability to Tomboy is not new and has been done before already:
@@ -25,7 +25,7 @@ Our goal is to finish such a project up to a stable and working solution (in ter
 
 \subsection{Product Perspective}
 \label{description:perspective}
-  The project TaskList will be part of the Tomboy project. There will be three main interfaces:
+  The project TaskManager for Tomboy will be part of the Tomboy project. There will be three main interfaces:
 
   \begin{itemize}
     \item The first one is the obvious user interface that the user sees within Tomboy.
@@ -33,10 +33,10 @@ Our goal is to finish such a project up to a stable and working solution (in ter
     \item Exporting data, to be read from/to other note taking applications. Will be done using XML.
   \end{itemize}
 
-  Figure \ref{perspective} shows the Product perspective of the TaskList Addin. Since it's really an extension for the Tomboy Application it is placed in Tomboy itself where it will communicate with some of Tomboys internal elements (as shown by arrows). Further the Addin will rely directly on some of the GTK\# Widgets.
+  Figure \ref{perspective} shows the Product perspective of the TaskManager Addin. Since it's really an extension for the Tomboy Application it is placed in Tomboy itself where it will communicate with some of Tomboys internal elements (as shown by arrows). Further the Addin will rely directly on some of the GTK\# Widgets.
   \begin{figure}[ht]
     \includegraphics[width=\textwidth]{graphics/product_perspective_diagram.png}
-    \caption{TaskList Product Perspective}
+    \caption{TaskManager Product Perspective}
     \label{perspective}
   \end{figure}
 
