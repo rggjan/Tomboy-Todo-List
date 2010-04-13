@@ -9,4 +9,4 @@ draft: *.tex graphics/*.png
 	pdflatex requirements-document.tex
 
 clean: 
-	rm -f *.toc *.log *.aux *~ *.pdf
+	rm -f *.toc *.log *.aux *~ *.pdf *.idx *.ilg *.ind *.out
