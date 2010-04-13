@@ -59,10 +59,9 @@ A requirement has the following properties:
     \riskref{H}
 \end{requirement}
 
-% TODO what format?
 \begin{requirement}{Exporting Tasks}
   \label{requirements:functional:export}
-  \desc{The system provides a function to export all tasks in all notes and their corresponding information in the ICAL\footnote{\url{http://tools.ietf.org/html/rfc5545}} format.}
+  \desc{The system provides a function to export all tasks in all notes and their corresponding information in the ICAL \ref{ical} format.}
   \priority{3}
   \riskref{L}
 \end{requirement}
@@ -72,8 +71,6 @@ A requirement has the following properties:
     The following diagram shows all defined entities from the requirements above and their relations.
     As we can see a Task is basically modeled as a string and - if its a more complex task - can link to other notes.
     \begin{figure}[h]
-    	% TODO remove the grey licensing text in the diagram by using the software with a valid license key
-      % I don't think that is possible without paying -> Just export it to pic with some dummy elements above and cut it in GIMP or something
 	    \centering
         \includegraphics[width=0.5\textwidth]{graphics/entity_diagram.png}
         \caption{TaskList entities and relations}
@@ -101,14 +98,6 @@ A requirement has the following properties:
       \priority{1}
       \riskref{H}
     \end{requirement}
-    
-    \begin{requirement}{Setting a Due date}
-      \label{requirements:interfaces:user:due_date:set}
-      \desc{The user is able to set a due date for a single task or an entire task list by adding a widget for the due date over a menu button and/or a shortcut text. The Widget will be located somwhere next to the task/task list.}
-      \priority{2}
-      \riskref{M}
-    \end{requirement}
-
  
     \begin{requirement}{Setting a Due date}
       \label{requirements:interfaces:user:due_date:set}
@@ -182,7 +171,6 @@ A requirement has the following properties:
     \subsubsection{Software Interfaces}
     \label{requirements:interfaces:software}
 
-    % TODO => export (xml, evolution, tasque, ...)
     \begin{requirement}{Tasks Persistence}
 	  \label{requirements:interfaces:software:persistence}
       \desc{All the necessary information about tasks and tasks list will be made persistent using the provided facilities by Tomboy to store note information. The XML format used by Tomboy to store notes will be extended with additional attributes as necessary to suite our needs.}
@@ -205,7 +193,6 @@ A requirement has the following properties:
       \desc{The Addin will work on any oerating system with a working installation of Tomboy (as defined in \ref{requirements:interfaces:software:tomboy})}
       \priority{2}
       \riskref{M}
-%TODO: where is this defined, anyway? (Version etc)
     \end{requirement}
 
 \subsection{Nonfunctional Requirements}
@@ -312,16 +299,13 @@ A requirement has the following properties:
     \begin{requirement}{Activation of the Addin}
       \label{requirements:deployment:activation}
       Once a working copy of the .dll from \ref{requirements:deployment} is in the corresponding directory or included into the source of the project, Tomboy will automatically detect the Addin and supply the Addin register of the preferences menu with the possibility to enable it.
-      %Todo: possibly go into detail here
     \end{requirement}
 
     \subsubsection{Licensing Requirements}
     \label{requirements:license}
-    %TODO: Not sure this is really necessary!
-    %Jan: I would mention GPL and add it to the appendix
     \begin{requirement}{license compliance}
       \label{requirements:license:compliance}
-      \desc{Tomboy uses the \textit{GNU Lesser GPL}\footnote{\url{http://www.gnu.org/licenses/lgpl.txt}}. 
+      \desc{Tomboy uses the \textit{GNU Lesser GPL} \ref{lgpl}. 
         To be consistent, the project will adapt this license for any source code.}
       \priority{1}
       \riskref{M}
@@ -335,7 +319,6 @@ A requirement has the following properties:
       \desc{The project will be seen as part of Tomboy and will therefore comply to any existing standards and regulations imposed by Tomboy itself or the GNOME project. This will most notably include language support (\ref{requirements:usability}) and licensing (\ref{requirements:license}), but also requirements like style guidelines\footnote{\url{http://developer.gnome.org/doc/guides/programming-guidelines/index.html}} and design philosophy\footnote{\url{http://library.gnome.org/devel/hig-book/stable/}}}
       \priority{1}
       \riskref{M}
-      %TODO link
     \end{requirement}
 
     % => modules (textbuffer, note gui, notes window gui)
