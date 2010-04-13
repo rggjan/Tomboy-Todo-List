@@ -183,7 +183,13 @@ A requirement has the following properties:
       \priority{2}
       \riskref{M}
     \end{requirement}
-    
+
+    \begin{requirement}{Documentation}
+      \desc{The Addin will provide an online documentation (currently available on the git, but designed to fit into the manual files of tomboy) that will list all available functionalities and enable the computer experienced user to use the all possible functionalities after reading the corresponding section}
+      %TODO: Will we do a help documentation? ;)
+      \priority{1}
+      \riskref{M}
+    \end{requirement}
 
     \subsubsection{Reliability}
     \label{requirements:reliability}
@@ -203,9 +209,22 @@ A requirement has the following properties:
     \subsubsection{Performance}
     \label{requirements:performance}
 
+    \begin{requirement}{Optimisation platform}
+      %TODO: maybe merge this into system description?
+      % Not even sure this is necessary but I thought need to be precise about which computers should fulfill the performance requirements
+      \desc{The optimisation platform (description of computers that will fulfill the performance requirements) is any nowadays personal computer with at least 1GB of RAM, 1.5GHz CPU and more than 30GB of hard disk with Windows (XP or newer release), Ubuntu or derivates (current (TODO: fill in current version), or Debian}
+      \priority{1}
+      \riskref{M}
+    \end{requirement}
+
     \begin{requirement}{Response times}
       \desc{The basic task operations (Introducing and grouping of tasks and adding due dates and priorities to tasks see \ref{requirements:interfaces:user}) shall not take longer than 3 seconds}
+      \priority{1}
+      \riskref{M}
     \end{requirement}
+
+    \begin{requirement}{Initialising Tomboy}
+      \desc{Initialising Tomboy (startup) may not be delayed by more than 2 seconds on a }
 
     \subsubsection{Deployment}
     \label{requirements:deployment}
@@ -214,8 +233,7 @@ A requirement has the following properties:
     \end{requirement}
 
     \begin{requirement}{Activation of the Addin}
-      Once a working copy of the .dll from (%TODO: link above
-      ) is in the corresponding directory or included into the source of the project, Tomboy will automatically detect the Addin and supply the Addin register of the preferences menu with the possibility to enable it.
+      Once a working copy of the .dll from \ref{requirements:deployment} is in the corresponding directory or included into the source of the project, Tomboy will automatically detect the Addin and supply the Addin register of the preferences menu with the possibility to enable it.
       %Todo: possibly go into detail here
     \end{requirement}
 
@@ -234,7 +252,7 @@ A requirement has the following properties:
     \subsubsection{Design Constraints}
     \label{requirements:constraints}
     \begin{requirement}{Standard compliance}
-      \desc{The project will be seen as part of Tomboy and will therefore comply to any existing standards and regulations imposed by Tomboy itself or the GNOME project. This }
+      \desc{The project will be seen as part of Tomboy and will therefore comply to any existing standards and regulations imposed by Tomboy itself or the GNOME project. This will most notably include language support (\ref{requirements:usability}) and licensing (\ref{requirements:license}), but also requirements like style guidelines\footnote{\url{http://developer.gnome.org/doc/guides/programming-guidelines/index.html}} and design philosophy\footnote{\url{http://library.gnome.org/devel/hig-book/stable/}}}
       \priority{1}
       \riskref{M}
       %TODO link
