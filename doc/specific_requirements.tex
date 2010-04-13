@@ -5,9 +5,9 @@ A requirement has the following properties:
 	\item[\bf{Title}] Gives the requirement a symbolic name.
 	\item[\bf{Description}] The definition of the requirement.
 	\item[\bf{Priority}] Defines the order in which the requirements should be implemented. Priorities are designated from highest to lowest.
-          Possible values are 1 (first to implement), 2 and 3 (last to implement). \index{Priority}
+	Possible values are 1 (first to implement), 2 and 3 (last to implement).
 	\item[\bf{Risk}] Specifies risk of not implementing this requirement. It shows how the particular requirement is critical to the system.
-          there are the following risks levels and associated impact to the system if the requirement is not implemented or implemented incorrectly. \index{Risk}
+	there are the following risks levels and associated impact to the system if the requirement is not implemented or implemented incorrectly.
 		\begin{itemize}
 			\item {\bf Critical (C)}  will break the main functionality of the system. The system can not be used if this requirement is not implemented.
 			\item {\bf High (H)} will impact the main functionality of the system. Some function of the system could be inaccessible, but the 
@@ -16,11 +16,8 @@ A requirement has the following properties:
 			\item {\bf Low (L)} the system can be used without limitation, but with some workarounds.
 
 		\end{itemize}
-  \end{itemize}
 
-  The difference in Risk and Priority is the following: Risk shows the \textit{importance} of a certain feature to the project. Priority, on the other hand, shows in which \textit{order} we are intending to implement these. That can be influenced by other factors than just the importance to the project, for example the complexity or expected time needed to implement.
-  
-  For example: A low priority feature that requires only 10 minutes time may be implemented before a medium priority feature that would take 4 hours to develop.
+  \end{itemize}
 
 
 \subsection{Functional Requirements}
@@ -40,37 +37,16 @@ A requirement has the following properties:
     \riskref{C}
 \end{requirement}
 
-\begin{requirement}{Adding a name to a Task list}
-      \label{requirements:functional:add_name}
-    \desc{The user can optionally add a name to a Task list}
-    \priority{1}
-    \riskref{H}
-\end{requirement}
-
-\begin{requirement}{Adding priorities to Tasks and Task lists}
+\begin{requirement}{Priorities for Tasks}
 	\label{requirements:functional:task_priority}
     \desc{The user can optionally add priorities to individual tasks and task lists.}
     \priority{1}
     \riskref{H}
 \end{requirement}
 
-\begin{requirement}{Adding due dates to Tasks and Task lists}
+\begin{requirement}{Due Dates for Tasks}
 	\label{requirements:functional:task_due_date}
     \desc{The user can optionally add due dates to individual tasks and task lists.}
-    \priority{1}
-    \riskref{H}
-\end{requirement}
-
-\begin{requirement}{Changing due dates for Tasks and Task lists}
-	\label{requirements:functional:change_attribute}
-    \desc{The user can change or remove due dates of individual tasks and task lists.}
-    \priority{1}
-    \riskref{H}
-\end{requirement}
-
-\begin{requirement}{Changing priorities for Tasks and Task lists}
-	\label{requirements:functional:change_attribute}
-    \desc{The user can change or remove priorities of individual tasks and task lists.}
     \priority{1}
     \riskref{H}
 \end{requirement}
@@ -133,28 +109,39 @@ A requirement has the following properties:
       \riskref{M}
     \end{requirement}
 
-
-    \begin{requirement}{Due date visualization}
-      \label{requirements:interfaces:user:due_date}
-      \desc{
-      The system will visualize the due date (if set) to the user. It will further, based on the current date, change the text color of the date if it is
-      far in the future it will be green, if the day is in a near future or even in the past the text color will be red.
-      }
+ 
+    \begin{requirement}{Setting a Due date}
+      \label{requirements:interfaces:user:due_date:set}
+      \desc{The user is able to set a due date for a single task or an entire task list by adding a widget for the due date over a menu button and/or a shortcut text. The Widget will be located somwhere next to the task/task list.}
       \priority{2}
       \riskref{M}
     \end{requirement}
-    
+
+    \begin{requirement}{Due date visualization}
+      \label{requirements:interfaces:user:due_date}
+      \desc{The system shall visualize the due date (if set) to the user. It will, based on the current date, change the text color of the date: If it is
+      far in the future it will be green, if the day is in near future or even in the past the text color will be red.}
+      \priority{2}
+      \riskref{M}
+    \end{requirement}
+
+    \begin{requirement}{Set Priority}
+      \label{requirements:interfaces:user:priority}
+      \desc{The user is able to set a priority for a single task or an entire task list by adding a widget for the priority over a menu button and/or a shortcut text. The Widget will be located somwhere next to the task/task list.}
+      \priority{2}
+      \riskref{M}
+    \end{requirement}
+
     \begin{requirement}{Priority visualization}
       \label{requirements:interfaces:user:priority}
-      \desc{The user should be able to change the priority for a task directly in the corresponding Tomboy note. 
-      The system shall visualize to the user the priority of a task and how important the task is in relation to other tasks in the same task list.}
+      \desc{The system shall visualize the priority of a task by displaying the priority as a number in a text color which is unique to this particular priority.}
       \priority{2}
       \riskref{M}
     \end{requirement}
 
     \begin{requirement}{Create Subtasks}
       \label{requirements:interfaces:user:subtasks}
-      \desc{The user can optionally create a task consisting of one or multiple other task lists considered as sub tasks for this particular task.}
+      \desc{The user can optionally create a task consisting of one or multiple other task lists considered as sub tasks for this particular task by creating hyperlinks linking to other tasks.}
       \priority{1}
       \riskref{H}
     \end{requirement}
