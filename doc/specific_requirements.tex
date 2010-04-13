@@ -242,6 +242,8 @@ A requirement has the following properties:
         The Addin shall provide full information about failures and errors if not logged by Tomboy itself.
         This information shall include: time of failure, origin (subsystem or component) where a failure occurred, severity and description of error or failure. 
         Diagnostic information will be logged and saved in the text file tomboy.log in the standard directory for Tomboy configuration information (See \ref{requirements:interfaces:system}).}
+      \priority{1}
+      \riskref{H}
     \end{requirement}
 
     \subsubsection{Performance}
@@ -283,19 +285,34 @@ A requirement has the following properties:
     \label{requirements:maintainability:codedoc}
     \begin{requirement}{Source documentation}
       \desc{All source code will be available in a documented version introducing XML comments as defined by the ECMA C\# standard \footnote{\url{http://msdn.microsoft.com/en-us/library/b2s063f7(v=VS.100).aspx}}.
+      \priority{1}
+      \riskref{L}
 }
+    \end{requirement}
+
+    \label{requirements:maintainability:unittests}
+    \begin{requirement}{Unit testing}
+      %TODO what exactly do they cover and how?
+      %Proposition: all non-GUI functionalities as in the req. doc. that have priority 1
+      \desc{The source code will contain dedicated NUnit testing files that will cover the basic functionality of the project.}
+      \priority{1}
+      \riskref{L}
     \end{requirement}
 
     \subsubsection{Deployment}
     \label{requirements:deployment}
     \begin{requirement}{Installation from library}
       \label{requirements:deployment:installation}
-      The Addin can be installed by compiling the corresponding library into the Addin directory of Tomboy (See \ref{requirements:interfaces:system}).
+      \desc{The Addin can be installed by compiling the corresponding library into the Addin directory of Tomboy (See \ref{requirements:interfaces:system}).}
+      \priority{1}
+      \riskref{C}
     \end{requirement}
 
     \begin{requirement}{Activation of the Addin}
       \label{requirements:deployment:activation}
       Once a working copy of the .dll from \ref{requirements:deployment} is in the corresponding directory or included into the source of the project, Tomboy will automatically detect the Addin and supply the Addin register of the preferences menu with the possibility to enable it.
+      \priority{1}
+      \riskref{C}
     \end{requirement}
 
     \subsubsection{Licensing Requirements}
