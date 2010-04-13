@@ -96,14 +96,15 @@ A requirement has the following properties:
 
     \begin{requirement}{Edit Task List}
     \label{requirements:interfaces:user:edit_tasklist}
-      \desc{The user can add, remove and change single task list items by directly editing the task list in the note itself.}
+      \desc{The user can add, remove and change single task list items by directly editing the task list in the note itself.
+			A task description can be edited by directly editing the text. Setting the due date, priority and done flag will be realized through embedded GTK\# widgets. A task will be removed automatically from the task list if the user deletes the text describing the task and the corresponding line in the editor. A task list will be removed if there are no more tasks in the list.}
       \priority{1}
       \riskref{H}
     \end{requirement}
 
     \begin{requirement}{Due date visualization}
       \label{requirements:interfaces:user:due_date}
-      \desc{The user should be able to set / change the due date for a task directly in the corresponding Tomboy note. 
+      \desc{The user should be able to set / change the due date for a task directly in the corresponding Tomboy note.      
       The system shall visualize to the user when items are near or even over their due date.}
       \priority{2}
       \riskref{M}
@@ -140,7 +141,7 @@ A requirement has the following properties:
 
     \begin{requirement}{Filter Notes}
       \label{requirements:interfaces:user:filter}
-      \desc{The user can query for a list of notes by setting some constraints which involve searching for notes who have unfinished or contain 
+      \desc{The user can query for a list of notes by setting constraints which involve searching for notes who have unfinished tasks or contain 
       tasks which are over their corresponding due date.}
       \priority{2}
       \riskref{M}
