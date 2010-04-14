@@ -17,8 +17,8 @@ Since those earlier projects directly influenced some of our design decisions wi
 	Widgets in the GTK\# library. The corresponding requirements for this are documented in section \ref{requirements:interfaces:user}.
     \item Opening an existing note should also load the defined task lists with tasks and display them automatically in the note - in other words:
     tasks have to be made persistent.
-	We  will save the task informations by using the storage facilities available by Tomboy and probably extend
-    the currently used XML format to store notes. This functionality is covered in section \ref{requirements:interfaces:software:persistence}.
+	We  will save the task informations by using the storage facilities available by Tomboy and extend
+    the currently used XML \index{XML} format to store notes. This functionality is covered in section \ref{requirements:interfaces:software:persistence}.
     \item Last but not least TaskManager will give the user a way find notes with open tasks or tasks that are overdue. This means we have to modify
     the existing Note Browser user interface. This functionality is covered in requirement Filter notes in section \ref{requirements:interfaces:user:filter}.
   \end{itemize}
@@ -38,12 +38,12 @@ Since those earlier projects directly influenced some of our design decisions wi
   \label{description:functions:supported}
 
     \begin{itemize}
-      \item Provides advanced Task management capabilities for Tomboy
-      \item Allows multiple tasks to be grouped together
-      \item Supports priorities and due dates for tasks
-      \item Allows to establish relationships/dependencies between tasks
+      \item Provides advanced Task management capabilities for Tomboy.
+      \item Allows multiple tasks to be grouped together.
+      \item Supports priorities and due dates for tasks and task lists.
+      \item Allows to establish relationships/dependencies between tasks.
       \item Allows the user to conveniently get to the task notes currently not finished or overdue.
-      \item Allows to export all defined tasks
+      \item Allows to export all defined tasks.
     \end{itemize}
 
     \subsubsection*{Unsupported Functions}
@@ -59,9 +59,9 @@ Since those earlier projects directly influenced some of our design decisions wi
 We look at two types of users:
 
   \begin{itemize}
-    \item[\bf{Casual}] The casual user will create simple task lists. He may not know the various functions of Tomboy very well. Still, he will be able to create simple task lists where he can cross out individual elements easily.
+    \item[\bf{Casual}] The casual user will create simple task lists. He may not know the various functions of Tomboy very well. Still, he will be able to create simple task lists where he can cross out individual elements easily. \index{Casual User}
 
-    \item[\bf{Advanced}] The advanced user knows and uses Tomboy already quite well. He is able to add arguments such as due dates and priorities to his task lists and tasks, and to create hierarchies of tasks.
+    \item[\bf{Advanced}] The advanced user knows and uses Tomboy already quite well. He is able to add arguments such as due dates and priorities to his task lists and tasks, and to create hierarchies of tasks. \index{Advanced User}
 
   \end{itemize}
 
@@ -69,6 +69,6 @@ We look at two types of users:
 \subsection{Constraints}
 \label{description:constraints}
 %TODO: Recheck example requirements document: Are those two sections really redundant?
-The Addin itself will obey all criterias (standards and guidelines) imposed by the GNOME and Tomboy projects (Tomboy Styleguide, \ref{styleguide}).
+The Addin itself will obey all criterias (standards and guidelines) imposed by the GNOME and Tomboy projects (Tomboy Styleguide, see \ref{styleguide}).
 
 Besides the coding guidelines this includes mainly design aspects, such as simplicity and easyness of use, and full integration into Tomboy (see also \ref{lessons}).
