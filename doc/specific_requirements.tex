@@ -270,30 +270,29 @@ A requirement has the following properties:
 
     \subsubsection{Maintainability}
     \label{requirements:maintainability}
-    \label{requirements:maintainability:github}
     \begin{requirement}{Git repository}
+    \label{requirements:maintainability:github}
       \desc{The project's source code will be available on \url{git://github.org/rggjan/Tomboy-Todo-List}.}
       \priority{1}
       \riskref{M}
     \end{requirement}
 
-    \label{requirements:maintainability:bugtracking}
     \begin{requirement}{Bug tracking}
+    \label{requirements:maintainability:bugtracking}
       \desc{Besides the unit tests (\ref{requirements:maintainability:unittests}) and manual tests by the project members, the project will allow any user to report bugs to the git (\ref{requirements:maintainability:github}).}
       \priority{1}
       \riskref{H}
     \end{requirement}
 
-    \label{requirements:maintainability:codedoc}
     \begin{requirement}{Source documentation} \index{documentation}
-      \desc{All source code will be available in a documented version introducing XML comments as defined by the ECMA C\# standard \footnote{\url{http://msdn.microsoft.com/en-us/library/b2s063f7(v=VS.100).aspx}}.
+    \label{requirements:maintainability:codedoc}
+    \desc{All source code will be available in a documented version introducing XML comments as defined by the ECMA C\# standard \footnote{\url{http://msdn.microsoft.com/en-us/library/b2s063f7(v=VS.100).aspx}}.}
       \priority{1}
       \riskref{L}
-}
     \end{requirement}
 
-    \label{requirements:maintainability:unittests}
     \begin{requirement}{Unit testing}
+    \label{requirements:maintainability:unittests}
       \desc{The source code will contain dedicated NUnit testing files that will cover all basic functionalities (\ref{requirements:functional}) of the project with a risk reference at least M, that are testable via NUnit tests and are not part of the GUI (these are out of scope).}
       \priority{1}
       \riskref{L}
