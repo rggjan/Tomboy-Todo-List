@@ -1,7 +1,7 @@
 This section contains all software requirements both functional and non-functional.
 A requirement has the following properties:
 \begin{itemize}
-	\item[\bf{ID}] Uniquely identifies requirement within all TaskList documents.
+	\item[\bf{ID}] Uniquely identifies requirement within this requirement document.
 	\item[\bf{Title}] Gives the requirement a symbolic name.
 	\item[\bf{Description}] The definition of the requirement.
 	\item[\bf{Priority}] Defines the order in which the requirements should be implemented. Priorities are designated from highest to lowest.
@@ -74,7 +74,7 @@ A requirement has the following properties:
     \begin{figure}[h]
 	    \centering
         \includegraphics[width=0.5\textwidth]{graphics/entity_diagram.png}
-        \caption{TaskList entities and relations}
+        \caption{TaskManager entities and relations}
         \label{entities_relations}
     \end{figure}
     
@@ -102,7 +102,7 @@ A requirement has the following properties:
  
     \begin{requirement}{Setting a Due date}
       \label{requirements:interfaces:user:due_date:set}
-      \desc{The user is able to set a due date for a single task or an entire task list by adding a widget for the due date over a menu button and/or a shortcut text. The Widget will be located somwhere next to the task/task list.}
+      \desc{The user is able to set a due date for a single task or an entire task list by adding a widget for the due date over a menu button and/or a shortcut text. The Widget will be located somewhere next to the task/task list.}
       \priority{2}
       \riskref{M}
     \end{requirement}
@@ -117,7 +117,7 @@ A requirement has the following properties:
 
     \begin{requirement}{Set Priority}
       \label{requirements:interfaces:user:priority:set}
-      \desc{The user is able to set a priority for a single task or an entire task list by adding a widget for the priority over a menu button and/or a shortcut text. The Widget will be located somwhere next to the task/task list.}
+      \desc{The user is able to set a priority for a single task or an entire task list by adding a widget for the priority over a menu button and/or a shortcut text. The Widget will be located somewhere next to the task/task list.}
       \priority{2}
       \riskref{M}
     \end{requirement}
@@ -189,7 +189,7 @@ A requirement has the following properties:
 
     \subsubsection{Supported Operating Systems}
     \label{requirements:os}
-    \begin{requirement}{Platform independance}
+    \begin{requirement}{Platform independence}
       \label{requirements:os:independance}
       \desc{The Addin will work on any operating system with a working installation of Tomboy (as defined in \ref{requirements:interfaces:software:tomboy:version})}
       \priority{2}
@@ -223,7 +223,7 @@ A requirement has the following properties:
 
     \begin{requirement}{Documentation}
       \label{requirements:usability:documentation}
-      \desc{The Addin will provide an online documentation that will list all available functionalities and enable the computer experienced user to use the all possible functionalities after reading the corresponding section. The user documentation will be available on the git \ref{requirements:maintainability:github}}
+      \desc{The Addin will provide an on line documentation that will list all available functionalities and enable the computer experienced user to use the all possible functionalities after reading the corresponding section. The user documentation will be available on the git \ref{requirements:maintainability:github}}
       \priority{1}
       \riskref{M}
     \end{requirement}
@@ -254,7 +254,7 @@ A requirement has the following properties:
       %TODO: maybe merge this into system description?
       % Not even sure this is necessary but I thought need to be precise about which computers should fulfill the performance requirements
       \label{requirements:performance:optimisation}
-      \desc{The optimisation platform (description of computers that will fulfill the performance requirements) is any nowadays personal computer with at least 1GB of RAM, 1.5GHz CPU and more than 30GB of hard disk with Windows (XP or newer release), Ubuntu or derivates (current (TODO: fill in current version), or Debian}
+      \desc{The optimisation platform (description of computers that will fulfill the performance requirements) is any nowadays personal computer with at least 1GB of RAM, 1.5GHz CPU and more than 30GB of hard disk with Windows (XP or newer release), Ubuntu or derivatives (current (TODO: fill in current version), or Debian}
       \priority{1}
       \riskref{M}
     \end{requirement}
@@ -269,7 +269,7 @@ A requirement has the following properties:
 
     \begin{requirement}{Initialising Tomboy}
       \label{requirements:performance:initialization}
-      \desc{Initialising Tomboy (startup) may not take longer than twice as long as without the Addin on the platform as described in \ref{requirements:performance:optimisation}, since the splash screen is already a bit long and loading takes a while.}
+      \desc{Initialising Tomboy (start-up) may not take longer than twice as long as without the Addin on the platform as described in \ref{requirements:performance:optimisation}, since the splash screen is already a bit long and loading takes a while.}
       \priority{1}
       \riskref{M}
     \end{requirement}
