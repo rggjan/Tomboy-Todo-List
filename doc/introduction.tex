@@ -1,6 +1,6 @@
 \subsection{Purpose}
 \label{intro:purpose}
-This document specifies the Software Requirements Specification for the TaskManager for Tomboy Project.
+This document specifies the Software Requirements Specification for the \textit{TaskManager For Tomboy} project.
 It describes scope of the system, both functional and non-functional requirements for the software, system interfaces and existing previous solutions.
 
 
@@ -17,30 +17,39 @@ This is how the final result could look like. Figure \ref{gui} is only a draft, 
   \includegraphics[width=\textwidth]{graphics/Screenshot_cropped_edited.png}
   \caption{GUI mockup}
   \label{gui}
+  \index{GUI}
 \end{figure}
 
 
 \subsection{Acronyms and abbreviations}
 \label{intro:abbreviations}
-
+The following table explains the terms and abbreviations used in the document.
+\\*
+\\*
 \begin{objects}
 	% Make sure to maintain alphabetical order
 	\object{CLI}{Common Language Infrastructure}
 	\object{C\#}{C-Sharp}
 	\object{GTK}{GIMP ToolKit}
 	\object{GTK\#}{Gtk Sharp}
-	\object{GUI}{Graphical User Interface}
+	\object{GUI}{Graphical User Interface \index{GUI}}
 	\object{XML}{Extensible Markup Language}
 \end{objects}
 
 
 \subsection{Definitions}
 \label{intro:definitions}
-
+These definitions are terms we use to describe specific concepts within our product.
+\\*
+\\*
 \begin{objects}
 	% Make sure to maintain alphabetical order
-	\object{Task}{A task is a piece of text representing a ``todo'' item, accompanied with a checkbox. It may have a due date, a priority and can be marked as done. \index{Task}}
-	\object{Task List}{A task list is a collection of tasks that is grouped together. It may have a title, a priority and a due date. \index{Task List}}
+	\object{Task}{A task is a piece of text representing a ``todo'' item, accompanied with a checkbox.
+
+It may have a due date, a priority and can be marked as done. \index{Task}}
+	\object{Task List}{A task list is a collection of tasks that is grouped together.
+
+It may have a title, a priority and a due date. \index{Task List}}
         \object{Task Note}{A task note is a Tomboy Note enhanced with the TaskManager features. \index{Task Note}}
 	\object{Subtask}{A subtask is a task note being linked from inside a task. \index{Subtask}}
 \end{objects}
@@ -48,10 +57,13 @@ This is how the final result could look like. Figure \ref{gui} is only a draft, 
 
 \subsection{Glossary}
 \label{intro:glossary}
-
+The glossary defines the key terms and concepts mentioned and used in this SRS.
+\\*
+\\*
 \begin{objects}
 	% Make sure to maintain alphabetical order
-	\object{Addin}{An extension for a particular Product that can be enabled and disabled, as needed.}
+	\object{Addin}{An extension for a particular Product that can be enabled and disabled, as needed.} %TODO capitalized or not in text?
+        \object{CLI Standard}{TODO} %TODO
 	\object{Cross Platform}{Attribute conferred to computer software which is implemented and inter-operates on multiple computer platforms.}
 	\object{C-Sharp}{Programming Language for the CLI Standard.}
 	\object{Evolution}{The official personal information manager and workgroup information management tool for GNOME. }
@@ -76,6 +88,7 @@ The following table defines the list of all documents referenced elsewhere in th
   \reference{LGPL}{\label{lgpl} \index{LGPL} \url{http://www.gnu.org/licenses/lgpl.txt}}
   \reference{IEEE 830-1998}{\label{ieee} \url{http://standards.ieee.org/reading/ieee/std/se/830-1998.pdf}}
   \reference{ICAL Specification}{\label{ical} \index{ICAL} \url{http://tools.ietf.org/html/rfc5545}}
+  \reference{CLI Standard}{\label{cli} \index{cli} \url{TODO}}%TODO
 \end{reference_table}
 
 
@@ -83,6 +96,9 @@ The following table defines the list of all documents referenced elsewhere in th
 \label{intro:overview}
 \begin{itemize}
   \item Chapter \ref{description} defines the general product functions, intended application, constraints to be respected and the assumption made in order to define requirements.
-  \item Chapter \ref{requirements} specifies functional (section \ref{requirements:functional}) and non-functional requirements (usability, reliability, performance, maintainability, etc., sections \ref{requirements:nonfunctional_start} to \ref{requirements:nonfunctional_end}) considerations and requirements to a level of detail sufficient to enable designers to design a system to satisfy these requirements and testers to test that the system satisfies these requirements.
+  \item Chapter \ref{requirements} specifies functional (section \ref{requirements:functional}) and non-functional requirements (usability, reliability, performance, maintainability, etc., sections \ref{requirements:nonfunctional_start} to \ref{requirements:nonfunctional_end}).
+
+The level of detail there should be sufficient to enable designers to design a system satisfying these requirements and testers to test that the system satisfies these requirements.
+  \item Chapter \ref{appendix} contains the appendix, which includes the index.
 \end{itemize}
-The document is structured according to the IEEE 830-1998 standard (\ref{ieee}).
+The document is structured according to the IEEE 830-1998 standard (see \ref{ieee}).

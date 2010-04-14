@@ -1,5 +1,13 @@
 all: requirements.pdf
 
+requirements-document.idx:
+
+requirements-document.out:
+
+requirements-document.toc:
+
+*.aux:
+
 requirements.pdf: *.tex graphics/*.png
 	pdflatex requirements-document.tex
 	makeindex requirements-document.idx
