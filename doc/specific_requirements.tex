@@ -4,9 +4,9 @@ A requirement has the following properties:
 	\item[\bf{ID}] Uniquely identifies requirement within this requirement document.
 	\item[\bf{Title}] Gives the requirement a symbolic name.
 	\item[\bf{Description}] The definition of the requirement.
-	\item[\bf{Priority}] Defines the order in which the requirements should be implemented. Priorities are designated from highest to lowest.
+        \item[\bf{Priority}] Defines the order in which the requirements should be implemented. Priorities are designated from highest to lowest. \index{Priority}
 	Possible values are 1 (first to implement), 2 and 3 (last to implement).
-	\item[\bf{Risk}] Specifies risk of not implementing this requirement. It shows how the particular requirement is critical to the system.
+        \item[\bf{Risk}] Specifies risk of not implementing this requirement. It shows how the particular requirement is critical to the system. \index{Risk}
 	there are the following risks levels and associated impact to the system if the requirement is not implemented or implemented incorrectly.
 		\begin{itemize}
 			\item {\bf Critical (C)}  will break the main functionality of the system. The system can not be used if this requirement is not implemented.
@@ -179,7 +179,7 @@ A requirement has the following properties:
       \riskref{C}
     \end{requirement}
 
-    \begin{requirement}{Tomboy Version}
+    \begin{requirement}{Tomboy Version} \index{Tomboy}
 	  \label{requirements:interfaces:software:tomboy:version}
       \desc{The Addin shall be designed for Tomboy version 1.2.0. Future and past releases of Tomboy are available in the official git repository\footnote{\url{http://git.gnome.org/browse/tomboy/}}}
       \priority{1}
@@ -283,7 +283,7 @@ A requirement has the following properties:
     \end{requirement}
 
     \label{requirements:maintainability:codedoc}
-    \begin{requirement}{Source documentation}
+    \begin{requirement}{Source documentation} \index{documentation}
       \desc{All source code will be available in a documented version introducing XML comments as defined by the ECMA C\# standard \footnote{\url{http://msdn.microsoft.com/en-us/library/b2s063f7(v=VS.100).aspx}}.
       \priority{1}
       \riskref{L}
@@ -315,7 +315,7 @@ A requirement has the following properties:
       \riskref{C}
     \end{requirement}
 
-    \subsubsection{Licensing Requirements}
+    \subsubsection{Licensing Requirements} \index{License}
     \label{requirements:license}
     \begin{requirement}{license compliance}
       \label{requirements:license:compliance}
