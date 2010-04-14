@@ -199,9 +199,6 @@ A requirement has the following properties:
 \subsection{Nonfunctional Requirements}
 \label{requirements:nonfunctional}
 
-    %TODO fill in
-    % => Bugs, unit tests
-
     \subsubsection{Usability}
     \label{requirements:nonfunctional_start}
     \label{requirements:usability}
@@ -251,7 +248,6 @@ A requirement has the following properties:
     \label{requirements:performance}
 
     \begin{requirement}{Optimisation platform}
-      % Not even sure this is necessary but I thought need to be precise about which computers should fulfill the performance requirements
       \label{requirements:performance:optimisation}
       \desc{The optimisation platform (description of computers that will fulfill the performance requirements) is any nowadays personal computer with at least 1GB of RAM, 1.5GHz CPU and more than 30GB of hard disk with Windows (XP or newer release), Ubuntu or derivatives (current 9.10). These are the settings that are available to the project team and thus base of performance considerations.}
       \priority{1}
@@ -282,6 +278,13 @@ A requirement has the following properties:
       \riskref{M}
     \end{requirement}
 
+    \label{requirements:maintainability:bugtracking}
+    \begin{requirement}{Bug tracking}
+      \desc{Besides the unit tests (\ref{requirements:maintainability:unittest}) and manual tests by the project members, the project will allow any user to report bugs to the git (\ref{requirements:maintainability:github}).}
+      \priority{1}
+      \riskref{H}
+    \end{requirement}
+
     \label{requirements:maintainability:codedoc}
     \begin{requirement}{Source documentation} \index{documentation}
       \desc{All source code will be available in a documented version introducing XML comments as defined by the ECMA C\# standard \footnote{\url{http://msdn.microsoft.com/en-us/library/b2s063f7(v=VS.100).aspx}}.
@@ -294,7 +297,7 @@ A requirement has the following properties:
     \begin{requirement}{Unit testing}
       %TODO what exactly do they cover and how?
       %Proposition: all non-GUI functionalities as in the req. doc. that have priority 1
-      \desc{The source code will contain dedicated NUnit testing files that will cover the basic functionality of the project.}
+      \desc{The source code will contain dedicated NUnit testing files that will cover the all basic functionalities (\ref{requirements:functional}) of the project with a risk reference at least M that are testable via NUnit tests.}
       \priority{1}
       \riskref{L}
     \end{requirement}
