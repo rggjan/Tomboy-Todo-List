@@ -61,15 +61,16 @@ A requirement has the following properties:
 
 \begin{requirement}{Exporting Tasks}
   \label{requirements:functional:export}
-  \desc{The system provides a function to export all tasks in all notes and their corresponding information in the ICAL \ref{ical} format.}
+  \desc{The system provides a function to export all tasks in all notes and their corresponding information in the ICAL
+  (The ICAL Specification document can be found in the reference table in section \ref{ical}).}
   \priority{3}
   \riskref{L}
 \end{requirement}
 
 
     \subsubsection{Entity Diagram}
-    The following diagram shows all defined entities from the requirements above and their relations.
-    As we can see a Task is basically modeled as a string and - if its a more complex task - can link to other notes.
+    Figure~\ref{entities_relations} shows all defined entities from the requirements above and their relations.
+    For a detailed description of the entities you should check the Definitions in section \ref{intro:definitions}.
     \begin{figure}[h]
 	    \centering
         \includegraphics[width=0.5\textwidth]{graphics/entity_diagram.png}
@@ -310,7 +311,7 @@ A requirement has the following properties:
 
     \begin{requirement}{Activation of the Addin}
       \label{requirements:deployment:activation}
-      Once a working copy of the .dll from \ref{requirements:deployment} is in the corresponding directory or included into the source of the project, Tomboy will automatically detect the Addin and supply the Addin register of the preferences menu with the possibility to enable it.
+      \desc{Once a working copy of the .dll from \ref{requirements:deployment} is in the corresponding directory or included into the source of the project, Tomboy will automatically detect the Addin and supply the Addin register of the preferences menu with the possibility to enable it.}
       \priority{1}
       \riskref{C}
     \end{requirement}
@@ -330,7 +331,7 @@ A requirement has the following properties:
     \label{requirements:constraints}
     \begin{requirement}{Standard compliance}
       \label{requirements:constraints:standards}
-      \desc{The project will be seen as part of Tomboy and will therefore comply to any existing standards and regulations imposed by Tomboy itself or the GNOME project. This will most notably include language support (\ref{requirements:usability}) and licensing (\ref{requirements:license}), but also requirements like style guidelines\footnote{\url{http://developer.gnome.org/doc/guides/programming-guidelines/index.html}} and design philosophy\footnote{\url{http://library.gnome.org/devel/hig-book/stable/}}}
+      \desc{The project will be seen as part of Tomboy and will therefore comply to any existing standards and regulations imposed by Tomboy itself or the GNOME project. This will most notably include language support (\ref{requirements:usability}) and licensing (\ref{requirements:license}), but also requirements like style guidelines and design philosophy as described in section \ref{description:constraints}. }
       \priority{1}
       \riskref{M}
     \end{requirement}
