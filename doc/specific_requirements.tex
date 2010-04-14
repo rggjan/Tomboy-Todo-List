@@ -55,8 +55,8 @@ A requirement has the following properties:
 \begin{requirement}{Subtasks}
 	\label{requirements:functional:subtask}
     \desc{The system provides the user with the ability to model a task as a complex task consisting of possibly multiple subtasks.}
-    \priority{1}
-    \riskref{H}
+    \priority{2}
+    \riskref{M}
 \end{requirement}
 
 \begin{requirement}{Exporting Tasks}
@@ -97,14 +97,14 @@ A requirement has the following properties:
       \desc{The user can add, remove and change single task list items by directly editing the task list in the note itself.
 			A task description can be edited by directly editing the text. Setting the due date, priority and done flag will be realized through embedded GTK\# widgets. A task will be removed automatically from the task list if the user deletes the text describing the task and the corresponding line in the editor. A task list will be removed if there are no more tasks in the list.}
       \priority{1}
-      \riskref{H}
+      \riskref{C}
     \end{requirement}
  
     \begin{requirement}{Setting a Due date}
       \label{requirements:interfaces:user:due_date:set}
       \desc{The user is able to set a due date for a single task or an entire task list by adding a widget for the due date over a menu button and/or a shortcut text. The Widget will be located somewhere next to the task/task list.}
-      \priority{2}
-      \riskref{M}
+      \priority{1}
+      \riskref{H}
     \end{requirement}
 
     \begin{requirement}{Due date visualization}
@@ -118,8 +118,8 @@ A requirement has the following properties:
     \begin{requirement}{Set Priority}
       \label{requirements:interfaces:user:priority:set}
       \desc{The user is able to set a priority for a single task or an entire task list by adding a widget for the priority over a menu button and/or a shortcut text. The Widget will be located somewhere next to the task/task list.}
-      \priority{2}
-      \riskref{M}
+      \priority{1}
+      \riskref{H}
     \end{requirement}
 
     \begin{requirement}{Priority visualization}
@@ -139,14 +139,14 @@ A requirement has the following properties:
     \begin{requirement}{Show / hide completed Tasks}
       \label{requirements:interfaces:user:show_hide}
       \desc{The user gets various possibilities to handle completed tasks. He can show them crossed out, he can hide them, and he can show them after the completed tasks. }
-      \priority{2}
+      \priority{3}
       \riskref{M}
     \end{requirement}
 
     \begin{requirement}{Reorder Task Lists}
       \label{requirements:interfaces:user:reorder}
       \desc{The user has the possibility to order the task lists according to various criteria, like due date, priority, date added etc.}
-      \priority{2}
+      \priority{3}
       \riskref{L}
     \end{requirement}
 
@@ -165,7 +165,7 @@ A requirement has the following properties:
 	  \label{requirements:interfaces:system:directories}
       \desc{All user data will be stored in the \textit{standard Tomboy configuration directories}\footnote{\url{http://live.gnome.org/Tomboy/Directories}}}
       \priority{1}
-      \riskref{H}
+      \riskref{C}
     \end{requirement}
 
 
@@ -214,13 +214,13 @@ A requirement has the following properties:
       \label{requirements:usability:translations}
       \desc{Tomboy uses the internationalization and localization library \textit{GNU gettext}\footnote{\url{http://www.gnu.org/software/gettext/}}. 
         The Addin will integrate this built-in language support and will therefore enable anyone being capable of writing Tomboy/Gnome translations to add additional language translations to the project.}
-      \priority{2}
+      \priority{1}
       \riskref{M}
     \end{requirement}
 
     \begin{requirement}{Documentation}
       \label{requirements:usability:documentation}
-      \desc{The Addin will provide an on line documentation that will list all available functionalities and enable the computer experienced user to use the all possible functionalities after reading the corresponding section. The user documentation will be available on the git \ref{requirements:maintainability:github}}
+      \desc{The Addin will provide an on line documentation that will list all available functionalities and enable the computer experienced user to use the all possible functionalities after reading the corresponding section.}
       \priority{1}
       \riskref{M}
     \end{requirement}
@@ -231,7 +231,7 @@ A requirement has the following properties:
       \label{requirements:reliability:failures}
       \desc{The project does not have any point of failure that will cause Tomboy to crash or freeze.}
       \priority{1}
-      \riskref{H}
+      \riskref{C}
     \end{requirement}
     
     \begin{requirement}{Logging}
@@ -241,7 +241,7 @@ A requirement has the following properties:
         This information shall include: time of failure, origin (subsystem or component) where a failure occurred, severity and description of error or failure. 
         Diagnostic information will be logged and saved in the text file tomboy.log in the standard directory for Tomboy configuration information (See \ref{requirements:interfaces:system}).}
       \priority{1}
-      \riskref{H}
+      \riskref{L}
     \end{requirement}
 
     \subsubsection{Performance}
@@ -250,21 +250,21 @@ A requirement has the following properties:
     \begin{requirement}{Optimisation platform and measure}
       \label{requirements:performance:optimisation}
       \desc{The optimisation platform (description of computers that will fulfill the performance requirements) is any nowadays personal computer with at least 1GB of RAM, 1.5GHz CPU and more than 30GB of hard disk with Windows (XP or newer release), Ubuntu or derivatives (current 9.10). These are the settings that are available to the project team and thus base of performance consideration.}
-      \priority{1}
+      \priority{3}
       \riskref{M}
     \end{requirement}
 
     \begin{requirement}{Response times}
       \label{requirements:performance:responsetime}
       \desc{All response time characteristica for a system as described in \ref{requirements:performance:optimisation} shall obey the \textit{acceptable response times}\footnote{\url{http://library.gnome.org/devel/hig-book/stable/feedback-response-times.html}} proposed by the \textit{GNOME Human Interface Guide-lines} (see section \ref{description:constraints}). This includes that the basic task operations (Introducing tasks or task lists, grouping of tasks, signing tasks without subtasks as marked and adding due dates and priorities to tasks, see \ref{requirements:interfaces:user}) shall not take longer than 1 second.}
-      \priority{1}
+      \priority{3}
       \riskref{M}
     \end{requirement}
 
     \begin{requirement}{Initialising Tomboy}
       \label{requirements:performance:initialization}
       \desc{Initialising Tomboy (start-up) may not take longer than 10 seconds on a platform described in \ref{requirements:performance:optimisation}.}
-      \priority{1}
+      \priority{3}
       \riskref{M}
     \end{requirement}
 
@@ -274,14 +274,14 @@ A requirement has the following properties:
     \label{requirements:maintainability:github}
       \desc{The project's source code will be available on \url{git://github.org/rggjan/Tomboy-Todo-List}.}
       \priority{1}
-      \riskref{M}
+      \riskref{L}
     \end{requirement}
 
     \begin{requirement}{Bug tracking}
     \label{requirements:maintainability:bugtracking}
       \desc{Besides the unit tests (\ref{requirements:maintainability:unittests}) and manual tests by the project members, the project will allow any user to report bugs to the git (\ref{requirements:maintainability:github}).}
       \priority{1}
-      \riskref{H}
+      \riskref{L}
     \end{requirement}
 
     \begin{requirement}{Source documentation} \index{documentation}
@@ -330,7 +330,7 @@ A requirement has the following properties:
     \begin{requirement}{Standard compliance}
       \label{requirements:constraints:standards}
       \desc{The project will be seen as part of Tomboy and will therefore comply to any existing standards and regulations imposed by Tomboy itself or the GNOME project. This will most notably include language support (\ref{requirements:usability}) and licensing (\ref{requirements:license}), but also requirements like style guidelines and design philosophy as described in section \ref{description:constraints}. }
-      \priority{1}
+      \priority{2}
       \riskref{M}
     \end{requirement}
 
