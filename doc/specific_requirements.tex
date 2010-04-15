@@ -19,6 +19,10 @@ A requirement has the following properties:
 
   \end{itemize}
 
+  It is possible that the risk and the priority diverge for certain requirements. This is because the priority gives the \textit{order} in which we are planning to implement the features. This may be not only dependend on the importance (\textit{risk}) of the feature, but also on other factors. Examples are the expected time spent to implement the feature, or a dependencies between the features.
+
+For example, a \textit{risk=L/priority=1} feature that is implemented in 10 minutes would be started before a \textit{risk=M/priority=2} feature that takes 5 hours.
+
 
 \subsection{Functional Requirements}
 \label{requirements:functional}
@@ -59,10 +63,11 @@ A requirement has the following properties:
     \riskref{M}
 \end{requirement}\end{samepage}
 
+\newpage
+
 \begin{samepage}\begin{requirement}{Exporting Tasks}
   \label{requirements:functional:export}
-  \desc{The system provides a function to export all tasks in all notes and their corresponding information in the ICAL
-  (The ICAL Specification document can be found in the reference table in section \ref{ical}).}
+  \desc{The system provides a function to export all tasks in all notes and their corresponding information in the ICAL format. (The ICAL Specification document can be found in the reference table in section \ref{ical}.)}
   \priority{3}
   \riskref{L}
 \end{requirement}\end{samepage}
@@ -70,7 +75,7 @@ A requirement has the following properties:
 
     \subsubsection{Entity Diagram}
     Figure~\ref{entities_relations} shows all defined entities from the requirements above and their relations.
-    For a detailed description of the entities you should check the Definitions in section \ref{intro:definitions}.
+    For a detailed description of the entities you should check the definitions in section \ref{intro:definitions}.
     \begin{figure}[ht]
 	    \centering
         \includegraphics[width=0.5\textwidth]{graphics/entity_diagram.png}
@@ -80,14 +85,14 @@ A requirement has the following properties:
     
     This diagram does not define classes that must be implemented in software, but just the common entities
 
-
+\newpage
 
     \subsubsection{User Interface}
     \label{requirements:interfaces:user}
 
     \begin{samepage}\begin{requirement}{Create Task List}
     \label{requirements:interfaces:user:create_tasklist}
-      \desc{The user shall be able to create a new task list with a button or a shortcut text, like ``[]''. These lists expand automatically and contain individual tasks.}
+      \desc{The user shall be able to create a new task list with a button or a shortcut text, like ``[  ]''. These lists expand automatically and contain individual tasks.}
       \priority{1}
       \riskref{C}
     \end{requirement}\end{samepage}
@@ -107,23 +112,25 @@ A requirement has the following properties:
       \riskref{C}
     \end{requirement}\end{samepage}
 
-    \begin{samepage}\begin{requirement}{Automatically marking Tasks as done}
+    \begin{samepage}\begin{requirement}{Automatically marking Tasks as Done}
     \label{requirements:interfaces:user:task_done}
       \desc{If a tasks consists of subtasks in which all tasks are marked as done then the system will autmatically mark the super task as being done.}
       \priority{3}
       \riskref{L}
     \end{requirement}\end{samepage}
+
+\newpage
  
-    \begin{samepage}\begin{requirement}{Setting a Due date}
+    \begin{samepage}\begin{requirement}{Setting a Due Date}
       \label{requirements:interfaces:user:due_date:set}
       \desc{The user is able to set a due date for a single task or an entire task list by adding a widget for the due date over a menu button and/or a
-      shortcut text. The Widget will be located somewhere next to the task/task list. If the tasks consists of subtasks (see
+      shortcut text. The widget will be located somewhere next to the task/task list. If the tasks consists of subtasks (see
       \ref{requirements:functional:subtask}) then the system will set the default due date to the maximum due date of all the task in the subtasks. }
       \priority{3}
       \riskref{L}
     \end{requirement}\end{samepage}
 
-    \begin{samepage}\begin{requirement}{Due date visualization}
+    \begin{samepage}\begin{requirement}{Due Date visualization}
       \label{requirements:interfaces:user:due_date}
       \desc{The system shall visualize the due date (if set) to the user. It will, based on the current date, change the text color of the date: If it is
       far in the future it will be green, if the day is in near future or even in the past the text color will be red.}
@@ -133,7 +140,7 @@ A requirement has the following properties:
 
     \begin{samepage}\begin{requirement}{Set Priority}
       \label{requirements:interfaces:user:priority:set}
-      \desc{The user is able to set a priority for a single task or an entire task list by adding a widget for the priority over a menu button and/or a shortcut text. The Widget will be located somewhere next to the task/task list.}
+      \desc{The user is able to set a priority for a single task or an entire task list by adding a widget for the priority over a menu button and/or a shortcut text. The widget will be located somewhere next to the task/task list.}
       \priority{1}
       \riskref{H}
     \end{requirement}\end{samepage}
@@ -145,7 +152,7 @@ A requirement has the following properties:
       \riskref{M}
     \end{requirement}\end{samepage}
 
-    \begin{samepage}\begin{requirement}{Show / hide completed Tasks}
+    \begin{samepage}\begin{requirement}{Show / Hide completed Tasks}
       \label{requirements:interfaces:user:show_hide}
       \desc{The user gets various possibilities to handle completed tasks. He can show them crossed out, he can hide them, and he can show them after the completed tasks. }
       \priority{3}
@@ -172,11 +179,12 @@ A requirement has the following properties:
     \label{requirements:interfaces:system}
     \begin{samepage}\begin{requirement}{Tomboy directories}
 	  \label{requirements:interfaces:system:directories}
-      \desc{All user data will be stored in the \textit{standard Tomboy configuration directories}\footnote{\url{http://live.gnome.org/Tomboy/Directories}}}
+      \desc{All user data will be stored in the \textit{standard Tomboy configuration directories}\footnote{\url{http://live.gnome.org/Tomboy/Directories}}.}
       \priority{1}
       \riskref{C}
     \end{requirement}\end{samepage}
 
+\newpage
 
     \subsubsection{Software Interfaces}
     \label{requirements:interfaces:software}
@@ -190,7 +198,7 @@ A requirement has the following properties:
 
     \begin{samepage}\begin{requirement}{Tomboy Version} \index{Tomboy}
 	  \label{requirements:interfaces:software:tomboy:version}
-      \desc{The addin shall be designed for Tomboy version 1.2.0. Future and past releases of Tomboy are available in the official git repository\footnote{\url{http://git.gnome.org/browse/tomboy/}}}
+      \desc{The addin shall be designed for Tomboy version 1.2.0. Future and past releases of Tomboy are available in the official git repository\footnote{\url{http://git.gnome.org/browse/tomboy/}}.}
       \priority{1}
       \riskref{H}
     \end{requirement}\end{samepage}
@@ -200,7 +208,7 @@ A requirement has the following properties:
     \label{requirements:os}
     \begin{samepage}\begin{requirement}{Platform independence}
       \label{requirements:os:independance}
-      \desc{The addin will work on any operating system with a working installation of Tomboy (as defined in R.20)}
+      \desc{The addin will work on any operating system with a working installation of Tomboy (as defined in R.20).}
       \priority{2}
       \riskref{M}
     \end{requirement}\end{samepage}
@@ -222,7 +230,7 @@ A requirement has the following properties:
     \begin{samepage}\begin{requirement}{Translations}
       \label{requirements:usability:translations}
       \desc{Tomboy uses the internationalization and localization library \textit{GNU gettext}\footnote{\url{http://www.gnu.org/software/gettext/}}. 
-        The addin will integrate this built-in language support and will therefore enable anyone being capable of writing Tomboy/Gnome translations to add additional language translations to the project.}
+        The addin will integrate this built-in language support and will therefore enable anyone being capable of writing Tomboy/GNOME translations to add additional language translations to the project.}
       \priority{1}
       \riskref{M}
     \end{requirement}\end{samepage}
@@ -265,7 +273,7 @@ A requirement has the following properties:
 
     \begin{samepage}\begin{requirement}{Response times}
       \label{requirements:performance:responsetime}
-      \desc{All response time characteristica for a system as described in R.27 shall obey the \textit{acceptable response times}\footnote{\url{http://library.gnome.org/devel/hig-book/stable/feedback-response-times.html}} proposed by the \textit{GNOME Human Interface Guide-lines} (see section \ref{description:constraints}). This includes that the basic task operations (Introducing tasks or task lists, grouping of tasks, signing tasks without subtasks as marked and adding due dates and priorities to tasks, see \ref{requirements:interfaces:user}) shall not take longer than 1 second.}
+      \desc{All response time characteristica for a system as described in R.27 shall obey the \textit{acceptable response times}\footnote{\url{http://library.gnome.org/devel/hig-book/stable/feedback-response-times.html}} proposed by the \textit{GNOME Human Interface Guide-lines} (see section \ref{description:constraints}). This includes that the basic task operations (introducing tasks or task lists, grouping of tasks, signing tasks without subtasks as marked and adding due dates and priorities to tasks, see \ref{requirements:interfaces:user}) shall not take longer than 1 second.}
       \priority{3}
       \riskref{M}
     \end{requirement}\end{samepage}
@@ -285,6 +293,8 @@ A requirement has the following properties:
       \priority{1}
       \riskref{L}
     \end{requirement}\end{samepage}
+
+\newpage
 
     \begin{samepage}\begin{requirement}{Bug tracking}
     \label{requirements:maintainability:bugtracking}
@@ -311,10 +321,12 @@ A requirement has the following properties:
     \label{requirements:deployment}
     \begin{samepage}\begin{requirement}{Installation from library}
       \label{requirements:deployment:installation}
-      \desc{The addin can be installed by compiling and addint the resulting library into the addin directory of Tomboy (see also R.18).}
+      \desc{The addin can be installed by compiling and adding the resulting library into the addin directory of Tomboy (see also R.18).}
       \priority{1}
       \riskref{C}
     \end{requirement}\end{samepage}
+
+\newpage
 
     \begin{samepage}\begin{requirement}{Activation of the addin}
       \label{requirements:deployment:activation}
