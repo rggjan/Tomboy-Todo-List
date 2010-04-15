@@ -1,9 +1,9 @@
-pdfcommand = pdflatex -output-directory=tmp requirements-document.tex && mv tmp/requirements-document.pdf ./
+pdfcommand = pdflatex -output-directory=tmp requirements-document.tex
 
-all: requirements-document.pdf
+all: tmp/requirements-document.pdf
 
-requirements-document.pdf: *.tex graphics/*.png
-	$(pdfcommand)
+tmp/requirements-document.pdf: *.tex graphics/*.png
+	$(pdfcommand) -draftmode
 	makeindex tmp/requirements-document.idx
 	$(pdfcommand)
 
@@ -11,4 +11,4 @@ draft: *.tex graphics/*.png
 	$(pdfcommand)
 
 clean: 
-	rm -r tmp
+	rm -r tmp/*
