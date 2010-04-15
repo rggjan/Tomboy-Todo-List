@@ -51,10 +51,9 @@ A requirement has the following properties:
     \riskref{H}
 \end{requirement}
 
-% TODO make this according to our issue discussion
 \begin{requirement}{Subtasks}
 	\label{requirements:functional:subtask}
-    \desc{The system provides the user with the ability to model a task as a complex task consisting of possibly multiple subtasks.}
+    \desc{The system provides the user with the ability to link in the description of a task to multiple other task notes. These task notes are then considered subtasks of this task.}
     \priority{2}
     \riskref{M}
 \end{requirement}
@@ -87,7 +86,7 @@ A requirement has the following properties:
 
     \begin{requirement}{Create Task List}
     \label{requirements:interfaces:user:create_tasklist}
-      \desc{The user shall be able to create a new task list with a button or a shortcut text, like ``[]''. These lists expand automatically and contain individual tasks that can be marked as done.}
+      \desc{The user shall be able to create a new task list with a button or a shortcut text, like ``[]''. These lists expand automatically and contain individual tasks.}
       \priority{1}
       \riskref{C}
     \end{requirement}
@@ -95,16 +94,32 @@ A requirement has the following properties:
     \begin{requirement}{Edit Task List}
     \label{requirements:interfaces:user:edit_tasklist}
       \desc{The user can add, remove and change single task list items by directly editing the task list in the note itself.
-			A task description can be edited by directly editing the text. Setting the due date, priority and done flag will be realized through embedded GTK\# widgets. A task will be removed automatically from the task list if the user deletes the text describing the task and the corresponding line in the editor. A task list will be removed if there are no more tasks in the list.}
+			A task description can be edited by directly editing the text. Setting the due date, priority and done flag will be realized through embedded GTK\# widgets. A task will be removed automatically from the task list if the user deletes the text describing the task and the corresponding line in the editor. A task list can be removed after deleting all containing tasks.}
       \priority{1}
       \riskref{C}
+    \end{requirement}
+
+    \begin{requirement}{Marking Tasks as Done}
+    \label{requirements:interfaces:user:task_done}
+      \desc{The user can mark existing tasks in a task list as done by clicking on a checkbox widget next to the task description.}
+      \priority{1}
+      \riskref{C}
+    \end{requirement}
+
+    \begin{requirement}{Automatically marking Tasks as done}
+    \label{requirements:interfaces:user:task_done}
+      \desc{If a tasks consists of subtasks in which all tasks are marked as done then the system will autmatically mark the super task as being done.}
+      \priority{3}
+      \riskref{L}
     \end{requirement}
  
     \begin{requirement}{Setting a Due date}
       \label{requirements:interfaces:user:due_date:set}
-      \desc{The user is able to set a due date for a single task or an entire task list by adding a widget for the due date over a menu button and/or a shortcut text. The Widget will be located somewhere next to the task/task list.}
-      \priority{1}
-      \riskref{H}
+      \desc{The user is able to set a due date for a single task or an entire task list by adding a widget for the due date over a menu button and/or a
+      shortcut text. The Widget will be located somewhere next to the task/task list. If the tasks consists of subtasks (see
+      \ref{requirements:functional:subtask}) then the system will set the default due date to the maximum due date of all the task in the subtasks. }
+      \priority{3}
+      \riskref{L}
     \end{requirement}
 
     \begin{requirement}{Due date visualization}
@@ -127,13 +142,6 @@ A requirement has the following properties:
       \desc{The system shall visualize the priority of a task by displaying the priority as a number in a text color which is unique to this particular priority.}
       \priority{2}
       \riskref{M}
-    \end{requirement}
-
-    \begin{requirement}{Create Subtasks}
-      \label{requirements:interfaces:user:subtasks}
-      \desc{The user can optionally create a task consisting of one or multiple other task lists considered as sub tasks for this particular task by creating hyperlinks linking to other tasks.}
-      \priority{1}
-      \riskref{H}
     \end{requirement}
 
     \begin{requirement}{Show / hide completed Tasks}
@@ -181,7 +189,7 @@ A requirement has the following properties:
 
     \begin{requirement}{Tomboy Version} \index{Tomboy}
 	  \label{requirements:interfaces:software:tomboy:version}
-      \desc{The Addin shall be designed for Tomboy version 1.2.0. Future and past releases of Tomboy are available in the official git repository\footnote{\url{http://git.gnome.org/browse/tomboy/}}}
+      \desc{The addin shall be designed for Tomboy version 1.2.0. Future and past releases of Tomboy are available in the official git repository\footnote{\url{http://git.gnome.org/browse/tomboy/}}}
       \priority{1}
       \riskref{H}
     \end{requirement}
@@ -191,7 +199,7 @@ A requirement has the following properties:
     \label{requirements:os}
     \begin{requirement}{Platform independence}
       \label{requirements:os:independance}
-      \desc{The Addin will work on any operating system with a working installation of Tomboy (as defined in \ref{requirements:interfaces:software:tomboy:version})}
+      \desc{The addin will work on any operating system with a working installation of Tomboy (as defined in \ref{requirements:interfaces:software:tomboy:version})}
       \priority{2}
       \riskref{M}
     \end{requirement}
@@ -213,14 +221,14 @@ A requirement has the following properties:
     \begin{requirement}{Translations}
       \label{requirements:usability:translations}
       \desc{Tomboy uses the internationalization and localization library \textit{GNU gettext}\footnote{\url{http://www.gnu.org/software/gettext/}}. 
-        The Addin will integrate this built-in language support and will therefore enable anyone being capable of writing Tomboy/Gnome translations to add additional language translations to the project.}
+        The addin will integrate this built-in language support and will therefore enable anyone being capable of writing Tomboy/Gnome translations to add additional language translations to the project.}
       \priority{1}
       \riskref{M}
     \end{requirement}
 
     \begin{requirement}{Documentation}
       \label{requirements:usability:documentation}
-      \desc{The Addin will provide an on line documentation that will list all available functionalities and enable the computer experienced user to use the all possible functionalities after reading the corresponding section.}
+      \desc{The addin will provide an on line documentation that will list all available functionalities and enable the computer experienced user to use the all possible functionalities after reading the corresponding section.}
       \priority{1}
       \riskref{M}
     \end{requirement}
@@ -236,8 +244,8 @@ A requirement has the following properties:
     
     \begin{requirement}{Logging}
       \label{requirements:reliability:logging}
-      \desc{The Addin provides log information about performing critical code segments and encountered errors.
-        The Addin shall provide full information about failures and errors if not logged by Tomboy itself.
+      \desc{The addin provides log information about performing critical code segments and encountered errors.
+        The addin shall provide full information about failures and errors if not logged by Tomboy itself.
         This information shall include: time of failure, origin (subsystem or component) where a failure occurred, severity and description of error or failure. 
         Diagnostic information will be logged and saved in the text file tomboy.log in the standard directory for Tomboy configuration information (See \ref{requirements:interfaces:system}).}
       \priority{1}
@@ -302,14 +310,14 @@ A requirement has the following properties:
     \label{requirements:deployment}
     \begin{requirement}{Installation from library}
       \label{requirements:deployment:installation}
-      \desc{The Addin can be installed by compiling the corresponding library into the Addin directory of Tomboy (See \ref{requirements:interfaces:system}).}
+      \desc{The addin can be installed by compiling the corresponding library into the addin directory of Tomboy (See \ref{requirements:interfaces:system}).}
       \priority{1}
       \riskref{C}
     \end{requirement}
 
-    \begin{requirement}{Activation of the Addin}
+    \begin{requirement}{Activation of the addin}
       \label{requirements:deployment:activation}
-      \desc{Once a working copy of the .dll from \ref{requirements:deployment} is in the corresponding directory or included into the source of the project, Tomboy will automatically detect the Addin and supply the Addin register of the preferences menu with the possibility to enable it.}
+      \desc{Once a working copy of the .dll from \ref{requirements:deployment} is in the corresponding directory or included into the source of the project, Tomboy will automatically detect the addin and supply the addin register of the preferences menu with the possibility to enable it.}
       \priority{1}
       \riskref{C}
     \end{requirement}
