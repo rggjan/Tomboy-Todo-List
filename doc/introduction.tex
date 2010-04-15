@@ -6,13 +6,13 @@ It describes scope of the system, both functional and non-functional requirement
 
 \subsection{Scope}
 \label{intro:scope}
-The project TaskManager is an Addin for Tomboy that will enhance Tomboy with the possibility to do task management. 
+The project TaskManager is an addin for Tomboy that will enhance Tomboy with the possibility to do task management. 
 The user will be able to create and manage task notes, i.e. adding and removing tasks to task lists and link other task notes in some tasks.
 Simple task entries will be enhanceable with optional arguments such as due dates and priority.
 The user will be able to use Tomboy intuitively as a task management system for daily usage, without prior explanation or documentation. 
-The Addin will integrate nicely within the existing concepts and GUI elements of Tomboy.
+The addin will integrate nicely within the existing concepts and GUI elements of Tomboy.
 
-This is how the final result could look like. Figure \ref{gui} is only a draft, trying to visualize how the integration into Tomboy can be accomplished. You can see a check box before each task to mark this particular task as done, along with the corresponding priorities on the left side and due dates on the right side.
+This is how the final result could look like. Figure \ref{gui} is only a draft, trying to visualize how the integration into Tomboy could be accomplished. You can see a check box before each task to mark this particular task as done, along with the corresponding priorities on the left side and due dates on the right side.
 \begin{figure}[h]
   \includegraphics[width=\textwidth]{graphics/Screenshot_cropped_edited.png}
   \caption{GUI mock-up}
@@ -39,18 +39,18 @@ The following table explains the terms and abbreviations used in the document.
 
 \subsection{Definitions}
 \label{intro:definitions}
-These definitions are terms we use to describe specific concepts within our product.
+These definitions are terms we use to describe specific concepts we introduced.
 \\*
 \\*
 \begin{objects}
 	% Make sure to maintain alphabetical order
-	\object{Task}{A task is a piece of text representing a ``to-do'' item, accompanied with a check box.
+	\object{Task}{A task is a piece of text representing a ``todo'' item, accompanied with a check box.
 
-It may have a due date, a priority and can be marked as done. \index{Task}}
-	\object{Task List}{A task list is a collection of tasks that is grouped together.
+It may have a due date and a priority and can be marked as done by crossing out the checkbox. \index{Task}}
+	\object{Task List}{A task list is a collection of tasks grouped together.
 
 It may have a title, a priority and a due date. \index{Task List}}
-        \object{Task Note}{A task note is a Tomboy Note enhanced with the TaskManager features. \index{Task Note}}
+        \object{Task Note}{A task note is a Tomboy note enhanced with the TaskManager features. \index{Task Note}}
 	\object{Subtask}{A subtask is a task note being linked from inside a task. \index{Subtask}}
 \end{objects}
 
@@ -65,12 +65,12 @@ The glossary defines the key terms and concepts mentioned and used in this SRS.
 	\object{Addin}{An extension for a particular Product that can be enabled and disabled, as needed.}
         \object{CLI Standard}{The Common Language Infrastructure (CLI) is an open specification that describes the executable code and runtime environment of the Microsoft .NET Framework (See \ref{cli}).}
 	\object{Cross Platform}{Attribute conferred to computer software which is implemented and inter-operates on multiple computer platforms. \index{Cross Platform}}
-	\object{C-Sharp}{Programming Language for the CLI Standard. \index{C\#}}
+	\object{C-Sharp}{Programming language for the CLI standard. \index{C\#}}
 	\object{Evolution}{The official personal information manager and work group information management tool for GNOME. \index{Evolution}}
 	\object{GIMP ToolKit}{A cross platform widget library for creating GUIs. \index{GTK}}
 	\object{GNOME}{A desktop environment (a graphical user interface that runs on top of a computer operating system) composed entirely of free and open source software. \index{GNOME}}
-	\object{GTK Sharp}{GTK Language Bindings for C\# \index{GTK Sharp}}
-	\object{Mono}{Cross Platform .NET Compatible Open Source implementation of the CLI Standard. \index{Mono}}	
+	\object{GTK Sharp}{GTK Language Bindings for C\#. \index{GTK Sharp}}
+	\object{Mono}{Cross Platform .NET Compatible Open Source implementation of the CLI Standard. \index{Mono}}
 	\object{Tomboy}{A free and open-source desktop note taking application written for Unix-like (including Mac OS X) and Microsoft Windows systems. Tomboy is part of GNOME and written in C\# using Gtk\#. \index{Tomboy}}
 	\object{User}{Any Person who uses Tomboy. \index{User}}
 	\object{Widget}{An element of a GUI that displays an information arrangement changeable by the user. \index{Widget}}
@@ -91,12 +91,13 @@ The following table defines the list of all documents referenced elsewhere in th
   \reference{ICAL Specification}{\label{ical} \index{ICAL} \url{http://tools.ietf.org/html/rfc5545}}
   \reference{IEEE 830-1998}{\label{ieee} \url{http://standards.ieee.org/reading/ieee/std/se/830-1998.pdf}}
   \reference{LGPL}{\label{lgpl} \index{LGPL} \url{http://www.gnu.org/licenses/lgpl.txt}}
-  \reference{Tomboy Style guide}{\label{styleguide} \url{TODO} }% 2.5 => Mono Styleguides
+  \reference{Mono Coding Guidelines}{\label{styleguide} \url{http://www.mono-project.com/Coding_Guidelines} }
 \end{reference_table}
 
 
 \subsection{Overview}
 \label{intro:overview}
+\index{Overview}
 \begin{itemize}
   \item Chapter \ref{description} defines the general product functions, intended application, constraints to be respected and the assumption made in order to define requirements.
   \item Chapter \ref{requirements} specifies functional (section \ref{requirements:functional}) and non-functional requirements (usability, reliability, performance, maintainability, etc., sections \ref{requirements:nonfunctional_start} to \ref{requirements:nonfunctional_end}).
