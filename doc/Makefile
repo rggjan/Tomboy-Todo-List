@@ -1,20 +1,14 @@
-all: requirements.pdf
+pdfcommand = pdflatex -output-directory=tmp requirements-document.tex
 
-requirements-document.idx:
+all: tmp/requirements-document.pdf
 
-requirements-document.out:
-
-requirements-document.toc:
-
-*.aux:
-
-requirements.pdf: *.tex graphics/*.png
-	pdflatex requirements-document.tex
-	makeindex requirements-document.idx
-	pdflatex requirements-document.tex 
+tmp/requirements-document.pdf: *.tex graphics/*.png
+	$(pdfcommand) -draftmode
+	makeindex tmp/requirements-document.idx
+	$(pdfcommand)
 
 draft: *.tex graphics/*.png
-	pdflatex requirements-document.tex
+	$(pdfcommand)
 
 clean: 
-	rm -f *.toc *.log *.aux *~ *.pdf *.idx *.ilg *.ind *.out
+	rm -r tmp/*
