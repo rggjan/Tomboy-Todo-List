@@ -1,6 +1,0 @@
-- TaskList/Task List/TaskLists/Task Management harmonization (TaskManager as name?)
-- Spell checking
-- no page break within use cases
-- GPL => appendix
-- internationalization => more specific?
-- index? (keywords)
