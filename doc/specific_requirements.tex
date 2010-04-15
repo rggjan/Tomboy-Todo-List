@@ -200,7 +200,7 @@ A requirement has the following properties:
     \label{requirements:os}
     \begin{samepage}\begin{requirement}{Platform independence}
       \label{requirements:os:independance}
-      \desc{The addin will work on any operating system with a working installation of Tomboy (as defined in \ref{requirements:interfaces:software:tomboy:version})}
+      \desc{The addin will work on any operating system with a working installation of Tomboy (as defined in R.20)}
       \priority{2}
       \riskref{M}
     \end{requirement}\end{samepage}
@@ -248,7 +248,7 @@ A requirement has the following properties:
       \desc{The addin provides log information about performing critical code segments and encountered errors.
         The addin shall provide full information about failures and errors if not logged by Tomboy itself.
         This information shall include: time of failure, origin (subsystem or component) where a failure occurred, severity and description of error or failure. 
-        Diagnostic information will be logged and saved in the text file tomboy.log in the standard directory for Tomboy configuration information (See \ref{requirements:interfaces:system}).}
+        Diagnostic information will be logged and saved in the text file tomboy.log in the standard directory for Tomboy configuration information (See R.18).}
       \priority{1}
       \riskref{L}
     \end{requirement}\end{samepage}
@@ -265,7 +265,7 @@ A requirement has the following properties:
 
     \begin{samepage}\begin{requirement}{Response times}
       \label{requirements:performance:responsetime}
-      \desc{All response time characteristica for a system as described in \ref{requirements:performance:optimisation} shall obey the \textit{acceptable response times}\footnote{\url{http://library.gnome.org/devel/hig-book/stable/feedback-response-times.html}} proposed by the \textit{GNOME Human Interface Guide-lines} (see section \ref{description:constraints}). This includes that the basic task operations (Introducing tasks or task lists, grouping of tasks, signing tasks without subtasks as marked and adding due dates and priorities to tasks, see \ref{requirements:interfaces:user}) shall not take longer than 1 second.}
+      \desc{All response time characteristica for a system as described in R.27 shall obey the \textit{acceptable response times}\footnote{\url{http://library.gnome.org/devel/hig-book/stable/feedback-response-times.html}} proposed by the \textit{GNOME Human Interface Guide-lines} (see section \ref{description:constraints}). This includes that the basic task operations (Introducing tasks or task lists, grouping of tasks, signing tasks without subtasks as marked and adding due dates and priorities to tasks, see \ref{requirements:interfaces:user}) shall not take longer than 1 second.}
       \priority{3}
       \riskref{M}
     \end{requirement}\end{samepage}
@@ -288,7 +288,7 @@ A requirement has the following properties:
 
     \begin{samepage}\begin{requirement}{Bug tracking}
     \label{requirements:maintainability:bugtracking}
-      \desc{Besides the unit tests (\ref{requirements:maintainability:unittests}) and manual tests by the project members, the project will allow any user to report bugs at github\footnote{\url{http://github.com/rggjan/Tomboy-Todo-List/issues}}. (\ref{requirements:maintainability:github}).}
+      \desc{Besides the unit tests (R.33) and manual tests by the project members, the project will allow any user to report bugs at github\footnote{\url{http://github.com/rggjan/Tomboy-Todo-List/issues}}.}
       \priority{1}
       \riskref{L}
     \end{requirement}\end{samepage}
@@ -302,7 +302,7 @@ A requirement has the following properties:
 
     \begin{samepage}\begin{requirement}{Unit testing}
     \label{requirements:maintainability:unittests}
-      \desc{The source code will contain dedicated NUnit testing files that will cover all basic functionalities (\ref{requirements:functional}) of the project with a risk reference at least M, that are testable via NUnit tests and are not part of the GUI (these are out of scope).}
+      \desc{The source code will contain dedicated NUnit testing files that will cover all basic functionalities (see section \ref{requirements:functional}) of the project with a risk reference at least M, that are testable via NUnit tests and are not part of the GUI (these are out of scope).}
       \priority{1}
       \riskref{L}
     \end{requirement}\end{samepage}
@@ -311,14 +311,14 @@ A requirement has the following properties:
     \label{requirements:deployment}
     \begin{samepage}\begin{requirement}{Installation from library}
       \label{requirements:deployment:installation}
-      \desc{The addin can be installed by compiling and addint the resulting library into the addin directory of Tomboy (See \ref{requirements:interfaces:system}).}
+      \desc{The addin can be installed by compiling and addint the resulting library into the addin directory of Tomboy (see also R.18).}
       \priority{1}
       \riskref{C}
     \end{requirement}\end{samepage}
 
     \begin{samepage}\begin{requirement}{Activation of the addin}
       \label{requirements:deployment:activation}
-      \desc{Once a working copy of the library from \ref{requirements:deployment} is in the corresponding directory or included into the source of the project, Tomboy will automatically detect the addin and supply the addin register of the preferences menu with the possibility to enable it.}
+      \desc{Once a working copy of the library from R.35 is in the corresponding directory or included into the source of the project, Tomboy will automatically detect the addin and supply the addin register of the preferences menu with the possibility to enable it.}
       \priority{1}
       \riskref{C}
     \end{requirement}\end{samepage}
@@ -338,7 +338,7 @@ A requirement has the following properties:
     \label{requirements:constraints}
     \begin{samepage}\begin{requirement}{Standard compliance}
       \label{requirements:constraints:standards}
-      \desc{The project will be seen as part of Tomboy and will therefore comply to any existing standards and regulations imposed by Tomboy itself or the GNOME project. This will most notably include language support (\ref{requirements:usability}) and licensing (\ref{requirements:license}), but also requirements like style guidelines and design philosophy as described in section \ref{description:constraints}. }
+      \desc{The project will be seen as part of Tomboy and will therefore comply to any existing standards and regulations imposed by Tomboy itself or the GNOME project. This will most notably include language support (R.22) and licensing (R.26), but also requirements like style guidelines and design philosophy as described in section \ref{description:constraints}. }
       \priority{2}
       \riskref{M}
     \end{requirement}\end{samepage}
