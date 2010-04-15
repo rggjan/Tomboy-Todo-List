@@ -56,13 +56,13 @@
 
 \newenvironment{requirement}[1]{
 	\addtocounter{req}{1}
-	\begin{samepage}
+	%\begin{samepage} not working..
 	\noindent \hrulefill\\\\
 	{\noindent \bf Requirement ID:} R.\thereq \\
 	{\noindent \bf Requirement Title:} #1\\
 }
 {
-	\end{samepage}
+	%\end{samepage} does not work :(
 }
 
 
