@@ -272,7 +272,7 @@ A requirement has the following properties:
 
     \begin{samepage}\begin{requirement}{Initialising Tomboy}
       \label{requirements:performance:initialization}
-      \desc{Initialising Tomboy (start-up) may not take longer than 10 seconds on a platform described in \ref{requirements:performance:optimisation}.}
+      \desc{Initialising Tomboy (start-up) may not take longer than 10 seconds on a platform described in R.27.}
       \priority{3}
       \riskref{M}
     \end{requirement}\end{samepage}
@@ -288,14 +288,14 @@ A requirement has the following properties:
 
     \begin{samepage}\begin{requirement}{Bug tracking}
     \label{requirements:maintainability:bugtracking}
-      \desc{Besides the unit tests (\ref{requirements:maintainability:unittests}) and manual tests by the project members, the project will allow any user to report bugs to the git (\ref{requirements:maintainability:github}).}
+      \desc{Besides the unit tests (\ref{requirements:maintainability:unittests}) and manual tests by the project members, the project will allow any user to report bugs at github\footnote{\url{http://github.com/rggjan/Tomboy-Todo-List/issues}}. (\ref{requirements:maintainability:github}).}
       \priority{1}
       \riskref{L}
     \end{requirement}\end{samepage}
 
     \begin{samepage}\begin{requirement}{Source documentation} \index{Documentation}
     \label{requirements:maintainability:codedoc}
-    \desc{All source code will be available in a documented version introducing XML comments as defined by the ECMA C\# standard \footnote{\url{http://msdn.microsoft.com/en-us/library/b2s063f7(v=VS.100).aspx}}.}
+    \desc{All source code will be available in a documented version through XML comments as defined by the ECMA C\# standard \footnote{\url{http://msdn.microsoft.com/en-us/library/b2s063f7(v=VS.100).aspx}}.}
       \priority{1}
       \riskref{L}
     \end{requirement}\end{samepage}
@@ -311,14 +311,14 @@ A requirement has the following properties:
     \label{requirements:deployment}
     \begin{samepage}\begin{requirement}{Installation from library}
       \label{requirements:deployment:installation}
-      \desc{The addin can be installed by compiling the corresponding library into the addin directory of Tomboy (See \ref{requirements:interfaces:system}).}
+      \desc{The addin can be installed by compiling and addint the resulting library into the addin directory of Tomboy (See \ref{requirements:interfaces:system}).}
       \priority{1}
       \riskref{C}
     \end{requirement}\end{samepage}
 
     \begin{samepage}\begin{requirement}{Activation of the addin}
       \label{requirements:deployment:activation}
-      \desc{Once a working copy of the .dll from \ref{requirements:deployment} is in the corresponding directory or included into the source of the project, Tomboy will automatically detect the addin and supply the addin register of the preferences menu with the possibility to enable it.}
+      \desc{Once a working copy of the library from \ref{requirements:deployment} is in the corresponding directory or included into the source of the project, Tomboy will automatically detect the addin and supply the addin register of the preferences menu with the possibility to enable it.}
       \priority{1}
       \riskref{C}
     \end{requirement}\end{samepage}
