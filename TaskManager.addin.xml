@@ -1,0 +1,25 @@
+<Addin id="TaskManager"
+    namespace="Tomboy"
+    name="TaskManager"
+    author="Jan Rüegg, Gabriel Walch, Gerd Zellweger"
+    description="Different utilities for task management"
+    category="Tools"
+    defaultEnabled="false"
+    version="0.1">
+
+    <Runtime>
+        <Import assembly="TaskManager.dll" />
+    </Runtime>
+
+    <Dependencies>
+        <Addin id="Tomboy" version="0.10" />
+    </Dependencies>
+
+    <Extension path="/Tomboy/NoteAddins">
+        <NoteAddin type="Tomboy.TaskManager.TaskManagerNoteAddin" />
+    </Extension>
+    
+    <Extension path="/Tomboy/ApplicationAddins">
+    	<ApplicationAddin type="Tomboy.TaskManager.TaskManagerApplicationAddin" />
+    </Extension>
+</Addin>

@@ -1,0 +1,58 @@
+<ui>
+  <menubar name="MainWindowMenubar">
+    <menu name="FileMenu" action="FileMenuAction">
+      <placeholder name="FileMenuNewNotePlaceholder">
+        <menuitem name="NewNote" action="NewNoteAction"/>
+        <menuitem name="NewNotebookMenu" action="NewNotebookMenuAction"/>
+      </placeholder>
+      <menuitem name="OpenNote" action="OpenNoteAction"/>
+      <separator/>
+      <menuitem name="CloseWindow" action="CloseWindowAction"/>
+      <menuitem name="QuitTomboy" action="QuitTomboyAction"/>
+    </menu>
+    <menu name="EditMenu" action="EditMenuAction">
+      <placeholder name="EditMenuDeletePlaceholder">
+        <menuitem name="DeleteNote" action="DeleteNoteAction"/>
+        <menuitem name="DeleteNotebook" action="DeleteNotebookAction"/>
+      </placeholder>
+      <separator/>
+      <menuitem name="ShowPreferences" action="ShowPreferencesAction"/>
+    </menu>
+    <placeholder name="MainWindowMenuPlaceholder">
+      <menu name="ToolsMenu" action="ToolsMenuAction">
+        <menuitem name="SyncNotes" action="SyncNotesAction"/>
+      </menu>
+    </placeholder>
+    <menu name="HelpMenu" action="HelpMenuAction">
+      <menuitem name="ShowHelp" action="ShowHelpAction"/>
+      <menuitem name="ShowAbout" action="ShowAboutAction"/>
+    </menu>
+  </menubar>
+  <popup name="MainWindowContextMenu" action="MainWindowContextMenuAction">
+    <menuitem name="OpenNote" action="OpenNoteAction"/>
+    <menuitem name="DeleteNote" action="DeleteNoteAction"/>
+    <placeholder name="MainWindowContextMenuPlaceholder">
+    </placeholder>
+  </popup>
+  <popup name="TrayIconMenu" action="TrayIconMenuAction">
+    <placeholder name="TrayIconMenuPlaceholder0">
+    </placeholder>
+    <placeholder name="TrayNewNotePlaceholder">
+      <menuitem name="TrayNewNotebookMenu" action="TrayNewNotebookMenuAction"/>
+      <menuitem name="TrayNewNote" action="TrayNewNoteAction"/>
+    </placeholder>
+    <menuitem name="ShowSearchAllNotes" action="ShowSearchAllNotesAction"/>
+    <placeholder name="TrayIconMenuPlaceholder1">
+    </placeholder>
+  </popup>
+  <popup name="NotebooksTreeContextMenu" action="NotebooksTreeContextMenuAction">
+    <menuitem name="NewNotebookNote" action="NewNotebookNoteAction"/>
+    <separator/>
+    <menuitem name="OpenNotebookTemplateNote" action="OpenNotebookTemplateNoteAction"/>
+    <menuitem name="DeleteNotebook" action="DeleteNotebookAction"/>
+    <separator/>
+  </popup>
+  <popup name="NotebooksTreeNoRowContextMenu" action="NotebooksTreeNoRowContextMenuAction">
+    <menuitem name="NewNotebook" action="NewNotebookAction"/>
+  </popup>
+</ui> 
