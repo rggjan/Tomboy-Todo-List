@@ -8,12 +8,13 @@
     <ProjectGuid>{089F9CE8-A988-43FC-8191-6DE2801F84B0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AssemblyName>TaskManager</AssemblyName>
+    <RootNamespace>TomboyTodoList</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\.config\tomboy\addins</OutputPath>
+    <OutputPath>build</OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -22,17 +23,15 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\.config\tomboy\addins</OutputPath>
+    <OutputPath>build</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="gtk-sharp, Version=2.10.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
-    <Reference Include="Tomboy, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="gtk-sharp, Version=2.10.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\tomboy\Tomboy\Tomboy.exe</HintPath>
     </Reference>
     <Reference Include="Mono.Posix" />
   </ItemGroup>
@@ -45,6 +44,14 @@
     <EmbeddedResource Include="TaskManager.addin.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="TaskManagerApplicationUI.xml" />
+    <ProjectReference Include="..\tomboy\Tomboy.csproj">
+      <Project>{315DBB30-1461-4A41-A23F-A888D84E1EA0}</Project>
+      <Name>Tomboy</Name>
+    </ProjectReference>
   </ItemGroup>
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties InternalTargetFrameworkVersion="3.5" />
+    </MonoDevelop>
+  </ProjectExtensions>
 </Project>
