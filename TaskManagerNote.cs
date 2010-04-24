@@ -29,7 +29,8 @@ namespace Tomboy.TaskManager
 		void OnMenuItemActivated (object sender, EventArgs args)
 		{	
 			NoteBuffer buffer = Note.Buffer;
-			buffer.InsertAtCursor (Tomboy.ActionManager.UI.Ui);
+//	buffer.InsertAtCursor (Tomboy.ActionManager.UI.Ui);
+			buffer.InsertAtCursor ("This is a test...");
 			
 		}
 	}
