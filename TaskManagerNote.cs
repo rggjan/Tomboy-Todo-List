@@ -30,8 +30,11 @@ namespace Tomboy.TaskManager
 		{	
 			NoteBuffer buffer = Note.Buffer;
 //	buffer.InsertAtCursor (Tomboy.ActionManager.UI.Ui);
-			buffer.InsertAtCursor ("This is a test...");
+			buffer.InsertAtCursor ("This is a test[1]\n");
 			
+			
+			buffer.InsertAtCursor ("This is a test[2]");
+
 		}
 	}
 }
