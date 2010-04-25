@@ -1,0 +1,9 @@
+*.toc
+*.idx
+*.aux
+*.ilg
+*.ind
+*.log
+*.out
+build/*
+*~*
