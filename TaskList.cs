@@ -25,6 +25,7 @@
 
 
 using System;
+using Gtk;
 using Tomboy;
 
 namespace Tomboy.TaskManager
@@ -36,13 +37,25 @@ namespace Tomboy.TaskManager
 	/// </summary>
 	public class TaskList
 	{
+		
+		public Gtk.TextMark Start {
+			get; set;
+		}
 
 		private Note containingNote;
 		
+		/// <summary>
+		/// Sets up the TaskList.
+		/// </summary>
+		/// <param name="note">
+		/// <see cref="Note"/> where the TaskLists is located.
+		/// </param>
 		public TaskList (Note note)
 		{
 			Logger.Debug("TaskList created");
 			containingNote = note;
+			
+			Start = containingNote.Buffer.InsertMark;
 		}
 		
 		
