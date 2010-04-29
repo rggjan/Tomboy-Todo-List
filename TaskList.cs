@@ -32,8 +32,8 @@ namespace Tomboy.TaskManager
 {
 
 	/// <summary>
-	/// This class represents the TaskLists in Notes. It handles all the communication with the
-	/// NoteBuffer.
+	/// A task list is a collection of tasks grouped together.
+	/// It may have a title, a priority and a due date.
 	/// </summary>
 	public class TaskList
 	{
@@ -48,16 +48,11 @@ namespace Tomboy.TaskManager
 		/// <summary>
 		/// Note containing the TaskList.
 		/// </summary>
-		private Note ContainingNote {
+		internal Note Note {
 			get; set;
 		}
 		
-		private NoteBuffer Buffer {
-			get {
-				return ContainingNote.Buffer;
-			}
-		}
-		
+	
 		/// <summary>
 		/// Sets up the TaskList.
 		/// </summary>
@@ -67,54 +62,17 @@ namespace Tomboy.TaskManager
 		public TaskList (Note note)
 		{
 			Logger.Debug("TaskList created");
-			ContainingNote = note;
+			Note = note;
 			
-			Start = Buffer.InsertMark;
+			Start = Note.Buffer.InsertMark;
 			
 			// TODO set and EndIter correctly
 			/*Buffer.ApplyTag (TaskListTag.NAME, 
 			                 Buffer.GetIterAtMark(Start), 
 							 Buffer.EndIter);*/
 			
-			string styleMod =
-				@"style ""mystyle"" {
-				#GtkCheckButton::indicator-spacing = 0
-				#GtkCheckButton::focus-padding = 0
-				#GtkCheckButton::focus-line-width = 2
-				#GtkCheckButton::indicator-size = 100
-				}
-				widget ""*.tomboy-inline-checkbox"" style ""mystyle""";
-			Gtk.Rc.ParseString (styleMod);
-			// First we need a checkbox
-			InsertCheckButton(Start);
-		}
-		
-		/// <summary>
-		/// Inserts a CheckButton in the TextBuffer.
-		/// </summary>
-		/// <param name="at">
-		/// <see cref="Gtk.TextMark"/> Where to insert.
-		/// </param>
-		void InsertCheckButton (Gtk.TextMark at)
-		{
-			TextIter insertIter = Buffer.GetIterAtMark(at);
-			insertIter.BackwardChars (insertIter.LineOffset); // go to beginning of the line
-			
-			var checkbox = new Gtk.CheckButton ();
-			checkbox.Name = "tomboy-inline-checkbox";
-			checkbox.Toggled += ToggleCheckBox;
-			
-			Gtk.TextChildAnchor anchor = Buffer.CreateChildAnchor (ref insertIter);
-			ContainingNote.Window.Editor.AddChildAtAnchor (checkbox, anchor);
-			checkbox.Show();
-			
-			Logger.Debug("Checkbox inserted.");
-		}
-
-		void ToggleCheckBox (object sender, EventArgs e)
-		{
-			Logger.Debug("Toggled");
-			Buffer.ApplyTag ("strikethrough", Buffer.StartIter, Buffer.EndIter);
+			// First we need a new Task
+			new Task(this, Start);
 		}
 		
 	}
