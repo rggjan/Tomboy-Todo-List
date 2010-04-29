@@ -11,6 +11,7 @@ namespace Tomboy.TaskManager
 
 		public override void Initialize ()
 		{
+			Logger.Debug("Initializing TaskManager");
 			item = new Gtk.MenuItem (Catalog.GetString ("Add TaskList"));
 			item.Activated += OnMenuItemActivated;
 			item.Show ();
@@ -28,7 +29,6 @@ namespace Tomboy.TaskManager
 
 		void OnMenuItemActivated (object sender, EventArgs args)
 		{
-
 			InsertTaskList ();
 		}
 		
