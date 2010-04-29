@@ -32,8 +32,8 @@ namespace Tomboy.TaskManager
 {
 
 	/// <summary>
-	/// This class represents the TaskLists in Notes. It handles all the communication with the
-	/// NoteBuffer.
+	/// A task list is a collection of tasks grouped together.
+	/// It may have a title, a priority and a due date.
 	/// </summary>
 	public class TaskList
 	{
@@ -76,15 +76,6 @@ namespace Tomboy.TaskManager
 			                 Buffer.GetIterAtMark(Start), 
 							 Buffer.EndIter);*/
 			
-			string styleMod =
-				@"style ""mystyle"" {
-				#GtkCheckButton::indicator-spacing = 0
-				#GtkCheckButton::focus-padding = 0
-				#GtkCheckButton::focus-line-width = 2
-				#GtkCheckButton::indicator-size = 100
-				}
-				widget ""*.tomboy-inline-checkbox"" style ""mystyle""";
-			Gtk.Rc.ParseString (styleMod);
 			// First we need a checkbox
 			InsertCheckButton(Start);
 		}

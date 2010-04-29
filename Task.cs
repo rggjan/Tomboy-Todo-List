@@ -28,7 +28,12 @@ using System;
 namespace Tomboy.TaskManager
 {
 
-
+	/// <summary>
+	/// A Task is a piece of text representing a “todo” item,
+	/// accompanied with a checkbox.
+	/// It may have a due date and a priority and can be
+	/// marked as done by crossing out the checkbox.
+	/// </summary>
 	public class Task
 	{
 		/// <summary>
@@ -36,13 +41,6 @@ namespace Tomboy.TaskManager
 		/// </summary>
 		public string Description
 		{ get; set; }
-		
-		/// <summary>
-		/// Priority for this Task
-		/// </summary>
-		public int Priority
-		{ get; set; }
-		// TODO find corresponding widget here
 		
 		/// <summary>
 		/// Is this task completed?
@@ -55,6 +53,7 @@ namespace Tomboy.TaskManager
 				CheckBox.Active = value;
 			}
 		}
+		
 		/// <summary>
 		/// Corresponding Widget for Completed Tasks.
 		/// </summary>
@@ -62,6 +61,7 @@ namespace Tomboy.TaskManager
 			get; set;
 		}
 		
+		/* TODO the getter / setter here have to be hardwired to the corresponding widgets */
 		/// <summary>
 		/// Date until the task should be completed.
 		/// </summary>
@@ -69,10 +69,25 @@ namespace Tomboy.TaskManager
 		{ get; set; }
 		private Gtk.Calendar DueDateWidget
 		{ get; set; }
+				
+		/// <summary>
+		/// Priority for this Task
+		/// </summary>
+		public int Priority
+		{ get; set; }
+		// TODO find corresponding widget here
 		
-
-		public Task ()
+		
+		/// <summary>
+		/// TaskList containing this task.
+		/// </summary>
+		private TaskList TaskList 
+		{ get; set; }
+		
+		public Task (TaskList containingList)
 		{
+			TaskList = containingList;
 		}
+		
 	}
 }
