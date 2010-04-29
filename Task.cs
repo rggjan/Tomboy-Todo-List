@@ -24,6 +24,9 @@
 // 
 
 using System;
+using System.Diagnostics;
+using Gtk;
+using Tomboy;
 
 namespace Tomboy.TaskManager
 {
@@ -40,6 +43,12 @@ namespace Tomboy.TaskManager
 		/// Description of the Task the user wrote in the Buffer
 		/// </summary>
 		public string Description
+		{ get; set; }
+		
+		/// <summary>
+		/// Tells us where in the NoteBuffer this Task is located.
+		/// </summary>
+		private Gtk.TextMark Position 
 		{ get; set; }
 		
 		/// <summary>
@@ -84,9 +93,74 @@ namespace Tomboy.TaskManager
 		private TaskList TaskList 
 		{ get; set; }
 		
-		public Task (TaskList containingList)
+		/// <summary>
+		/// Just a shortcut for accessing the Notes Buffer
+		/// </summary>
+		private NoteBuffer Buffer {
+			get {
+				return TaskList.Note.Buffer;
+			}
+		}
+		
+		public Task (TaskList containingList, Gtk.TextMark location)
 		{
 			TaskList = containingList;
+			Position = location;
+			InsertCheckButton (Position);
+		}
+
+		
+		/// <summary>
+		/// Inserts a CheckButton in the TextBuffer.
+		/// </summary>
+		/// <param name="at">
+		/// <see cref="Gtk.TextMark"/> Where to insert.
+		/// </param>
+		void InsertCheckButton (Gtk.TextMark at)
+		{
+			TextIter insertIter = Buffer.GetIterAtMark(at);
+			insertIter.BackwardChars (insertIter.LineOffset); // go to beginning of the line
+			
+			CheckBox = new Gtk.CheckButton();
+			CheckBox.Name = "tomboy-inline-checkbox";
+			CheckBox.Toggled += ToggleCheckBox;
+			
+			Gtk.TextChildAnchor anchor = Buffer.CreateChildAnchor (ref insertIter);
+			TaskList.Note.Window.Editor.AddChildAtAnchor (CheckBox, anchor);
+			CheckBox.Show ();
+			
+			Logger.Debug ("Checkbox inserted.");
+		}
+		
+
+		void ToggleCheckBox (object sender, EventArgs e)
+		{
+			Debug.Assert(CheckBox == sender); // no other checkbox should be registred here
+			
+			Logger.Debug ("Toggled");
+			
+			var start = Buffer.GetIterAtMark (Position);
+			int line = start.Line;
+			// TODO: What about non-word characters?
+			while (start.Line == line && !start.InsideWord ())
+				start.ForwardChar ();
+			if (start.Line != line)
+				return; // TODO: What to really do here?
+			var end = Buffer.GetIterAtLineIndex (start.Line, start.BytesInLine - 1);
+			while (!end.EndsWord ())
+				end.BackwardChar ();
+
+			if (CheckBox.Active) {
+				Logger.Debug ("applying strikethrough tag");
+				Buffer.ApplyTag ("strikethrough", start, end);
+			} else
+				Buffer.RemoveTag ("strikethrough", start, end);
+			
+			Logger.Debug ("end of Toggled handler, line was: " + start.Line);
+			
+			// TODO some signal here?
+			
+			Buffer.ApplyTag ("strikethrough", Buffer.StartIter, Buffer.EndIter);
 		}
 		
 	}
