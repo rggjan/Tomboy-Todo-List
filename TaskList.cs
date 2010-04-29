@@ -113,6 +113,8 @@ namespace Tomboy.TaskManager
 
 		void ToggleCheckBox (object sender, EventArgs e)
 		{
+			var checkbox = (Gtk.CheckButton) sender;
+			
 			Logger.Debug("Toggled");
 			Buffer.ApplyTag ("strikethrough", Buffer.StartIter, Buffer.EndIter);
 		}
