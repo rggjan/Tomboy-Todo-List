@@ -25,6 +25,7 @@
 
 
 using System;
+using System.Collections.Generic;
 using Gtk;
 using Tomboy;
 
@@ -39,19 +40,15 @@ namespace Tomboy.TaskManager
 	{
 		
 		/// <summary>
-		/// Marks the Start of the TaskList in containingNote Buffer.
-		/// </summary>	
-		public Gtk.TextMark Start {
-			get; set;
-		}
-		
-		/// <summary>
 		/// Note containing the TaskList.
 		/// </summary>
 		internal Note Note {
 			get; set;
 		}
 		
+		internal List<Task> Tasks {
+			get; set;
+		}
 	
 		/// <summary>
 		/// Sets up the TaskList.
@@ -64,16 +61,23 @@ namespace Tomboy.TaskManager
 			Logger.Debug("TaskList created");
 			Note = note;
 			
-			Start = Note.Buffer.InsertMark;
-			
-			// TODO set and EndIter correctly
-			/*Buffer.ApplyTag (TaskListTag.NAME, 
-			                 Buffer.GetIterAtMark(Start), 
-							 Buffer.EndIter);*/
-			
-			// First we need a new Task
-			new Task(this, Start);
+			Tasks = new List<Task>();
+			addTask(Note.Buffer.InsertMark);
 		}
+		
+		/// <summary>
+		/// Creates a new Task and add it to the `Tasks` list.
+		/// </summary>
+		/// <param name="at">
+		/// <see cref="Gtk.TextMark"/> Where to add the task in the Buffer.
+		/// </param>
+		public void addTask(Gtk.TextMark at) {
+			var insertIter = Note.Buffer.GetIterAtMark(at);
+			insertIter.BackwardChars (insertIter.LineOffset); // go to beginning of the line
+
+			Tasks.Add(new Task(this, Note.Buffer.CreateMark (null, insertIter, true)));
+		}
+
 		
 	}
 

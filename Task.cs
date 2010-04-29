@@ -132,6 +132,31 @@ namespace Tomboy.TaskManager
 			Logger.Debug ("Checkbox inserted.");
 		}
 		
+		Gtk.TextIter GetDescriptionStart()
+		{
+			var start = Buffer.GetIterAtMark (Position);
+			int line = start.Line;
+			while (start.Line == line && !start.InsideWord ())
+				start.ForwardChar ();
+			if (start.Line != line)
+				Debug.Assert(false); // TODO: What to really do here?
+			
+			return start;
+		}
+		
+		Gtk.TextIter GetDescriptionEnd () {
+			var start = GetDescriptionStart ();
+			
+			var endIter = Buffer.GetIterAtLineIndex (start.Line, start.BytesInLine-1);
+			if(endIter.Char != System.Environment.NewLine) {
+				// we do this because if we we construct a TextIter at a newline
+				// it will fail because GetIterAtLineIndex is not recognizing this
+				// as the same line
+				endIter.ForwardChar ();
+			}
+			
+			return endIter;
+		}
 
 		void ToggleCheckBox (object sender, EventArgs e)
 		{
@@ -139,9 +164,11 @@ namespace Tomboy.TaskManager
 			
 			Logger.Debug ("Toggled CheckBox");
 			
-			var start = Buffer.GetIterAtMark (Position);
-			var end = Buffer.GetIterAtLineIndex (start.Line, start.BytesInLine - 1);
-
+			var start = GetDescriptionStart();
+			var end = GetDescriptionEnd();
+			
+			//Logger.Debug ("line " + start.Line + " start index: " + start.LineIndex + " end index: " + end.LineIndex);
+			
 			if (CheckBox.Active) {
 				Buffer.ApplyTag ("strikethrough", start, end);
 			} 
@@ -149,9 +176,7 @@ namespace Tomboy.TaskManager
 				Buffer.RemoveTag ("strikethrough", start, end);
 			}
 			
-			Logger.Debug ("end of Toggled handler, line was: " + start.Line);
-			
-			// TODO some signal here?
+			// TODO some signalling here?
 		}
 		
 	}
