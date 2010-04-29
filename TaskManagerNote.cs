@@ -11,11 +11,16 @@ namespace Tomboy.TaskManager
 
 		public override void Initialize ()
 		{
-			Logger.Debug("Initializing TaskManager");
+			Logger.Debug ("Initializing TaskManager");
 			item = new Gtk.MenuItem (Catalog.GetString ("Add TaskList"));
 			item.Activated += OnMenuItemActivated;
 			item.Show ();
 			AddPluginMenuItem (item);
+
+			// Register additional Tags
+			TaskListTag tlt = new TaskListTag ();
+			Note.TagTable.Add (tlt);
+			
 		}
 
 		public override void Shutdown ()
@@ -34,7 +39,7 @@ namespace Tomboy.TaskManager
 		
 		void InsertTaskList ()
 		{
-			TaskList taskList = new TaskList(Note);
+			new TaskList(Note);
 		}
 	}
 }
