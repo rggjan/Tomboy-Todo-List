@@ -38,6 +38,7 @@
   <ItemGroup>
     <Compile Include="TaskManagerNote.cs" />
     <Compile Include="TaskManagerApplication.cs" />
+    <Compile Include="TaskList.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
