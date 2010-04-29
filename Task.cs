@@ -137,30 +137,21 @@ namespace Tomboy.TaskManager
 		{
 			Debug.Assert(CheckBox == sender); // no other checkbox should be registred here
 			
-			Logger.Debug ("Toggled");
+			Logger.Debug ("Toggled CheckBox");
 			
 			var start = Buffer.GetIterAtMark (Position);
-			int line = start.Line;
-			// TODO: What about non-word characters?
-			while (start.Line == line && !start.InsideWord ())
-				start.ForwardChar ();
-			if (start.Line != line)
-				return; // TODO: What to really do here?
 			var end = Buffer.GetIterAtLineIndex (start.Line, start.BytesInLine - 1);
-			while (!end.EndsWord ())
-				end.BackwardChar ();
 
 			if (CheckBox.Active) {
-				Logger.Debug ("applying strikethrough tag");
 				Buffer.ApplyTag ("strikethrough", start, end);
-			} else
+			} 
+			else {
 				Buffer.RemoveTag ("strikethrough", start, end);
+			}
 			
 			Logger.Debug ("end of Toggled handler, line was: " + start.Line);
 			
 			// TODO some signal here?
-			
-			Buffer.ApplyTag ("strikethrough", Buffer.StartIter, Buffer.EndIter);
 		}
 		
 	}
