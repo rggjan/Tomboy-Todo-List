@@ -34,12 +34,8 @@ namespace Tomboy.TaskManager
 
 		void OnMenuItemActivated (object sender, EventArgs args)
 		{
-			InsertTaskList ();
-		}
-		
-		void InsertTaskList ()
-		{
 			new TaskList(Note);
 		}
+
 	}
 }

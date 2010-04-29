@@ -44,11 +44,19 @@ namespace Tomboy.TaskManager
 		public Gtk.TextMark Start {
 			get; set;
 		}
-
+		
 		/// <summary>
 		/// Note containing the TaskList.
 		/// </summary>
-		private Note containingNote;
+		private Note ContainingNote {
+			get; set;
+		}
+		
+		private NoteBuffer Buffer {
+			get {
+				return ContainingNote.Buffer;
+			}
+		}
 		
 		/// <summary>
 		/// Sets up the TaskList.
@@ -59,17 +67,17 @@ namespace Tomboy.TaskManager
 		public TaskList (Note note)
 		{
 			Logger.Debug("TaskList created");
-			containingNote = note;
+			ContainingNote = note;
 			
-			Start = containingNote.Buffer.InsertMark;
+			Start = Buffer.InsertMark;
 			
 			// TODO set and EndIter correctly
-			containingNote.Buffer.ApplyTag (TaskListTag.NAME, 
-			                                containingNote.Buffer.GetIterAtMark(Start), 
-											containingNote.Buffer.EndIter);
+			Buffer.ApplyTag (TaskListTag.NAME, 
+			                 Buffer.GetIterAtMark(Start), 
+							 Buffer.EndIter);
 			
-			
-			checkbox.Toggled += ToggleCheckBox;
+			// First we need a checkbox
+			InsertCheckButton(Start);
 		}
 		
 		/// <summary>
@@ -81,6 +89,16 @@ namespace Tomboy.TaskManager
 		void InsertCheckButton (Gtk.TextMark at)
 		{
 			var checkbox = new Gtk.CheckButton ("tomboy-inline-checkbox");
+			checkbox.Toggled += ToggleCheckBox;
+			
+			TextIter insertIter = Buffer.GetIterAtMark(at);
+			Gtk.TextChildAnchor anchor = Buffer.CreateChildAnchor (ref insertIter);
+			ContainingNote.Window.Editor.AddChildAtAnchor (checkbox, anchor);
+		}
+
+		void ToggleCheckBox (object sender, EventArgs e)
+		{
+			Buffer.ApplyTag ("strikethrough", Buffer.StartIter, Buffer.EndIter);
 		}
 		
 	}
@@ -96,7 +114,7 @@ namespace Tomboy.TaskManager
 		public TaskListTag () : base(TaskListTag.NAME)
 		{
 			Background = "green";
-			LeftMargin = 10;
+			LeftMargin = 3;
 			LeftMarginSet = true;
 			CanSerialize = false;
 			CanSpellCheck = true;
