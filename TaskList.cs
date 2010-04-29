@@ -72,10 +72,19 @@ namespace Tomboy.TaskManager
 			Start = Buffer.InsertMark;
 			
 			// TODO set and EndIter correctly
-			Buffer.ApplyTag (TaskListTag.NAME, 
+			/*Buffer.ApplyTag (TaskListTag.NAME, 
 			                 Buffer.GetIterAtMark(Start), 
-							 Buffer.EndIter);
+							 Buffer.EndIter);*/
 			
+			string styleMod =
+				@"style ""mystyle"" {
+				#GtkCheckButton::indicator-spacing = 0
+				#GtkCheckButton::focus-padding = 0
+				#GtkCheckButton::focus-line-width = 2
+				#GtkCheckButton::indicator-size = 100
+				}
+				widget ""*.tomboy-inline-checkbox"" style ""mystyle""";
+			Gtk.Rc.ParseString (styleMod);
 			// First we need a checkbox
 			InsertCheckButton(Start);
 		}
@@ -88,16 +97,19 @@ namespace Tomboy.TaskManager
 		/// </param>
 		void InsertCheckButton (Gtk.TextMark at)
 		{
+			Logger.Debug("Checkbox inserted");
 			var checkbox = new Gtk.CheckButton ("tomboy-inline-checkbox");
 			checkbox.Toggled += ToggleCheckBox;
 			
 			TextIter insertIter = Buffer.GetIterAtMark(at);
 			Gtk.TextChildAnchor anchor = Buffer.CreateChildAnchor (ref insertIter);
 			ContainingNote.Window.Editor.AddChildAtAnchor (checkbox, anchor);
+			Logger.Debug("Checkbox inserted.");
 		}
 
 		void ToggleCheckBox (object sender, EventArgs e)
 		{
+			Logger.Debug("Toggled");
 			Buffer.ApplyTag ("strikethrough", Buffer.StartIter, Buffer.EndIter);
 		}
 		
