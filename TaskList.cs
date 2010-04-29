@@ -38,10 +38,16 @@ namespace Tomboy.TaskManager
 	public class TaskList
 	{
 		
+		/// <summary>
+		/// Marks the Start of the TaskList in containingNote Buffer.
+		/// </summary>	
 		public Gtk.TextMark Start {
 			get; set;
 		}
 
+		/// <summary>
+		/// Note containing the TaskList.
+		/// </summary>
 		private Note containingNote;
 		
 		/// <summary>
@@ -56,8 +62,46 @@ namespace Tomboy.TaskManager
 			containingNote = note;
 			
 			Start = containingNote.Buffer.InsertMark;
+			
+			// TODO set and EndIter correctly
+			containingNote.Buffer.ApplyTag (TaskListTag.NAME, 
+			                                containingNote.Buffer.GetIterAtMark(Start), 
+											containingNote.Buffer.EndIter);
+			
+			
+			checkbox.Toggled += ToggleCheckBox;
 		}
 		
+		/// <summary>
+		/// Inserts a CheckButton in the TextBuffer.
+		/// </summary>
+		/// <param name="at">
+		/// <see cref="Gtk.TextMark"/> Where to insert.
+		/// </param>
+		void InsertCheckButton (Gtk.TextMark at)
+		{
+			var checkbox = new Gtk.CheckButton ("tomboy-inline-checkbox");
+		}
 		
 	}
+
+	/// <summary>
+	/// Marks a TaskList in a NoteBuffer. Currently this only sets the background to green for
+	/// better debugging.
+	/// </summary>
+	public class TaskListTag : NoteTag
+	{
+		public static String NAME = "tasklist";
+		
+		public TaskListTag () : base(TaskListTag.NAME)
+		{
+			Background = "green";
+			LeftMargin = 10;
+			LeftMarginSet = true;
+			CanSerialize = false;
+			CanSpellCheck = true;
+		}
+	}
+
+
 }
