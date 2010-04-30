@@ -36,7 +36,7 @@ namespace Tomboy.TaskManager
 	/// A task list is a collection of tasks grouped together.
 	/// It may have a title, a priority and a due date.
 	/// </summary>
-	public class TaskList
+	public class TaskList : AttributedTask, ITask
 	{
 		
 		/// <summary>
@@ -46,9 +46,25 @@ namespace Tomboy.TaskManager
 			get; set;
 		}
 		
-		internal List<Task> Tasks {
+		//TODO: Changed Type. Rething this ^^
+		internal List<AttributedTask> Tasks {
 			get; set;
 		}
+		public List<AttributedTask> Children{
+			get{return Tasks;}	
+		}
+		
+		//TODO
+		public List<AttributedTask> Containers{
+			get{return null;}	
+		}
+		
+		//TODO
+		public bool Done{
+			get;
+			set;
+		}
+		
 	
 		/// <summary>
 		/// Sets up the TaskList.
@@ -61,7 +77,7 @@ namespace Tomboy.TaskManager
 			Logger.Debug("TaskList created");
 			Note = note;
 			
-			Tasks = new List<Task>();
+			Tasks = new List<AttributedTask>();
 			addTask(Note.Buffer.InsertMark);
 		}
 		
