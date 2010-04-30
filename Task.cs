@@ -116,7 +116,7 @@ namespace Tomboy.TaskManager
 		/// <param name="at">
 		/// <see cref="Gtk.TextMark"/> Where to insert.
 		/// </param>
-		void InsertCheckButton (Gtk.TextMark at)
+		private void InsertCheckButton (Gtk.TextMark at)
 		{
 			TextIter insertIter = Buffer.GetIterAtMark(at);
 			insertIter.BackwardChars (insertIter.LineOffset); // go to beginning of the line
@@ -136,7 +136,7 @@ namespace Tomboy.TaskManager
 		/// A <see cref="Gtk.TextIter"/> marking the beginning of the textual description
 		/// of this task in the NoteBuffer.
 		/// </returns>
-		Gtk.TextIter GetDescriptionStart()
+		public Gtk.TextIter GetDescriptionStart ()
 		{
 			var start = Buffer.GetIterAtMark (Position);
 			while ((start.LineIndex < start.BytesInLine) && !start.InsideWord ()) {
@@ -150,7 +150,7 @@ namespace Tomboy.TaskManager
 		/// A <see cref="Gtk.TextIter"/> marking the end of the textual descriptin of this
 		/// task in the NoteBuffer.
 		/// </returns>
-		Gtk.TextIter GetDescriptionEnd () {
+		public Gtk.TextIter GetDescriptionEnd () {
 			var start = GetDescriptionStart ();
 
 			var endIter = Buffer.GetIterAtLine (start.Line);
@@ -163,7 +163,7 @@ namespace Tomboy.TaskManager
 		/// Updates the strikethrough tags of the task description. If the checkbox is
 		/// active or removes it if it's not.
 		/// </summary>
-		void StrikeThroughUpdate ()
+		private void StrikeThroughUpdate ()
 		{
 			var start = GetDescriptionStart ();
 			var end = GetDescriptionEnd ();
@@ -182,12 +182,12 @@ namespace Tomboy.TaskManager
 		/// Called when the buffer is changed. Currently this watches for changes in the Task
 		/// description and updates the strikethrough task.
 		/// </summary>
-		void BufferChanged(object sender, EventArgs e)
+		private void BufferChanged (object sender, EventArgs e)
 		{
 			Debug.Assert(Buffer == sender); // no other buffer should be registred here	
 			int line = Buffer.GetIterAtMark(Buffer.InsertMark).Line;
 			
-			// update strikethrough
+			// update strikethrough when task line was edited
 			if(line == Buffer.GetIterAtMark(Position).Line) {
 				StrikeThroughUpdate ();
 			}
@@ -198,7 +198,7 @@ namespace Tomboy.TaskManager
 		/// Signal when checkbutton for the task was clicked.
 		/// This function is responsible for updating strikethrough functionality.
 		/// </summary>
-		void ToggleCheckBox (object sender, EventArgs e)
+		private void ToggleCheckBox (object sender, EventArgs e)
 		{
 			Debug.Assert (CheckBox == sender); // no other checkbox should be registred here
 			StrikeThroughUpdate ();
