@@ -1,11 +1,12 @@
 using System;
+using System.Collections.Generic;
 using Mono.Unix;
 using Gtk;
 using Tomboy;
 
 namespace Tomboy.TaskManager
 {
-	public class TaskManagerNoteAddin : NoteAddin
+	public class TaskManagerNoteAddin : NoteAddin, ITask
 	{
 		Gtk.MenuItem item;
 
@@ -48,5 +49,20 @@ namespace Tomboy.TaskManager
 			new TaskList(Note);
 		}
 
+		//TODO
+		public List<AttributedTask> Children{
+			get{return null;}	
+		}
+		
+		//TODO
+		public List<AttributedTask> Containers{
+			get{return null;}	
+		}
+		
+		//TODO
+		public bool Done{
+			get{return false;}
+			set{}
+		}
 	}
 }

@@ -25,6 +25,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Collections.Generic;
 using Gtk;
 using Tomboy;
 
@@ -37,7 +38,7 @@ namespace Tomboy.TaskManager
 	/// It may have a due date and a priority and can be
 	/// marked as done by crossing out the checkbox.
 	/// </summary>
-	public class Task
+	public class Task : AttributedTask,ITask
 	{
 		/// <summary>
 		/// Description of the Task the user wrote in the Buffer
@@ -51,10 +52,11 @@ namespace Tomboy.TaskManager
 		private Gtk.TextMark Position 
 		{ get; set; }
 		
+		//EDIT: renaming
 		/// <summary>
 		/// Is this task completed?
 		/// </summary>
-		public bool Completed { 
+		public bool Done { 
 			get {
 				return CheckBox.Active;
 			}
@@ -74,37 +76,41 @@ namespace Tomboy.TaskManager
 		/// <summary>
 		/// Date until the task should be completed.
 		/// </summary>
-		public DateTime DueDate 
-		{ get; set; }
+		// NOTE: deleted DueDate as already defined in AttributedTask
 		private Gtk.Calendar DueDateWidget
 		{ get; set; }
-				
-		/// <summary>
-		/// Priority for this Task
-		/// </summary>
-		public int Priority
-		{ get; set; }
-		// TODO find corresponding widget here
 		
 		
 		/// <summary>
 		/// TaskList containing this task.
 		/// </summary>
-		private TaskList TaskList 
-		{ get; set; }
+		private TaskList ContainingTaskList;
+		
+		public List<AttributedTask> Containers{
+			get{
+				List<AttributedTask> result = new List<AttributedTask>();	
+				result.Add(ContainingTaskList);
+				return result;
+			}
+		}
+		
+		private List<AttributedTask> SubTasks;
+		public List<AttributedTask> Children{
+			get{return (List<AttributedTask>)SubTasks;}
+		}
 		
 		/// <summary>
 		/// Just a shortcut for accessing the Notes Buffer
 		/// </summary>
 		private NoteBuffer Buffer {
 			get {
-				return TaskList.Note.Buffer;
+				return ContainingTaskList.Note.Buffer;
 			}
 		}
 		
 		public Task (TaskList containingList, Gtk.TextMark location)
 		{
-			TaskList = containingList;
+			ContainingTaskList = containingList;
 			Position = location;
 			Buffer.Changed += BufferChanged;
 			InsertCheckButton (Position);
@@ -126,7 +132,7 @@ namespace Tomboy.TaskManager
 			CheckBox.Toggled += ToggleCheckBox;
 			
 			Gtk.TextChildAnchor anchor = Buffer.CreateChildAnchor (ref insertIter);
-			TaskList.Note.Window.Editor.AddChildAtAnchor (CheckBox, anchor);
+			ContainingTaskList.Note.Window.Editor.AddChildAtAnchor (CheckBox, anchor);
 			CheckBox.Show ();
 			
 			Logger.Debug ("Checkbox inserted.");
