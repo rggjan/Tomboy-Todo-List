@@ -106,10 +106,10 @@ namespace Tomboy.TaskManager
 		{
 			TaskList = containingList;
 			Position = location;
+			Buffer.Changed += BufferChanged;
 			InsertCheckButton (Position);
 		}
-
-		
+	
 		/// <summary>
 		/// Inserts a CheckButton in the TextBuffer.
 		/// </summary>
@@ -132,18 +132,28 @@ namespace Tomboy.TaskManager
 			Logger.Debug ("Checkbox inserted.");
 		}
 		
+		/// <returns>
+		/// A <see cref="Gtk.TextIter"/> marking the beginning of the textual description
+		/// of this task in the NoteBuffer.
+		/// </returns>
 		Gtk.TextIter GetDescriptionStart()
 		{
 			var start = Buffer.GetIterAtMark (Position);
 			int line = start.Line;
-			while (start.Line == line && !start.InsideWord ())
+			while (start.Line == line && !start.InsideWord ()) {
+				Logger.Debug("forwardchar: lineindex" + start.LineIndex + " bytes in line:" + start.BytesInLine );
 				start.ForwardChar ();
+			}
 			if (start.Line != line)
 				Debug.Assert(false); // TODO: What to really do here?
 			
 			return start;
 		}
 		
+		/// <returns>
+		/// A <see cref="Gtk.TextIter"/> marking the end of the textual descriptin of this
+		/// task in the NoteBuffer.
+		/// </returns>
 		Gtk.TextIter GetDescriptionEnd () {
 			var start = GetDescriptionStart ();
 			
@@ -157,24 +167,53 @@ namespace Tomboy.TaskManager
 			
 			return endIter;
 		}
-
-		void ToggleCheckBox (object sender, EventArgs e)
+		
+		/// <summary>
+		/// Updates the strikethrough tags of the task description. If the checkbox is
+		/// active or removes it if it's not.
+		/// </summary>
+		void StrikeThroughUpdate ()
 		{
-			Debug.Assert(CheckBox == sender); // no other checkbox should be registred here
-			
-			Logger.Debug ("Toggled CheckBox");
-			
-			var start = GetDescriptionStart();
-			var end = GetDescriptionEnd();
+			Logger.Debug("Strikethrough Update");
+			var start = GetDescriptionStart ();
+			Logger.Debug("start.LineIndex:" + start.LineIndex);
+			var end = GetDescriptionEnd ();
+			Debug.Assert(start.LineIndex < end.LineIndex);
 			
 			//Logger.Debug ("line " + start.Line + " start index: " + start.LineIndex + " end index: " + end.LineIndex);
 			
-			if (CheckBox.Active) {
+			if (CheckBox != null && CheckBox.Active) {
 				Buffer.ApplyTag ("strikethrough", start, end);
 			} 
 			else {
 				Buffer.RemoveTag ("strikethrough", start, end);
 			}
+
+		}
+		
+		/// <summary>
+		/// Called when the buffer is changed. Currently this watches for changes in the Task
+		/// description and updates the strikethrough task.
+		/// </summary>
+		void BufferChanged(object sender, EventArgs e) 
+		{
+			Debug.Assert(Buffer == sender); // no other buffer should be registred here
+			
+			Logger.Debug("buffer has changed");
+			int line = Buffer.GetIterAtMark(Buffer.InsertMark).Line;
+			
+			// update strikethrough
+			if(line == GetDescriptionStart().Line) {
+				StrikeThroughUpdate ();
+			}
+
+		}
+
+		void ToggleCheckBox (object sender, EventArgs e)
+		{
+			Logger.Debug ("Toggled CheckBox");
+			Debug.Assert (CheckBox == sender); // no other checkbox should be registred here
+			StrikeThroughUpdate ();
 			
 			// TODO some signalling here?
 		}
