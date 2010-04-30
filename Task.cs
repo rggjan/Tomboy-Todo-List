@@ -140,12 +140,13 @@ namespace Tomboy.TaskManager
 		{
 			var start = Buffer.GetIterAtMark (Position);
 			int line = start.Line;
-			while (start.Line == line && !start.InsideWord ()) {
-				Logger.Debug("forwardchar: lineindex" + start.LineIndex + " bytes in line:" + start.BytesInLine );
-				start.ForwardChar ();
+			while ((start.LineIndex < start.BytesInLine) && !start.InsideWord ()) {
+				Logger.Debug("forwardchar: lineindex " + start.LineIndex + " bytes in line:" + start.BytesInLine );
+				start.ForwardCursorPosition();
 			}
+			
 			if (start.Line != line)
-				Debug.Assert(false); // TODO: What to really do here?
+				Debug.Assert(false); // TODO: What to really do here? 
 			
 			return start;
 		}
@@ -156,8 +157,10 @@ namespace Tomboy.TaskManager
 		/// </returns>
 		Gtk.TextIter GetDescriptionEnd () {
 			var start = GetDescriptionStart ();
+			var endIter = Buffer.GetIterAtLine (start.Line);
 			
-			var endIter = Buffer.GetIterAtLineIndex (start.Line, start.BytesInLine-1);
+			endIter.ForwardToLineEnd();
+			endIter.ForwardChar();
 			if(endIter.Char != System.Environment.NewLine) {
 				// we do this because if we we construct a TextIter at a newline
 				// it will fail because GetIterAtLineIndex is not recognizing this
@@ -174,14 +177,10 @@ namespace Tomboy.TaskManager
 		/// </summary>
 		void StrikeThroughUpdate ()
 		{
-			Logger.Debug("Strikethrough Update");
 			var start = GetDescriptionStart ();
-			Logger.Debug("start.LineIndex:" + start.LineIndex);
 			var end = GetDescriptionEnd ();
-			Debug.Assert(start.LineIndex < end.LineIndex);
 			
-			//Logger.Debug ("line " + start.Line + " start index: " + start.LineIndex + " end index: " + end.LineIndex);
-			
+			Logger.Debug ("line " + start.Line + " start index: " + start.LineIndex + " end index: " + end.LineIndex);			
 			if (CheckBox != null && CheckBox.Active) {
 				Buffer.ApplyTag ("strikethrough", start, end);
 			} 
@@ -195,15 +194,13 @@ namespace Tomboy.TaskManager
 		/// Called when the buffer is changed. Currently this watches for changes in the Task
 		/// description and updates the strikethrough task.
 		/// </summary>
-		void BufferChanged(object sender, EventArgs e) 
+		void BufferChanged(object sender, EventArgs e)
 		{
-			Debug.Assert(Buffer == sender); // no other buffer should be registred here
-			
-			Logger.Debug("buffer has changed");
+			Debug.Assert(Buffer == sender); // no other buffer should be registred here	
 			int line = Buffer.GetIterAtMark(Buffer.InsertMark).Line;
 			
 			// update strikethrough
-			if(line == GetDescriptionStart().Line) {
+			if(line == Buffer.GetIterAtMark(Position).Line) {
 				StrikeThroughUpdate ();
 			}
 
@@ -211,7 +208,6 @@ namespace Tomboy.TaskManager
 
 		void ToggleCheckBox (object sender, EventArgs e)
 		{
-			Logger.Debug ("Toggled CheckBox");
 			Debug.Assert (CheckBox == sender); // no other checkbox should be registred here
 			StrikeThroughUpdate ();
 			
