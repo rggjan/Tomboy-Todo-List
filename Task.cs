@@ -139,15 +139,10 @@ namespace Tomboy.TaskManager
 		Gtk.TextIter GetDescriptionStart()
 		{
 			var start = Buffer.GetIterAtMark (Position);
-			int line = start.Line;
 			while ((start.LineIndex < start.BytesInLine) && !start.InsideWord ()) {
-				Logger.Debug("forwardchar: lineindex " + start.LineIndex + " bytes in line:" + start.BytesInLine );
 				start.ForwardCursorPosition();
 			}
-			
-			if (start.Line != line)
-				Debug.Assert(false); // TODO: What to really do here? 
-			
+						
 			return start;
 		}
 		
@@ -157,16 +152,9 @@ namespace Tomboy.TaskManager
 		/// </returns>
 		Gtk.TextIter GetDescriptionEnd () {
 			var start = GetDescriptionStart ();
+
 			var endIter = Buffer.GetIterAtLine (start.Line);
-			
 			endIter.ForwardToLineEnd();
-			endIter.ForwardChar();
-			if(endIter.Char != System.Environment.NewLine) {
-				// we do this because if we we construct a TextIter at a newline
-				// it will fail because GetIterAtLineIndex is not recognizing this
-				// as the same line
-				endIter.ForwardChar ();
-			}
 			
 			return endIter;
 		}
@@ -180,7 +168,7 @@ namespace Tomboy.TaskManager
 			var start = GetDescriptionStart ();
 			var end = GetDescriptionEnd ();
 			
-			Logger.Debug ("line " + start.Line + " start index: " + start.LineIndex + " end index: " + end.LineIndex);			
+			//Logger.Debug ("line " + start.Line + " start index: " + start.LineIndex + " end index: " + end.LineIndex);			
 			if (CheckBox != null && CheckBox.Active) {
 				Buffer.ApplyTag ("strikethrough", start, end);
 			} 
@@ -206,6 +194,10 @@ namespace Tomboy.TaskManager
 
 		}
 
+		/// <summary>
+		/// Signal when checkbutton for the task was clicked.
+		/// This function is responsible for updating strikethrough functionality.
+		/// </summary>
 		void ToggleCheckBox (object sender, EventArgs e)
 		{
 			Debug.Assert (CheckBox == sender); // no other checkbox should be registred here
