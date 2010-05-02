@@ -36,19 +36,45 @@ namespace Tomboy.TaskManager
 	/// A task list is a collection of tasks grouped together.
 	/// It may have a title, a priority and a due date.
 	/// </summary>
-	public class TaskList
+	public class TaskList : AttributedTask, ITask
 	{
 		
+		// EDIT: renaming (I'm not sure a variable should be called the same way as its class
 		/// <summary>
 		/// Note containing the TaskList.
 		/// </summary>
-		internal Note Note {
+		internal Note ContainingNote {
 			get; set;
 		}
 		
-		internal List<Task> Tasks {
+		//TODO: Changed Type. Rething this ^^
+		internal List<AttributedTask> Tasks {
 			get; set;
 		}
+		
+		/// <summary>
+		/// Children for ITask interface
+		/// </summary>
+		public List<AttributedTask> Children{
+			get{return Tasks;}	
+		}
+		
+		/// <summary>
+		/// Containers for ITask interface
+		/// </summary>
+		private List<AttributedTask> containers;
+		public List<AttributedTask> Containers{
+			get{
+				return containers;
+			}	
+		}
+		
+		//TODO
+		public bool Done{
+			get;
+			set;
+		}
+		
 	
 		/// <summary>
 		/// Sets up the TaskList.
@@ -59,10 +85,13 @@ namespace Tomboy.TaskManager
 		public TaskList (Note note)
 		{
 			Logger.Debug("TaskList created");
-			Note = note;
+			ContainingNote = note;
 			
-			Tasks = new List<Task>();
-			addTask(Note.Buffer.InsertMark);
+			Tasks = new List<AttributedTask>();
+			addTask(ContainingNote.Buffer.InsertMark);
+			
+			containers = new List<AttributedTask>();
+			//TODO: add correct TaskNote
 		}
 		
 		/// <summary>
@@ -72,10 +101,10 @@ namespace Tomboy.TaskManager
 		/// <see cref="Gtk.TextMark"/> Where to add the task in the Buffer.
 		/// </param>
 		public void addTask(Gtk.TextMark at) {
-			var insertIter = Note.Buffer.GetIterAtMark(at);
-			insertIter.BackwardChars (insertIter.LineOffset); // go to beginning of the line
+			var insertIter = ContainingNote.Buffer.GetIterAtMark(at);
+			insertIter.LineOffset = 0; // go to beginning of the line
 
-			Tasks.Add(new Task(this, Note.Buffer.CreateMark (null, insertIter, true)));
+			Tasks.Add(new Task(this, ContainingNote.Buffer.CreateMark (null, insertIter, true)));
 		}
 
 		
@@ -98,6 +127,7 @@ namespace Tomboy.TaskManager
 			CanSpellCheck = true;
 		}
 	}
+	
 
 
 }

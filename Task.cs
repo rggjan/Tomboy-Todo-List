@@ -25,6 +25,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Collections.Generic;
 using Gtk;
 using Tomboy;
 
@@ -37,7 +38,7 @@ namespace Tomboy.TaskManager
 	/// It may have a due date and a priority and can be
 	/// marked as done by crossing out the checkbox.
 	/// </summary>
-	public class Task
+	public class Task : AttributedTask,ITask
 	{
 		/// <summary>
 		/// Description of the Task the user wrote in the Buffer
@@ -51,10 +52,11 @@ namespace Tomboy.TaskManager
 		private Gtk.TextMark Position 
 		{ get; set; }
 		
+		//EDIT: renaming
 		/// <summary>
 		/// Is this task completed?
 		/// </summary>
-		public bool Completed { 
+		public bool Done { 
 			get {
 				return CheckBox.Active;
 			}
@@ -74,39 +76,42 @@ namespace Tomboy.TaskManager
 		/// <summary>
 		/// Date until the task should be completed.
 		/// </summary>
-		public DateTime DueDate 
-		{ get; set; }
+		// NOTE: deleted DueDate as already defined in AttributedTask
 		private Gtk.Calendar DueDateWidget
 		{ get; set; }
-				
-		/// <summary>
-		/// Priority for this Task
-		/// </summary>
-		public int Priority
-		{ get; set; }
-		// TODO find corresponding widget here
 		
 		
 		/// <summary>
 		/// TaskList containing this task.
 		/// </summary>
-		private TaskList TaskList 
-		{ get; set; }
+		private TaskList ContainingTaskList;
+		
+		private List<AttributedTask> containers=null;
+		public List<AttributedTask> Containers{
+			get{
+				return containers;
+			}
+		}
+		
+		private List<AttributedTask> SubTasks;
+		public List<AttributedTask> Children{
+			get{return SubTasks;}
+		}
 		
 		/// <summary>
 		/// Just a shortcut for accessing the Notes Buffer
 		/// </summary>
 		private NoteBuffer Buffer {
 			get {
-				return TaskList.Note.Buffer;
+				return ContainingTaskList.ContainingNote.Buffer;
 			}
 		}
 		
 		public Task (TaskList containingList, Gtk.TextMark location)
 		{
-			TaskList = containingList;
+			ContainingTaskList = containingList;
 			Position = location;
-			Buffer.Changed += BufferChanged;
+			Buffer.UserActionEnded += BufferChanged;
 			InsertCheckButton (Position);
 		}
 	
@@ -126,7 +131,7 @@ namespace Tomboy.TaskManager
 			CheckBox.Toggled += ToggleCheckBox;
 			
 			Gtk.TextChildAnchor anchor = Buffer.CreateChildAnchor (ref insertIter);
-			TaskList.Note.Window.Editor.AddChildAtAnchor (CheckBox, anchor);
+			ContainingTaskList.ContainingNote.Window.Editor.AddChildAtAnchor (CheckBox, anchor);
 			CheckBox.Show ();
 			
 			Logger.Debug ("Checkbox inserted.");
@@ -147,7 +152,7 @@ namespace Tomboy.TaskManager
 		}
 		
 		/// <returns>
-		/// A <see cref="Gtk.TextIter"/> marking the end of the textual descriptin of this
+		/// A <see cref="Gtk.TextIter"/> marking the end of the textual description of this
 		/// task in the NoteBuffer.
 		/// </returns>
 		public Gtk.TextIter GetDescriptionEnd () {
@@ -160,22 +165,28 @@ namespace Tomboy.TaskManager
 		}
 		
 		/// <summary>
-		/// Updates the strikethrough tags of the task description. If the checkbox is
-		/// active or removes it if it's not.
+		/// Updates the strikethrough tag of the task description. If the checkbox is
+		/// active or removes it if it's not. Also applies the tasklist tag.
 		/// </summary>
 		private void StrikeThroughUpdate ()
 		{
 			var start = GetDescriptionStart ();
 			var end = GetDescriptionEnd ();
-			
-			//Logger.Debug ("line " + start.Line + " start index: " + start.LineIndex + " end index: " + end.LineIndex);			
-			if (CheckBox != null && CheckBox.Active) {
-				Buffer.ApplyTag ("strikethrough", start, end);
-			} 
-			else {
-				Buffer.RemoveTag ("strikethrough", start, end);
-			}
 
+			
+			//Logger.Debug ("line " + start.Line + " start index: " + start.LineIndex + " end index: " + end.LineIndex);
+		
+			if(start.Char != "\n") // Check if a new Task is being created!
+			{		
+				Buffer.ApplyTag ("tasklist", start, end);
+			
+				if (CheckBox != null && CheckBox.Active) {
+					Buffer.ApplyTag ("strikethrough", start, end);
+				} 
+				else {
+					Buffer.RemoveTag ("strikethrough", start, end);
+				}
+			}
 		}
 		
 		/// <summary>
@@ -186,10 +197,10 @@ namespace Tomboy.TaskManager
 		{
 			Debug.Assert(Buffer == sender); // no other buffer should be registred here	
 			int line = Buffer.GetIterAtMark(Buffer.InsertMark).Line;
-			
-			// update strikethrough when task line was edited
-			if(line == Buffer.GetIterAtMark(Position).Line) {
-				StrikeThroughUpdate ();
+
+			// update strikethrough
+			if(line == GetDescriptionStart().Line) {
+				TagUpdate ();
 			}
 
 		}
@@ -201,7 +212,7 @@ namespace Tomboy.TaskManager
 		private void ToggleCheckBox (object sender, EventArgs e)
 		{
 			Debug.Assert (CheckBox == sender); // no other checkbox should be registred here
-			StrikeThroughUpdate ();
+			TagUpdate ();
 			
 			// TODO some signalling here?
 		}
