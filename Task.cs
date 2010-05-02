@@ -112,8 +112,9 @@ namespace Tomboy.TaskManager
 		{
 			ContainingTaskList = containingList;
 			Position = location;
-			Buffer.Changed += BufferChanged;
+			Buffer.UserActionEnded += BufferChanged;
 			InsertCheckButton (Position);
+			TagUpdate();
 		}
 	
 		/// <summary>
@@ -175,10 +176,10 @@ namespace Tomboy.TaskManager
 		}
 		
 		/// <summary>
-		/// Updates the strikethrough tags of the task description. If the checkbox is
-		/// active or removes it if it's not.
+		/// Updates the strikethrough tag of the task description. If the checkbox is
+		/// active or removes it if it's not. Also applies the tasklist tag.
 		/// </summary>
-		void StrikeThroughUpdate ()
+		void TagUpdate ()
 		{
 			Logger.Debug("Strikethrough Update");
 			var start = GetDescriptionStart ();
@@ -187,6 +188,8 @@ namespace Tomboy.TaskManager
 			Debug.Assert(start.LineIndex < end.LineIndex);
 			
 			//Logger.Debug ("line " + start.Line + " start index: " + start.LineIndex + " end index: " + end.LineIndex);
+			
+			Buffer.ApplyTag ("tasklist", start, end);
 			
 			if (CheckBox != null && CheckBox.Active) {
 				Buffer.ApplyTag ("strikethrough", start, end);
@@ -210,7 +213,7 @@ namespace Tomboy.TaskManager
 			
 			// update strikethrough
 			if(line == GetDescriptionStart().Line) {
-				StrikeThroughUpdate ();
+				TagUpdate ();
 			}
 
 		}
@@ -219,7 +222,7 @@ namespace Tomboy.TaskManager
 		{
 			Logger.Debug ("Toggled CheckBox");
 			Debug.Assert (CheckBox == sender); // no other checkbox should be registred here
-			StrikeThroughUpdate ();
+			TagUpdate ();
 			
 			// TODO some signalling here?
 		}
