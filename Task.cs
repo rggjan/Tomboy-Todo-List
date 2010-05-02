@@ -168,7 +168,7 @@ namespace Tomboy.TaskManager
 		/// Updates the strikethrough tag of the task description. If the checkbox is
 		/// active or removes it if it's not. Also applies the tasklist tag.
 		/// </summary>
-		private void StrikeThroughUpdate ()
+		private void TagUpdate ()
 		{
 			var start = GetDescriptionStart ();
 			var end = GetDescriptionEnd ();
