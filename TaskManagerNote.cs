@@ -12,6 +12,7 @@ namespace Tomboy.TaskManager
 
 		bool initialized = false;
 		bool new_task_needed = false;
+		bool deletion_needed = false;
 		
 		public override void Initialize ()
 		{
@@ -57,14 +58,19 @@ namespace Tomboy.TaskManager
 
 		void CheckIfNewTaskNeeded (object sender, System.EventArgs args)
 		{
-			if (new_task_needed == true)
+			if (new_task_needed)
 			{
 				Logger.Debug ("Adding a new Task");
 				
-				Gtk.TextIter end = Buffer.GetIterAtMark (Buffer.InsertMark);
-				Gtk.TextIter start = end;
-				start.BackwardChars (3);
-				Buffer.Delete (ref start, ref end);
+				if (deletion_needed)
+				{
+					Gtk.TextIter end = Buffer.GetIterAtMark (Buffer.InsertMark);
+					Gtk.TextIter start = end;
+					start.BackwardLine();
+						
+//					Logger.Debug(Buffer.GetText(start, end, false));
+					Buffer.Delete (ref start, ref end);
+				}
 				
 				new TaskList (Note);
 
@@ -79,11 +85,15 @@ namespace Tomboy.TaskManager
 				Gtk.TextIter end = args.Pos;
 				end.BackwardChars(2);
 				
-				Logger.Debug("Tags:");
-				Logger.Debug(end.Char);
-				foreach (Gtk.TextTag tag in end.Tags) {
-					
-					Logger.Debug(tag.Name);
+				foreach (Gtk.TextTag tag in end.Tags)
+				{
+					if (tag.Name == "tasklist")
+					{
+						Logger.Debug("tasklist Tag found!");
+						deletion_needed = false;
+						new_task_needed = true;
+						return;
+					}
 				}
 				
 				end.ForwardChar();
@@ -93,7 +103,10 @@ namespace Tomboy.TaskManager
 				//Logger.Debug(Buffer.GetText(start, end, false));
 				
 				if(IsTextTodoItem(Buffer.GetText(start, end, false)))
+				{
+					deletion_needed = true;
 					new_task_needed = true;
+				}
 			}
 		}
 		
