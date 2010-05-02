@@ -86,13 +86,14 @@ namespace Tomboy.TaskManager
 		/// </summary>
 		private TaskList ContainingTaskList;
 		
-		private List<AttributedTask> containers=null;
+		private List<AttributedTask> containers;
 		public List<AttributedTask> Containers{
 			get{
 				return containers;
 			}
 		}
 		
+		//TODO
 		private List<AttributedTask> SubTasks;
 		public List<AttributedTask> Children{
 			get{return SubTasks;}
@@ -113,6 +114,10 @@ namespace Tomboy.TaskManager
 			Position = location;
 			Buffer.UserActionEnded += BufferChanged;
 			InsertCheckButton (Position);
+			
+			//Structure
+			containers = new List<AttributedTask>();
+			containers.Add(ContainingTaskList);
 		}
 	
 		/// <summary>
