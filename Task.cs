@@ -114,7 +114,6 @@ namespace Tomboy.TaskManager
 			Position = location;
 			Buffer.UserActionEnded += BufferChanged;
 			InsertCheckButton (Position);
-			TagUpdate();
 		}
 	
 		/// <summary>
@@ -158,7 +157,7 @@ namespace Tomboy.TaskManager
 		}
 		
 		/// <returns>
-		/// A <see cref="Gtk.TextIter"/> marking the end of the textual descriptin of this
+		/// A <see cref="Gtk.TextIter"/> marking the end of the textual description of this
 		/// task in the NoteBuffer.
 		/// </returns>
 		Gtk.TextIter GetDescriptionEnd () {
@@ -188,16 +187,18 @@ namespace Tomboy.TaskManager
 			Debug.Assert(start.LineIndex < end.LineIndex);
 			
 			//Logger.Debug ("line " + start.Line + " start index: " + start.LineIndex + " end index: " + end.LineIndex);
+		
+			if(start.Char != "\n") // Check if a new Task is being created!
+			{		
+				Buffer.ApplyTag ("tasklist", start, end);
 			
-			Buffer.ApplyTag ("tasklist", start, end);
-			
-			if (CheckBox != null && CheckBox.Active) {
-				Buffer.ApplyTag ("strikethrough", start, end);
-			} 
-			else {
-				Buffer.RemoveTag ("strikethrough", start, end);
+				if (CheckBox != null && CheckBox.Active) {
+					Buffer.ApplyTag ("strikethrough", start, end);
+				} 
+				else {
+					Buffer.RemoveTag ("strikethrough", start, end);
+				}
 			}
-
 		}
 		
 		/// <summary>
