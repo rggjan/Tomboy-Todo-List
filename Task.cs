@@ -25,6 +25,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Collections.Generic;
 using Gtk;
 using Tomboy;
 
@@ -37,7 +38,7 @@ namespace Tomboy.TaskManager
 	/// It may have a due date and a priority and can be
 	/// marked as done by crossing out the checkbox.
 	/// </summary>
-	public class Task
+	public class Task : AttributedTask,ITask
 	{
 		/// <summary>
 		/// Description of the Task the user wrote in the Buffer
@@ -51,10 +52,11 @@ namespace Tomboy.TaskManager
 		private Gtk.TextMark Position 
 		{ get; set; }
 		
+		//EDIT: renaming
 		/// <summary>
 		/// Is this task completed?
 		/// </summary>
-		public bool Completed { 
+		public bool Done { 
 			get {
 				return CheckBox.Active;
 			}
@@ -74,42 +76,46 @@ namespace Tomboy.TaskManager
 		/// <summary>
 		/// Date until the task should be completed.
 		/// </summary>
-		public DateTime DueDate 
-		{ get; set; }
+		// NOTE: deleted DueDate as already defined in AttributedTask
 		private Gtk.Calendar DueDateWidget
 		{ get; set; }
-				
-		/// <summary>
-		/// Priority for this Task
-		/// </summary>
-		public int Priority
-		{ get; set; }
-		// TODO find corresponding widget here
 		
 		
 		/// <summary>
 		/// TaskList containing this task.
 		/// </summary>
-		private TaskList TaskList 
-		{ get; set; }
+		private TaskList ContainingTaskList;
+		
+		public List<AttributedTask> Containers{
+			get{
+				List<AttributedTask> result = new List<AttributedTask>();	
+				result.Add(ContainingTaskList);
+				return result;
+			}
+		}
+		
+		private List<AttributedTask> SubTasks;
+		public List<AttributedTask> Children{
+			get{return (List<AttributedTask>)SubTasks;}
+		}
 		
 		/// <summary>
 		/// Just a shortcut for accessing the Notes Buffer
 		/// </summary>
 		private NoteBuffer Buffer {
 			get {
-				return TaskList.Note.Buffer;
+				return ContainingTaskList.Note.Buffer;
 			}
 		}
 		
 		public Task (TaskList containingList, Gtk.TextMark location)
 		{
-			TaskList = containingList;
+			ContainingTaskList = containingList;
 			Position = location;
+			Buffer.Changed += BufferChanged;
 			InsertCheckButton (Position);
 		}
-
-		
+	
 		/// <summary>
 		/// Inserts a CheckButton in the TextBuffer.
 		/// </summary>
@@ -126,32 +132,96 @@ namespace Tomboy.TaskManager
 			CheckBox.Toggled += ToggleCheckBox;
 			
 			Gtk.TextChildAnchor anchor = Buffer.CreateChildAnchor (ref insertIter);
-			TaskList.Note.Window.Editor.AddChildAtAnchor (CheckBox, anchor);
+			ContainingTaskList.Note.Window.Editor.AddChildAtAnchor (CheckBox, anchor);
 			CheckBox.Show ();
 			
 			Logger.Debug ("Checkbox inserted.");
 		}
 		
-
-		void ToggleCheckBox (object sender, EventArgs e)
+		/// <returns>
+		/// A <see cref="Gtk.TextIter"/> marking the beginning of the textual description
+		/// of this task in the NoteBuffer.
+		/// </returns>
+		Gtk.TextIter GetDescriptionStart()
 		{
-			Debug.Assert(CheckBox == sender); // no other checkbox should be registred here
-			
-			Logger.Debug ("Toggled CheckBox");
-			
 			var start = Buffer.GetIterAtMark (Position);
-			var end = Buffer.GetIterAtLineIndex (start.Line, start.BytesInLine - 1);
-
-			if (CheckBox.Active) {
+			int line = start.Line;
+			while (start.Line == line && !start.InsideWord ()) {
+				Logger.Debug("forwardchar: lineindex" + start.LineIndex + " bytes in line:" + start.BytesInLine );
+				start.ForwardChar ();
+			}
+			if (start.Line != line)
+				Debug.Assert(false); // TODO: What to really do here?
+			
+			return start;
+		}
+		
+		/// <returns>
+		/// A <see cref="Gtk.TextIter"/> marking the end of the textual descriptin of this
+		/// task in the NoteBuffer.
+		/// </returns>
+		Gtk.TextIter GetDescriptionEnd () {
+			var start = GetDescriptionStart ();
+			
+			var endIter = Buffer.GetIterAtLineIndex (start.Line, start.BytesInLine-1);
+			if(endIter.Char != System.Environment.NewLine) {
+				// we do this because if we we construct a TextIter at a newline
+				// it will fail because GetIterAtLineIndex is not recognizing this
+				// as the same line
+				endIter.ForwardChar ();
+			}
+			
+			return endIter;
+		}
+		
+		/// <summary>
+		/// Updates the strikethrough tags of the task description. If the checkbox is
+		/// active or removes it if it's not.
+		/// </summary>
+		void StrikeThroughUpdate ()
+		{
+			Logger.Debug("Strikethrough Update");
+			var start = GetDescriptionStart ();
+			Logger.Debug("start.LineIndex:" + start.LineIndex);
+			var end = GetDescriptionEnd ();
+			Debug.Assert(start.LineIndex < end.LineIndex);
+			
+			//Logger.Debug ("line " + start.Line + " start index: " + start.LineIndex + " end index: " + end.LineIndex);
+			
+			if (CheckBox != null && CheckBox.Active) {
 				Buffer.ApplyTag ("strikethrough", start, end);
 			} 
 			else {
 				Buffer.RemoveTag ("strikethrough", start, end);
 			}
+
+		}
+		
+		/// <summary>
+		/// Called when the buffer is changed. Currently this watches for changes in the Task
+		/// description and updates the strikethrough task.
+		/// </summary>
+		void BufferChanged(object sender, EventArgs e) 
+		{
+			Debug.Assert(Buffer == sender); // no other buffer should be registred here
 			
-			Logger.Debug ("end of Toggled handler, line was: " + start.Line);
+			Logger.Debug("buffer has changed");
+			int line = Buffer.GetIterAtMark(Buffer.InsertMark).Line;
 			
-			// TODO some signal here?
+			// update strikethrough
+			if(line == GetDescriptionStart().Line) {
+				StrikeThroughUpdate ();
+			}
+
+		}
+
+		void ToggleCheckBox (object sender, EventArgs e)
+		{
+			Logger.Debug ("Toggled CheckBox");
+			Debug.Assert (CheckBox == sender); // no other checkbox should be registred here
+			StrikeThroughUpdate ();
+			
+			// TODO some signalling here?
 		}
 		
 	}
