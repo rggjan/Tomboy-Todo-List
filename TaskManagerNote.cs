@@ -52,6 +52,10 @@ namespace Tomboy.TaskManager
 				Buffer.UserActionEnded += CheckIfNewTaskNeeded;
 				Buffer.InsertText += BufferInsertText;
 				
+				//Initialise subtasks
+				//TODO: get from previous sessions?
+				TaskLists = new List<AttributedTask>();
+				
 				initialized = true;
 			}
 		}
