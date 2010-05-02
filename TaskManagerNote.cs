@@ -72,8 +72,8 @@ namespace Tomboy.TaskManager
 					Buffer.Delete (ref start, ref end);
 				}
 				
-				new TaskList (Note);
-
+				TaskList tl = new TaskList (Note);
+				TaskLists.Add(tl);
 				new_task_needed = false;
 			}
 		}
@@ -121,20 +121,21 @@ namespace Tomboy.TaskManager
 			new TaskList(Note);
 		}
 
-		//TODO
+		private List<AttributedTask> TaskLists;
 		public List<AttributedTask> Children{
-			get{return null;}	
+			get{return TaskLists;}	
 		}
 		
 		//TODO
+		private List<AttributedTask> LinkingTasks;
 		public List<AttributedTask> Containers{
-			get{return null;}	
+			get{return LinkingTasks;}	
 		}
 		
 		//TODO
 		public bool Done{
-			get{return false;}
-			set{}
+			get;
+			set;
 		}
 	}
 }

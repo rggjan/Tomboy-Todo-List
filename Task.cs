@@ -86,17 +86,16 @@ namespace Tomboy.TaskManager
 		/// </summary>
 		private TaskList ContainingTaskList;
 		
+		private List<AttributedTask> containers=null;
 		public List<AttributedTask> Containers{
 			get{
-				List<AttributedTask> result = new List<AttributedTask>();	
-				result.Add(ContainingTaskList);
-				return result;
+				return containers;
 			}
 		}
 		
 		private List<AttributedTask> SubTasks;
 		public List<AttributedTask> Children{
-			get{return (List<AttributedTask>)SubTasks;}
+			get{return SubTasks;}
 		}
 		
 		/// <summary>
@@ -104,7 +103,7 @@ namespace Tomboy.TaskManager
 		/// </summary>
 		private NoteBuffer Buffer {
 			get {
-				return ContainingTaskList.Note.Buffer;
+				return ContainingTaskList.ContainingNote.Buffer;
 			}
 		}
 		
@@ -132,7 +131,7 @@ namespace Tomboy.TaskManager
 			CheckBox.Toggled += ToggleCheckBox;
 			
 			Gtk.TextChildAnchor anchor = Buffer.CreateChildAnchor (ref insertIter);
-			ContainingTaskList.Note.Window.Editor.AddChildAtAnchor (CheckBox, anchor);
+			ContainingTaskList.ContainingNote.Window.Editor.AddChildAtAnchor (CheckBox, anchor);
 			CheckBox.Show ();
 			
 			Logger.Debug ("Checkbox inserted.");
