@@ -74,10 +74,19 @@ namespace Tomboy.TaskManager
 	
 		void BufferInsertText (object o, Gtk.InsertTextArgs args)
 		{
-			if (args.Text == "\n") {
+			if (args.Text == "\n") 
+			{
 				Gtk.TextIter end = args.Pos;
-				end.BackwardChar();
+				end.BackwardChars(2);
 				
+				Logger.Debug("Tags:");
+				Logger.Debug(end.Char);
+				foreach (Gtk.TextTag tag in end.Tags) {
+					
+					Logger.Debug(tag.Name);
+				}
+				
+				end.ForwardChar();
 				Gtk.TextIter start = end;
 				start.LineOffset = 0;
 				

@@ -89,7 +89,7 @@ namespace Tomboy.TaskManager
 		/// </param>
 		public void addTask(Gtk.TextMark at) {
 			var insertIter = Note.Buffer.GetIterAtMark(at);
-			insertIter.BackwardChars (insertIter.LineOffset); // go to beginning of the line
+			insertIter.LineOffset = 0; // go to beginning of the line
 
 			Tasks.Add(new Task(this, Note.Buffer.CreateMark (null, insertIter, true)));
 		}
