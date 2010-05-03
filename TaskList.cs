@@ -29,15 +29,13 @@ using System.Collections.Generic;
 using Gtk;
 using Tomboy;
 
-namespace Tomboy.TaskManager
-{
+namespace Tomboy.TaskManager {
 
 	/// <summary>
 	/// A task list is a collection of tasks grouped together.
 	/// It may have a title, a priority and a due date.
 	/// </summary>
-	public class TaskList : AttributedTask, ITask
-	{
+	public class TaskList : AttributedTask, ITask {
 	
 		/// <summary>
 		/// Name of this task list
@@ -69,14 +67,15 @@ namespace Tomboy.TaskManager
 		/// <summary>
 		/// Containers for ITask interface
 		/// </summary>
-		public List<AttributedTask> Containers 
-		{ get; set;	}
+		public List<AttributedTask> Containers { 
+			get; set;
+		}
 		
 		//TODO
-		public bool Done 
-		{ get; set; }
+		public bool Done { 
+			get; set; 
+		}
 		
-	
 		/// <summary>
 		/// Sets up the TaskList.
 		/// </summary>
@@ -85,13 +84,13 @@ namespace Tomboy.TaskManager
 		/// </param>
 		public TaskList (Note note)
 		{
-			Logger.Debug("TaskList created");
+			Logger.Debug ("TaskList created");
 			ContainingNote = note;
 			
-			Tasks = new List<AttributedTask>();
-			addTask(ContainingNote.Buffer.InsertMark);
+			Tasks = new List<AttributedTask> ();
+			addTask (ContainingNote.Buffer.InsertMark);
 			
-			Containers = new List<AttributedTask>();
+			Containers = new List<AttributedTask> ();
 			//TODO: add correct TaskNote
 		}
 		
@@ -101,11 +100,12 @@ namespace Tomboy.TaskManager
 		/// <param name="at">
 		/// <see cref="Gtk.TextMark"/> Where to add the task in the Buffer.
 		/// </param>
-		public void addTask(Gtk.TextMark at) {
-			var insertIter = ContainingNote.Buffer.GetIterAtMark(at);
+		public void addTask (Gtk.TextMark at) 
+		{
+			var insertIter = ContainingNote.Buffer.GetIterAtMark (at);
 			insertIter.LineOffset = 0; // go to beginning of the line
 
-			Tasks.Add(new Task(this, ContainingNote.Buffer.CreateMark (null, insertIter, true)));
+			Tasks.Add (new Task (this, ContainingNote.Buffer.CreateMark (null, insertIter, true)));
 		}
 
 		

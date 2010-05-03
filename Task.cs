@@ -29,8 +29,7 @@ using System.Collections.Generic;
 using Gtk;
 using Tomboy;
 
-namespace Tomboy.TaskManager
-{
+namespace Tomboy.TaskManager {
 
 	/// <summary>
 	/// A Task is a piece of text representing a “todo” item,
@@ -38,19 +37,21 @@ namespace Tomboy.TaskManager
 	/// It may have a due date and a priority and can be
 	/// marked as done by crossing out the checkbox.
 	/// </summary>
-	public class Task : AttributedTask, ITask
-	{
+	public class Task : AttributedTask, ITask {
+		
 		/// <summary>
 		/// Description of the Task the user wrote in the Buffer
 		/// </summary>
-		public string Description
-		{ get; set; }
+		public string Description {
+			get; set; 
+		}
 		
 		/// <summary>
 		/// Tells us where in the NoteBuffer this Task is located.
 		/// </summary>
-		private Gtk.TextMark Position 
-		{ get; set; }
+		private Gtk.TextMark Position { 
+			get; set; 
+		}
 		
 		//EDIT: renaming
 		/// <summary>
@@ -77,8 +78,9 @@ namespace Tomboy.TaskManager
 		/// Date until the task should be completed.
 		/// </summary>
 		// NOTE: deleted DueDate as already defined in AttributedTask
-		private Gtk.Calendar DueDateWidget
-		{ get; set; }
+		private Gtk.Calendar DueDateWidget {
+			get; set; 
+		}
 		
 		
 		/// <summary>
@@ -87,7 +89,7 @@ namespace Tomboy.TaskManager
 		private TaskList ContainingTaskList;
 		
 		private List<AttributedTask> containers;
-		public List<AttributedTask> Containers{
+		public List<AttributedTask> Containers {
 			get{
 				return containers;
 			}
@@ -95,7 +97,7 @@ namespace Tomboy.TaskManager
 		
 		//TODO
 		private List<AttributedTask> SubTasks;
-		public List<AttributedTask> Children{
+		public List<AttributedTask> Children {
 			get{return SubTasks;}
 		}
 		
@@ -116,8 +118,8 @@ namespace Tomboy.TaskManager
 			InsertCheckButton (Position);
 			
 			//Structure
-			containers = new List<AttributedTask>();
-			containers.Add(ContainingTaskList);
+			containers = new List<AttributedTask> ();
+			containers.Add (ContainingTaskList);
 		}
 	
 		/// <summary>
@@ -128,10 +130,10 @@ namespace Tomboy.TaskManager
 		/// </param>
 		private void InsertCheckButton (Gtk.TextMark at)
 		{
-			TextIter insertIter = Buffer.GetIterAtMark(at);
+			TextIter insertIter = Buffer.GetIterAtMark (at);
 			insertIter.BackwardChars (insertIter.LineOffset); // go to beginning of the line
 			
-			CheckBox = new Gtk.CheckButton();
+			CheckBox = new Gtk.CheckButton ();
 			CheckBox.Name = "tomboy-inline-checkbox";
 			CheckBox.Toggled += ToggleCheckBox;
 			
@@ -150,7 +152,7 @@ namespace Tomboy.TaskManager
 		{
 			var start = Buffer.GetIterAtMark (Position);
 			while ((start.LineIndex < start.BytesInLine) && !start.InsideWord ()) {
-				start.ForwardCursorPosition();
+				start.ForwardCursorPosition ();
 			}
 						
 			return start;
@@ -197,11 +199,11 @@ namespace Tomboy.TaskManager
 		/// </summary>
 		private void BufferChanged (object sender, EventArgs e)
 		{
-			Debug.Assert(Buffer == sender); // no other buffer should be registred here	
-			int line = Buffer.GetIterAtMark(Buffer.InsertMark).Line;
+			Debug.Assert (Buffer == sender); // no other buffer should be registred here	
+			int line = Buffer.GetIterAtMark (Buffer.InsertMark).Line;
 
 			// update strikethrough
-			if(line == GetDescriptionStart().Line) {
+			if(line == GetDescriptionStart ().Line) {
 				TagUpdate ();
 			}
 
@@ -229,7 +231,7 @@ namespace Tomboy.TaskManager
 	{
 		public static String NAME = "task";
 		
-		public TaskTag () : base(TaskTag.NAME)
+		public TaskTag () : base (TaskTag.NAME)
 		{
 			Background = "green";
 			LeftMargin = 3;

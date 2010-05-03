@@ -4,10 +4,10 @@ using Mono.Unix;
 using Gtk;
 using Tomboy;
 
-namespace Tomboy.TaskManager
-{
-	public class TaskManagerNoteAddin : NoteAddin, ITask
-	{
+namespace Tomboy.TaskManager {
+	
+	public class TaskManagerNoteAddin : NoteAddin, ITask {
+		
 		Gtk.MenuItem item;
 
 		bool initialized = false;
@@ -50,7 +50,7 @@ namespace Tomboy.TaskManager
 				
 				//Initialise tasklists list
 				//TODO: get from previous sessions?
-				TaskLists = new List<AttributedTask>();
+				TaskLists = new List<AttributedTask> ();
 				
 				initialized = true;
 			}
@@ -78,7 +78,7 @@ namespace Tomboy.TaskManager
 				}
 				
 				TaskList tl = new TaskList (Note);
-				TaskLists.Add(tl);
+				TaskLists.Add (tl);
 				new_task_needed = false;
 			}
 		}
@@ -94,7 +94,7 @@ namespace Tomboy.TaskManager
 				{
 					if (tag.Name == "task")
 					{
-						Logger.Debug("tasklist Tag found!");
+						Logger.Debug ("tasklist Tag found!");
 						deletion_needed = false;
 						new_task_needed = true;
 						return;
@@ -110,9 +110,9 @@ namespace Tomboy.TaskManager
 				end = start;
 				end.ForwardChars (2);
 				
-				Logger.Debug("Before new Line: "+Buffer.GetText(start, end, false));
+				//Logger.Debug ("Before new Line: "+Buffer.GetText(start, end, false));
 				
-				if(IsTextTodoItem(Buffer.GetText(start, end, false)))
+				if (IsTextTodoItem (Buffer.GetText (start, end, false)))
 				{
 					deletion_needed = true;
 					new_task_needed = true;
@@ -130,30 +130,30 @@ namespace Tomboy.TaskManager
 
 		void OnMenuItemActivated (object sender, EventArgs args)
 		{
-			Gtk.TextIter cursor = Buffer.GetIterAtMark(Buffer.InsertMark);
-			cursor.BackwardChar();
+			Gtk.TextIter cursor = Buffer.GetIterAtMark (Buffer.InsertMark);
+			cursor.BackwardChar ();
 			if (cursor.Char != System.Environment.NewLine)
 				Buffer.InsertAtCursor (System.Environment.NewLine);	
-			Buffer.InsertAtCursor("New TaskList!\n");
+			Buffer.InsertAtCursor ("New TaskList!\n");
 			
-			TaskList tl = new TaskList(Note);
+			TaskList tl = new TaskList (Note);
 			tl.Name = "New TaskList!";
-			TaskLists.Add(tl);
+			TaskLists.Add (tl);
 		}
 
 		private List<AttributedTask> TaskLists;
-		public List<AttributedTask> Children{
+		public List<AttributedTask> Children {
 			get{return TaskLists;}	
 		}
 		
 		//TODO
 		private List<AttributedTask> LinkingTasks;
-		public List<AttributedTask> Containers{
+		public List<AttributedTask> Containers {
 			get{return LinkingTasks;}	
 		}
 		
 		//TODO
-		public bool Done{
+		public bool Done {
 			get;
 			set;
 		}
