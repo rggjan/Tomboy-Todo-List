@@ -44,10 +44,6 @@ namespace Tomboy.TaskManager
 				item.Activated += OnMenuItemActivated;
 				item.Show ();
 				AddPluginMenuItem (item);
-	
-				// Register additional Tags
-				TaskListTag tlt = new TaskListTag ();
-				Note.TagTable.Add (tlt);
 
 				Buffer.UserActionEnded += CheckIfNewTaskNeeded;
 				Buffer.InsertText += BufferInsertText;
@@ -68,9 +64,14 @@ namespace Tomboy.TaskManager
 				
 				if (deletion_needed)
 				{
-					Gtk.TextIter end = Buffer.GetIterAtMark (Buffer.InsertMark);
-					Gtk.TextIter start = end;
+					//Logger.Debug ("Deleting stuff");
+					Gtk.TextIter start = Buffer.GetIterAtMark (Buffer.InsertMark);
 					start.BackwardLine();
+					
+					Gtk.TextIter end = start;
+					end.ForwardChars (2);
+					
+					//TODO: Use the rest of this line as the title of the new task list
 						
 //					Logger.Debug(Buffer.GetText(start, end, false));
 					Buffer.Delete (ref start, ref end);
@@ -87,11 +88,11 @@ namespace Tomboy.TaskManager
 			if (args.Text == "\n") 
 			{
 				Gtk.TextIter end = args.Pos;
-				end.BackwardChars(2);
+				end.BackwardChars (2);
 				
 				foreach (Gtk.TextTag tag in end.Tags)
 				{
-					if (tag.Name == "tasklist")
+					if (tag.Name == "task")
 					{
 						Logger.Debug("tasklist Tag found!");
 						deletion_needed = false;
@@ -100,11 +101,16 @@ namespace Tomboy.TaskManager
 					}
 				}
 				
-				end.ForwardChar();
-				Gtk.TextIter start = end;
-				start.LineOffset = 0;
+				end = args.Pos;
+				end.ForwardChars (5);
 				
-				//Logger.Debug(Buffer.GetText(start, end, false));
+				Gtk.TextIter start = args.Pos;
+				start.BackwardLine ();
+				
+				end = start;
+				end.ForwardChars (2);
+				
+				Logger.Debug("Before new Line: "+Buffer.GetText(start, end, false));
 				
 				if(IsTextTodoItem(Buffer.GetText(start, end, false)))
 				{
@@ -112,6 +118,8 @@ namespace Tomboy.TaskManager
 					new_task_needed = true;
 				}
 			}
+			
+			//TODO: also check for tasklist name change
 		}
 		
 		bool IsTextTodoItem (String text)
@@ -122,7 +130,14 @@ namespace Tomboy.TaskManager
 
 		void OnMenuItemActivated (object sender, EventArgs args)
 		{
+			Gtk.TextIter cursor = Buffer.GetIterAtMark(Buffer.InsertMark);
+			cursor.BackwardChar();
+			if(cursor.Char!="\n")
+				Buffer.InsertAtCursor("\n");	
+			Buffer.InsertAtCursor("New TaskList!\n");
+			
 			TaskList tl = new TaskList(Note);
+			tl.Name = "New TaskList!";
 			TaskLists.Add(tl);
 		}
 

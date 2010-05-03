@@ -35,6 +35,15 @@ namespace Tomboy.TaskManager
 			
 			Tomboy.ActionManager.UI.InsertActionGroup(group,0);
 			initialized = true;
+			
+			// Register additional Tags
+			NoteTagTable tagtable = NoteTagTable.Instance;
+			
+			if(tagtable.Lookup("tasklist")==null)
+				tagtable.Add(new TaskListTag());
+			
+			if(tagtable.Lookup("task")==null)
+				tagtable.Add(new TaskTag());
 		}
 	}
 }
