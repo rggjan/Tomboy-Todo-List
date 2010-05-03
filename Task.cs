@@ -183,7 +183,7 @@ namespace Tomboy.TaskManager
 		
 			if(start.Char != "\n") // Check if a new Task is being created!
 			{		
-				Buffer.ApplyTag ("tasklist", start, end);
+				Buffer.ApplyTag ("task", start, end);
 			
 				if (CheckBox != null && CheckBox.Active) {
 					Buffer.ApplyTag ("strikethrough", start, end);
@@ -222,5 +222,22 @@ namespace Tomboy.TaskManager
 			// TODO some signalling here?
 		}
 		
+	}
+	
+	
+	/// <summary>
+	/// Marks a Task in a NoteBuffer. Currently this does nothing (used to restore notes)
+	/// </summary>
+	public class TaskTag : NoteTag
+	{
+		public static String NAME = "task";
+		
+		public TaskTag () : base(TaskTag.NAME)
+		{
+			Background = "green";
+			LeftMargin = 3;
+			LeftMarginSet = true;
+			CanSpellCheck = true;
+		}
 	}
 }

@@ -38,6 +38,14 @@ namespace Tomboy.TaskManager
 	/// </summary>
 	public class TaskList : AttributedTask, ITask
 	{
+	
+		/// <summary>
+		/// Name of this task list
+		/// </summary>
+		public string Name{
+			get;
+			set;
+		}
 		
 		// EDIT: renaming (I'm not sure a variable should be called the same way as its class
 		/// <summary>
@@ -120,11 +128,6 @@ namespace Tomboy.TaskManager
 		
 		public TaskListTag () : base(TaskListTag.NAME)
 		{
-			Background = "green";
-			LeftMargin = 3;
-			LeftMarginSet = true;
-			CanSerialize = false;
-			CanSpellCheck = true;
 		}
 	}
 	
