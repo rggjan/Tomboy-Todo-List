@@ -40,7 +40,7 @@ namespace Tomboy.TaskManager {
 			// Register additional Tags
 			NoteTagTable tagtable = NoteTagTable.Instance;
 			
-			if(tagtable.Lookup("task") == null)
+			if (tagtable.Lookup("task") == null)
 				tagtable.Add (new TaskTag ());
 		}
 	}
