@@ -29,71 +29,67 @@ using System.Collections.Generic;
 
 namespace Tomboy.TaskManager
 {
-	public enum Priority{
-		VERY_HIGH = 1,
-		HIGH,
-		NORMAL,
+	public enum Priority {
+		VERY_LOW = 1,
 		LOW,
-		VERY_LOW
+		NORMAL,
+		HIGH,
+		VERY_HIGH
 	}
 	
-	public interface ITask{
+	public interface ITask {
 		
 		/// <summary>
-		/// Returns all Abstracttasks that are children of this Abstracttask.
+		/// Returns all Abstract Tasks that are children of this Abstracttask.
 		/// TaskNote -> TaskLists (TODO: not sure this is necessary)
 		/// TaskList -> Tasks
 		/// Tasks -> Subtasks (linked via TaskNotes to TaskLists)
 		/// </summary>
-		List<AttributedTask> Children{
+		List<AttributedTask> Children {
 			get;
 		}
 		
 		/// <summary>
 		/// As implicitly described by Children (other way arround)
 		/// </summary>
-		List<AttributedTask> Containers{
+		List<AttributedTask> Containers {
 			get;
 		}
 		
 		/// <summary>
 		/// Whether or not this task has been completed
 		/// </summary>
-		bool Done{
+		bool Done {
 			get;
 			set;
 		}
 	}
 	
-	public abstract class AttributedTask{
+	public abstract class AttributedTask {
 	
 		/// <summary>
 		/// Date when this task is overdue
 		/// </summary>
-		private DateTime dueDate;
-		public DateTime DueDate{
-			get{return dueDate;}
-			set{dueDate = value;}
+		public DateTime DueDate {
+			get; set;
 		}
 		
 		/// <summary>
-		/// True iff this task's duedate lies in the past
+		/// True if this task's duedate lies in the past
 		/// </summary>
 		/// <returns>
 		/// A <see cref="boolean"/>; 
 		/// </returns>
-		public bool isOverdue(){
-			return dueDate.CompareTo(DateTime.Now)<=0;	
+		public bool isOverdue () {
+			return DueDate.CompareTo(DateTime.Now) <= 0;	
 		}
 		
 		/// <summary>
 		/// The priority that is assigned to this task.
 		/// Note that default must be set to 3, not 0
 		/// </summary>
-		private Priority prio;
-		public Priority Prio{
-			get{ return prio; }
-			set{ prio = value; }
+		public Priority Prio {
+			get; set;
 		}	
 	}
 }
