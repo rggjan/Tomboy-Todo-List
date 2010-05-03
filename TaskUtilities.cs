@@ -75,12 +75,13 @@ namespace Tomboy.TaskManager
 		}
 		
 		/// <summary>
-		/// True if this task's duedate lies in the past
+		/// True iff (if and only if) this task's duedate lies in the past
 		/// </summary>
 		/// <returns>
 		/// A <see cref="boolean"/>; 
 		/// </returns>
-		public bool isOverdue () {
+		public bool isOverdue ()
+		{
 			return DueDate.CompareTo(DateTime.Now) <= 0;	
 		}
 		
