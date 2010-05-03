@@ -203,7 +203,7 @@ namespace Tomboy.TaskManager {
 			int line = Buffer.GetIterAtMark (Buffer.InsertMark).Line;
 
 			// update strikethrough
-			if(line == GetDescriptionStart ().Line) {
+			if (line == GetDescriptionStart ().Line) {
 				TagUpdate ();
 			}
 
