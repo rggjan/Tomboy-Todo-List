@@ -38,7 +38,7 @@ namespace Tomboy.TaskManager
 	/// It may have a due date and a priority and can be
 	/// marked as done by crossing out the checkbox.
 	/// </summary>
-	public class Task : AttributedTask,ITask
+	public class Task : AttributedTask, ITask
 	{
 		/// <summary>
 		/// Description of the Task the user wrote in the Buffer
@@ -181,16 +181,13 @@ namespace Tomboy.TaskManager
 			
 			//Logger.Debug ("line " + start.Line + " start index: " + start.LineIndex + " end index: " + end.LineIndex);
 		
-			if(start.Char != "\n") // Check if a new Task is being created!
-			{		
-				Buffer.ApplyTag ("task", start, end);
-			
-				if (CheckBox != null && CheckBox.Active) {
-					Buffer.ApplyTag ("strikethrough", start, end);
-				} 
-				else {
-					Buffer.RemoveTag ("strikethrough", start, end);
-				}
+			Buffer.ApplyTag ("task", start, end);
+		
+			if (CheckBox != null && CheckBox.Active) {
+				Buffer.ApplyTag ("strikethrough", start, end);
+			} 
+			else {
+				Buffer.RemoveTag ("strikethrough", start, end);
 			}
 		}
 		

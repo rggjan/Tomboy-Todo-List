@@ -42,12 +42,11 @@ namespace Tomboy.TaskManager
 		/// <summary>
 		/// Name of this task list
 		/// </summary>
-		public string Name{
+		public string Name {
 			get;
 			set;
 		}
 		
-		// EDIT: renaming (I'm not sure a variable should be called the same way as its class
 		/// <summary>
 		/// Note containing the TaskList.
 		/// </summary>
@@ -63,25 +62,19 @@ namespace Tomboy.TaskManager
 		/// <summary>
 		/// Children for ITask interface
 		/// </summary>
-		public List<AttributedTask> Children{
+		public List<AttributedTask> Children {
 			get{return Tasks;}	
 		}
 		
 		/// <summary>
 		/// Containers for ITask interface
 		/// </summary>
-		private List<AttributedTask> containers;
-		public List<AttributedTask> Containers{
-			get{
-				return containers;
-			}	
-		}
+		public List<AttributedTask> Containers 
+		{ get; set;	}
 		
 		//TODO
-		public bool Done{
-			get;
-			set;
-		}
+		public bool Done 
+		{ get; set; }
 		
 	
 		/// <summary>
@@ -98,7 +91,7 @@ namespace Tomboy.TaskManager
 			Tasks = new List<AttributedTask>();
 			addTask(ContainingNote.Buffer.InsertMark);
 			
-			containers = new List<AttributedTask>();
+			Containers = new List<AttributedTask>();
 			//TODO: add correct TaskNote
 		}
 		
@@ -117,20 +110,5 @@ namespace Tomboy.TaskManager
 
 		
 	}
-
-	/// <summary>
-	/// Marks a TaskList in a NoteBuffer. Currently this only sets the background to green for
-	/// better debugging.
-	/// </summary>
-	public class TaskListTag : NoteTag
-	{
-		public static String NAME = "tasklist";
-		
-		public TaskListTag () : base(TaskListTag.NAME)
-		{
-		}
-	}
-	
-
 
 }

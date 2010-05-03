@@ -85,7 +85,7 @@ namespace Tomboy.TaskManager
 	
 		void BufferInsertText (object o, Gtk.InsertTextArgs args)
 		{
-			if (args.Text == "\n") 
+			if (args.Text == System.Environment.NewLine) 
 			{
 				Gtk.TextIter end = args.Pos;
 				end.BackwardChars (2);
@@ -132,8 +132,8 @@ namespace Tomboy.TaskManager
 		{
 			Gtk.TextIter cursor = Buffer.GetIterAtMark(Buffer.InsertMark);
 			cursor.BackwardChar();
-			if(cursor.Char!="\n")
-				Buffer.InsertAtCursor("\n");	
+			if (cursor.Char != System.Environment.NewLine)
+				Buffer.InsertAtCursor (System.Environment.NewLine);	
 			Buffer.InsertAtCursor("New TaskList!\n");
 			
 			TaskList tl = new TaskList(Note);
