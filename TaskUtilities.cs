@@ -27,8 +27,8 @@ using System;
 using Tomboy;
 using System.Collections.Generic;
 
-namespace Tomboy.TaskManager
-{
+namespace Tomboy.TaskManager {
+	
 	public enum Priority {
 		VERY_LOW = 1,
 		LOW,
