@@ -50,7 +50,7 @@ namespace Tomboy.TaskManager {
 				
 				//Initialise tasklists list
 				//TODO: get from previous sessions?
-				TaskLists = new List<AttributedTask> ();
+				Children = new List<AttributedTask> ();
 				
 				initialized = true;
 			}
@@ -78,7 +78,7 @@ namespace Tomboy.TaskManager {
 				}
 				
 				TaskList tl = new TaskList (Note);
-				TaskLists.Add (tl);
+				Children.Add (tl);
 				new_task_needed = false;
 			}
 		}
@@ -138,24 +138,20 @@ namespace Tomboy.TaskManager {
 			
 			TaskList tl = new TaskList (Note);
 			tl.Name = "New TaskList!";
-			TaskLists.Add (tl);
+			Children.Add (tl);
 		}
 
-		private List<AttributedTask> TaskLists;
 		public List<AttributedTask> Children {
-			get{return TaskLists;}	
+			get; private set;
 		}
 		
-		//TODO
-		private List<AttributedTask> LinkingTasks;
 		public List<AttributedTask> Containers {
-			get{return LinkingTasks;}	
+			get; private set;
 		}
 		
 		//TODO
 		public bool Done {
-			get;
-			set;
+			get; set;
 		}
 	}
 }
