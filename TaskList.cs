@@ -88,6 +88,7 @@ namespace Tomboy.TaskManager {
 			ContainingNote = note;
 			
 			Tasks = new List<AttributedTask> ();
+					
 			addTask (ContainingNote.Buffer.InsertMark);
 			
 			Containers = new List<AttributedTask> ();
@@ -111,4 +112,18 @@ namespace Tomboy.TaskManager {
 		
 	}
 
+	
+	/// <summary>
+	/// Marks a TaskList in a NoteBuffer. Currently this does nothing (used to restore notes)
+	/// </summary>
+	public class TaskListTag : NoteTag
+	{
+		public static String NAME = "task-list";
+		
+		public TaskListTag () : base (TaskListTag.NAME)
+		{
+			Background = "red";
+		}
+	}
+	
 }

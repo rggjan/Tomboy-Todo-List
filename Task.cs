@@ -177,7 +177,7 @@ namespace Tomboy.TaskManager {
 			
 			//Logger.Debug ("line " + start.Line + " start index: " + start.LineIndex + " end index: " + end.LineIndex);
 		
-			Buffer.ApplyTag ("task", start, end);
+			Buffer.ApplyTag (DescriptionTag.NAME, start, end);
 		
 			if (CheckBox != null && CheckBox.Active) {
 				Buffer.ApplyTag ("strikethrough", start, end);
@@ -221,11 +221,11 @@ namespace Tomboy.TaskManager {
 	/// <summary>
 	/// Marks a Task in a NoteBuffer. Currently this does nothing (used to restore notes)
 	/// </summary>
-	public class TaskTag : NoteTag
+	public class DescriptionTag : NoteTag
 	{
-		public static String NAME = "task";
+		public static String NAME = "description";
 		
-		public TaskTag () : base (TaskTag.NAME)
+		public DescriptionTag () : base (DescriptionTag.NAME)
 		{
 			Background = "green";
 			LeftMargin = 3;

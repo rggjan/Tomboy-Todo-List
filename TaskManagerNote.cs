@@ -92,7 +92,7 @@ namespace Tomboy.TaskManager {
 				
 				foreach (Gtk.TextTag tag in end.Tags)
 				{
-					if (tag.Name == "task")
+					if (tag.Name == DescriptionTag.NAME)
 					{
 						Logger.Debug ("tasklist Tag found!");
 						deletion_needed = false;

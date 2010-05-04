@@ -42,7 +42,6 @@
     <Compile Include="TaskManagerApplication.cs" />
     <Compile Include="TaskList.cs" />
     <Compile Include="Task.cs" />
-    <Compile Include="TaskUtilities.cs" />
     <Compile Include="AttributedTask.cs" />
     <Compile Include="ITask.cs" />
   </ItemGroup>

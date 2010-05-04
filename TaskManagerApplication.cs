@@ -24,7 +24,7 @@ namespace Tomboy.TaskManager {
 			NoteTagTable tagtable = NoteTagTable.Instance;
 			
 			if (tagtable.Lookup("task") == null)
-				tagtable.Add (new TaskTag ());
+				tagtable.Add (new DescriptionTag ());
 		}
 		
 		
