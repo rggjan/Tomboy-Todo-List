@@ -43,7 +43,7 @@ namespace Tomboy.TaskManager {
 		/// Description of the Task the user wrote in the Buffer
 		/// </summary>
 		public string Description {
-			get; set; 
+			get; set;
 		}
 		
 		/// <summary>
@@ -53,7 +53,6 @@ namespace Tomboy.TaskManager {
 			get; set; 
 		}
 		
-		//EDIT: renaming
 		/// <summary>
 		/// Is this task completed?
 		/// </summary>
@@ -88,17 +87,12 @@ namespace Tomboy.TaskManager {
 		/// </summary>
 		private TaskList ContainingTaskList;
 		
-		private List<AttributedTask> containers;
 		public List<AttributedTask> Containers {
-			get{
-				return containers;
-			}
+			get; private set;
 		}
 		
-		//TODO
-		private List<AttributedTask> SubTasks;
 		public List<AttributedTask> Children {
-			get{return SubTasks;}
+			get; private set;
 		}
 		
 		/// <summary>
@@ -118,8 +112,8 @@ namespace Tomboy.TaskManager {
 			InsertCheckButton (Position);
 			
 			//Structure
-			containers = new List<AttributedTask> ();
-			containers.Add (ContainingTaskList);
+			Containers = new List<AttributedTask> ();
+			Containers.Add (ContainingTaskList);
 		}
 	
 		/// <summary>

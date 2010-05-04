@@ -32,11 +32,9 @@
     <Reference Include="System" />
     <Reference Include="gtk-sharp, Version=2.10.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
       <SpecificVersion>False</SpecificVersion>
-      <Package>gtk-sharp-2.0</Package>
     </Reference>
     <Reference Include="Mono.Posix" />
     <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <Package>gtk-sharp-2.0</Package>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -45,6 +43,8 @@
     <Compile Include="TaskList.cs" />
     <Compile Include="Task.cs" />
     <Compile Include="TaskUtilities.cs" />
+    <Compile Include="AttributedTask.cs" />
+    <Compile Include="ITask.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

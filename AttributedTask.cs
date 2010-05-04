@@ -24,45 +24,15 @@
 // 
 
 using System;
-using Tomboy;
-using System.Collections.Generic;
 
-namespace Tomboy.TaskManager {
-	
-	public enum Priority {
+namespace Tomboy.TaskManager
+{
+	public enum Priorities {
 		VERY_LOW = 1,
 		LOW,
 		NORMAL,
 		HIGH,
 		VERY_HIGH
-	}
-	
-	public interface ITask {
-		
-		/// <summary>
-		/// Returns all Abstract Tasks that are children of this Abstracttask.
-		/// TaskNote -> TaskLists (TODO: not sure this is necessary)
-		/// TaskList -> Tasks
-		/// Tasks -> Subtasks (linked via TaskNotes to TaskLists)
-		/// </summary>
-		List<AttributedTask> Children {
-			get;
-		}
-		
-		/// <summary>
-		/// As implicitly described by Children (other way arround)
-		/// </summary>
-		List<AttributedTask> Containers {
-			get;
-		}
-		
-		/// <summary>
-		/// Whether or not this task has been completed
-		/// </summary>
-		bool Done {
-			get;
-			set;
-		}
 	}
 	
 	public abstract class AttributedTask {
@@ -89,7 +59,7 @@ namespace Tomboy.TaskManager {
 		/// The priority that is assigned to this task.
 		/// Note that default must be set to 3, not 0
 		/// </summary>
-		public Priority Prio {
+		public Priorities Priority {
 			get; set;
 		}	
 	}
