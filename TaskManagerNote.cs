@@ -39,7 +39,17 @@ namespace Tomboy.TaskManager {
 					}
 					widget ""*.tomboy-inline-checkbox"" style ""mystyle""";
 				Gtk.Rc.ParseString (styleMod);*/
-			
+				
+				
+				/*string styleMod =
+					@"style ""combobox-style"" {
+					#GtkComboBox::appears-as-list = 1
+					GtkComboBox::arrow-size = 0
+					}
+					widget ""*.tomboy-inline-combobox"" style ""combobox-style""";
+				
+				Gtk.Rc.ParseString (styleMod);*/
+				
 				item = new Gtk.MenuItem (Catalog.GetString ("Add TaskList"));
 				item.Activated += OnMenuItemActivated;
 				item.Show ();
