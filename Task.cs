@@ -140,18 +140,27 @@ namespace Tomboy.TaskManager {
 			Gtk.TextChildAnchor anchor = Buffer.CreateChildAnchor (ref insertIter);
 			ContainingTaskList.ContainingNote.Window.Editor.AddChildAtAnchor (CheckBox, anchor);
 			CheckBox.Show ();
+		}
+		
+		/// <summary>
+		/// Inserts the priority ComboBox in the TextBuffer.
+		/// </summary>
+		/// <param name="at"> Where to insert (exactly). </param>
+		/// <returns>
+		/// A TextIter
+		/// </returns>
+		private TextIter InsertPriorityBox (TextMark at)
+		{
+			TextIter insertIter = Buffer.GetIterAtMark (at);
 			
-			Logger.Debug ("Checkbox inserted.");
-			
-			string[] a = { "1", "2", "3", "4", "5" };
-			var Box = new Gtk.ComboBox (a);
-			Box.Name = "tomboy-inline-combobox";
-			Gtk.TextIter iter2 = insertIter;
-			iter2.BackwardChar ();
-			Gtk.TextChildAnchor anchor2 = Buffer.CreateChildAnchor (ref iter2);
-			ContainingTaskList.ContainingNote.Window.Editor.AddChildAtAnchor (Box, anchor2);
-			Box.Show ();
-			
+			string[] priorities = { "1", "2", "3", "4", "5" };
+			var box = new Gtk.ComboBox (priorities);
+			box.Name = "tomboy-inline-combobox";
+
+			Gtk.TextChildAnchor anchor = Buffer.CreateChildAnchor (ref insertIter);
+			ContainingTaskList.ContainingNote.Window.Editor.AddChildAtAnchor (box, anchor);
+			box.Show ();
+			return insertIter;
 		}
 		
 		/// <returns>
