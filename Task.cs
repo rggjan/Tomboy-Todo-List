@@ -132,7 +132,8 @@ namespace Tomboy.TaskManager {
 		private void InsertCheckButton (Gtk.TextMark at)
 		{
 			TextIter insertIter = Buffer.GetIterAtMark (at);
-			insertIter.BackwardChars (insertIter.LineOffset); // go to beginning of the line
+			insertIter.BackwardChars (insertIter.LineOffset);
+			// go to beginning of the line
 			
 			CheckBox = new Gtk.CheckButton ();
 			CheckBox.Name = "tomboy-inline-checkbox";
@@ -143,6 +144,16 @@ namespace Tomboy.TaskManager {
 			CheckBox.Show ();
 			
 			Logger.Debug ("Checkbox inserted.");
+			
+			string[] a = { "1", "2", "3", "4", "5" };
+			var Box = new Gtk.ComboBox (a);
+			Box.Name = "tomboy-inline-combobox";
+			Gtk.TextIter iter2 = insertIter;
+			iter2.BackwardChar ();
+			Gtk.TextChildAnchor anchor2 = Buffer.CreateChildAnchor (ref iter2);
+			ContainingTaskList.ContainingNote.Window.Editor.AddChildAtAnchor (Box, anchor2);
+			Box.Show ();
+			
 		}
 		
 		/// <returns>
