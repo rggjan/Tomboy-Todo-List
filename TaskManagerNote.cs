@@ -92,9 +92,10 @@ namespace Tomboy.TaskManager {
 				
 				foreach (Gtk.TextTag tag in end.Tags)
 				{
-					if (tag.Name == DescriptionTag.NAME)
+					//Edit: Wow. Now this looks pretty!
+					if (tag is TaskTag)
 					{
-						Logger.Debug ("tasklist Tag found!");
+						Logger.Debug ("TaskTag found!");
 						deletion_needed = false;
 						new_task_needed = true;
 						return;

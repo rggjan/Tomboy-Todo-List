@@ -21,10 +21,7 @@ namespace Tomboy.TaskManager {
 			initialized = true;
 			
 			// Register additional Tags
-			NoteTagTable tagtable = NoteTagTable.Instance;
-			
-			if (tagtable.Lookup("task") == null)
-				tagtable.Add (new DescriptionTag ());
+			// Edit: Deleted. No need anymore
 		}
 		
 		

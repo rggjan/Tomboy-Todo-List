@@ -28,6 +28,7 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using Gtk;
 using Tomboy;
+using System.Xml;
 
 namespace Tomboy.TaskManager {
 
@@ -38,6 +39,8 @@ namespace Tomboy.TaskManager {
 	/// marked as done by crossing out the checkbox.
 	/// </summary>
 	public class Task : AttributedTask, ITask {
+		
+		private TaskTag astag;
 		
 		/// <summary>
 		/// Description of the Task the user wrote in the Buffer
@@ -114,6 +117,10 @@ namespace Tomboy.TaskManager {
 			//Structure
 			Containers = new List<AttributedTask> ();
 			Containers.Add (ContainingTaskList);
+					
+			//Tag
+			astag = new TaskTag (this);
+			Buffer.TagTable.Add (astag);
 		}
 	
 		/// <summary>
@@ -165,6 +172,7 @@ namespace Tomboy.TaskManager {
 			return endIter;
 		}
 		
+			/// <summary>
 		/// <summary>
 		/// Updates the strikethrough tag of the task description. If the checkbox is
 		/// active or removes it if it's not. Also applies the tasklist tag.
@@ -174,10 +182,9 @@ namespace Tomboy.TaskManager {
 			var start = GetDescriptionStart ();
 			var end = GetDescriptionEnd ();
 
-			
 			//Logger.Debug ("line " + start.Line + " start index: " + start.LineIndex + " end index: " + end.LineIndex);
 		
-			Buffer.ApplyTag (DescriptionTag.NAME, start, end);
+			Buffer.ApplyTag (astag, start, end);
 		
 			if (CheckBox != null && CheckBox.Active) {
 				Buffer.ApplyTag ("strikethrough", start, end);
@@ -197,10 +204,14 @@ namespace Tomboy.TaskManager {
 			int line = Buffer.GetIterAtMark (Buffer.InsertMark).Line;
 
 			// update strikethrough
-			if (line == GetDescriptionStart ().Line) {
+			if (changed){
+				astag.update ();
+				TagUpdate ();
+				changed = false;
+			} else if (line == GetDescriptionStart ().Line) {
 				TagUpdate ();
 			}
-
+			
 		}
 
 		/// <summary>
@@ -221,16 +232,45 @@ namespace Tomboy.TaskManager {
 	/// <summary>
 	/// Marks a Task in a NoteBuffer. Currently this does nothing (used to restore notes)
 	/// </summary>
-	public class DescriptionTag : NoteTag
+	public class TaskTag : DynamicNoteTag
 	{
-		public static String NAME = "description";
+		//Can't be either const nor static
+		public const String NAME="task";
+		private Task task;
 		
-		public DescriptionTag () : base (DescriptionTag.NAME)
-		{
+		public TaskTag (Task task) : base ()
+		{	
 			Background = "green";
 			LeftMargin = 3;
 			LeftMarginSet = true;
 			CanSpellCheck = true;
+			
+			//Fields
+			this.task = task;
+			update ();
+			
+			//Make Serializable
+			this.CanSerialize = true;
 		}
+		
+		public void update () {
+			Attributes.Add ("Done", task.Done.ToString ());
+			Attributes.Add ("Duedate", task.DueDate.ToString ());
+			Attributes.Add ("Priotiry", task.Priority.ToString ());
+		}
+		
+		public override void Write (System.Xml.XmlTextWriter xml, bool start)
+		{
+			if (start){
+				xml.WriteStartElement (null, NAME, null);
+				foreach (string key in Attributes.Keys) {
+					string val = Attributes [key];
+					xml.WriteAttributeString (null, key, null, val);
+				}	
+			}
+			else
+				xml.WriteEndElement ();
+		}
+
 	}
 }
