@@ -8,7 +8,8 @@ namespace Tomboy.TaskManager {
 	
 	public class TaskManagerNoteAddin : NoteAddin, ITask {
 		
-		Gtk.MenuItem item;
+		Gtk.MenuItem add_list;
+		Gtk.MenuItem add_priority;
 
 		bool initialized = false;
 		bool new_task_needed = false;
@@ -20,7 +21,8 @@ namespace Tomboy.TaskManager {
 
 		public override void Shutdown ()
 		{
-			item.Activated -= OnMenuItemActivated;
+			add_list.Activated -= OnAddListActivated;
+			add_priority.Activated -= OnAddPriorityActivated;
 		}
 
 		public override void OnNoteOpened ()
@@ -50,14 +52,20 @@ namespace Tomboy.TaskManager {
 				
 				Gtk.Rc.ParseString (styleMod);*/
 				
-				item = new Gtk.MenuItem (Catalog.GetString ("Add TaskList"));
-				item.Activated += OnMenuItemActivated;
-				item.Show ();
-				AddPluginMenuItem (item);
+				add_list = new Gtk.MenuItem (Catalog.GetString ("Add TaskList"));
+				add_priority = new Gtk.MenuItem (Catalog.GetString ("Add Priority"));
+				
+				add_list.Activated += OnAddListActivated;
+				add_priority.Activated += OnAddPriorityActivated;
+				
+				add_list.Show ();
+				add_priority.Show ();
+				
+				AddPluginMenuItem (add_list);
+				AddPluginMenuItem (add_priority);
 
 				Buffer.UserActionEnded += CheckIfNewTaskNeeded;
 				Buffer.InsertText += BufferInsertText;
-				
 				//Initialise tasklists list
 				//TODO: get from previous sessions?
 				Children = new List<AttributedTask> ();
@@ -139,7 +147,7 @@ namespace Tomboy.TaskManager {
 			return text.Trim().Equals("[]");
 		}
 
-		void OnMenuItemActivated (object sender, EventArgs args)
+		void OnAddListActivated (object sender, EventArgs args)
 		{
 			Gtk.TextIter cursor = Buffer.GetIterAtMark (Buffer.InsertMark);
 			cursor.BackwardChar ();
@@ -152,6 +160,25 @@ namespace Tomboy.TaskManager {
 			Children.Add (tl);
 		}
 
+		void OnAddPriorityActivated (object sender, EventArgs args)
+		{
+			Gtk.TextIter cursor = Buffer.GetIterAtMark (Buffer.InsertMark);
+			cursor.BackwardChar ();
+			
+			foreach (Gtk.TextTag tag in cursor.Tags)
+			{
+				//Edit: Wow. Now this looks pretty!
+				if (tag is TaskTag)
+				{
+					Logger.Debug ("TaskTag found!");
+					TaskTag tasktag = (TaskTag)tag;
+					cursor.LineOffset = 0;
+					tasktag.Task.InsertPriorityBox(cursor);
+				}
+			}
+			
+		}
+		
 		public List<AttributedTask> Children {
 			get; private set;
 		}
