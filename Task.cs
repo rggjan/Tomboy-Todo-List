@@ -149,10 +149,8 @@ namespace Tomboy.TaskManager {
 		/// <returns>
 		/// A TextIter
 		/// </returns>
-		private TextIter InsertPriorityBox (TextMark at)
+		public TextIter InsertPriorityBox (TextIter insertIter)
 		{
-			TextIter insertIter = Buffer.GetIterAtMark (at);
-			
 			string[] priorities = { "1", "2", "3", "4", "5" };
 			var box = new Gtk.ComboBox (priorities);
 			box.Name = "tomboy-inline-combobox";
@@ -254,7 +252,17 @@ namespace Tomboy.TaskManager {
 	{
 		//Can't be either const nor static
 		public const String NAME="task";
+		
 		private Task task;
+
+		public Task Task {
+			get {
+				return task;
+			}
+			set {
+				task = value;
+			}
+		}
 		
 		public TaskTag (Task task) : base ()
 		{	
