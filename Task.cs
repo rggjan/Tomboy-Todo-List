@@ -127,13 +127,11 @@ namespace Tomboy.TaskManager {
 		/// Inserts a CheckButton in the TextBuffer.
 		/// </summary>
 		/// <param name="at">
-		/// <see cref="Gtk.TextMark"/> Where to insert.
+		/// <see cref="Gtk.TextMark"/> Where to insert (exactly).
 		/// </param>
 		private void InsertCheckButton (Gtk.TextMark at)
 		{
 			TextIter insertIter = Buffer.GetIterAtMark (at);
-			insertIter.BackwardChars (insertIter.LineOffset);
-			// go to beginning of the line
 			
 			CheckBox = new Gtk.CheckButton ();
 			CheckBox.Name = "tomboy-inline-checkbox";
