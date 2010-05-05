@@ -36,12 +36,23 @@ namespace Tomboy.TaskManager
 	}
 	
 	public abstract class AttributedTask {
+		
+		public bool changed;
 	
 		/// <summary>
 		/// Date when this task is overdue
 		/// </summary>
+		private DateTime dueDate;
 		public DateTime DueDate {
-			get; set;
+			get {
+				return dueDate;
+			} 
+			set {
+				if (!dueDate.Equals (value)){
+					changed = true;
+					dueDate = value;
+				}
+			}
 		}
 		
 		/// <summary>
@@ -55,12 +66,22 @@ namespace Tomboy.TaskManager
 			return DueDate.CompareTo(DateTime.Now) <= 0;	
 		}
 		
+		
 		/// <summary>
 		/// The priority that is assigned to this task.
 		/// Note that default must be set to 3, not 0
 		/// </summary>
+		private Priorities priority;
 		public Priorities Priority {
-			get; set;
+			get {
+				return priority;
+			}
+			set {
+				if(!priority.Equals (value)){
+					changed = true;
+					priority = value;	
+				}
+			}
 		}	
 	}
 }
