@@ -13,7 +13,6 @@ namespace Tomboy.TaskManager {
 		Gtk.MenuItem add_list = new Gtk.MenuItem (Catalog.GetString ("Add TaskList"));
 		Gtk.MenuItem add_priority = new Gtk.MenuItem (Catalog.GetString ("Add Priority"));
 		
-
 		bool new_task_needed = false;
 		TaskList current_task = null;
 		

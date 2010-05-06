@@ -299,7 +299,7 @@ namespace Tomboy.TaskManager {
 		public void update () {
 			Attributes.Add ("Done", task.Done.ToString ());
 			Attributes.Add ("Duedate", task.DueDate.ToString ());
-			Attributes.Add ("Priotiry", task.Priority.ToString ());
+			Attributes.Add ("Priority", task.Priority.ToString ());
 		}
 		
 		public override void Write (System.Xml.XmlTextWriter xml, bool start)
