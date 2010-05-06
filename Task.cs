@@ -40,7 +40,6 @@ namespace Tomboy.TaskManager {
 	/// </summary>
 	public class Task : AttributedTask, ITask {
 		
-		private TaskTag astag;
 		
 		/// <summary>
 		/// Description of the Task the user wrote in the Buffer
@@ -130,10 +129,6 @@ namespace Tomboy.TaskManager {
 			//Structure
 			Containers = new List<AttributedTask> ();
 			Containers.Add (ContainingTaskList);
-					
-			//Tag
-			astag = new TaskTag (this);
-			Buffer.TagTable.Add (astag);
 		}
 	
 		/// <summary>
@@ -218,8 +213,10 @@ namespace Tomboy.TaskManager {
 
 			//Logger.Debug ("line " + start.Line + " start index: " + start.LineIndex + " end index: " + end.LineIndex);
 		
-			Buffer.ApplyTag (astag, start, end);
-		
+			TaskTag tt = (TaskTag) ContainingTaskList.ContainingNote.TagTable.CreateDynamicTag ("task");
+			tt.bind (this);
+			Buffer.ApplyTag (tt,start,end);
+			
 			if (CheckBox != null && CheckBox.Active) {
 				Buffer.ApplyTag ("strikethrough", start, end);
 			} 
@@ -237,12 +234,7 @@ namespace Tomboy.TaskManager {
 			Debug.Assert (Buffer == sender); // no other buffer should be registred here	
 			int line = Buffer.GetIterAtMark (Buffer.InsertMark).Line;
 
-			// update strikethrough
-			if (changed){
-				astag.update ();
-				TagUpdate ();
-				changed = false;
-			} else if (line == GetDescriptionStart ().Line) {
+			if (line == GetDescriptionStart ().Line) {
 				TagUpdate ();
 			}
 			
@@ -268,8 +260,6 @@ namespace Tomboy.TaskManager {
 	/// </summary>
 	public class TaskTag : DynamicNoteTag
 	{
-		//Can't be either const nor static
-		public const String NAME="task";
 		
 		private Task task;
 
@@ -282,39 +272,21 @@ namespace Tomboy.TaskManager {
 			}
 		}
 
-		public TaskTag (Task task) : base()
+		public override void Initialize (string element_name)
 		{
+			base.Initialize (element_name);
+
 			Background = "green";
 			LeftMargin = 3;
 			LeftMarginSet = true;
 			CanSpellCheck = true;
-			
-			//Fields
-			this.task = task;
-			update ();
-			
-			//Make Serializable
-			this.CanSerialize = true;
 		}
 		
-		public void update () {
+		public void bind (Task task) {
+			this.task = task;
 			Attributes.Add ("Done", task.Done.ToString ());
 			Attributes.Add ("Duedate", task.DueDate.ToString ());
 			Attributes.Add ("Priority", task.Priority.ToString ());
 		}
-		
-		public override void Write (System.Xml.XmlTextWriter xml, bool start)
-		{
-			if (start){
-				xml.WriteStartElement (null, NAME, null);
-				foreach (string key in Attributes.Keys) {
-					string val = Attributes [key];
-					xml.WriteAttributeString (null, key, null, val);
-				}	
-			}
-			else
-				xml.WriteEndElement ();
-		}
-
 	}
 }

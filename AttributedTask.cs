@@ -37,6 +37,7 @@ namespace Tomboy.TaskManager
 	
 	public abstract class AttributedTask {
 		
+		//TODO: Use this as an event instead
 		public bool changed;
 	
 		/// <summary>
@@ -44,15 +45,8 @@ namespace Tomboy.TaskManager
 		/// </summary>
 		private DateTime dueDate;
 		public DateTime DueDate {
-			get {
-				return dueDate;
-			} 
-			set {
-				if (!dueDate.Equals (value)){
-					changed = true;
-					dueDate = value;
-				}
-			}
+			get;
+			set;
 		}
 		
 		/// <summary>
@@ -73,15 +67,7 @@ namespace Tomboy.TaskManager
 		/// </summary>
 		private Priorities priority;
 		public Priorities Priority {
-			get {
-				return priority;
-			}
-			set {
-				if(!priority.Equals (value)){
-					changed = true;
-					priority = value;	
-				}
-			}
+			get;set;
 		}	
 	}
 }
