@@ -197,11 +197,12 @@ namespace Tomboy.TaskManager {
 		/// A <see cref="Gtk.TextIter"/> marking the end of the textual description of this
 		/// task in the NoteBuffer.
 		/// </returns>
-		public Gtk.TextIter GetDescriptionEnd () {
+		public Gtk.TextIter GetDescriptionEnd ()
+		{
 			var start = GetDescriptionStart ();
 
 			var endIter = Buffer.GetIterAtLine (start.Line);
-			endIter.ForwardToLineEnd();
+			endIter.ForwardToLineEnd ();
 			
 			return endIter;
 		}

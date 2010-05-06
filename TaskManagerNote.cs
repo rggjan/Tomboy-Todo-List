@@ -16,9 +16,10 @@ namespace Tomboy.TaskManager {
 		bool new_task_needed = false;
 		TaskList current_task = null;
 		
+		
 		public override void Initialize ()
 		{
-			Logger.Debug ("Initializing TaskManager");
+			Logger.Debug ("Initializing TaskManager"); // FIXME this is executed 20 times
 				
 			/*string styleMod =
 				@"style ""mystyle"" {
@@ -39,7 +40,7 @@ namespace Tomboy.TaskManager {
 				widget ""*.tomboy-inline-combobox"" style ""combobox-style""";
 			
 			Gtk.Rc.ParseString (styleMod);*/
-			
+		
 			tasklist.Submenu = task_menu;
 			add_list.Activated += OnAddListActivated;
 			add_priority.Activated += OnAddPriorityActivated;
@@ -110,9 +111,19 @@ namespace Tomboy.TaskManager {
 			if (args.Text == System.Environment.NewLine)
 			{
 				Gtk.TextIter end = args.Pos;
-				end.BackwardChars (2);
-				// Go back to last char on line that is not a newline
+				end.BackwardChar ();
+
+				var begin = end;
+				begin.LineOffset = 0;
 				
+				if (Buffer.GetText (begin, end, false).Trim ().Length == 0)
+				{
+					//FIXME delete task!
+				}
+				
+				end.BackwardChar();
+				
+				// Go back to last char on line that is not a newline
 				foreach (Gtk.TextTag tag in end.Tags)
 				{
 					//Edit: Wow. Now this looks pretty!
@@ -172,10 +183,8 @@ namespace Tomboy.TaskManager {
 			Gtk.TextIter cursor = Buffer.GetIterAtMark (Buffer.InsertMark);
 			cursor.BackwardChar ();
 			
-			foreach (Gtk.TextTag tag in cursor.Tags)
-			{
-				if (tag is TaskTag)
-				{
+			foreach (Gtk.TextTag tag in cursor.Tags) {
+				if (tag is TaskTag) {
 					Logger.Debug ("TaskTag found!");
 					TaskTag tasktag = (TaskTag)tag;
 					cursor.LineOffset = 0;
