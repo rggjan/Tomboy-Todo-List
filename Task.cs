@@ -196,7 +196,7 @@ namespace Tomboy.TaskManager {
 			return endIter;
 		}
 		
-			/// <summary>
+		/// <summary>
 		/// <summary>
 		/// Updates the strikethrough tag of the task description. If the checkbox is
 		/// active or removes it if it's not. Also applies the tasklist tag.
@@ -290,7 +290,7 @@ namespace Tomboy.TaskManager {
 		public void update () {
 			Attributes.Add ("Done", task.Done.ToString ());
 			Attributes.Add ("Duedate", task.DueDate.ToString ());
-			Attributes.Add ("Priotiry", task.Priority.ToString ());
+			Attributes.Add ("Priority", task.Priority.ToString ());
 		}
 		
 		public override void Write (System.Xml.XmlTextWriter xml, bool start)
