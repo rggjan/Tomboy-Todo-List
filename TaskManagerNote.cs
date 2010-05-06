@@ -8,8 +8,11 @@ namespace Tomboy.TaskManager {
 	
 	public class TaskManagerNoteAddin : NoteAddin, ITask {
 		
-		Gtk.MenuItem add_list;
-		Gtk.MenuItem add_priority;
+		Gtk.MenuItem tasklist = new Gtk.MenuItem (Catalog.GetString ("TaskList"));
+		Gtk.Menu task_menu = new Gtk.Menu();
+		Gtk.MenuItem add_list = new Gtk.MenuItem (Catalog.GetString ("Add TaskList"));
+		Gtk.MenuItem add_priority = new Gtk.MenuItem (Catalog.GetString ("Add Priority"));
+		
 
 		bool initialized = false;
 		bool new_task_needed = false;
@@ -17,6 +20,50 @@ namespace Tomboy.TaskManager {
 		
 		public override void Initialize ()
 		{
+			Logger.Debug ("Initializing TaskManager");
+				
+			/*string styleMod =
+				@"style ""mystyle"" {
+				#GtkCheckButton::indicator-spacing = 0
+				#GtkCheckButton::focus-padding = 0
+				#GtkCheckButton::focus-line-width = 2
+				#GtkCheckButton::indicator-size = 100
+				}
+				widget ""*.tomboy-inline-checkbox"" style ""mystyle""";
+			Gtk.Rc.ParseString (styleMod);*/
+			
+			
+			/*string styleMod =
+				@"style ""combobox-style"" {
+				#GtkComboBox::appears-as-list = 1
+				GtkComboBox::arrow-size = 0
+				}
+				widget ""*.tomboy-inline-combobox"" style ""combobox-style""";
+			
+			Gtk.Rc.ParseString (styleMod);*/
+			
+			tasklist.Submenu = task_menu;
+			add_list.Activated += OnAddListActivated;
+			add_priority.Activated += OnAddPriorityActivated;
+			
+			task_menu.Add(add_list);
+			task_menu.Add(add_priority);
+			tasklist.ShowAll();
+			
+			AddPluginMenuItem (tasklist);
+
+			Buffer.UserActionEnded += CheckIfNewTaskNeeded;
+			Buffer.InsertText += BufferInsertText;
+			
+			//Initialise tasklists list
+			//TODO: get from previous sessions?
+			Children = new List<AttributedTask> ();
+			
+			NoteTag tag = new NoteTag ("locked");
+			tag.Editable = false;
+
+			if (Note.TagTable.Lookup ("locked") == null)
+				Note.TagTable.Add (tag);
 		}
 
 		public override void Shutdown ()
@@ -26,6 +73,7 @@ namespace Tomboy.TaskManager {
 		}
 
 		public override void OnNoteOpened ()
+<<<<<<< HEAD
 		{
 		
 			if (!initialized)
