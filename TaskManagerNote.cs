@@ -64,6 +64,10 @@ namespace Tomboy.TaskManager {
 
 			if (Note.TagTable.Lookup ("locked") == null)
 				Note.TagTable.Add (tag);
+			
+			//TaskTag
+			if(!Note.TagTable.IsDynamicTagRegistered("task"))
+				Note.TagTable.RegisterDynamicTag("task",typeof (TaskTag));
 		}
 
 		public override void Shutdown ()
@@ -132,7 +136,9 @@ namespace Tomboy.TaskManager {
 						Logger.Debug ("TaskTag found!");
 						
 						TaskTag tasktag = (TaskTag)tag;
+						Logger.Debug ("Test");
 						current_task = tasktag.Task.ContainingTaskList;
+						Logger.Debug ("Test2");
 						new_task_needed = true;
 						return;
 					}
