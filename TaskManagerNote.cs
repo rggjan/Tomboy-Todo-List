@@ -13,7 +13,7 @@ namespace Tomboy.TaskManager {
 
 		bool initialized = false;
 		bool new_task_needed = false;
-		bool deletion_needed = false;
+		TaskList current_task = null;
 		
 		public override void Initialize ()
 		{
@@ -66,11 +66,14 @@ namespace Tomboy.TaskManager {
 
 				Buffer.UserActionEnded += CheckIfNewTaskNeeded;
 				Buffer.InsertText += BufferInsertText;
+				Buffer.MarkSet += BufferMarkSet;
+				
 				//Initialise tasklists list
 				//TODO: get from previous sessions?
 				Children = new List<AttributedTask> ();
 				
 				initialized = true;
+				
 				
 				NoteTag tag = new NoteTag ("locked");
 				tag.Editable = false;
@@ -85,32 +88,38 @@ namespace Tomboy.TaskManager {
 			if (new_task_needed) {
 				Logger.Debug ("Adding a new Task");
 				
-				if (deletion_needed) {
+				if (current_task == null) {
 					//Logger.Debug ("Deleting stuff");
 					Gtk.TextIter start = Buffer.GetIterAtMark (Buffer.InsertMark);
-					start.BackwardLine();
+					start.BackwardLine ();
 					
 					Gtk.TextIter end = start;
 					end.ForwardChars (2);
 					
 					//TODO: Use the rest of this line as the title of the new task list
-						
-//					Logger.Debug(Buffer.GetText(start, end, false));
+					
+					//					Logger.Debug(Buffer.GetText(start, end, false));
 					Buffer.Delete (ref start, ref end);
+					
+					Children.Add (new TaskList (Note));
+				} else {
+					current_task.addTask (Buffer.InsertMark);
 				}
-				
-				TaskList tl = new TaskList (Note);
-				Children.Add (tl);
 				new_task_needed = false;
 			}
 		}
 	
+		void BufferMarkSet (object o, EventArgs args)
+		{
+		}
+		
 		void BufferInsertText (object o, Gtk.InsertTextArgs args)
 		{
-			if (args.Text == System.Environment.NewLine) 
+			if (args.Text == System.Environment.NewLine)
 			{
 				Gtk.TextIter end = args.Pos;
 				end.BackwardChars (2);
+				// Go back to last char on line that is not a newline
 				
 				foreach (Gtk.TextTag tag in end.Tags)
 				{
@@ -118,7 +127,9 @@ namespace Tomboy.TaskManager {
 					if (tag is TaskTag)
 					{
 						Logger.Debug ("TaskTag found!");
-						deletion_needed = false;
+						
+						TaskTag tasktag = (TaskTag)tag;
+						current_task = tasktag.Task.ContainingTaskList;
 						new_task_needed = true;
 						return;
 					}
@@ -137,7 +148,7 @@ namespace Tomboy.TaskManager {
 				
 				if (IsTextTodoItem (Buffer.GetText (start, end, false)))
 				{
-					deletion_needed = true;
+					current_task = null;
 					new_task_needed = true;
 				}
 			}
