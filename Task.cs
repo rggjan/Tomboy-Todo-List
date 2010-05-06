@@ -112,7 +112,10 @@ namespace Tomboy.TaskManager {
 			ContainingTaskList = containingList;
 			Position = location;
 			Buffer.UserActionEnded += BufferChanged;
-			InsertCheckButton (Position);
+			
+			Gtk.TextIter iter = Buffer.GetIterAtMark (location);
+			iter.LineOffset = 0;
+			InsertCheckButton (iter);
 			
 			//Structure
 			Containers = new List<AttributedTask> ();
@@ -126,13 +129,11 @@ namespace Tomboy.TaskManager {
 		/// <summary>
 		/// Inserts a CheckButton in the TextBuffer.
 		/// </summary>
-		/// <param name="at">
-		/// <see cref="Gtk.TextMark"/> Where to insert (exactly).
+		/// <param name="insertIter">
+		/// <see cref="Gtk.TextIter"/> Where to insert (exactly).
 		/// </param>
-		private void InsertCheckButton (Gtk.TextMark at)
+		private void InsertCheckButton (TextIter insertIter)
 		{
-			TextIter insertIter = Buffer.GetIterAtMark (at);
-			
 			CheckBox = new Gtk.CheckButton ();
 			CheckBox.Name = "tomboy-inline-checkbox";
 			CheckBox.Toggled += ToggleCheckBox;
@@ -140,6 +141,13 @@ namespace Tomboy.TaskManager {
 			Gtk.TextChildAnchor anchor = Buffer.CreateChildAnchor (ref insertIter);
 			ContainingTaskList.ContainingNote.Window.Editor.AddChildAtAnchor (CheckBox, anchor);
 			CheckBox.Show ();
+			
+			var start = insertIter;
+			start.BackwardChar ();
+			start.BackwardChar ();
+			var end = insertIter;
+			
+			Buffer.ApplyTag ("locked", start, end);
 		}
 		
 		/// <summary>
@@ -263,9 +271,9 @@ namespace Tomboy.TaskManager {
 				task = value;
 			}
 		}
-		
-		public TaskTag (Task task) : base ()
-		{	
+
+		public TaskTag (Task task) : base()
+		{
 			Background = "green";
 			LeftMargin = 3;
 			LeftMarginSet = true;
