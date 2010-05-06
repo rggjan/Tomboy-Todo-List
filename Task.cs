@@ -88,7 +88,7 @@ namespace Tomboy.TaskManager {
 		/// <summary>
 		/// TaskList containing this task.
 		/// </summary>
-		private TaskList ContainingTaskList;
+		private TaskList containing_task_list;
 		
 		public List<AttributedTask> Containers {
 			get; private set;
@@ -106,6 +106,16 @@ namespace Tomboy.TaskManager {
 				return ContainingTaskList.ContainingNote.Buffer;
 			}
 		}
+		
+		public TaskList ContainingTaskList {
+			get {
+				return containing_task_list;
+			}
+			set {
+				containing_task_list = value;
+			}
+		}
+		
 		
 		public Task (TaskList containingList, Gtk.TextMark location)
 		{
@@ -151,7 +161,7 @@ namespace Tomboy.TaskManager {
 		}
 		
 		/// <summary>
-		/// Inserts the priority ComboBox in the TextBuffer.
+		/// Inserts the pr or;ty ComboBox in the TextBuffer.
 		/// </summary>
 		/// <param name="at"> Where to insert (exactly). </param>
 		/// <returns>
@@ -196,7 +206,6 @@ namespace Tomboy.TaskManager {
 			return endIter;
 		}
 		
-			/// <summary>
 		/// <summary>
 		/// Updates the strikethrough tag of the task description. If the checkbox is
 		/// active or removes it if it's not. Also applies the tasklist tag.
