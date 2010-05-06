@@ -54,6 +54,7 @@ namespace Tomboy.TaskManager {
 
 			Buffer.UserActionEnded += CheckIfNewTaskNeeded;
 			Buffer.InsertText += BufferInsertText;
+                        Buffer.MarkSet += BufferMarkSet;
 			
 			//Initialise tasklists list
 			//TODO: get from previous sessions?
@@ -73,62 +74,7 @@ namespace Tomboy.TaskManager {
 		}
 
 		public override void OnNoteOpened ()
-<<<<<<< HEAD
 		{
-		
-			if (!initialized)
-			{
-				Logger.Debug ("Initializing TaskManager");
-				
-				/*string styleMod =
-					@"style ""mystyle"" {
-					#GtkCheckButton::indicator-spacing = 0
-					#GtkCheckButton::focus-padding = 0
-					#GtkCheckButton::focus-line-width = 2
-					#GtkCheckButton::indicator-size = 100
-					}
-					widget ""*.tomboy-inline-checkbox"" style ""mystyle""";
-				Gtk.Rc.ParseString (styleMod);*/
-				
-				
-				/*string styleMod =
-					@"style ""combobox-style"" {
-					#GtkComboBox::appears-as-list = 1
-					GtkComboBox::arrow-size = 0
-					}
-					widget ""*.tomboy-inline-combobox"" style ""combobox-style""";
-				
-				Gtk.Rc.ParseString (styleMod);*/
-				
-				add_list = new Gtk.MenuItem (Catalog.GetString ("Add TaskList"));
-				add_priority = new Gtk.MenuItem (Catalog.GetString ("Add Priority"));
-
-				add_list.Activated += OnAddListActivated;
-				add_priority.Activated += OnAddPriorityActivated;
-				
-				add_list.Show ();
-				add_priority.Show ();
-				
-				AddPluginMenuItem (add_list);
-				AddPluginMenuItem (add_priority);
-
-				Buffer.UserActionEnded += CheckIfNewTaskNeeded;
-				Buffer.InsertText += BufferInsertText;
-				Buffer.MarkSet += BufferMarkSet;
-				
-				//Initialise tasklists list
-				//TODO: get from previous sessions?
-				Children = new List<AttributedTask> ();
-				
-				initialized = true;
-				
-				
-				NoteTag tag = new NoteTag ("locked");
-				tag.Editable = false;
-
-				if (Note.TagTable.Lookup ("locked") == null)
-					Note.TagTable.Add (tag);
-			}
 		}
 
 		void CheckIfNewTaskNeeded (object sender, System.EventArgs args)
