@@ -101,10 +101,11 @@ namespace Tomboy.TaskManager {
 		/// <param name="at">
 		/// <see cref="Gtk.TextMark"/> Where to add the task in the Buffer.
 		/// </param>
-		public void addTask (Gtk.TextMark at) 
+		public void addTask (Gtk.TextMark at)
 		{
 			var insertIter = ContainingNote.Buffer.GetIterAtMark (at);
-			insertIter.LineOffset = 0; // go to beginning of the line
+			insertIter.LineOffset = 0;
+			// go to beginning of the line
 
 			Tasks.Add (new Task (this, ContainingNote.Buffer.CreateMark (null, insertIter, true)));
 		}

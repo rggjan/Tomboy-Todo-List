@@ -58,6 +58,12 @@ namespace Tomboy.TaskManager {
 			//Initialise tasklists list
 			//TODO: get from previous sessions?
 			Children = new List<AttributedTask> ();
+			
+			NoteTag tag = new NoteTag ("locked");
+			tag.Editable = false;
+
+			if (Note.TagTable.Lookup ("locked") == null)
+				Note.TagTable.Add (tag);
 		}
 
 		public override void Shutdown ()
@@ -71,12 +77,10 @@ namespace Tomboy.TaskManager {
 
 		void CheckIfNewTaskNeeded (object sender, System.EventArgs args)
 		{
-			if (new_task_needed)
-			{
+			if (new_task_needed) {
 				Logger.Debug ("Adding a new Task");
 				
-				if (deletion_needed)
-				{
+				if (deletion_needed) {
 					//Logger.Debug ("Deleting stuff");
 					Gtk.TextIter start = Buffer.GetIterAtMark (Buffer.InsertMark);
 					start.BackwardLine();
@@ -136,7 +140,7 @@ namespace Tomboy.TaskManager {
 			//TODO: also check for tasklist name change
 		}
 		
-		bool IsTextTodoItem (String text)
+		private bool IsTextTodoItem (String text)
 		{
 			//Logger.Debug(text.Trim());
 			return text.Trim().Equals("[]");
@@ -162,7 +166,6 @@ namespace Tomboy.TaskManager {
 			
 			foreach (Gtk.TextTag tag in cursor.Tags)
 			{
-				//Edit: Wow. Now this looks pretty!
 				if (tag is TaskTag)
 				{
 					Logger.Debug ("TaskTag found!");
