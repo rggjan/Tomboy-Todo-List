@@ -126,6 +126,10 @@ namespace Tomboy.TaskManager {
 			iter.LineOffset = 0;
 			InsertCheckButton (iter);
 			
+			TaskTag tt = (TaskTag) ContainingTaskList.ContainingNote.TagTable.CreateDynamicTag ("task");
+			tt.bind (this);
+			Buffer.InsertWithTags (GetDescriptionStart (), "Testtask", new TextTag[] {tt});
+			
 			//Structure
 			Containers = new List<AttributedTask> ();
 			Containers.Add (ContainingTaskList);
@@ -212,10 +216,6 @@ namespace Tomboy.TaskManager {
 			var end = GetDescriptionEnd ();
 
 			//Logger.Debug ("line " + start.Line + " start index: " + start.LineIndex + " end index: " + end.LineIndex);
-		
-			TaskTag tt = (TaskTag) ContainingTaskList.ContainingNote.TagTable.CreateDynamicTag ("task");
-			tt.bind (this);
-			Buffer.ApplyTag (tt,start,end);
 			
 			if (CheckBox != null && CheckBox.Active) {
 				Buffer.ApplyTag ("strikethrough", start, end);
