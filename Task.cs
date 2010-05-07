@@ -220,6 +220,7 @@ namespace Tomboy.TaskManager {
 
 			//Logger.Debug ("line " + start.Line + " start index: " + start.LineIndex + " end index: " + end.LineIndex);
 			Buffer.ApplyTag(Tag, GetDescriptionStart(), GetDescriptionEnd());
+			Tag.bind(this);
 			
 			if (CheckBox != null && CheckBox.Active) {
 				Buffer.ApplyTag ("strikethrough", start, end);
@@ -265,15 +266,9 @@ namespace Tomboy.TaskManager {
 	public class TaskTag : DynamicNoteTag
 	{
 		
-		private Task task;
-
 		public Task Task {
-			get {
-				return task;
-			}
-			set {
-				task = value;
-			}
+			get;
+			set;
 		}
 
 		public override void Initialize (string element_name)
@@ -287,10 +282,22 @@ namespace Tomboy.TaskManager {
 		}
 		
 		public void bind (Task task) {
-			this.task = task;
-			Attributes.Add ("Done", task.Done.ToString ());
-			Attributes.Add ("Duedate", task.DueDate.ToString ());
-			Attributes.Add ("Priority", task.Priority.ToString ());
+			Task = task;
+			
+			if (!Attributes.ContainsKey("Done"))
+				Attributes.Add ("Done", Task.Done.ToString ());
+			else
+				Attributes["Done"] = Task.Done.ToString ();
+			
+			if (!Attributes.ContainsKey("Duedate"))
+				Attributes.Add ("Duedate", Task.DueDate.ToString ());
+			else
+				Attributes["Duedate"] = Task.DueDate.ToString();
+			
+			if (!Attributes.ContainsKey("Priority"))
+				Attributes.Add ("Priority", Task.Priority.ToString ());
+			else
+				Attributes["Priority"] = Task.Priority.ToString ();
 		}
 	}
 }
