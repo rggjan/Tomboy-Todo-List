@@ -82,6 +82,10 @@ namespace Tomboy.TaskManager {
 			get; set;
 		}
 		
+		private Gtk.TextMark Start {
+			get; set;
+		}
+
 		/// <summary>
 		/// Sets up the TaskList.
 		/// </summary>
@@ -91,10 +95,15 @@ namespace Tomboy.TaskManager {
 		public TaskList (Note note, Gtk.TextIter insertAt)
 		{
 			ContainingNote = note;
-
+			Tag = (TaskListTag) ContainingNote.TagTable.CreateDynamicTag ("tasklist");
+			Tag.bind(this);
+			
 			insertAt.BackwardChar ();
 			if (insertAt.Char != System.Environment.NewLine)
 				Buffer.InsertAtCursor (System.Environment.NewLine);	
+			
+			Start = Buffer.CreateMark (null, insertAt, true);
+			
 			Buffer.InsertAtCursor ("New TaskList!\n");
 			
 			Logger.Debug ("TaskList created");
@@ -106,13 +115,10 @@ namespace Tomboy.TaskManager {
 			
 			Children = new List<AttributedTask> ();	
 			
-			Tag = (TaskListTag) ContainingNote.TagTable.CreateDynamicTag ("tasklist");
-			Tag.bind(this);
-			
-			//var insertIter = ContainingNote.Buffer.GetIterAtMark(ContainingNote.Buffer.InsertMark);
-			//var endIter = ContainingNote.Buffer.EndIter;
+	
+
 			//Logger.Debug("applying tag...");
-			//ContainingNote.Buffer.ApplyTag(Tag, insertIter, endIter);
+
 			
 			addTask (ContainingNote.Buffer.InsertMark);
 		}
@@ -125,16 +131,22 @@ namespace Tomboy.TaskManager {
 		/// </param>
 		public void addTask (Gtk.TextMark at)
 		{
-			var insertIter = ContainingNote.Buffer.GetIterAtMark (at);
+			var insertIter = Buffer.GetIterAtMark (at);
 			// go to beginning of the line
 			insertIter.LineOffset = 0;
 
-			Children.Add (new Task (this, ContainingNote.Buffer.CreateMark (null, insertIter, true)));
+			Children.Add (new Task (this, Buffer.CreateMark (null, insertIter, true)));
+			
+			var startList = Buffer.GetIterAtMark(Start);
+			var endList = Buffer.GetIterAtMark(Buffer.InsertMark);
+			ContainingNote.Buffer.ApplyTag(Tag, startList, endList);
 		}
 
 		
 		void CheckIfNewTaskNeeded (object sender, System.EventArgs args)
 		{
+			// TODO check that we're really in this tasklist
+			
 			if (new_task_needed) {
 				Logger.Debug ("Adding a new Task");
 				
@@ -165,6 +177,8 @@ namespace Tomboy.TaskManager {
 		
 		void BufferInsertText (object o, Gtk.InsertTextArgs args)
 		{
+			// TODO check that we're really in this tasklist
+			
 			if (args.Text == System.Environment.NewLine)
 			{
 				Gtk.TextIter end = args.Pos;
