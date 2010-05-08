@@ -119,7 +119,12 @@ namespace Tomboy.TaskManager {
 		{ get; set; }
 		
 		
-		public Task (TaskList containingList, Gtk.TextMark location)
+		public Task (TaskList containingList, Gtk.TextMark location) 
+			: this (containingList, location, (TaskTag) containingList.ContainingNote.TagTable.CreateDynamicTag ("task"))
+		{
+		}
+		
+		public Task (TaskList containingList, Gtk.TextMark location, TaskTag tag)
 		{
 			ContainingTaskList = containingList;
 			Position = location;
@@ -129,7 +134,7 @@ namespace Tomboy.TaskManager {
 			iter.LineOffset = 0;
 			InsertCheckButton (iter);
 			
-			Tag = (TaskTag) ContainingTaskList.ContainingNote.TagTable.CreateDynamicTag ("task");
+			Tag = tag;
 			Tag.bind (this);
 			//Buffer.InsertWithTags (GetDescriptionStart (), "Testtask", new TextTag[] {tt});
 			
