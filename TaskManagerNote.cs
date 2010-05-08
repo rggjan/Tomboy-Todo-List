@@ -40,7 +40,26 @@ namespace Tomboy.TaskManager {
 				widget ""*.tomboy-inline-combobox"" style ""combobox-style""";
 			
 			Gtk.Rc.ParseString (styleMod);*/
-		
+			
+			NoteTag tag = new NoteTag ("locked");
+			tag.Editable = false;
+
+			if (Note.TagTable.Lookup ("locked") == null)
+				Note.TagTable.Add (tag);
+			
+			//TaskTag
+			if(!Note.TagTable.IsDynamicTagRegistered("task"))
+				Note.TagTable.RegisterDynamicTag("task",typeof (TaskTag));
+		}
+
+		public override void Shutdown ()
+		{
+			add_list.Activated -= OnAddListActivated;
+			add_priority.Activated -= OnAddPriorityActivated;
+		}
+
+		public override void OnNoteOpened ()
+		{
 			tasklist.Submenu = task_menu;
 			add_list.Activated += OnAddListActivated;
 			add_priority.Activated += OnAddPriorityActivated;
@@ -59,27 +78,7 @@ namespace Tomboy.TaskManager {
 			//TODO: get from previous sessions?
 			Children = new List<AttributedTask> ();
 			
-			NoteTag tag = new NoteTag ("locked");
-			tag.Editable = false;
-
-			if (Note.TagTable.Lookup ("locked") == null)
-				Note.TagTable.Add (tag);
-			
-			//TaskTag
-			if(!Note.TagTable.IsDynamicTagRegistered("task"))
-				Note.TagTable.RegisterDynamicTag("task",typeof (TaskTag));
-			
 			Load ();
-		}
-
-		public override void Shutdown ()
-		{
-			add_list.Activated -= OnAddListActivated;
-			add_priority.Activated -= OnAddPriorityActivated;
-		}
-
-		public override void OnNoteOpened ()
-		{
 		}
 
 		void CheckIfNewTaskNeeded (object sender, System.EventArgs args)
@@ -217,6 +216,7 @@ namespace Tomboy.TaskManager {
 		
 		public void Load () 
 		{
+			Logger.Debug ("Loading...");
 			TextIter iter = Buffer.StartIter;
 			do {
 				TaskTag tt = (TaskTag) Buffer.GetDynamicTag ("task",iter);
