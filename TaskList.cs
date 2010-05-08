@@ -116,12 +116,12 @@ namespace Tomboy.TaskManager {
 		/// <summary>
 	/// Marks a Task in a NoteBuffer. Currently this does nothing (used to restore notes)
 	/// </summary>
-	public class TaskListTag : DynamicNoteTag
+	public class TaskListTag : AbstractTag
 	{
 		
 		public TaskList TaskList {
-			get;
-			set;
+			get {return (TaskList) AttachedTask;}
+			set {AttachedTask = value;}
 		}
 
 		public override void Initialize (string element_name)
@@ -134,23 +134,14 @@ namespace Tomboy.TaskManager {
 			CanSpellCheck = true;
 		}
 		
-		public void bind (TaskList taskList) {
-			TaskList = taskList;
+		public override void bind (AttributedTask taskList) {
 			
-			if (!Attributes.ContainsKey("Done"))
-				Attributes.Add ("Done", TaskList.Done.ToString ());
-			else
-				Attributes["Done"] = TaskList.Done.ToString ();
+			bindDefault (taskList);
 			
-			if (!Attributes.ContainsKey("Duedate"))
-				Attributes.Add ("Duedate", TaskList.DueDate.ToString ());
+			if (!Attributes.ContainsKey("Name"))
+				Attributes.Add ("Name", TaskList.Name);
 			else
-				Attributes["Duedate"] = TaskList.DueDate.ToString();
-			
-			if (!Attributes.ContainsKey("Priority"))
-				Attributes.Add ("Priority", TaskList.Priority.ToString ());
-			else
-				Attributes["Priority"] = TaskList.Priority.ToString ();
+				Attributes["Name"] = TaskList.Name;
 		}
 	}
 }
