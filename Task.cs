@@ -74,7 +74,6 @@ namespace Tomboy.TaskManager {
 			get; set;
 		}
 		
-		/* TODO the getter / setter here have to be hardwired to the corresponding widgets */
 		/// <summary>
 		/// Date until the task should be completed.
 		/// </summary>
@@ -98,11 +97,14 @@ namespace Tomboy.TaskManager {
 				}
 				return containers;
 			}
+			set { 
+				containers = value; 
+			}
 		}
 		
 		//TODO
 		public override List<AttributedTask> Children {
-			get {return null;}
+			get; set;
 		}
 		
 		/// <summary>

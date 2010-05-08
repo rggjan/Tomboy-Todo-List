@@ -52,23 +52,18 @@ namespace Tomboy.TaskManager {
 			get; set;
 		}
 		
-		//TODO: Changed Type. Rething this ^^
-		internal List<AttributedTask> Tasks {
-			get; set;
-		}
-		
 		/// <summary>
 		/// Children for ITask interface
 		/// </summary>
 		public override List<AttributedTask> Children {
-			get{return Tasks;}	
+			get; set;
 		}
 		
 		/// <summary>
 		/// Containers for ITask interface
 		/// </summary>
 		public override List<AttributedTask> Containers { 
-			get{return null;}
+			get; set;
 		}
 		
 		//TODO
@@ -87,7 +82,7 @@ namespace Tomboy.TaskManager {
 			Logger.Debug ("TaskList created");
 			ContainingNote = note;
 			
-			Tasks = new List<AttributedTask> ();
+			Children = new List<AttributedTask> ();
 					
 			addTask (ContainingNote.Buffer.InsertMark);
 			
@@ -107,13 +102,13 @@ namespace Tomboy.TaskManager {
 			insertIter.LineOffset = 0;
 			// go to beginning of the line
 
-			Tasks.Add (new Task (this, ContainingNote.Buffer.CreateMark (null, insertIter, true)));
+			Children.Add (new Task (this, ContainingNote.Buffer.CreateMark (null, insertIter, true)));
 		}
 
 		
 	}
 	
-		/// <summary>
+	/// <summary>
 	/// Marks a Task in a NoteBuffer. Currently this does nothing (used to restore notes)
 	/// </summary>
 	public class TaskListTag : DynamicNoteTag
@@ -132,6 +127,7 @@ namespace Tomboy.TaskManager {
 			LeftMargin = 3;
 			LeftMarginSet = true;
 			CanSpellCheck = true;
+			CanGrow = true;
 		}
 		
 		public void bind (TaskList taskList) {
