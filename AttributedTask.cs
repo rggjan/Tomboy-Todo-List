@@ -75,14 +75,14 @@ namespace Tomboy.TaskManager
 		/// Tasks -> Subtasks (linked via TaskNotes to TaskLists)
 		/// </summary>
 		public abstract List<AttributedTask> Children {
-			get;
+			get; set;
 		}
 		
 		/// <summary>
 		/// As implicitly described by Children (other way arround)
 		/// </summary>
 		public abstract List<AttributedTask> Containers {
-			get;
+			get; set;
 		}
 		
 		/// <summary>

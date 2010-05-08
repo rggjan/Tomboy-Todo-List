@@ -48,8 +48,8 @@ namespace Tomboy.TaskManager {
 				Note.TagTable.Add (tag);
 			
 			//TaskTag
-			if(!Note.TagTable.IsDynamicTagRegistered("task"))
-				Note.TagTable.RegisterDynamicTag("task",typeof (TaskTag));
+			if(!Note.TagTable.IsDynamicTagRegistered ("task"))
+				Note.TagTable.RegisterDynamicTag ("task", typeof (TaskTag));
 		}
 
 		public override void Shutdown ()
@@ -96,7 +96,7 @@ namespace Tomboy.TaskManager {
 					
 					//TODO: Use the rest of this line as the title of the new task list
 					
-					//					Logger.Debug(Buffer.GetText(start, end, false));
+					// Logger.Debug(Buffer.GetText(start, end, false));
 					Buffer.Delete (ref start, ref end);
 					
 					Children.Add (new TaskList (Note));
@@ -219,16 +219,17 @@ namespace Tomboy.TaskManager {
 			Logger.Debug ("Loading...");
 			TextIter iter = Buffer.StartIter;
 			do {
-				TaskTag tt = (TaskTag) Buffer.GetDynamicTag ("task",iter);
+				TaskTag tt = (TaskTag) Buffer.GetDynamicTag ("task", iter);
 				if(tt != null){
 					Logger.Debug ("Tasktag found!");
 					TaskTag pt = tt;
 					while (pt==tt){
 						iter.ForwardChar ();
-						pt = (TaskTag) Buffer.GetDynamicTag ("task",iter);
+						pt = (TaskTag) Buffer.GetDynamicTag ("task", iter);
 					}
 				}
 			} while(iter.ForwardChar ());
 		}
+		
 	}
 }
