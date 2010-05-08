@@ -38,7 +38,7 @@ namespace Tomboy.TaskManager {
 	/// It may have a due date and a priority and can be
 	/// marked as done by crossing out the checkbox.
 	/// </summary>
-	public class Task : AttributedTask, ITask {
+	public class Task : AttributedTask {
 		
 		
 		/// <summary>
@@ -89,12 +89,20 @@ namespace Tomboy.TaskManager {
 		/// </summary>
 		private TaskList containing_task_list;
 		
-		public List<AttributedTask> Containers {
-			get; private set;
+		private List<AttributedTask> containers;
+		public override List<AttributedTask> Containers {
+			get {
+				if (containers == null){
+					List<AttributedTask> result = new List<AttributedTask> ();
+					result.Add (containing_task_list);
+				}
+				return containers;
+			}
 		}
 		
-		public List<AttributedTask> Children {
-			get; private set;
+		//TODO
+		public override List<AttributedTask> Children {
+			get {return null;}
 		}
 		
 		/// <summary>
@@ -139,8 +147,8 @@ namespace Tomboy.TaskManager {
 			//Buffer.InsertWithTags (GetDescriptionStart (), "Testtask", new TextTag[] {tt});
 			
 			//Structure
-			Containers = new List<AttributedTask> ();
-			Containers.Add (ContainingTaskList);
+			//Containers = new List<AttributedTask> ();
+			//Containers.Add (ContainingTaskList);
 		}
 	
 		/// <summary>

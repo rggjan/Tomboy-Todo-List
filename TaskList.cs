@@ -60,15 +60,15 @@ namespace Tomboy.TaskManager {
 		/// <summary>
 		/// Children for ITask interface
 		/// </summary>
-		public List<AttributedTask> Children {
+		public override List<AttributedTask> Children {
 			get{return Tasks;}	
 		}
 		
 		/// <summary>
 		/// Containers for ITask interface
 		/// </summary>
-		public List<AttributedTask> Containers { 
-			get; set;
+		public override List<AttributedTask> Containers { 
+			get{return null;}
 		}
 		
 		//TODO
@@ -91,7 +91,7 @@ namespace Tomboy.TaskManager {
 					
 			addTask (ContainingNote.Buffer.InsertMark);
 			
-			Containers = new List<AttributedTask> ();
+			//Containers = new List<AttributedTask> ();
 			//TODO: add correct TaskNote
 		}
 		
