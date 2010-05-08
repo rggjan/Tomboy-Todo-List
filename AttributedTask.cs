@@ -24,6 +24,7 @@
 // 
 
 using System;
+using System.Collections.Generic;
 
 namespace Tomboy.TaskManager
 {
@@ -43,7 +44,6 @@ namespace Tomboy.TaskManager
 		/// <summary>
 		/// Date when this task is overdue
 		/// </summary>
-		private DateTime dueDate;
 		public DateTime DueDate {
 			get;
 			set;
@@ -65,9 +65,31 @@ namespace Tomboy.TaskManager
 		/// The priority that is assigned to this task.
 		/// Note that default must be set to 3, not 0
 		/// </summary>
-		private Priorities priority;
 		public Priorities Priority {
 			get;set;
 		}	
+		
+		/// <summary>
+		/// Returns all Abstract Tasks that are children of this Abstracttask.
+		/// TaskList -> Tasks
+		/// Tasks -> Subtasks (linked via TaskNotes to TaskLists)
+		/// </summary>
+		public abstract List<AttributedTask> Children {
+			get;
+		}
+		
+		/// <summary>
+		/// As implicitly described by Children (other way arround)
+		/// </summary>
+		public abstract List<AttributedTask> Containers {
+			get;
+		}
+		
+		/// <summary>
+		/// Whether or not this task has been completed
+		/// </summary>
+		bool Done {
+			get; set;
+		}
 	}
 }
