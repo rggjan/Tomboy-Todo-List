@@ -32,12 +32,12 @@ namespace Tomboy.TaskManager
 	{
 		public abstract void bind(AttributedTask task);
 		
-		public AttributedTask AttachedTask{
+		protected AttributedTask AttachedTask{
 			get;
 			set;
 		}
 		
-		public void bindDefault(AttributedTask task){
+		protected void bindDefault(AttributedTask task){
 			AttachedTask = task;
 			
 			if (!Attributes.ContainsKey("Duedate"))
