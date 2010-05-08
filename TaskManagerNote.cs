@@ -6,7 +6,7 @@ using Tomboy;
 
 namespace Tomboy.TaskManager {
 	
-	public class TaskManagerNoteAddin : NoteAddin, ITask {
+	public class TaskManagerNoteAddin : NoteAddin {
 		
 		Gtk.MenuItem tasklist = new Gtk.MenuItem (Catalog.GetString ("TaskList"));
 		Gtk.Menu task_menu = new Gtk.Menu();

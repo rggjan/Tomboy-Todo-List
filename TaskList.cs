@@ -35,7 +35,7 @@ namespace Tomboy.TaskManager {
 	/// A task list is a collection of tasks grouped together.
 	/// It may have a title, a priority and a due date.
 	/// </summary>
-	public class TaskList : AttributedTask, ITask {
+	public class TaskList : AttributedTask {
 	
 		/// <summary>
 		/// Name of this task list
