@@ -58,9 +58,12 @@ namespace Tomboy.TaskManager {
 		/// <summary>
 		/// Is this task completed?
 		/// </summary>
-		public bool Done { 
+		public bool Done {
 			get {
-				return CheckBox.Active;
+				if (CheckBox != null)
+					return CheckBox.Active;
+				else
+					return false;
 			}
 			set {
 				CheckBox.Active = value;
@@ -140,12 +143,11 @@ namespace Tomboy.TaskManager {
 			Position = location;
 			Buffer.UserActionEnded += BufferChanged;
 			
-			Gtk.TextIter iter = Buffer.GetIterAtMark (location);
-			iter.LineOffset = 0;
-			InsertCheckButton (iter);
-			
 			Tag = tag;
 			Tag.bind (this);
+			
+			InsertCheckButton ();
+			
 			//Buffer.InsertWithTags (GetDescriptionStart (), "Testtask", new TextTag[] {tt});
 			
 			//Structure
@@ -159,8 +161,11 @@ namespace Tomboy.TaskManager {
 		/// <param name="insertIter">
 		/// <see cref="Gtk.TextIter"/> Where to insert (exactly).
 		/// </param>
-		private void InsertCheckButton (TextIter insertIter)
+		private void InsertCheckButton ()
 		{
+			Gtk.TextIter insertIter = Buffer.GetIterAtMark (Position);
+			insertIter.LineOffset = 0;
+			
 			CheckBox = new Gtk.CheckButton ();
 			CheckBox.Name = "tomboy-inline-checkbox";
 			CheckBox.Toggled += ToggleCheckBox;
@@ -181,6 +186,8 @@ namespace Tomboy.TaskManager {
 			start.BackwardChar ();
 			
 			Buffer.RemoveTag ("locked", start, end);
+			
+			TagUpdate ();
 		}
 		
 		/// <summary>
@@ -206,12 +213,13 @@ namespace Tomboy.TaskManager {
 		/// A <see cref="Gtk.TextIter"/> marking the beginning of the textual description
 		/// of this task in the NoteBuffer.
 		/// </returns>
-		public Gtk.TextIter GetDescriptionStart ()
+		public Gtk.TextIter GetTaskStart ()
 		{
 			var start = Buffer.GetIterAtMark (Position);
-			while ((start.LineIndex < start.BytesInLine) && !start.InsideWord ()) {
-				start.ForwardCursorPosition ();
-			}
+			start.LineOffset = 0;
+			//while ((start.LineIndex < start.BytesInLine) && !start.InsideWord ()) {
+			//	start.ForwardCursorPosition ();
+			//}
 						
 			return start;
 		}
@@ -220,9 +228,9 @@ namespace Tomboy.TaskManager {
 		/// A <see cref="Gtk.TextIter"/> marking the end of the textual description of this
 		/// task in the NoteBuffer.
 		/// </returns>
-		public Gtk.TextIter GetDescriptionEnd ()
+		public Gtk.TextIter GetTaskEnd ()
 		{
-			var start = GetDescriptionStart ();
+			var start = GetTaskStart ();
 
 			var endIter = Buffer.GetIterAtLine (start.Line);
 			endIter.ForwardToLineEnd ();
@@ -236,11 +244,12 @@ namespace Tomboy.TaskManager {
 		/// </summary>
 		private void TagUpdate ()
 		{
-			var start = GetDescriptionStart ();
-			var end = GetDescriptionEnd ();
+			var start = GetTaskStart ();
+			var end = GetTaskEnd ();
 
 			//Logger.Debug ("line " + start.Line + " start index: " + start.LineIndex + " end index: " + end.LineIndex);
-			Buffer.ApplyTag(Tag, GetDescriptionStart(), GetDescriptionEnd());
+			Buffer.ApplyTag (Tag, GetTaskStart (), GetTaskEnd ());
+			
 			Tag.bind(this);
 			
 			if (CheckBox != null && CheckBox.Active) {
@@ -260,7 +269,7 @@ namespace Tomboy.TaskManager {
 			Debug.Assert (Buffer == sender); // no other buffer should be registred here	
 			int line = Buffer.GetIterAtMark (Buffer.InsertMark).Line;
 
-			if (line == GetDescriptionStart ().Line) {
+			if (line == GetTaskStart ().Line) {
 				TagUpdate ();
 			}
 			
