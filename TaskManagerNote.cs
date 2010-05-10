@@ -115,8 +115,6 @@ namespace Tomboy.TaskManager {
 		
 		void BufferInsertText (object o, Gtk.InsertTextArgs args)
 		{
-			// TODO check that we're really in this tasklist
-			
 			if (args.Text == System.Environment.NewLine) {
 				Gtk.TextIter end = args.Pos;
 				end.BackwardChar ();
@@ -145,13 +143,13 @@ namespace Tomboy.TaskManager {
 				}
 				
 				end = args.Pos;
-				end.ForwardChars (5);
+				//end.ForwardChars (5);
 				
 				Gtk.TextIter start = args.Pos;
 				start.BackwardLine ();
 				
-				end = start;
-				end.ForwardChars (2);
+				//end = start;
+				//end.ForwardChars (2);
 				
 				//Logger.Debug ("Before new Line: "+Buffer.GetText(start, end, false));
 				
@@ -159,36 +157,29 @@ namespace Tomboy.TaskManager {
 					current_task = null;
 					new_task_needed = true;
 				}
-			
-			
-			
-
-
-
-}
+			}
 		}
 			
 		void CheckIfNewTaskNeeded (object sender, System.EventArgs args)
 		{
-			// TODO check that we're really in this tasklist
-			
 			if (new_task_needed) {
 				Logger.Debug ("Adding a new Task");
 				
 				if (current_task == null) {
 					//Logger.Debug ("Deleting stuff");
-					Gtk.TextIter start = Buffer.GetIterAtMark (Buffer.InsertMark);
-					start.BackwardLine ();
-					
+					Gtk.TextIter start = Buffer.GetIterAtMark (Buffer.InsertMark);					
 					Gtk.TextIter end = start;
-					end.ForwardChars (2);
+					
+					start.BackwardLine ();
+
+					//end.ForwardChars (2);
 					
 					//TODO: Use the rest of this line as the title of the new task list
 					
 					// Logger.Debug(Buffer.GetText(start, end, false));
 					Buffer.Delete (ref start, ref end);
 					
-					//Children.Add (new TaskList (Note));
+					Children.Add (new TaskList (Note));
 				} else {
 					current_task.addTask (Buffer.InsertMark);
 				}
@@ -196,9 +187,6 @@ namespace Tomboy.TaskManager {
 			}
 			//TODO: also check for tasklist name change
 		}
-
-
-
 		
 		private bool IsTextTodoItem (String text)
 		{
