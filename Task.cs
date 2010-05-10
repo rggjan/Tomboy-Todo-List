@@ -168,13 +168,19 @@ namespace Tomboy.TaskManager {
 			Gtk.TextChildAnchor anchor = Buffer.CreateChildAnchor (ref insertIter);
 			ContainingTaskList.ContainingNote.Window.Editor.AddChildAtAnchor (CheckBox, anchor);
 			CheckBox.Show ();
-			
+		
 			var start = insertIter;
-			start.BackwardChar ();
-			start.BackwardChar ();
+			start.BackwardChars (2);
 			var end = insertIter;
-			
 			Buffer.ApplyTag ("locked", start, end);
+
+			Buffer.InsertWithTagsByName (ref insertIter, "X", "invisible");
+			
+			start = insertIter;
+			end = insertIter;
+			start.BackwardChar ();
+			
+			Buffer.RemoveTag ("locked", start, end);
 		}
 		
 		/// <summary>

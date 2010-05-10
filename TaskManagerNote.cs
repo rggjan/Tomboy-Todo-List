@@ -18,7 +18,8 @@ namespace Tomboy.TaskManager {
 		
 		public override void Initialize ()
 		{
-			Logger.Debug ("Initializing TaskManager"); // FIXME this is executed 20 times
+			Logger.Debug ("Initializing TaskManager");
+			// FIXME this is executed 20 times
 				
 			/*string styleMod =
 				@"style ""mystyle"" {
@@ -39,12 +40,19 @@ namespace Tomboy.TaskManager {
 				widget ""*.tomboy-inline-combobox"" style ""combobox-style""";
 			
 			Gtk.Rc.ParseString (styleMod);*/
-			
+		
 			NoteTag tag = new NoteTag ("locked");
 			tag.Editable = false;
 
 			if (Note.TagTable.Lookup ("locked") == null)
 				Note.TagTable.Add (tag);
+			
+			tag = new NoteTag ("invisible");
+			tag.Invisible = true;
+			
+			if (Note.TagTable.Lookup ("invisible") == null)
+				Note.TagTable.Add (tag);
+			
 			
 			//TaskTag
 			if(!Note.TagTable.IsDynamicTagRegistered ("task"))
@@ -113,6 +121,12 @@ namespace Tomboy.TaskManager {
 		
 		}
 		
+		/*Task GetTaskAtCursor ()
+		{
+			Gtk.TextIter here = Buffer.GetIterAtMark (Buffer.InsertMark);
+			here.LineOffset = 0;
+		}*/
+		
 		void BufferInsertText (object o, Gtk.InsertTextArgs args)
 		{
 			if (args.Text == System.Environment.NewLine) {
@@ -123,7 +137,7 @@ namespace Tomboy.TaskManager {
 				begin.LineOffset = 0;
 				
 				if (Buffer.GetText (begin, end, false).Trim ().Length == 0) {
-					//FIXME delete task!
+					Logger.Debug ("Delete Box!");
 				}
 				
 				end.BackwardChar ();
