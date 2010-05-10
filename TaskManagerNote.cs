@@ -47,7 +47,7 @@ namespace Tomboy.TaskManager {
 			if(!Note.TagTable.IsDynamicTagRegistered ("task"))
 				Note.TagTable.RegisterDynamicTag ("task", typeof (TaskTag));
 
-						//TaskTag
+			//TaskListTag
 			if(!Note.TagTable.IsDynamicTagRegistered ("tasklist"))
 				Note.TagTable.RegisterDynamicTag ("tasklist", typeof (TaskListTag));
 		}
@@ -80,10 +80,9 @@ namespace Tomboy.TaskManager {
 
 		void OnAddListActivated (object sender, EventArgs args)
 		{
-			Gtk.TextIter cursor = Buffer.GetIterAtMark (Buffer.InsertMark);
-
-			TaskList tl = new TaskList (Note, cursor);
-			tl.Name = "New TaskList!";
+			TaskList tl = new TaskList (Note);
+			
+			//tl.Name = "New TaskList!";
 			Children.Add (tl);
 		}
 
@@ -116,21 +115,30 @@ namespace Tomboy.TaskManager {
 			get; set;
 		}
 		
-		public void Load () 
+		public void Load ()
 		{
-			Logger.Debug ("Loading...");
+		/*	Logger.Debug ("Loading...");
 			TextIter iter = Buffer.StartIter;
 			do {
-				TaskTag tt = (TaskTag) Buffer.GetDynamicTag ("task", iter);
-				if(tt != null){
+				TaskListTag taskliststart = (TaskListTag)Buffer.GetDynamicTag ("tasklist", iter)				
+				if (taskliststart != null)
+				{
+					TaskList tl = new TaskList (Note, iter);
+					Children.Add (tl);
+				}
+				
+				
+				TaskTag start = (TaskTag)Buffer.GetDynamicTag ("task", iter);
+				if (start != null) {
 					Logger.Debug ("Tasktag found!");
-					TaskTag pt = tt;
-					while (pt==tt){
+					TaskTag end = start;
+
+					while (end==start){
 						iter.ForwardChar ();
-						pt = (TaskTag) Buffer.GetDynamicTag ("task", iter);
+						end = (TaskTag) Buffer.GetDynamicTag ("task", iter);
 					}
 				}
-			} while(iter.ForwardChar ());
+			} while(iter.ForwardChar ());*/
 		}
 		
 	}

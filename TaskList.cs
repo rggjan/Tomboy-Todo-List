@@ -92,18 +92,21 @@ namespace Tomboy.TaskManager {
 		/// <param name="note">
 		/// <see cref="Note"/> where the TaskLists is located.
 		/// </param>
-		public TaskList (Note note, Gtk.TextIter insertAt)
+		public TaskList (Note note)
 		{
 			ContainingNote = note;
-			Tag = (TaskListTag) ContainingNote.TagTable.CreateDynamicTag ("tasklist");
-			Tag.bind(this);
+			Name = ("New TaskList!");
+			
+			Tag = (TaskListTag)ContainingNote.TagTable.CreateDynamicTag ("tasklist");
+			Tag.bind (this);
+			
+			var insertAt = Buffer.GetIterAtMark (Buffer.InsertMark);
 			
 			insertAt.BackwardChar ();
 			if (insertAt.Char != System.Environment.NewLine)
-				Buffer.InsertAtCursor (System.Environment.NewLine);	
+				Buffer.InsertAtCursor (System.Environment.NewLine);
 			
 			Start = Buffer.CreateMark (null, insertAt, true);
-			
 			Buffer.InsertAtCursor ("New TaskList!\n");
 			
 			Logger.Debug ("TaskList created");
@@ -113,13 +116,8 @@ namespace Tomboy.TaskManager {
 			Buffer.InsertText += BufferInsertText;
 			Buffer.MarkSet += BufferMarkSet;
 			
-			Children = new List<AttributedTask> ();	
-			
-	
+			Children = new List<AttributedTask> ();
 
-			//Logger.Debug("applying tag...");
-
-			
 			addTask (ContainingNote.Buffer.InsertMark);
 		}
 		
