@@ -114,8 +114,7 @@ namespace Tomboy.TaskManager {
 				if (tag is TaskTag) {
 					Logger.Debug ("TaskTag found!");
 					TaskTag tasktag = (TaskTag)tag;
-					cursor.LineOffset = 0;
-					tasktag.Task.InsertPriorityBox (cursor);
+					tasktag.Task.ShowPriority ();
 				}
 			}
 		

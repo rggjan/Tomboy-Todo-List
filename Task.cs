@@ -70,12 +70,32 @@ namespace Tomboy.TaskManager {
 			}
 		}
 		
+		public int Priority {
+			get {
+				if (priority_box != null)
+				{
+					Logger.Debug ("reading priority");
+					Logger.Debug (priority_box.ActiveText);
+					return priority_box.Active;
+					
+				}
+				else
+					return 0;
+			}
+			set {
+				priority_box.Active = value;
+			}
+		}
+		
 		/// <summary>
 		/// Corresponding Widget for Completed Tasks.
 		/// </summary>
 		private Gtk.CheckButton CheckBox {
 			get; set;
 		}
+		
+		private Gtk.ComboBox priority_box;
+
 		
 		/// <summary>
 		/// Date until the task should be completed.
@@ -147,6 +167,7 @@ namespace Tomboy.TaskManager {
 			Tag.bind (this);
 			
 			InsertCheckButton ();
+			InsertPriorityBox ();
 			
 			//Buffer.InsertWithTags (GetDescriptionStart (), "Testtask", new TextTag[] {tt});
 			
@@ -183,7 +204,7 @@ namespace Tomboy.TaskManager {
 			
 			start = insertIter;
 			end = insertIter;
-			start.BackwardChars (2);
+			start.BackwardChars (1);
 			
 			Buffer.RemoveTag ("locked", start, end);
 			
@@ -197,16 +218,31 @@ namespace Tomboy.TaskManager {
 		/// <returns>
 		/// A TextIter
 		/// </returns>
-		public TextIter InsertPriorityBox (TextIter insertIter)
+		private void InsertPriorityBox ()
 		{
-			string[] priorities = { "1", "2", "3", "4", "5" };
-			var box = new Gtk.ComboBox (priorities);
-			box.Name = "tomboy-inline-combobox";
+			var insertIter = Buffer.GetIterAtMark (Position);
+			insertIter.LineOffset = 0;
+			if (Priority == 0)
+			{
+				string[] priorities = { "1", "2", "3", "4", "5" };
+				priority_box = new Gtk.ComboBox (priorities);
+				priority_box.Name = "tomboy-inline-combobox";
 
-			Gtk.TextChildAnchor anchor = Buffer.CreateChildAnchor (ref insertIter);
-			ContainingTaskList.ContainingNote.Window.Editor.AddChildAtAnchor (box, anchor);
-			box.Show ();
-			return insertIter;
+				Gtk.TextChildAnchor anchor = Buffer.CreateChildAnchor (ref insertIter);
+				ContainingTaskList.ContainingNote.Window.Editor.AddChildAtAnchor (priority_box, anchor);
+				
+		/*		var end = insertIter;
+				var start = insertIter;
+				start.BackwardChar ();
+				
+				Buffer.ApplyTag ("invisible", start, end);*/
+				//priority_box.Show ();
+			}
+		}
+		
+		public void ShowPriority ()
+		{
+			priority_box.Show ();
 		}
 		
 		/// <returns>
@@ -231,11 +267,13 @@ namespace Tomboy.TaskManager {
 		public Gtk.TextIter GetTaskEnd ()
 		{
 			var start = GetTaskStart ();
+			var end = Buffer.GetIterAtLine (start.Line);
+			end.ForwardToLineEnd ();
 
-			var endIter = Buffer.GetIterAtLine (start.Line);
-			endIter.ForwardToLineEnd ();
+			//var endIter = Buffer.GetIterAtLine (start.Line);
+			//endIter.ForwardToLineEnd ();
 			
-			return endIter;
+			return end;
 		}
 		
 		/// <summary>
@@ -249,6 +287,8 @@ namespace Tomboy.TaskManager {
 
 			//Logger.Debug ("line " + start.Line + " start index: " + start.LineIndex + " end index: " + end.LineIndex);
 			Buffer.ApplyTag (Tag, GetTaskStart (), GetTaskEnd ());
+
+			// Logger.Debug (Buffer.GetText(GetTaskStart(), GetTaskEnd(), false)); //FIXME Last line in tasklist strange in xml
 			
 			Tag.bind(this);
 			
