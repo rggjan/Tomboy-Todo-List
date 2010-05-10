@@ -183,7 +183,7 @@ namespace Tomboy.TaskManager {
 			
 			start = insertIter;
 			end = insertIter;
-			start.BackwardChar ();
+			start.BackwardChars (2);
 			
 			Buffer.RemoveTag ("locked", start, end);
 			

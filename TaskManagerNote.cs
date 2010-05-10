@@ -183,11 +183,10 @@ namespace Tomboy.TaskManager {
 				
 				if (current_task == null) {
 					//Logger.Debug ("Deleting stuff");
-					Gtk.TextIter start = Buffer.GetIterAtMark (Buffer.InsertMark);					
+					Gtk.TextIter start = Buffer.GetIterAtMark (Buffer.InsertMark);
 					Gtk.TextIter end = start;
 					
 					start.BackwardLine ();
-
 					//end.ForwardChars (2);
 					
 					//TODO: Use the rest of this line as the title of the new task list
@@ -197,6 +196,16 @@ namespace Tomboy.TaskManager {
 					
 					Children.Add (new TaskList (Note));
 				} else {
+					var iter = Buffer.GetIterAtMark (Buffer.InsertMark);
+					var end = iter;
+					end.ForwardToLineEnd ();
+					
+					foreach (Gtk.TextTag tag in iter.Tags) {
+						if (tag is TaskTag) {
+							Logger.Debug ("removing old tasktag");
+							Buffer.RemoveTag (tag, iter, end);
+						}
+					}
 					current_task.addTask (Buffer.InsertMark);
 				}
 				new_task_needed = false;
