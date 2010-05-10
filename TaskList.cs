@@ -76,6 +76,9 @@ namespace Tomboy.TaskManager {
 			get; set; 
 		}
 		
+		//TODO
+		public int Priority { get; set; }
+		
 		private TaskListTag Tag {
 			get; set;
 		}

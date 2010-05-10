@@ -65,7 +65,7 @@ namespace Tomboy.TaskManager
 		/// The priority that is assigned to this task.
 		/// Note that default must be set to 3, not 0
 		/// </summary>
-		public Priorities Priority {
+		Priorities Priority {
 			get;set;
 		}	
 		
