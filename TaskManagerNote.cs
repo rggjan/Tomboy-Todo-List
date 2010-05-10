@@ -136,8 +136,10 @@ namespace Tomboy.TaskManager {
 				var begin = end;
 				begin.LineOffset = 0;
 				
-				if (Buffer.GetText (begin, end, false).Trim ().Length == 0) {
-					Logger.Debug ("Delete Box!");
+				if (Buffer.GetText (begin, end, true).Trim () == "X") {
+					//FIXME better way to do this
+					Buffer.Delete (ref begin, ref end);
+					return;
 				}
 				
 				end.BackwardChar ();
