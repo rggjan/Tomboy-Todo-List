@@ -37,6 +37,10 @@
     <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
     </Reference>
     <Reference Include="System.Xml" />
+    <Reference Include="Tomboy, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\tomboy\Tomboy\Tomboy.exe</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="TaskManagerNote.cs" />
@@ -46,16 +50,11 @@
     <Compile Include="AttributedTask.cs" />
     <Compile Include="TaskListTag.cs" />
     <Compile Include="TaskTag.cs" />
+    <Compile Include="OpenTasksNotebook.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <EmbeddedResource Include="TaskManager.addin.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\tomboy\Tomboy.csproj">
-      <Project>{315DBB30-1461-4A41-A23F-A888D84E1EA0}</Project>
-      <Name>Tomboy</Name>
-    </ProjectReference>
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
