@@ -21,25 +21,27 @@ namespace Tomboy.TaskManager {
 			Logger.Debug ("Initializing TaskManager");
 			// FIXME this is executed 20 times
 				
-			/*string styleMod =
-				@"style ""mystyle"" {
-				#GtkCheckButton::indicator-spacing = 0
-				#GtkCheckButton::focus-padding = 0
-				#GtkCheckButton::focus-line-width = 2
-				#GtkCheckButton::indicator-size = 100
-				}
-				widget ""*.tomboy-inline-checkbox"" style ""mystyle""";
-			Gtk.Rc.ParseString (styleMod);*/
+			string checkButtonStyleMod = @"style ""mystyle"" {
+												GtkCheckButton::indicator-spacing = 0
+												GtkCheckButton::focus-padding = 0
+												GtkCheckButton::focus-line-width = 0
+												GtkCheckButton::indicator-size = 13
+											}
+											widget ""*.tomboy-inline-checkbox"" style ""mystyle""
+										 ";
+			
+			Gtk.Rc.ParseString (checkButtonStyleMod);
 			
 			
-			/*string styleMod =
-				@"style ""combobox-style"" {
-				#GtkComboBox::appears-as-list = 1
-				GtkComboBox::arrow-size = 0
-				}
-				widget ""*.tomboy-inline-combobox"" style ""combobox-style""";
+			string comboStyleMod = @"style ""combobox-style"" {
+											GtkComboBox::appears-as-list = 0
+											GtkComboBox::arrow-size = 0
+											GtkComboBox::width-request = 10
+										}
+										widget ""*.tomboy-inline-combobox"" style ""combobox-style""
+									";
 			
-			Gtk.Rc.ParseString (styleMod);*/
+			Gtk.Rc.ParseString (comboStyleMod);
 		
 			NoteTag tag = new NoteTag ("locked");
 			tag.Editable = false;
@@ -125,8 +127,6 @@ namespace Tomboy.TaskManager {
 
 			
 		}
-			
-
 
 		void OnAddListActivated (object sender, EventArgs args)
 		{
