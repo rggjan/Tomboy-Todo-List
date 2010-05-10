@@ -2,6 +2,7 @@ using System;
 using Mono.Unix;
 using Gtk;
 using Tomboy;
+using Tomboy.Notebooks;
 
 namespace Tomboy.TaskManager {
 	
@@ -20,8 +21,12 @@ namespace Tomboy.TaskManager {
 		{
 			initialized = true;
 			
-			// Register additional Tags
-			// Edit: Deleted. No need anymore
+			
+			//NoteRecentChanges search = NoteRecentChanges.GetInstance (Tomboy.DefaultNoteManager);
+			
+			//OpenTasksNotebook openTasksNotebook = new OpenTasksNotebook ();
+			//Gtk.TreeIter iter = NotebookManager.ListNotebooks.Append ();
+			//NotebookManager.ListNotebooks.SetValue (iter, 0, openTasksNotebook);
 		}
 		
 		

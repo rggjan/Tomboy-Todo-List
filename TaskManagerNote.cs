@@ -74,11 +74,13 @@ namespace Tomboy.TaskManager {
 			tasklist.Submenu = task_menu;
 			add_list.Activated += OnAddListActivated;
 			add_priority.Activated += OnAddPriorityActivated;
+			add_priority.Sensitive = false;
 			
 			Buffer.InsertText += BufferInsertText;
 			Buffer.MarkSet += BufferMarkSet;
 			Buffer.UserActionEnded += CheckIfNewTaskNeeded;
-			
+			Buffer.UserActionEnded += UpdateMenuSensitivity;
+
 			task_menu.Add(add_list);
 			task_menu.Add(add_priority);
 			tasklist.ShowAll();
@@ -91,11 +93,47 @@ namespace Tomboy.TaskManager {
 			
 			Load ();
 		}
+		
+		/// <summary>
+		/// Makes sure that add_list and add_priority menu items Sensitive property
+		/// is set correctly according to where we currently are in the NoteBuffer
+		/// </summary>
+		void UpdateMenuSensitivity (object sender, EventArgs args) {
+			
+			Logger.Debug("UpdateMenuSensitivity");
+			Gtk.TextIter cursor = Buffer.GetIterAtMark (Buffer.InsertMark);
+			cursor.LineOffset = 0;
+			
+			bool inTaskList = false;
+			foreach (Gtk.TextTag tag in cursor.Tags) {
+				if(tag is TaskListTag) {
+					Logger.Debug("found tasklisttag");
+					inTaskList = true;
+					break;
+				}
+			}
+			
+			// toggle sensitivity
+			if(inTaskList) {
+				add_priority.Sensitive = true;
+				add_list.Sensitive = false;
+			}
+			else {
+				add_priority.Sensitive = false;
+				add_list.Sensitive = true;
+			}
+
+			
+		}
+			
 
 
 		void OnAddListActivated (object sender, EventArgs args)
 		{
 			TaskList tl = new TaskList (Note);
+			
+			add_list.Sensitive = false;
+			add_priority.Sensitive = true;
 			
 			//tl.Name = "New TaskList!";
 			Children.Add (tl);
@@ -115,6 +153,7 @@ namespace Tomboy.TaskManager {
 					Logger.Debug ("TaskTag found!");
 					TaskTag tasktag = (TaskTag)tag;
 					tasktag.Task.ShowPriority ();
+					add_priority.Sensitive = false;
 				}
 			}
 		
@@ -194,6 +233,7 @@ namespace Tomboy.TaskManager {
 					Buffer.Delete (ref start, ref end);
 					
 					Children.Add (new TaskList (Note));
+					
 				} else {
 					var iter = Buffer.GetIterAtMark (Buffer.InsertMark);
 					var end = iter;
@@ -205,6 +245,7 @@ namespace Tomboy.TaskManager {
 							Buffer.RemoveTag (tag, iter, end);
 						}
 					}
+					
 					current_task.addTask (Buffer.InsertMark);
 				}
 				new_task_needed = false;
