@@ -175,7 +175,7 @@ namespace Tomboy.TaskManager {
 		
 		public void AddWidgets ()
 		{
-						var pos = GetTaskStart ();
+			var pos = GetTaskStart ();
 			InsertCheckButton (pos);
 			pos = GetTaskStart ();
 			InsertPriorityBox (pos);
@@ -198,6 +198,7 @@ namespace Tomboy.TaskManager {
 			Buffer.UserActionEnded += BufferChanged;
 			
 			Tag = tag;
+			Tag.Task = this;
 		}
 	
 		/// <summary>
@@ -250,7 +251,10 @@ namespace Tomboy.TaskManager {
 		{
 			string[] priorities = { "1", "2", "3", "4", "5" };
 			priority_box = new Gtk.ComboBox (priorities);
+			priority_box.Active = Priority;
 			priority_box.Name = "tomboy-inline-combobox";
+
+			//priority_box.Changed += setpriority();
 
 			Gtk.TextChildAnchor anchor = Buffer.CreateChildAnchor (ref insertIter);
 			ContainingTaskList.ContainingNote.Window.Editor.AddChildAtAnchor (priority_box, anchor);
