@@ -128,6 +128,18 @@ namespace Tomboy.TaskManager {
 			addTask (end);
 		}
 		
+		public TaskList (Note note, Gtk.TextIter start, TaskListTag tag)
+		{
+			ContainingNote = note;
+			Name = ("New TaskList!");//FIXME
+			
+			Tag = tag;
+			Start = Buffer.CreateMark (null, start, true);
+			Logger.Debug ("TaskList created");
+			
+			Children = new List<AttributedTask> ();
+		}
+		
 		/// <summary>
 		/// Creates a new Task and add it to the `Tasks` list.
 		/// </summary>
@@ -151,7 +163,10 @@ namespace Tomboy.TaskManager {
 			//Children.Add (new Task (this, Buffer.CreateMark (null, insertIter, true)));
 		}
 
-		
-
+		public void addTask (Gtk.TextIter position, TaskTag tag)
+		{
+			//Buffer.PlaceCursor (position);
+			Children.Add (new Task (this, position, tag));
+		}
 	}
 }

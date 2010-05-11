@@ -276,28 +276,42 @@ namespace Tomboy.TaskManager {
 		
 		public void Load ()
 		{
-		/*	Logger.Debug ("Loading...");
+			Logger.Debug ("Loading...");
 			TextIter iter = Buffer.StartIter;
 			do {
-				TaskListTag taskliststart = (TaskListTag)Buffer.GetDynamicTag ("tasklist", iter)				
+				TaskListTag taskliststart = (TaskListTag)Buffer.GetDynamicTag ("tasklist", iter);
 				if (taskliststart != null)
 				{
-					TaskList tl = new TaskList (Note, iter);
-					Children.Add (tl);
-				}
-				
-				
-				TaskTag start = (TaskTag)Buffer.GetDynamicTag ("task", iter);
-				if (start != null) {
-					Logger.Debug ("Tasktag found!");
-					TaskTag end = start;
+					Logger.Debug ("=> found Tasklist!");
 
-					while (end==start){
+					TaskList tl = new TaskList (Note, iter, taskliststart);
+					Children.Add (tl);
+					
+					TaskTag start;
+					do
+					{
+						start = (TaskTag)Buffer.GetDynamicTag ("task", iter);
 						iter.ForwardChar ();
-						end = (TaskTag) Buffer.GetDynamicTag ("task", iter);
+					} while (start == null);
+					
+					Logger.Debug ("=> found Tasktag!");
+					tl.addTask (iter, start);
+					
+					TaskTag end = start;
+					while (end == start) {
+						iter.ForwardChar ();
+						end = (TaskTag)Buffer.GetDynamicTag ("task", iter);
 					}
 				}
-			} while(iter.ForwardChar ());*/
+			} while (iter.ForwardChar ());
+			
+			foreach (TaskList tl in Children)
+			{
+				foreach (Task t in tl.Children)
+				{
+					t.AddWidgets ();
+				}
+			}
 		}
 		
 	}

@@ -153,27 +153,13 @@ namespace Tomboy.TaskManager {
 		{ get; set; }
 		
 		
-		public Task (TaskList containingList, Gtk.TextIter location) 
-			: this (containingList, location, (TaskTag) containingList.ContainingNote.TagTable.CreateDynamicTag ("task"))
+		public Task (TaskList containingList, Gtk.TextIter location)
 		{
-		}
-		
-		public Task (TaskList containingList, Gtk.TextIter location, TaskTag tag)
-		{
-			ContainingTaskList = containingList;
-			location.LineOffset = 0;
-			Position = Buffer.CreateMark (null, location, true);
-			
-			Buffer.UserActionEnded += BufferChanged;
-			Tag = tag;
+			initialize (containingList, location, (TaskTag)containingList.ContainingNote.TagTable.CreateDynamicTag ("task"));
+
 			Tag.bind (this);
 			
-			var pos = GetTaskStart ();
-			InsertCheckButton (pos);
-			
-			pos = GetTaskStart ();
-			InsertPriorityBox (pos);
-
+			AddWidgets ();
 			
 			var end = GetTaskStart ();
 			var start = end;
@@ -185,10 +171,33 @@ namespace Tomboy.TaskManager {
 			
 			end.ForwardChar ();
 			Buffer.PlaceCursor (end);
-
-			
+		}
+		
+		public void AddWidgets ()
+		{
+						var pos = GetTaskStart ();
+			InsertCheckButton (pos);
+			pos = GetTaskStart ();
+			InsertPriorityBox (pos);
+		}
+		
+		public Task (TaskList containingList, Gtk.TextIter location, TaskTag tag)
+		{
+			initialize(containingList, location, tag);
+		}
+		
+		private void initialize (TaskList containingList, Gtk.TextIter location, TaskTag tag)
+		{
 			Containers = new List<AttributedTask> ();
 			Containers.Add (ContainingTaskList);
+			
+			ContainingTaskList = containingList;
+			location.LineOffset = 0;
+			Position = Buffer.CreateMark (null, location, true);
+			
+			Buffer.UserActionEnded += BufferChanged;
+			
+			Tag = tag;
 		}
 	
 		/// <summary>
