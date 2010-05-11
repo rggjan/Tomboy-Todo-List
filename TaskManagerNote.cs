@@ -80,9 +80,10 @@ namespace Tomboy.TaskManager {
 			add_priority.Sensitive = false;
 			
 			Buffer.InsertText += BufferInsertText;
-			Buffer.MarkSet += BufferMarkSet;
+			//Buffer.MarkSet += BufferMarkSet;
 			Buffer.UserActionEnded += CheckIfNewTaskNeeded;
-			Buffer.UserActionEnded += UpdateMenuSensitivity;
+			
+			Buffer.MarkSet += UpdateMenuSensitivity;
 
 			task_menu.Add(add_list);
 			task_menu.Add(add_priority);
@@ -125,8 +126,6 @@ namespace Tomboy.TaskManager {
 				add_priority.Sensitive = false;
 				add_list.Sensitive = true;
 			}
-
-			
 		}
 
 		void OnAddListActivated (object sender, EventArgs args)
@@ -140,10 +139,6 @@ namespace Tomboy.TaskManager {
 			Children.Add (tl);
 		}
 		
-		void BufferMarkSet (object o, EventArgs args)
-		{
-		}
-
 		void OnAddPriorityActivated (object sender, EventArgs args)
 		{
 			Gtk.TextIter cursor = Buffer.GetIterAtMark (Buffer.InsertMark);
@@ -151,7 +146,6 @@ namespace Tomboy.TaskManager {
 			
 			foreach (Gtk.TextTag tag in cursor.Tags) {
 				if (tag is TaskTag) {
-					Logger.Debug ("TaskTag found!");
 					TaskTag tasktag = (TaskTag)tag;
 					tasktag.Task.ShowPriority ();
 					add_priority.Sensitive = false;
