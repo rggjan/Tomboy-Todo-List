@@ -45,15 +45,16 @@ namespace Tomboy.TaskManager {
 		
 			NoteTag tag = new NoteTag ("locked");
 			tag.Editable = false;
+			tag.Family = "Arial";
 
 			if (Note.TagTable.Lookup ("locked") == null)
 				Note.TagTable.Add (tag);
 			
-			tag = new NoteTag ("invisible");
-			tag.Invisible = true;
+			//tag = new NoteTag ("invisible");
+			//tag.Invisible = true;
 			
-			if (Note.TagTable.Lookup ("invisible") == null)
-				Note.TagTable.Add (tag);
+			//if (Note.TagTable.Lookup ("invisible") == null)
+			//	Note.TagTable.Add (tag);
 			
 			
 			//TaskTag
@@ -246,7 +247,7 @@ namespace Tomboy.TaskManager {
 						}
 					}
 					
-					current_task.addTask (Buffer.InsertMark);
+				//	current_task.addTask (Buffer.InsertMark);
 				}
 				new_task_needed = false;
 			}

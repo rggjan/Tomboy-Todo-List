@@ -45,9 +45,9 @@ namespace Tomboy.TaskManager
 			base.Initialize (element_name);
 
 			Background = "red";
-			LeftMargin = 3;
+			//LeftMargin = 3;
 			LeftMarginSet = true;
-			CanSpellCheck = true;
+			//CanSpellCheck = true;
 			CanGrow = true;
 		}
 		

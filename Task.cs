@@ -93,6 +93,7 @@ namespace Tomboy.TaskManager {
 		private Gtk.CheckButton CheckBox {
 			get; set;
 		}
+		Gtk.TextChildAnchor boxanchor;
 		
 		private Gtk.ComboBox priority_box;
 
@@ -152,63 +153,85 @@ namespace Tomboy.TaskManager {
 		{ get; set; }
 		
 		
-		public Task (TaskList containingList, Gtk.TextMark location) 
+		public Task (TaskList containingList, Gtk.TextIter location) 
 			: this (containingList, location, (TaskTag) containingList.ContainingNote.TagTable.CreateDynamicTag ("task"))
 		{
 		}
 		
-		public Task (TaskList containingList, Gtk.TextMark location, TaskTag tag)
+		public Task (TaskList containingList, Gtk.TextIter location, TaskTag tag)
 		{
 			ContainingTaskList = containingList;
-			Position = location;
-			Buffer.UserActionEnded += BufferChanged;
+			location.LineOffset = 0;
+			Position = Buffer.CreateMark (null, location, true);
 			
+			Buffer.UserActionEnded += BufferChanged;
 			Tag = tag;
 			Tag.bind (this);
 			
-			InsertCheckButton ();
-			InsertPriorityBox ();
+			var pos = GetTaskStart ();
+			InsertCheckButton (pos);
 			
-			//Buffer.InsertWithTags (GetDescriptionStart (), "Testtask", new TextTag[] {tt});
+			pos = GetTaskStart ();
+			InsertPriorityBox (pos);
+
+			TagUpdate ();
 			
-			//Structure
-			//Containers = new List<AttributedTask> ();
-			//Containers.Add (ContainingTaskList);
+			var end = GetTaskStart ();
+			var start = end;
+			end.ForwardChars (2);
+			Buffer.PlaceCursor (end);
+			Buffer.InsertAtCursor ("12345");
+
+			end = GetTaskStart ();
+			start = end;
+			end.ForwardChars (2);
+			//end.BackwardChar ();
+			end.ForwardChars (2);
+			start.BackwardChar ();
+			
+			Buffer.ApplyTag ("locked", start, end);
+			
+			Containers = new List<AttributedTask> ();
+			Containers.Add (ContainingTaskList);
 		}
 	
 		/// <summary>
-		/// Inserts a CheckButton in the TextBuffer.
+		/// Inserts a CheckButton at cursor position.
 		/// </summary>
-		/// <param name="insertIter">
-		/// <see cref="Gtk.TextIter"/> Where to insert (exactly).
-		/// </param>
-		private void InsertCheckButton ()
+		private void InsertCheckButton (Gtk.TextIter insertIter)
 		{
-			Gtk.TextIter insertIter = Buffer.GetIterAtMark (Position);
-			insertIter.LineOffset = 0;
+			//Gtk.TextIter insertIter = Buffer.GetIterAtMark (Buffer.InsertMark);
 			
 			CheckBox = new Gtk.CheckButton ();
 			CheckBox.Name = "tomboy-inline-checkbox";
 			CheckBox.Toggled += ToggleCheckBox;
 			
-			Gtk.TextChildAnchor anchor = Buffer.CreateChildAnchor (ref insertIter);
-			ContainingTaskList.ContainingNote.Window.Editor.AddChildAtAnchor (CheckBox, anchor);
+			boxanchor = Buffer.CreateChildAnchor (ref insertIter);
+			ContainingTaskList.ContainingNote.Window.Editor.AddChildAtAnchor (CheckBox, boxanchor);
 			CheckBox.Show ();
+			
+			//CheckBox.DestroyEvent += test;
+			CheckBox.Destroyed += test;
 		
-			var start = insertIter;
+			/*var start = insertIter;
 			start.BackwardChars (2);
 			var end = insertIter;
-			Buffer.ApplyTag ("locked", start, end);
+			Buffer.ApplyTag ("locked", start, end);*/
 
-			Buffer.InsertWithTagsByName (ref insertIter, "X", "invisible");
+			/*Buffer.InsertWithTagsByName (ref insertIter, "X", "invisible");
 			
 			start = insertIter;
 			end = insertIter;
 			start.BackwardChars (1);
 			
-			Buffer.RemoveTag ("locked", start, end);
+			Buffer.RemoveTag ("locked", start, end);*/
 			
-			TagUpdate ();
+			//TagUpdate ();
+		}
+		
+		public void test (object o, System.EventArgs args)
+		{
+			Logger.Debug ("destroyed");
 		}
 		
 		/// <summary>
@@ -218,18 +241,14 @@ namespace Tomboy.TaskManager {
 		/// <returns>
 		/// A TextIter
 		/// </returns>
-		private void InsertPriorityBox ()
+		private void InsertPriorityBox (Gtk.TextIter insertIter)
 		{
-			var insertIter = Buffer.GetIterAtMark (Position);
-			insertIter.LineOffset = 0;
-			if (Priority == 0)
-			{
-				string[] priorities = { "1", "2", "3", "4", "5" };
-				priority_box = new Gtk.ComboBox (priorities);
-				priority_box.Name = "tomboy-inline-combobox";
+			string[] priorities = { "1", "2", "3", "4", "5" };
+			priority_box = new Gtk.ComboBox (priorities);
+			priority_box.Name = "tomboy-inline-combobox";
 
-				Gtk.TextChildAnchor anchor = Buffer.CreateChildAnchor (ref insertIter);
-				ContainingTaskList.ContainingNote.Window.Editor.AddChildAtAnchor (priority_box, anchor);
+			Gtk.TextChildAnchor anchor = Buffer.CreateChildAnchor (ref insertIter);
+			ContainingTaskList.ContainingNote.Window.Editor.AddChildAtAnchor (priority_box, anchor);
 				
 		/*		var end = insertIter;
 				var start = insertIter;
@@ -237,7 +256,6 @@ namespace Tomboy.TaskManager {
 				
 				Buffer.ApplyTag ("invisible", start, end);*/
 				//priority_box.Show ();
-			}
 		}
 		
 		public void ShowPriority ()
@@ -252,7 +270,7 @@ namespace Tomboy.TaskManager {
 		public Gtk.TextIter GetTaskStart ()
 		{
 			var start = Buffer.GetIterAtMark (Position);
-			start.LineOffset = 0;
+			//start.LineOffset = 0;
 			//while ((start.LineIndex < start.BytesInLine) && !start.InsideWord ()) {
 			//	start.ForwardCursorPosition ();
 			//}
@@ -267,13 +285,14 @@ namespace Tomboy.TaskManager {
 		public Gtk.TextIter GetTaskEnd ()
 		{
 			var start = GetTaskStart ();
-			var end = Buffer.GetIterAtLine (start.Line);
-			end.ForwardToLineEnd ();
+			//var end = Buffer.GetIterAtLine (start.Line);
+			//end.ForwardToLineEnd ();
 
 			//var endIter = Buffer.GetIterAtLine (start.Line);
 			//endIter.ForwardToLineEnd ();
-			
-			return end;
+			start.ForwardLine ();
+			start.ForwardLine ();
+			return start;
 		}
 		
 		/// <summary>
@@ -287,10 +306,14 @@ namespace Tomboy.TaskManager {
 
 			//Logger.Debug ("line " + start.Line + " start index: " + start.LineIndex + " end index: " + end.LineIndex);
 			Buffer.ApplyTag (Tag, GetTaskStart (), GetTaskEnd ());
+		
 
-			// Logger.Debug (Buffer.GetText(GetTaskStart(), GetTaskEnd(), false)); //FIXME Last line in tasklist strange in xml
+			Logger.Debug (Buffer.GetText (GetTaskStart (), GetTaskEnd (), false));
+			//FIXME Last line in tasklist strange in xml
 			
-			Tag.bind(this);
+			Tag.bind (this);
+			
+			start.ForwardChars (2);
 			
 			if (CheckBox != null && CheckBox.Active) {
 				Buffer.ApplyTag ("strikethrough", start, end);
@@ -306,13 +329,17 @@ namespace Tomboy.TaskManager {
 		/// </summary>
 		private void BufferChanged (object sender, EventArgs e)
 		{
-			Debug.Assert (Buffer == sender); // no other buffer should be registred here	
+			if (boxanchor.Deleted)
+			{
+				Logger.Debug("destroying");
+				CheckBox.Destroy();
+			}
+			/*Debug.Assert (Buffer == sender); // no other buffer should be registred here	
 			int line = Buffer.GetIterAtMark (Buffer.InsertMark).Line;
 
 			if (line == GetTaskStart ().Line) {
 				TagUpdate ();
-			}
-			
+			}*/
 		}
 
 		/// <summary>

@@ -44,10 +44,11 @@ namespace Tomboy.TaskManager
 		{
 			base.Initialize (element_name);
 
-			Background = "green";
-			LeftMargin = 3;
+			Foreground = "green";
+			//LeftMargin = 3;
 			LeftMarginSet = true;
-			CanSpellCheck = true;
+			//CanSpellCheck = true;
+			CanGrow = true;
 		}
 		
 		public void bind (Task task)
