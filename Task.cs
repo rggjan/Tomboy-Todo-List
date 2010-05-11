@@ -174,22 +174,18 @@ namespace Tomboy.TaskManager {
 			pos = GetTaskStart ();
 			InsertPriorityBox (pos);
 
-			TagUpdate ();
 			
 			var end = GetTaskStart ();
 			var start = end;
-			end.ForwardChars (2);
-			Buffer.PlaceCursor (end);
-			Buffer.InsertAtCursor ("12345");
-
-			end = GetTaskStart ();
-			start = end;
-			end.ForwardChars (2);
-			//end.BackwardChar ();
-			end.ForwardChars (2);
+			end.ForwardChar ();
 			start.BackwardChar ();
-			
 			Buffer.ApplyTag ("locked", start, end);
+			
+			TagUpdate ();
+			
+			end.ForwardChar ();
+			Buffer.PlaceCursor (end);
+
 			
 			Containers = new List<AttributedTask> ();
 			Containers.Add (ContainingTaskList);
@@ -291,7 +287,7 @@ namespace Tomboy.TaskManager {
 			//var endIter = Buffer.GetIterAtLine (start.Line);
 			//endIter.ForwardToLineEnd ();
 			start.ForwardLine ();
-			start.ForwardLine ();
+			//start.ForwardLine ();
 			return start;
 		}
 		
@@ -304,16 +300,9 @@ namespace Tomboy.TaskManager {
 			var start = GetTaskStart ();
 			var end = GetTaskEnd ();
 
-			//Logger.Debug ("line " + start.Line + " start index: " + start.LineIndex + " end index: " + end.LineIndex);
-			Buffer.ApplyTag (Tag, GetTaskStart (), GetTaskEnd ());
-		
-
-			Logger.Debug (Buffer.GetText (GetTaskStart (), GetTaskEnd (), false));
-			//FIXME Last line in tasklist strange in xml
-			
 			Tag.bind (this);
-			
-			start.ForwardChars (2);
+			start.ForwardChar ();
+			Buffer.ApplyTag (Tag, start, end);
 			
 			if (CheckBox != null && CheckBox.Active) {
 				Buffer.ApplyTag ("strikethrough", start, end);
