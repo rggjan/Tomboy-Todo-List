@@ -60,10 +60,7 @@ namespace Tomboy.TaskManager {
 		/// </summary>
 		public override bool Done {
 			get {
-				if (CheckBox != null)
-					return CheckBox.Active;
-				else
-					return false;
+				return (CheckBox != null && CheckBox.Active);
 			}
 			set {
 				CheckBox.Active = value;
