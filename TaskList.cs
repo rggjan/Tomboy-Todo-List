@@ -71,9 +71,13 @@ namespace Tomboy.TaskManager {
 			get; set;
 		}
 		
-		//TODO
-		public bool Done { 
-			get; set; 
+		public override bool Done { 
+			get {
+				return Children.FindAll(c => c.Done == true).Count == Children.Count;
+			}
+			set {
+				Children.ForEach(c => c.Done = true);
+			}
 		}
 		
 		//TODO

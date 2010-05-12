@@ -58,7 +58,7 @@ namespace Tomboy.TaskManager {
 		/// <summary>
 		/// Is this task completed?
 		/// </summary>
-		public bool Done {
+		public override bool Done {
 			get {
 				if (CheckBox != null)
 					return CheckBox.Active;
