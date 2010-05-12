@@ -49,7 +49,7 @@ namespace Tomboy.TaskManager {
 
 			if (Note.TagTable.Lookup ("locked") == null)
 				Note.TagTable.Add (tag);
-			
+
 			//tag = new NoteTag ("invisible");
 			//tag.Invisible = true;
 			
@@ -268,9 +268,10 @@ namespace Tomboy.TaskManager {
 			get; private set;
 		}
 		
-		//TODO
-		public bool Done {
-			get; set;
+		public bool HasOpenTasks {
+			get {
+				return Children.FindAll(c => c.Done == true).Count == Children.Count;
+			}
 		}
 		
 		public void Load ()
