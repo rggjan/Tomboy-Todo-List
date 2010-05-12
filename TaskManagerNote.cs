@@ -118,7 +118,7 @@ namespace Tomboy.TaskManager {
 			}
 		}
 		
-		public static bool InTaskList (TextIter cursor)
+		public bool InTaskList (TextIter cursor)
 		{
 			bool inTaskList = false;
 			foreach (Gtk.TextTag tag in cursor.Tags) {
@@ -129,6 +129,18 @@ namespace Tomboy.TaskManager {
 				}
 			}
 			return inTaskList;
+		}
+		
+		public Task GetTaskAtCursor ()
+		{
+			var iter = Buffer.GetIterAtMark (Buffer.InsertMark);
+			foreach (Gtk.TextTag tag in iter.Tags) {
+				if (tag is TaskTag) {
+					TaskTag tasktag = (TaskTag)tag;
+					return tasktag.Task;
+				}
+			}
+			return null;
 		}
 
 		void OnAddListActivated (object sender, EventArgs args)
@@ -173,13 +185,10 @@ namespace Tomboy.TaskManager {
 				
 				// Behaviour: onTask\n\n should delete empty checkbox
 				if (Buffer.GetText (begin, end, true).Trim ().Length == 0 && InTaskList (end)) {
-					//FIXME better way to do this
+					Task task = GetTaskAtCursor ();
+					if (task != null)
+						task.Delete ();
 					
-					end.ForwardChars (2);
-					Buffer.RemoveAllTags (begin, end);
-						
-					end.BackwardChar ();
-					Buffer.Delete (ref begin, ref end);
 					return;
 				}
 				

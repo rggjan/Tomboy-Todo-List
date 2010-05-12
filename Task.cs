@@ -325,6 +325,19 @@ namespace Tomboy.TaskManager {
 			}*/
 		}
 
+		public void Delete ()
+		{
+			if (!Position.Deleted)
+			{
+				var start = Buffer.GetIterAtMark (Position);
+				var end = start;
+				end.ForwardToLineEnd ();
+				Buffer.Delete (ref start, ref end);
+				
+				ContainingTaskList.Children.Remove (this); //FIXME also for other containers?
+			}
+		}
+		
 		/// <summary>
 		/// Signal when checkbutton for the task was clicked.
 		/// This function is responsible for updating strikethrough functionality.
