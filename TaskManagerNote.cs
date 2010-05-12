@@ -14,7 +14,7 @@ namespace Tomboy.TaskManager {
 		Gtk.MenuItem add_priority = new Gtk.MenuItem (Catalog.GetString ("Add Priority"));
 		
 		bool new_task_needed = false;
-		TaskList current_task = null;
+		TaskList current_task_list = null;
 		
 		public override void Initialize ()
 		{
@@ -45,7 +45,7 @@ namespace Tomboy.TaskManager {
 		
 			NoteTag tag = new NoteTag ("locked");
 			tag.Editable = false;
-			tag.Family = "Arial";
+			tag.CanSerialize = false;
 
 			if (Note.TagTable.Lookup ("locked") == null)
 				Note.TagTable.Add (tag);
@@ -80,10 +80,9 @@ namespace Tomboy.TaskManager {
 			add_priority.Sensitive = false;
 			
 			Buffer.InsertText += BufferInsertText;
-			//Buffer.MarkSet += BufferMarkSet;
 			Buffer.UserActionEnded += CheckIfNewTaskNeeded;
 			
-			Buffer.MarkSet += UpdateMenuSensitivity;
+			Buffer.MarkSet += UpdateMenuSensitivity; //FIXME too often called?
 
 			task_menu.Add(add_list);
 			task_menu.Add(add_priority);
@@ -104,19 +103,12 @@ namespace Tomboy.TaskManager {
 		/// </summary>
 		void UpdateMenuSensitivity (object sender, EventArgs args) {
 			
+			//Logger.Debug("UpdateMenuSensitivity");
 			Gtk.TextIter cursor = Buffer.GetIterAtMark (Buffer.InsertMark);
 			cursor.LineOffset = 0;
 			
-			bool inTaskList = false;
-			foreach (Gtk.TextTag tag in cursor.Tags) {
-				if(tag is TaskListTag) {
-					inTaskList = true;
-					break;
-				}
-			}
-			
 			// toggle sensitivity
-			if(inTaskList) {
+			if(InTaskList (cursor)) {
 				add_priority.Sensitive = true;
 				add_list.Sensitive = false;
 			}
@@ -124,6 +116,19 @@ namespace Tomboy.TaskManager {
 				add_priority.Sensitive = false;
 				add_list.Sensitive = true;
 			}
+		}
+		
+		public static bool InTaskList (TextIter cursor)
+		{
+			bool inTaskList = false;
+			foreach (Gtk.TextTag tag in cursor.Tags) {
+				if (tag is TaskListTag) {
+					//Logger.Debug("found tasklisttag");
+					inTaskList = true;
+					break;
+				}
+			}
+			return inTaskList;
 		}
 
 		void OnAddListActivated (object sender, EventArgs args)
@@ -149,7 +154,6 @@ namespace Tomboy.TaskManager {
 					add_priority.Sensitive = false;
 				}
 			}
-		
 		}
 		
 		/*Task GetTaskAtCursor ()
@@ -167,22 +171,23 @@ namespace Tomboy.TaskManager {
 				var begin = end;
 				begin.LineOffset = 0;
 				
-				if (Buffer.GetText (begin, end, true).Trim () == "X") {
+				// Behaviour: onTask\n\n should delete empty checkbox
+				if (Buffer.GetText (begin, end, true).Trim ().Length == 0 && InTaskList (end)) {
 					//FIXME better way to do this
+					
+					end.ForwardChars (2);
+					Buffer.RemoveAllTags (begin, end);
+						
+					end.BackwardChar ();
 					Buffer.Delete (ref begin, ref end);
 					return;
 				}
 				
-				end.BackwardChar ();
-				
-				// Go back to last char on line that is not a newline
+				// Insert new checkbox if was onTask
 				foreach (Gtk.TextTag tag in end.Tags) {
-					//Edit: Wow. Now this looks pretty!
 					if (tag is TaskTag) {
-						Logger.Debug ("TaskTag found!");
-						
 						TaskTag tasktag = (TaskTag)tag;
-						current_task = tasktag.Task.ContainingTaskList;
+						current_task_list = tasktag.Task.ContainingTaskList;
 						
 						new_task_needed = true;
 						return;
@@ -190,18 +195,12 @@ namespace Tomboy.TaskManager {
 				}
 				
 				end = args.Pos;
-				//end.ForwardChars (5);
-				
 				Gtk.TextIter start = args.Pos;
+				
 				start.BackwardLine ();
 				
-				//end = start;
-				//end.ForwardChars (2);
-				
-				//Logger.Debug ("Before new Line: "+Buffer.GetText(start, end, false));
-				
 				if (IsTextTodoItem (Buffer.GetText (start, end, false))) {
-					current_task = null;
+					current_task_list = null;
 					new_task_needed = true;
 				}
 			}
@@ -212,8 +211,7 @@ namespace Tomboy.TaskManager {
 			if (new_task_needed) {
 				Logger.Debug ("Adding a new Task");
 				
-				if (current_task == null) {
-					//Logger.Debug ("Deleting stuff");
+				if (current_task_list == null) {
 					Gtk.TextIter start = Buffer.GetIterAtMark (Buffer.InsertMark);
 					Gtk.TextIter end = start;
 					
@@ -226,7 +224,6 @@ namespace Tomboy.TaskManager {
 					Buffer.Delete (ref start, ref end);
 					
 					Children.Add (new TaskList (Note));
-					
 				} else {
 					var iter = Buffer.GetIterAtMark (Buffer.InsertMark);
 					var end = iter;
@@ -238,8 +235,9 @@ namespace Tomboy.TaskManager {
 							Buffer.RemoveTag (tag, iter, end);
 						}
 					}
+//					Buffer.RemoveTag ("locked", iter, end);
 					
-				//	current_task.addTask (Buffer.InsertMark);
+					current_task_list.addTask (iter);
 				}
 				new_task_needed = false;
 			}
