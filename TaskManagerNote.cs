@@ -104,14 +104,12 @@ namespace Tomboy.TaskManager {
 		/// </summary>
 		void UpdateMenuSensitivity (object sender, EventArgs args) {
 			
-			Logger.Debug("UpdateMenuSensitivity");
 			Gtk.TextIter cursor = Buffer.GetIterAtMark (Buffer.InsertMark);
 			cursor.LineOffset = 0;
 			
 			bool inTaskList = false;
 			foreach (Gtk.TextTag tag in cursor.Tags) {
 				if(tag is TaskListTag) {
-					Logger.Debug("found tasklisttag");
 					inTaskList = true;
 					break;
 				}
