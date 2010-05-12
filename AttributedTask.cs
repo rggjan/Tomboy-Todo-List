@@ -88,7 +88,7 @@ namespace Tomboy.TaskManager
 		/// <summary>
 		/// Whether or not this task has been completed
 		/// </summary>
-		bool Done {
+		public abstract bool Done {
 			get; set;
 		}
 	}
