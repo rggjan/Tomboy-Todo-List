@@ -24,44 +24,54 @@
 // 
 
 using System;
+using System.Collections.Generic;
 using Tomboy;
-using Tomboy.Notebooks;
-using Mono.Unix;
+using Gtk;
 
-namespace Tomboy.TaskManager {
+namespace Tomboy.TaskManager
+{
 
-	public class OpenTasksNotebook : SpecialNotebook
+
+	public class TaskNoteParser
 	{
-		public OpenTasksNotebook () : base ()
+
+		public TaskNoteParser ()
 		{
 		}
 		
-		public override string Name
+		public static List<TaskList> ParseTasks(Note note)
 		{
-			get { return Catalog.GetString ("Open Tasks"); }
-		}
-		
-		public override string NormalizedName
-		{
-			get { return "___NotebookManager___OpenTasksNotes__Notebook___"; }
-		}
-		
-		public override Tag Tag
-		{
-			get { return null; }
-		}
-		
-		public override Note GetTemplateNote ()
-		{
-			return Tomboy.DefaultNoteManager.GetOrCreateTemplateNote ();
-		}
-		
-		public override bool ContainsNote(Note n) 
-		{
-			Logger.Debug("ContainsNote");
-			var tls = TaskNoteParser.ParseTasks(n);
-			Logger.Debug("Found tasklist#:" + tls.Count);
-			return tls.Count > 0;
+			List<TaskList> tls = new List<TaskList>();
+			
+			TextIter iter = note.Buffer.StartIter;
+			do {
+				TaskListTag taskliststart = (TaskListTag)note.Buffer.GetDynamicTag ("tasklist", iter);
+				if (taskliststart != null)
+				{
+					Logger.Debug ("=> found Tasklist!");
+
+					TaskList tl = new TaskList (note, iter, taskliststart);
+					tls.Add (tl);
+					
+					TaskTag start;
+					do
+					{
+						start = (TaskTag)note.Buffer.GetDynamicTag ("task", iter);
+						iter.ForwardChar ();
+					} while (start == null);
+					
+					Logger.Debug ("=> found Tasktag!");
+					tl.addTask (iter, start);
+					
+					TaskTag end = start;
+					while (end == start) {
+						iter.ForwardChar ();
+						end = (TaskTag)note.Buffer.GetDynamicTag ("task", iter);
+					}
+				}
+			} while (iter.ForwardChar ());
+			
+			return tls;
 		}
 	}
 }

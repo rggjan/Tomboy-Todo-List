@@ -54,6 +54,8 @@
     <Compile Include="TaskTag.cs" />
     <Compile Include="OpenTasksNotebook.cs" />
     <Compile Include="AttributedTaskTag.cs" />
+    <Compile Include="TaskNoteUtilities.cs" />
+    <Compile Include="TaskNoteParser.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
