@@ -120,27 +120,15 @@ namespace Tomboy.TaskManager {
 		
 		public bool InTaskList (TextIter cursor)
 		{
-			bool inTaskList = false;
-			foreach (Gtk.TextTag tag in cursor.Tags) {
-				if (tag is TaskListTag) {
-					//Logger.Debug("found tasklisttag");
-					inTaskList = true;
-					break;
-				}
-			}
-			return inTaskList;
+			TaskListTag tlt = (TaskListTag) Buffer.GetDynamicTag ("tasklist", cursor);
+			return (tlt!=null);
 		}
 		
 		public Task GetTaskAtCursor ()
 		{
 			var iter = Buffer.GetIterAtMark (Buffer.InsertMark);
-			foreach (Gtk.TextTag tag in iter.Tags) {
-				if (tag is TaskTag) {
-					TaskTag tasktag = (TaskTag)tag;
-					return tasktag.Task;
-				}
-			}
-			return null;
+			TaskTag tag = (TaskTag) Buffer.GetDynamicTag ("task", iter);
+			return tag;
 		}
 
 		void OnAddListActivated (object sender, EventArgs args)
@@ -159,12 +147,12 @@ namespace Tomboy.TaskManager {
 			Gtk.TextIter cursor = Buffer.GetIterAtMark (Buffer.InsertMark);
 			cursor.BackwardChar ();
 			
-			foreach (Gtk.TextTag tag in cursor.Tags) {
-				if (tag is TaskTag) {
-					TaskTag tasktag = (TaskTag)tag;
-					tasktag.Task.ShowPriority ();
-					add_priority.Sensitive = false;
-				}
+			TaskTag tt = GetTaskAtCursor (cursor);
+			if(tt!=null){
+				tt.Tag.ShowPriority ();
+				add_priority.Sensitive = false;
+			} else {
+				Logger.Debug ("Tried to insert Priority outside of a task");	
 			}
 		}
 		
@@ -196,14 +184,13 @@ namespace Tomboy.TaskManager {
 				}
 				
 				// Insert new checkbox if was onTask
-				foreach (Gtk.TextTag tag in end.Tags) {
-					if (tag is TaskTag) {
-						TaskTag tasktag = (TaskTag)tag;
-						current_task_list = tasktag.Task.ContainingTaskList;
+				TaskTag tt = GetTaskAtCursor (end);
+				if (tt!= null){
+					TaskTag tasktag = (TaskTag)tag;
+					current_task_list = tasktag.Task.ContainingTaskList;
 						
-						new_task_needed = true;
-						return;
-					}
+					new_task_needed = true;
+					return;
 				}
 				
 				end = args.Pos;
@@ -241,11 +228,10 @@ namespace Tomboy.TaskManager {
 					var end = iter;
 					end.ForwardToLineEnd ();
 					
-					foreach (Gtk.TextTag tag in iter.Tags) {
-						if (tag is TaskTag) {
-							Logger.Debug ("removing old tasktag");
-							Buffer.RemoveTag (tag, iter, end);
-						}
+					TaskTag tt = GetTaskAtCursor (iter);
+					if(tt!=null){
+						Logger.Debug ("removing old tasktag");
+						Buffer.RemoveTag (tag, iter, end);
 					}
 //					Buffer.RemoveTag ("locked", iter, end);
 					
