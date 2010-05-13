@@ -92,7 +92,7 @@ namespace Tomboy.TaskManager {
 			
 			//Initialise tasklists list
 			//TODO: get from previous sessions?
-			Children = new List<AttributedTask> ();
+			TaskLists = new List<TaskList> ();
 			
 			Load ();
 		}
@@ -127,8 +127,31 @@ namespace Tomboy.TaskManager {
 		public Task GetTaskAtCursor ()
 		{
 			var iter = Buffer.GetIterAtMark (Buffer.InsertMark);
+			return GetTaskAtIter (iter);
+		}
+		
+		public Task GetTaskAtIter (TextIter iter)
+		{
 			TaskTag tag = (TaskTag) Buffer.GetDynamicTag ("task", iter);
-			return tag;
+			if(tag!=null)
+				return tag.Task;
+			
+			return null;
+		}
+		
+		public TaskTag GetTaskTagAtCursor ()
+		{
+			var iter = Buffer.GetIterAtMark (Buffer.InsertMark);
+			return GetTaskTagAtIter (iter);
+		}
+		
+		public TaskTag GetTaskTagAtIter (TextIter iter)
+		{
+			TaskTag tag = (TaskTag) Buffer.GetDynamicTag ("task", iter);
+			if(tag!=null)
+				return tag;
+			
+			return null;
 		}
 
 		void OnAddListActivated (object sender, EventArgs args)
@@ -139,7 +162,7 @@ namespace Tomboy.TaskManager {
 			add_priority.Sensitive = true;
 			
 			//tl.Name = "New TaskList!";
-			Children.Add (tl);
+			TaskLists.Add (tl);
 		}
 		
 		void OnAddPriorityActivated (object sender, EventArgs args)
@@ -147,9 +170,9 @@ namespace Tomboy.TaskManager {
 			Gtk.TextIter cursor = Buffer.GetIterAtMark (Buffer.InsertMark);
 			cursor.BackwardChar ();
 			
-			TaskTag tt = GetTaskAtCursor (cursor);
+			Task tt = GetTaskAtIter (cursor);
 			if(tt!=null){
-				tt.Tag.ShowPriority ();
+				tt.ShowPriority ();
 				add_priority.Sensitive = false;
 			} else {
 				Logger.Debug ("Tried to insert Priority outside of a task");	
@@ -184,11 +207,9 @@ namespace Tomboy.TaskManager {
 				}
 				
 				// Insert new checkbox if was onTask
-				TaskTag tt = GetTaskAtCursor (end);
-				if (tt!= null){
-					TaskTag tasktag = (TaskTag)tag;
-					current_task_list = tasktag.Task.ContainingTaskList;
-						
+				Task t = GetTaskAtIter (end);
+				if (t!= null){
+					current_task_list = t.ContainingTaskList;	
 					new_task_needed = true;
 					return;
 				}
@@ -222,16 +243,16 @@ namespace Tomboy.TaskManager {
 					// Logger.Debug(Buffer.GetText(start, end, false));
 					Buffer.Delete (ref start, ref end);
 					
-					Children.Add (new TaskList (Note));
+					TaskLists.Add (new TaskList (Note));
 				} else {
 					var iter = Buffer.GetIterAtMark (Buffer.InsertMark);
 					var end = iter;
 					end.ForwardToLineEnd ();
 					
-					TaskTag tt = GetTaskAtCursor (iter);
+					TaskTag tt = GetTaskTagAtIter (iter);
 					if(tt!=null){
 						Logger.Debug ("removing old tasktag");
-						Buffer.RemoveTag (tag, iter, end);
+						Buffer.RemoveTag (tt, iter, end);
 					}
 //					Buffer.RemoveTag ("locked", iter, end);
 					
@@ -249,23 +270,19 @@ namespace Tomboy.TaskManager {
 		}
 			
 
-		public List<AttributedTask> Children {
-			get; private set;
-		}
-		
-		public List<AttributedTask> Containers {
+		public List<TaskList> TaskLists {
 			get; private set;
 		}
 		
 		public bool HasOpenTasks {
 			get {
-				return Children.FindAll(c => c.Done == true).Count == Children.Count;
+				return TaskLists.FindAll(c => c.Done == true).Count == TaskLists.Count;
 			}
 		}
 		
-		public static List<AttributedTask> ParseTasks(Note note)
+		public static List<TaskList> ParseTasks(Note note)
 		{
-			List<AttributedTask> tls = new List<AttributedTask>();
+			List<TaskList> tls = new List<TaskList>();
 			
 			TextIter iter = note.Buffer.StartIter;
 			do {
@@ -301,9 +318,9 @@ namespace Tomboy.TaskManager {
 		public void Load ()
 		{
 			Logger.Debug ("Loading...");
-			Children = TaskManagerNoteAddin.ParseTasks(Note);
+			TaskLists = TaskManagerNoteAddin.ParseTasks(Note);
 			
-			foreach (TaskList tl in Children)
+			foreach (TaskList tl in TaskLists)
 			{
 				foreach (Task t in tl.Children)
 				{
