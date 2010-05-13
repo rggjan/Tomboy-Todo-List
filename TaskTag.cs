@@ -50,25 +50,34 @@ namespace Tomboy.TaskManager
 			//CanSpellCheck = true;
 			CanGrow = true;
 		}
+
+		public int TaskPriority {
+			get {
+				return int.Parse (Attributes["Priority"]);
+			}
+			set {
+				Attributes["Priority"] = value.ToString ();
+			}
+		}
 		
 		public void bind (Task task)
 		{
 			Task = task;
 			
-			if (!Attributes.ContainsKey ("Done"))
-				Attributes.Add ("Done", Task.Done.ToString ());
-			else
-				Attributes["Done"] = Task.Done.ToString ();
+//			if (!Attributes.ContainsKey ("Done"))
+				Attributes.Add ("Done", "false");
+//			else
+				//Attributes["Done"] = Task.Done.ToString ();
 			
-			if (!Attributes.ContainsKey ("Duedate"))
-				Attributes.Add ("Duedate", Task.DueDate.ToString ());
-			else
-				Attributes["Duedate"] = Task.DueDate.ToString ();
+		//	if (!Attributes.ContainsKey ("Duedate"))
+				Attributes.Add ("Duedate", "");
+		//	else
+		//		Attributes["Duedate"] = Task.DueDate.ToString ();
 			
-			if (!Attributes.ContainsKey ("Priority"))
-				Attributes.Add ("Priority", Task.Priority.ToString ());
-			else
-				Attributes["Priority"] = Task.Priority.ToString ();
+		//	if (!Attributes.ContainsKey ("Priority"))
+				Attributes.Add ("Priority", "0");
+		//	else
+		//		Attributes["Priority"] = Task.Priority.ToString ();
 		}
 	}
 }

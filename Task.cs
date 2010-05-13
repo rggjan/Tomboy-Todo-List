@@ -69,17 +69,10 @@ namespace Tomboy.TaskManager {
 		
 		public int Priority {
 			get {
-				if (priority_box != null)
-				{
-					Logger.Debug ("reading priority");
-					Logger.Debug (priority_box.ActiveText);
-					return priority_box.Active;
-				}
-				else
-					return 0;
+				return Tag.TaskPriority;
 			}
 			set {
-				priority_box.Active = value;
+				Tag.TaskPriority = priority_box.Active;
 			}
 		}
 		
@@ -216,6 +209,11 @@ namespace Tomboy.TaskManager {
 			Logger.Debug ("destroyed");
 		}
 		
+		private void setpriority (object o, System.EventArgs args)
+		{
+			Tag.TaskPriority = priority_box.Active;
+		}
+		
 		/// <summary>
 		/// Inserts the pr or;ty ComboBox in the TextBuffer.
 		/// </summary>
@@ -227,10 +225,10 @@ namespace Tomboy.TaskManager {
 		{
 			string[] priorities = { "1", "2", "3", "4", "5" };
 			priority_box = new Gtk.ComboBox (priorities);
-			priority_box.Active = Priority;
+			priority_box.Active = Tag.TaskPriority;
 			priority_box.Name = "tomboy-inline-combobox";
 
-			//priority_box.Changed += setpriority();
+			priority_box.Changed += setpriority;
 
 			Gtk.TextChildAnchor anchor = Buffer.CreateChildAnchor (ref insertIter);
 			ContainingTaskList.ContainingNote.Window.Editor.AddChildAtAnchor (priority_box, anchor);
@@ -289,9 +287,8 @@ namespace Tomboy.TaskManager {
 			var start = GetTaskStart ();
 			var end = GetTaskEnd ();
 			//start.ForwardChar ();
-
-			
-			Tag.bind (this);
+		
+			//Tag.bind (this);
 			start.ForwardChar ();
 			Buffer.ApplyTag (Tag, start, end);
 			
@@ -311,8 +308,7 @@ namespace Tomboy.TaskManager {
 		{
 			if (boxanchor.Deleted)
 			{
-				Logger.Debug("destroying");
-				CheckBox.Destroy();
+				// Delete (); //FIXME
 			}
 			/*Debug.Assert (Buffer == sender); // no other buffer should be registred here	
 			int line = Buffer.GetIterAtMark (Buffer.InsertMark).Line;
@@ -320,6 +316,20 @@ namespace Tomboy.TaskManager {
 			if (line == GetTaskStart ().Line) {
 				TagUpdate ();
 			}*/
+		}
+		
+		public bool IsLastTask ()
+		{
+			foreach (Task task in ContainingTaskList.Children)
+			{
+				if (Buffer.GetIterAtMark (task.Position).Line > Buffer.GetIterAtMark (Position).Line)
+				{
+					Logger.Debug ("is not last!");
+					return false;
+				}
+			}
+			Logger.Debug ("is last!");
+			return true;
 		}
 
 		public void Delete ()
@@ -329,7 +339,16 @@ namespace Tomboy.TaskManager {
 				var start = Buffer.GetIterAtMark (Position);
 				var end = start;
 				end.ForwardToLineEnd ();
+				
 				Buffer.Delete (ref start, ref end);
+				
+				start = Buffer.GetIterAtMark (Position);
+				end = start;
+				//start.ForwardLine ();
+				end.ForwardLines (2);
+				
+				Buffer.RemoveAllTags (start, end);
+				Buffer.PlaceCursor (Buffer.GetIterAtMark (Buffer.InsertMark));
 				
 				ContainingTaskList.Children.Remove (this); //FIXME also for other containers?
 			}
