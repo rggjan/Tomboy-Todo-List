@@ -36,7 +36,7 @@ namespace Tomboy.TaskManager
 		VERY_HIGH
 	}
 	
-	public abstract class AttributedTask {
+	public abstract class AttributedTask { //TODO interface?
 		
 		//TODO: Use this as an event instead
 		public bool changed;
@@ -57,7 +57,7 @@ namespace Tomboy.TaskManager
 		/// </returns>
 		public bool isOverdue ()
 		{
-			return DueDate.CompareTo(DateTime.Now) <= 0;	
+			return DueDate.CompareTo(DateTime.Now) <= 0;
 		}
 		
 		
