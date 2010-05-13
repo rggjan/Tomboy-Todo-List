@@ -24,46 +24,44 @@
 // 
 
 using System;
-using Mono.Unix;
-using Gtk;
 using Tomboy;
 using Tomboy.Notebooks;
+using Mono.Unix;
 
 namespace Tomboy.TaskManager {
-	
-	class TaskManagerApplicationAddin : ApplicationAddin {
-		
-		private bool initialized;
-		public override bool Initialized {
-			get { return initialized; }
-		}
 
-		
-		/// <summary>
-		/// Sets up the TaskManager Addin.
-		/// </summary>
-		public override void Initialize()
+	public class OpenTasksNotebook : SpecialNotebook
+	{
+		public OpenTasksNotebook () : base ()
 		{
-			if (!Initialized)
-			{
-				Logger.Debug("TaskManagerApplicationAddin.Initialize");
-				//NoteRecentChanges search = NoteRecentChanges.GetInstance (Tomboy.DefaultNoteManager);
-				
-				OpenTasksNotebook openTasksNotebook = new OpenTasksNotebook ();
-				NotebookManager.AddSpecialNotebook(openTasksNotebook);
-				
-				initialized = true;
-			}
-			
 		}
 		
-		
-		/// <summary>
-		/// Cleanup when TaskManager is disabled or Tomboy is closed.
-		/// </summary>
-		public override void Shutdown ()
+		public override string Name
 		{
-			// TODO unregister notebooks
+			get { return Catalog.GetString ("Open Tasks"); }
+		}
+		
+		public override string NormalizedName
+		{
+			get { return "___NotebookManager___OpenTasksNotes__Notebook___"; }
+		}
+		
+		public override Tag Tag
+		{
+			get { return null; }
+		}
+		
+		public override Note GetTemplateNote ()
+		{
+			return Tomboy.DefaultNoteManager.GetOrCreateTemplateNote ();
+		}
+		
+		public override bool ContainsNote(Note n) 
+		{
+			Logger.Debug("ContainsNote");
+			var tls = TaskManagerNoteAddin.ParseTasks(n);
+			Logger.Debug("Found tasklist#:" + tls.Count);
+			return tls.Count > 0;
 		}
 	}
 }
