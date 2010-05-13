@@ -24,26 +24,53 @@
 // 
 
 using System;
-using Gtk;
-using Tomboy;
 
 namespace Tomboy.TaskManager
 {
-	/// <summary>
-	/// Marks a Task in a NoteBuffer. Currently this does nothing (used to restore notes)
-	/// </summary>
-	public class TaskListTag : AttributedTaskTag
+	public class AttributedTaskTag : DynamicNoteTag
 	{
-		
-		public TaskList TaskList {
-			get {return (TaskList) AttributedTask;}
-			set {AttributedTask = value;}
-		}
 
+		public AttributedTaskTag ()
+		{
+		}
+		
 		public override void Initialize (string element_name)
 		{
 			base.Initialize (element_name);
-			Background = "red";
+			CanGrow = true;
+			LeftMarginSet = true;
+		}
+		
+		public int TaskPriority {
+			get {
+				return int.Parse (Attributes["Priority"]);
+			}
+			set {
+				Attributes["Priority"] = value.ToString ();
+			}
+		}
+		
+		public DateTime TaskDuedate{
+			get {
+				return DateTime.Parse (Attributes["Duedate"]);
+			}
+			set {
+				Attributes["Duedate"] = value.ToString ();
+			}
+		}
+		
+		public AttributedTask AttributedTask {
+			get;
+			set;
+		}
+		
+		public void bind (AttributedTask atask)
+		{
+			AttributedTask = atask;
+			
+			Attributes.Add ("Done", "false");
+			Attributes.Add ("Duedate", "");
+			Attributes.Add ("Priority", "0");
 		}
 	}
 }
