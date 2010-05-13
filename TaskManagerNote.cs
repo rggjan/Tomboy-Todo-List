@@ -15,6 +15,7 @@ namespace Tomboy.TaskManager {
 		
 		bool new_task_needed = false;
 		TaskList current_task_list = null;
+		TaskNoteUtilities utils = null;
 		
 		public override void Initialize ()
 		{
@@ -93,6 +94,7 @@ namespace Tomboy.TaskManager {
 			//Initialise tasklists list
 			//TODO: get from previous sessions?
 			TaskLists = new List<TaskList> ();
+			utils = new TaskNoteUtilities (Buffer);
 			
 			Load ();
 		}
@@ -108,7 +110,7 @@ namespace Tomboy.TaskManager {
 			cursor.LineOffset = 0;
 			
 			// toggle sensitivity
-			if(InTaskList (cursor)) {
+			if(utils.InTaskList (cursor)) {
 				add_priority.Sensitive = true;
 				add_list.Sensitive = false;
 			}
@@ -116,42 +118,6 @@ namespace Tomboy.TaskManager {
 				add_priority.Sensitive = false;
 				add_list.Sensitive = true;
 			}
-		}
-		
-		public bool InTaskList (TextIter cursor)
-		{
-			TaskListTag tlt = (TaskListTag) Buffer.GetDynamicTag ("tasklist", cursor);
-			return (tlt!=null);
-		}
-		
-		public Task GetTaskAtCursor ()
-		{
-			var iter = Buffer.GetIterAtMark (Buffer.InsertMark);
-			return GetTaskAtIter (iter);
-		}
-		
-		public Task GetTaskAtIter (TextIter iter)
-		{
-			TaskTag tag = (TaskTag) Buffer.GetDynamicTag ("task", iter);
-			if(tag!=null)
-				return tag.Task;
-			
-			return null;
-		}
-		
-		public TaskTag GetTaskTagAtCursor ()
-		{
-			var iter = Buffer.GetIterAtMark (Buffer.InsertMark);
-			return GetTaskTagAtIter (iter);
-		}
-		
-		public TaskTag GetTaskTagAtIter (TextIter iter)
-		{
-			TaskTag tag = (TaskTag) Buffer.GetDynamicTag ("task", iter);
-			if(tag!=null)
-				return tag;
-			
-			return null;
 		}
 
 		void OnAddListActivated (object sender, EventArgs args)
@@ -170,7 +136,7 @@ namespace Tomboy.TaskManager {
 			Gtk.TextIter cursor = Buffer.GetIterAtMark (Buffer.InsertMark);
 			cursor.BackwardChar ();
 			
-			Task tt = GetTaskAtIter (cursor);
+			Task tt = utils.GetTaskAtIter (cursor);
 			if(tt!=null){
 				tt.ShowPriority ();
 				add_priority.Sensitive = false;
@@ -195,8 +161,8 @@ namespace Tomboy.TaskManager {
 				begin.LineOffset = 0;
 				
 				// Behaviour: onTask\n\n should delete empty checkbox
-				if (Buffer.GetText (begin, end, true).Trim ().Length == 0 && InTaskList (end)) {
-					Task task = GetTaskAtCursor ();
+				if (Buffer.GetText (begin, end, true).Trim ().Length == 0 && utils.InTaskList (end)) {
+					Task task = utils.GetTaskAtCursor ();
 					if (task != null) {
 						if (task.IsLastTask ())
 						{
@@ -207,7 +173,7 @@ namespace Tomboy.TaskManager {
 				}
 				
 				// Insert new checkbox if was onTask
-				Task t = GetTaskAtIter (end);
+				Task t = utils.GetTaskAtIter (end);
 				if (t!= null){
 					current_task_list = t.ContainingTaskList;	
 					new_task_needed = true;
@@ -249,7 +215,7 @@ namespace Tomboy.TaskManager {
 					var end = iter;
 					end.ForwardToLineEnd ();
 					
-					TaskTag tt = GetTaskTagAtIter (iter);
+					TaskTag tt = utils.GetTaskTagAtIter (iter);
 					if(tt!=null){
 						Logger.Debug ("removing old tasktag");
 						Buffer.RemoveTag (tt, iter, end);
@@ -280,45 +246,10 @@ namespace Tomboy.TaskManager {
 			}
 		}
 		
-		public static List<TaskList> ParseTasks(Note note)
-		{
-			List<TaskList> tls = new List<TaskList>();
-			
-			TextIter iter = note.Buffer.StartIter;
-			do {
-				TaskListTag taskliststart = (TaskListTag)note.Buffer.GetDynamicTag ("tasklist", iter);
-				if (taskliststart != null)
-				{
-					Logger.Debug ("=> found Tasklist!");
-
-					TaskList tl = new TaskList (note, iter, taskliststart);
-					tls.Add (tl);
-					
-					TaskTag start;
-					do
-					{
-						start = (TaskTag)note.Buffer.GetDynamicTag ("task", iter);
-						iter.ForwardChar ();
-					} while (start == null);
-					
-					Logger.Debug ("=> found Tasktag!");
-					tl.addTask (iter, start);
-					
-					TaskTag end = start;
-					while (end == start) {
-						iter.ForwardChar ();
-						end = (TaskTag)note.Buffer.GetDynamicTag ("task", iter);
-					}
-				}
-			} while (iter.ForwardChar ());
-			
-			return tls;
-		}
-		
 		public void Load ()
 		{
 			Logger.Debug ("Loading...");
-			TaskLists = TaskManagerNoteAddin.ParseTasks(Note);
+			TaskLists = TaskNoteParser.ParseTasks(Note);
 			
 			foreach (TaskList tl in TaskLists)
 			{

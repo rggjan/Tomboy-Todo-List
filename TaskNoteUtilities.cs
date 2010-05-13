@@ -24,44 +24,59 @@
 // 
 
 using System;
+using Gtk;
 using Tomboy;
-using Tomboy.Notebooks;
-using Mono.Unix;
 
-namespace Tomboy.TaskManager {
+namespace Tomboy.TaskManager
+{
 
-	public class OpenTasksNotebook : SpecialNotebook
+
+	public class TaskNoteUtilities
 	{
-		public OpenTasksNotebook () : base ()
-		{
+
+		private NoteBuffer Buffer {
+			get; set;	
 		}
 		
-		public override string Name
+		public TaskNoteUtilities (NoteBuffer n)
 		{
-			get { return Catalog.GetString ("Open Tasks"); }
+			this.Buffer = n;	
 		}
 		
-		public override string NormalizedName
+		public bool InTaskList (TextIter cursor)
 		{
-			get { return "___NotebookManager___OpenTasksNotes__Notebook___"; }
+			TaskListTag tlt = (TaskListTag) Buffer.GetDynamicTag ("tasklist", cursor);
+			return (tlt!=null);
 		}
 		
-		public override Tag Tag
+		public Task GetTaskAtCursor ()
 		{
-			get { return null; }
+			var iter = Buffer.GetIterAtMark (Buffer.InsertMark);
+			return GetTaskAtIter (iter);
 		}
 		
-		public override Note GetTemplateNote ()
+		public Task GetTaskAtIter (TextIter iter)
 		{
-			return Tomboy.DefaultNoteManager.GetOrCreateTemplateNote ();
+			TaskTag tag = (TaskTag) Buffer.GetDynamicTag ("task", iter);
+			if(tag!=null)
+				return tag.Task;
+			
+			return null;
 		}
 		
-		public override bool ContainsNote(Note n) 
+		public TaskTag GetTaskTagAtCursor ()
 		{
-			Logger.Debug("ContainsNote");
-			var tls = TaskNoteParser.ParseTasks(n);
-			Logger.Debug("Found tasklist#:" + tls.Count);
-			return tls.Count > 0;
+			var iter = Buffer.GetIterAtMark (Buffer.InsertMark);
+			return GetTaskTagAtIter (iter);
+		}
+		
+		public TaskTag GetTaskTagAtIter (TextIter iter)
+		{
+			TaskTag tag = (TaskTag) Buffer.GetDynamicTag ("task", iter);
+			if(tag!=null)
+				return tag;
+			
+			return null;
 		}
 	}
 }
