@@ -277,23 +277,24 @@ namespace Tomboy.TaskManager {
 			}
 		}
 		
-		public void Load ()
+		public static List<AttributedTask> ParseTasks(Note note)
 		{
-			Logger.Debug ("Loading...");
-			TextIter iter = Buffer.StartIter;
+			List<AttributedTask> tls = new List<AttributedTask>();
+			
+			TextIter iter = note.Buffer.StartIter;
 			do {
-				TaskListTag taskliststart = (TaskListTag)Buffer.GetDynamicTag ("tasklist", iter);
+				TaskListTag taskliststart = (TaskListTag)note.Buffer.GetDynamicTag ("tasklist", iter);
 				if (taskliststart != null)
 				{
 					Logger.Debug ("=> found Tasklist!");
 
-					TaskList tl = new TaskList (Note, iter, taskliststart);
-					Children.Add (tl);
+					TaskList tl = new TaskList (note, iter, taskliststart);
+					tls.Add (tl);
 					
 					TaskTag start;
 					do
 					{
-						start = (TaskTag)Buffer.GetDynamicTag ("task", iter);
+						start = (TaskTag)note.Buffer.GetDynamicTag ("task", iter);
 						iter.ForwardChar ();
 					} while (start == null);
 					
@@ -303,10 +304,18 @@ namespace Tomboy.TaskManager {
 					TaskTag end = start;
 					while (end == start) {
 						iter.ForwardChar ();
-						end = (TaskTag)Buffer.GetDynamicTag ("task", iter);
+						end = (TaskTag)note.Buffer.GetDynamicTag ("task", iter);
 					}
 				}
 			} while (iter.ForwardChar ());
+			
+			return tls;
+		}
+		
+		public void Load ()
+		{
+			Logger.Debug ("Loading...");
+			Children = TaskManagerNoteAddin.ParseTasks(Note);
 			
 			foreach (TaskList tl in Children)
 			{

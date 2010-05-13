@@ -50,6 +50,7 @@
     <Compile Include="AttributedTask.cs" />
     <Compile Include="TaskListTag.cs" />
     <Compile Include="TaskTag.cs" />
+    <Compile Include="OpenTasksNotebook.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
