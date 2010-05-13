@@ -126,6 +126,9 @@ namespace Tomboy.TaskManager {
 			var start = Buffer.GetIterAtMark (Start);
 			
 			Buffer.ApplyTag (Tag, start, end);
+			start = end; // FIXME do this when loading
+			start.BackwardChar ();
+			Buffer.ApplyTag ("locked", start, end);
 			
 			Logger.Debug ("TaskList created");
 			//Logger.Debug (iter.Char.ToString());

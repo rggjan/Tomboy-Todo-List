@@ -74,7 +74,6 @@ namespace Tomboy.TaskManager {
 					Logger.Debug ("reading priority");
 					Logger.Debug (priority_box.ActiveText);
 					return priority_box.Active;
-					
 				}
 				else
 					return 0;
@@ -99,7 +98,7 @@ namespace Tomboy.TaskManager {
 		/// Date until the task should be completed.
 		/// </summary>
 		// NOTE: deleted DueDate as already defined in AttributedTask
-		private Gtk.Calendar DueDateWidget {
+		private Gtk.Calendar DateWidget {
 			get; set; 
 		}
 		
@@ -157,25 +156,23 @@ namespace Tomboy.TaskManager {
 			Tag.bind (this);
 			
 			AddWidgets ();
+			TagUpdate ();
+			
+			var end = GetTaskStart ();
+			end.ForwardChars (2);
+			Buffer.PlaceCursor (end);
+		}
+		
+		public void AddWidgets ()
+		{
+			InsertCheckButton (GetTaskStart ());
+			InsertPriorityBox (GetTaskStart ());
 			
 			var end = GetTaskStart ();
 			var start = end;
 			end.ForwardChar ();
 			start.BackwardChar ();
 			Buffer.ApplyTag ("locked", start, end);
-			
-			TagUpdate ();
-			
-			end.ForwardChar ();
-			Buffer.PlaceCursor (end);
-		}
-		
-		public void AddWidgets ()
-		{
-			var pos = GetTaskStart ();
-			InsertCheckButton (pos);
-			pos = GetTaskStart ();
-			InsertPriorityBox (pos);
 		}
 		
 		public Task (TaskList containingList, Gtk.TextIter location, TaskTag tag)
@@ -212,26 +209,8 @@ namespace Tomboy.TaskManager {
 			boxanchor = Buffer.CreateChildAnchor (ref insertIter);
 			ContainingTaskList.ContainingNote.Window.Editor.AddChildAtAnchor (CheckBox, boxanchor);
 			CheckBox.Show ();
-			
-			//CheckBox.DestroyEvent += test;
-			CheckBox.Destroyed += test;
-		
-			/*var start = insertIter;
-			start.BackwardChars (2);
-			var end = insertIter;
-			Buffer.ApplyTag ("locked", start, end);*/
-
-			/*Buffer.InsertWithTagsByName (ref insertIter, "X", "invisible");
-			
-			start = insertIter;
-			end = insertIter;
-			start.BackwardChars (1);
-			
-			Buffer.RemoveTag ("locked", start, end);*/
-			
-			//TagUpdate ();
 		}
-		
+
 		public void test (object o, System.EventArgs args)
 		{
 			Logger.Debug ("destroyed");
@@ -309,7 +288,9 @@ namespace Tomboy.TaskManager {
 		{
 			var start = GetTaskStart ();
 			var end = GetTaskEnd ();
+			//start.ForwardChar ();
 
+			
 			Tag.bind (this);
 			start.ForwardChar ();
 			Buffer.ApplyTag (Tag, start, end);
@@ -341,6 +322,19 @@ namespace Tomboy.TaskManager {
 			}*/
 		}
 
+		public void Delete ()
+		{
+			if (!Position.Deleted)
+			{
+				var start = Buffer.GetIterAtMark (Position);
+				var end = start;
+				end.ForwardToLineEnd ();
+				Buffer.Delete (ref start, ref end);
+				
+				ContainingTaskList.Children.Remove (this); //FIXME also for other containers?
+			}
+		}
+		
 		/// <summary>
 		/// Signal when checkbutton for the task was clicked.
 		/// This function is responsible for updating strikethrough functionality.
