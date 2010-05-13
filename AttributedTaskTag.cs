@@ -41,9 +41,9 @@ namespace Tomboy.TaskManager
 			LeftMarginSet = true;
 		}
 		
-		public int TaskPriority {
+		public Priorities TaskPriority {
 			get {
-				return int.Parse (Attributes["Priority"]);
+				return (Priorities)int.Parse (Attributes["Priority"]);
 			}
 			set {
 				Attributes["Priority"] = value.ToString ();

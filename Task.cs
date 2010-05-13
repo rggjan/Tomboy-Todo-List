@@ -67,15 +67,6 @@ namespace Tomboy.TaskManager {
 			}
 		}
 		
-		public int Priority {
-			get {
-				return Tag.TaskPriority;
-			}
-			set {
-				Tag.TaskPriority = priority_box.Active;
-			}
-		}
-		
 		/// <summary>
 		/// Corresponding Widget for Completed Tasks.
 		/// </summary>
@@ -138,15 +129,17 @@ namespace Tomboy.TaskManager {
 			}
 		}
 		
-		private TaskTag Tag 
-		{ get; set; }
+		private TaskTag TaskTag {
+			get{ return (TaskTag) Tag; }
+			set{ Tag = value; }
+		}
 		
 		
 		public Task (TaskList containingList, Gtk.TextIter location)
 		{
 			initialize (containingList, location, (TaskTag)containingList.ContainingNote.TagTable.CreateDynamicTag ("task"));
 
-			Tag.bind (this);
+			TaskTag.bind (this);
 			
 			AddWidgets ();
 			TagUpdate ();
@@ -184,8 +177,8 @@ namespace Tomboy.TaskManager {
 			
 			Buffer.UserActionEnded += BufferChanged;
 			
-			Tag = tag;
-			Tag.Task = this;
+			TaskTag = tag;
+			TaskTag.Task = this;
 		}
 	
 		/// <summary>
@@ -211,7 +204,8 @@ namespace Tomboy.TaskManager {
 		
 		private void setpriority (object o, System.EventArgs args)
 		{
-			Tag.TaskPriority = priority_box.Active;
+			Priority = (Priorities)priority_box.Active;
+			TagUpdate ();
 		}
 		
 		/// <summary>
@@ -225,7 +219,7 @@ namespace Tomboy.TaskManager {
 		{
 			string[] priorities = { "1", "2", "3", "4", "5" };
 			priority_box = new Gtk.ComboBox (priorities);
-			priority_box.Active = Tag.TaskPriority;
+			priority_box.Active = (int)Priority;
 			priority_box.Name = "tomboy-inline-combobox";
 
 			priority_box.Changed += setpriority;
@@ -290,7 +284,7 @@ namespace Tomboy.TaskManager {
 		
 			//Tag.bind (this);
 			start.ForwardChar ();
-			Buffer.ApplyTag (Tag, start, end);
+			Buffer.ApplyTag (TaskTag, start, end);
 			
 			if (CheckBox != null && CheckBox.Active) {
 				Buffer.ApplyTag ("strikethrough", start, end);

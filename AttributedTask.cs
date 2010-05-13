@@ -65,8 +65,9 @@ namespace Tomboy.TaskManager
 		/// The priority that is assigned to this task.
 		/// Note that default must be set to 3, not 0
 		/// </summary>
-		Priorities Priority {
-			get;set;
+		public Priorities Priority {
+			get {return Tag.TaskPriority;}
+			set {Tag.TaskPriority = value;}
 		}	
 		
 		/// <summary>
@@ -90,6 +91,10 @@ namespace Tomboy.TaskManager
 		/// </summary>
 		public abstract bool Done {
 			get; set;
+		}
+		
+		protected AttributedTaskTag Tag{
+			get; set;	
 		}
 	}
 }

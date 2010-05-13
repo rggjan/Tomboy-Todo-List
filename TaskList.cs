@@ -83,12 +83,11 @@ namespace Tomboy.TaskManager {
 			}
 		}
 		
-		//TODO
-		public int Priority { get; set; }
-		
-		private TaskListTag Tag {
-			get; set;
+		private TaskListTag TaskListTag {
+			get{ return (TaskListTag) Tag; }
+			set{ Tag = value; }
 		}
+		
 		
 		private Gtk.TextMark Start {
 			get; set;
@@ -105,8 +104,8 @@ namespace Tomboy.TaskManager {
 			ContainingNote = note;
 			Name = ("New TaskList!");
 			
-			Tag = (TaskListTag)ContainingNote.TagTable.CreateDynamicTag ("tasklist");
-			Tag.bind (this);
+			TaskListTag = (TaskListTag)ContainingNote.TagTable.CreateDynamicTag ("tasklist");
+			TaskListTag.bind (this);
 			
 			int line = Buffer.GetIterAtMark (Buffer.InsertMark).Line;
 			var linestart = Buffer.GetIterAtLine (line);
@@ -125,7 +124,7 @@ namespace Tomboy.TaskManager {
 			Buffer.Insert (ref end, "New Tasklist!\n\n");
 			var start = Buffer.GetIterAtMark (Start);
 			
-			Buffer.ApplyTag (Tag, start, end);
+			Buffer.ApplyTag (TaskListTag, start, end);
 			start = end; // FIXME do this when loading
 			start.BackwardChar ();
 			Buffer.ApplyTag ("locked", start, end);
@@ -143,7 +142,7 @@ namespace Tomboy.TaskManager {
 			ContainingNote = note;
 			Name = ("New TaskList!");//FIXME
 			
-			Tag = tag;
+			TaskListTag = tag;
 			Start = Buffer.CreateMark (null, start, true);
 			Logger.Debug ("TaskList created");
 			
