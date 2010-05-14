@@ -49,6 +49,22 @@ namespace Tomboy.TaskManager
 			return (tlt!=null);
 		}
 		
+		public Task GetTask ()
+		{
+			TaskTag tag = GetTaskTag ();
+			if(tag != null)
+				return tag.Task; 
+			return null;
+		}
+		
+		public Task GetTask (TextIter iter)
+		{
+			TaskTag tag = GetTaskTag (iter);
+			if (tag != null)
+				return tag.Task;
+			return null;
+		}
+		
 		public TaskTag GetTaskTag ()
 		{
 			return GetTaskTag (Buffer.GetIterAtMark (Buffer.InsertMark));
@@ -57,6 +73,22 @@ namespace Tomboy.TaskManager
 		public TaskTag GetTaskTag (TextIter iter)
 		{
 			return (TaskTag) Buffer.GetDynamicTag ("task", iter);
+		}
+		
+		public TaskList GetTaskList ()
+		{
+			TaskListTag tag = GetTaskListTag ();
+			if(tag != null)
+				return tag.TaskList; 
+			return null;
+		}
+		
+		public TaskList GetTaskList (TextIter iter)
+		{
+			TaskListTag tag = GetTaskListTag (iter);
+			if (tag != null)
+				return tag.TaskList;
+			return null;
 		}
 		
 		public TaskListTag GetTaskListTag ()
