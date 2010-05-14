@@ -43,7 +43,7 @@ namespace Tomboy.TaskManager
 		
 		public Priorities TaskPriority {
 			get {
-				return (Priorities)int.Parse (Attributes["Priority"]);
+				return (Priorities) Enum.Parse ( typeof (Priorities), Attributes["Priority"] );
 			}
 			set {
 				Attributes["Priority"] = value.ToString ();
@@ -70,7 +70,7 @@ namespace Tomboy.TaskManager
 			
 			Attributes.Add ("Done", "false");
 			Attributes.Add ("Duedate", "");
-			Attributes.Add ("Priority", "0");
+			Attributes.Add ("Priority", "LOW");
 		}
 	}
 }
