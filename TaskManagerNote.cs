@@ -136,9 +136,9 @@ namespace Tomboy.TaskManager {
 			Gtk.TextIter cursor = Buffer.GetIterAtMark (Buffer.InsertMark);
 			cursor.BackwardChar ();
 			
-			Task tt = utils.GetTaskAtIter (cursor);
+			TaskTag tt = utils.GetTaskTag (cursor);
 			if(tt!=null){
-				tt.ShowPriority ();
+				tt.Task.ShowPriority ();
 				add_priority.Sensitive = false;
 			} else {
 				Logger.Debug ("Tried to insert Priority outside of a task");	
@@ -162,20 +162,20 @@ namespace Tomboy.TaskManager {
 				
 				// Behaviour: onTask\n\n should delete empty checkbox
 				if (Buffer.GetText (begin, end, true).Trim ().Length == 0 && utils.InTaskList (end)) {
-					Task task = utils.GetTaskAtCursor ();
-					if (task != null) {
-						if (task.IsLastTask ())
+					TaskTag taskt = utils.GetTaskTag ();
+					if (taskt != null) {
+						if (taskt.Task.IsLastTask ())
 						{
-							task.Delete ();
+							taskt.Task.Delete ();
 							return;
 						}
 					}
 				}
 				
 				// Insert new checkbox if was onTask
-				Task t = utils.GetTaskAtIter (end);
+				TaskTag t = utils.GetTaskTag (end);
 				if (t!= null){
-					current_task_list = t.ContainingTaskList;	
+					current_task_list = t.Task.ContainingTaskList;	
 					new_task_needed = true;
 					return;
 				}
@@ -215,7 +215,7 @@ namespace Tomboy.TaskManager {
 					var end = iter;
 					end.ForwardToLineEnd ();
 					
-					TaskTag tt = utils.GetTaskTagAtIter (iter);
+					TaskTag tt = utils.GetTaskTag (iter);
 					if(tt!=null){
 						Logger.Debug ("removing old tasktag");
 						Buffer.RemoveTag (tt, iter, end);
