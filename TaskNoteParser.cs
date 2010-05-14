@@ -48,7 +48,7 @@ namespace Tomboy.TaskManager
 				TaskListTag taskliststart = (TaskListTag)note.Buffer.GetDynamicTag ("tasklist", iter);
 				if (taskliststart != null)
 				{
-					Logger.Debug ("=> found Tasklist!");
+					//Logger.Debug ("=> found Tasklist!");
 
 					TaskList tl = new TaskList (note, iter, taskliststart);
 					tls.Add (tl);
@@ -60,7 +60,7 @@ namespace Tomboy.TaskManager
 						iter.ForwardChar ();
 					} while (start == null);
 					
-					Logger.Debug ("=> found Tasktag!");
+					//Logger.Debug ("=> found Tasktag!");
 					tl.addTask (iter, start);
 					
 					TaskTag end = start;
