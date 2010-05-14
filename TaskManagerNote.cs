@@ -246,7 +246,6 @@ namespace Tomboy.TaskManager {
 		public void Load ()
 		{
 			Logger.Debug ("Loading...");
-			PrintAllItems ();
 			TaskLists = TaskNoteParser.ParseTasks(Note);
 			
 			Logger.Debug ("There have been {0} tasklists", new object[]{TaskLists.Count});
@@ -258,18 +257,6 @@ namespace Tomboy.TaskManager {
 					t.AddWidgets ();
 				}
 			}
-		}
-		
-		public void PrintAllItems ()
-		{
-			Logger.Debug ("Printing STuff!!!");
-			TextTagEnumerator allTasks = new TextTagEnumerator (Buffer, "task");
-			TextTagEnumerator allTaskLists = new TextTagEnumerator (Buffer, "tasklist");
-			
-			foreach (TextRange range in allTaskLists)
-				Logger.Debug ("TaskList found: '{0}'", new object[]{range.Text});
-			foreach (TextRange range in allTasks)
-				Logger.Debug ("Task found: '{0}'", new object[]{range.Text});
 		}
 	}
 }
