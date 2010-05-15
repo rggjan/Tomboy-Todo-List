@@ -129,7 +129,7 @@ namespace Tomboy.TaskManager {
 		{
 			Buffer = containingList.ContainingNote.Buffer;
 			//TODO: rewrite tag part (it's ugly)
-			initialize (containingList, location, (TaskTag)containingList.ContainingNote.TagTable.CreateDynamicTag ("task"));
+			InitializeTask (containingList, location, (TaskTag)containingList.ContainingNote.TagTable.CreateDynamicTag ("task"));
 
 			TaskTag.bind (this);
 			
@@ -158,8 +158,7 @@ namespace Tomboy.TaskManager {
 		
 		public Task (TaskList containingList, Gtk.TextIter location, TaskTag tag)
 		{
-			Buffer = containingList.ContainingNote.Buffer;
-			initialize(containingList, location, tag);
+			InitializeTask(containingList, location, tag);
 		}
 		
 		/// <summary>
@@ -174,19 +173,14 @@ namespace Tomboy.TaskManager {
 		/// <param name="tag">
 		/// A <see cref="TaskTag"/>
 		/// </param>
-		private void initialize (TaskList containingList, Gtk.TextIter location, TaskTag tag)
-		{
-			Containers = new List<AttributedTask> ();
-			Containers.Add (ContainingTaskList);
-			
+		private void InitializeTask (TaskList containingList, Gtk.TextIter location, TaskTag tag)
+		{			
 			ContainingTaskList = containingList;
 			location.LineOffset = 0;
-			Position = Buffer.CreateMark (null, location, true);
+			
+			Initialize (ContainingTaskList.ContainingNote.Buffer, location, tag);
 			
 			Buffer.UserActionEnded += BufferChanged;
-			
-			TaskTag = tag;
-			TaskTag.Task = this;
 		}
 	
 		/// <summary>
