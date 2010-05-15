@@ -59,7 +59,7 @@ namespace Tomboy.TaskManager {
 		public override bool ContainsNote(Note n) 
 		{
 			Logger.Debug("ContainsNote");
-			var tls = TaskNoteParser.ParseTasks(n);
+			var tls = TaskNoteParser.ParseNote(n);
 			Logger.Debug("Found tasklist#:" + tls.Count);
 			return tls.Count > 0;
 		}

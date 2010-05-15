@@ -246,7 +246,7 @@ namespace Tomboy.TaskManager {
 		public void Load ()
 		{
 			Logger.Debug ("Loading...");
-			TaskLists = TaskNoteParser.ParseTasks(Note);
+			TaskLists = TaskNoteParser.ParseNote(Note);
 			
 			Logger.Debug ("There have been {0} tasklists", new object[]{TaskLists.Count});
 			

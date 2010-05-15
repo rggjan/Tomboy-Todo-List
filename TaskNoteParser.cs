@@ -34,44 +34,91 @@ namespace Tomboy.TaskManager
 
 	public class TaskNoteParser
 	{
-
-		public TaskNoteParser ()
+		
+		private Note note;
+		private TaskNoteUtilities utils;
+		
+		private NoteBuffer buffer{
+			get {return note.Buffer;}
+		}
+		private TaskNoteParser(Note note)
 		{
+			this.note = note;
+			utils = new TaskNoteUtilities (buffer);
 		}
 		
-		public static List<TaskList> ParseTasks(Note note)
+		public static List<TaskList> ParseNote(Note note)
 		{
-			List<TaskList> tls = new List<TaskList>();
+			List<TaskList> result = new List<TaskList> ();
+			TaskNoteParser parser = new TaskNoteParser (note);
+			var tasklists = parser.PrepareTaskListTags ();
+			var tasks = parser.PrepareTaskTags ();
 			
-			TextIter iter = note.Buffer.StartIter;
-			do {
-				TaskListTag taskliststart = (TaskListTag)note.Buffer.GetDynamicTag ("tasklist", iter);
-				if (taskliststart != null)
-				{
-					//Logger.Debug ("=> found Tasklist!");
-
-					TaskList tl = new TaskList (note, iter, taskliststart);
-					tls.Add (tl);
-					
-					TaskTag start;
-					do
-					{
-						start = (TaskTag)note.Buffer.GetDynamicTag ("task", iter);
-						iter.ForwardChar ();
-					} while (start == null);
-					
-					//Logger.Debug ("=> found Tasktag!");
-					tl.addTask (iter, start);
-					
-					TaskTag end = start;
-					while (end == start) {
-						iter.ForwardChar ();
-						end = (TaskTag)note.Buffer.GetDynamicTag ("task", iter);
+			foreach (KeyValuePair<TaskListTag, TextRange> kvp in tasklists){
+				result.Add (new TaskList (note, kvp.Value.Start, kvp.Key));
+				//Logger.Debug ("Tasklist found:\nStart: {0}\nEnd: {1}\nText: {2}", 
+				//            new object[]{kvp.Value.Start.Offset, kvp.Value.End.Offset, kvp.Value.Text});
+			}
+			
+//			TextIter iter = note.Buffer.StartIter;
+//			do{
+//				TaskListTag tlt = parser.utils.GetTaskListTag (iter);
+//				if (tlt != null && tlt.TaskList == null)
+//					Logger.Debug ("THIS SHOULD NOT HAPPEN");
+//			} while (iter.ForwardChar ());
+			
+			foreach (KeyValuePair<TaskTag, TextRange> kvp in tasks){
+				//Logger.Debug ("Task found:\nStart: {0}\nEnd: {1}\nText: {2}", 
+				//             new object[]{kvp.Value.Start.Offset, kvp.Value.End.Offset, kvp.Value.Text});
+				
+				TaskList tasklist = parser.utils.GetTaskList (kvp.Value.Start);
+				tasklist.addTask (kvp.Value.Start, kvp.Key);
+			}
+			
+			return result;
+		}
+		
+		//Ugly, but working
+		private Dictionary<TaskListTag, TextRange> PrepareTaskListTags ()
+		{
+			Dictionary<TaskListTag, TextRange> result = new Dictionary<TaskListTag, TextRange> ();
+			
+			TextIter iter = buffer.StartIter;
+			do{
+				TaskListTag tlt = utils.GetTaskListTag (iter);
+				if (tlt != null){
+					//Insert if not yet exiting
+					if (!result.ContainsKey (tlt))
+						result.Add (tlt, new TextRange (iter, iter));
+					else{
+						TextRange tr = result[tlt];
+						result[tlt] = new TextRange (tr.Start, iter);
 					}
 				}
 			} while (iter.ForwardChar ());
+				
+			return result;
+		}
+		
+		private Dictionary<TaskTag, TextRange> PrepareTaskTags ()
+		{
+			Dictionary<TaskTag, TextRange> result = new Dictionary<TaskTag, TextRange> ();
 			
-			return tls;
+			TextIter iter = buffer.StartIter;
+			do{
+				TaskTag tt = utils.GetTaskTag (iter);
+				if (tt != null){
+					//Insert if not yet exiting
+					if (!result.ContainsKey (tt))
+						result.Add (tt, new TextRange (iter, iter));
+					else{
+						TextRange tr = result[tt];
+						result[tt] = new TextRange (tr.Start, iter);
+					}
+				}
+			} while (iter.ForwardChar ());
+				
+			return result;
 		}
 	}
 }
