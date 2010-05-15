@@ -143,6 +143,7 @@ namespace Tomboy.TaskManager {
 			Name = ("New TaskList!");//FIXME
 			
 			TaskListTag = tag;
+			TaskListTag.TaskList = this;
 			Start = Buffer.CreateMark (null, start, true);
 			Logger.Debug ("TaskList created");
 			
