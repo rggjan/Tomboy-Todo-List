@@ -103,5 +103,13 @@ namespace Tomboy.TaskManager
 		protected AttributedTaskTag Tag {
 			get; set;	
 		}
+		
+		/// <summary>
+		/// Describes the shortcut to the buffer
+		/// </summary>
+		protected NoteBuffer Buffer {
+			get;
+			set;
+		}
 	}
 }

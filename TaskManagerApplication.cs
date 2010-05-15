@@ -39,9 +39,9 @@ namespace Tomboy.TaskManager {
 		/// <summary>
 		/// Returns true iff TaskManager addin has been initialized
 		/// </summary>
+		bool initialized;
 		public override bool Initialized {
-			get;
-			private set;
+			get {return initialized;}
 		}
 		
 		/// <summary>

@@ -112,15 +112,6 @@ namespace Tomboy.TaskManager {
 		}
 		
 		/// <summary>
-		/// Just a shortcut for accessing the Notes Buffer
-		/// </summary>
-		private NoteBuffer Buffer {
-			get {
-				return ContainingTaskList.ContainingNote.Buffer;
-			}
-		}
-		
-		/// <summary>
 		/// The containing task list
 		/// </summary>
 		public TaskList ContainingTaskList {
@@ -143,6 +134,7 @@ namespace Tomboy.TaskManager {
 		
 		public Task (TaskList containingList, Gtk.TextIter location)
 		{
+			Buffer = containingList.ContainingNote.Buffer;
 			//TODO: rewrite tag part (it's ugly)
 			initialize (containingList, location, (TaskTag)containingList.ContainingNote.TagTable.CreateDynamicTag ("task"));
 
@@ -173,6 +165,7 @@ namespace Tomboy.TaskManager {
 		
 		public Task (TaskList containingList, Gtk.TextIter location, TaskTag tag)
 		{
+			Buffer = containingList.ContainingNote.Buffer;
 			initialize(containingList, location, tag);
 		}
 		

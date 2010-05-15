@@ -54,13 +54,6 @@ namespace Tomboy.TaskManager {
 		}
 		
 		/// <summary>
-		/// Shortcut for the buffer
-		/// </summary>
-		private NoteBuffer Buffer {
-			get { return ContainingNote.Buffer; }
-		}
-		
-		/// <summary>
 		/// Children for ITask interface
 		/// </summary>
 		public override List<AttributedTask> Children {
@@ -114,6 +107,7 @@ namespace Tomboy.TaskManager {
 		{
 			ContainingNote = note;
 			Name = ("New TaskList!");
+			Buffer = note.Buffer;
 			
 			TaskListTag = (TaskListTag)ContainingNote.TagTable.CreateDynamicTag ("tasklist");
 			TaskListTag.bind (this);
@@ -152,6 +146,7 @@ namespace Tomboy.TaskManager {
 		{
 			ContainingNote = note;
 			Name = ("New TaskList!");//FIXME
+			Buffer = note.Buffer;
 			
 			TaskListTag = tag;
 			TaskListTag.TaskList = this;
