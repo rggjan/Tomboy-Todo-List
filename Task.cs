@@ -49,13 +49,6 @@ namespace Tomboy.TaskManager {
 		}
 		
 		/// <summary>
-		/// Tells us where in the NoteBuffer this Task is located.
-		/// </summary>
-		private Gtk.TextMark Position { 
-			get; set; 
-		}
-		
-		/// <summary>
 		/// Is this task completed?
 		/// </summary>
 		public override bool Done {
@@ -143,7 +136,7 @@ namespace Tomboy.TaskManager {
 			AddWidgets ();
 			TagUpdate ();
 			
-			var end = GetTaskStart ();
+			var end = Start;
 			end.ForwardChars (2);
 			Buffer.PlaceCursor (end);
 		}
@@ -153,10 +146,10 @@ namespace Tomboy.TaskManager {
 		/// </summary>
 		public void AddWidgets ()
 		{
-			InsertCheckButton (GetTaskStart ());
-			InsertPriorityBox (GetTaskStart ());
+			InsertCheckButton (Start);
+			InsertPriorityBox (Start);
 			
-			var end = GetTaskStart ();
+			var end = Start;
 			var start = end;
 			end.ForwardChar ();
 			start.BackwardChar ();
@@ -269,25 +262,16 @@ namespace Tomboy.TaskManager {
 		}
 		
 		/// <returns>
-		/// A <see cref="Gtk.TextIter"/> marking the beginning of the textual description
-		/// of this task in the NoteBuffer.
-		/// </returns>
-		public Gtk.TextIter GetTaskStart ()
-		{
-			var start = Buffer.GetIterAtMark (Position);
-			return start;
-		}
-		
-		/// <returns>
 		/// A <see cref="Gtk.TextIter"/> marking the end of the textual description of this
 		/// task in the NoteBuffer.
 		/// </returns>
-		public Gtk.TextIter GetTaskEnd ()
-		{
-			var start = GetTaskStart ();
-			start.ForwardLine ();
-			//TODO: backwardchar here?
-			return start;
+		protected override Gtk.TextIter End {
+			get {
+				var start = Start;
+				start.ForwardLine ();
+				//TODO: backwardchar here?
+				return start;
+			}
 		}
 		
 		/// <summary>
@@ -296,8 +280,8 @@ namespace Tomboy.TaskManager {
 		/// </summary>
 		private void TagUpdate ()
 		{
-			var start = GetTaskStart ();
-			var end = GetTaskEnd ();
+			var start = Start;
+			var end = End;
 			//start.ForwardChar ();
 		
 			//Tag.bind (this);
@@ -340,7 +324,7 @@ namespace Tomboy.TaskManager {
 		{
 			foreach (Task task in ContainingTaskList.Children)
 			{
-				if (Buffer.GetIterAtMark (task.Position).Line > Buffer.GetIterAtMark (Position).Line)
+				if (task.Start.Line > Start.Line)
 				{
 					Logger.Debug ("is not last!");
 					return false;
@@ -386,6 +370,5 @@ namespace Tomboy.TaskManager {
 			
 			// TODO some signalling here?
 		}
-		
 	}
 }

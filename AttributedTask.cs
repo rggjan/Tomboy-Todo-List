@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using Gtk;
 
 namespace Tomboy.TaskManager
 {
@@ -110,6 +111,15 @@ namespace Tomboy.TaskManager
 		protected NoteBuffer Buffer {
 			get;
 			set;
+		}
+		
+		protected TextMark Position;
+		protected TextIter Start {
+			get { return Buffer.GetIterAtMark (Position); }	
+		}
+		
+		protected abstract TextIter End {
+			get;	
 		}
 	}
 }

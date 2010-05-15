@@ -90,11 +90,9 @@ namespace Tomboy.TaskManager {
 			set{ Tag = value; }
 		}
 		
-		/// <summary>
-		/// A mark for the start of this tasklist in the buffer
-		/// </summary>
-		private Gtk.TextMark Start {
-			get; set;
+		//TODO
+		protected override TextIter End {
+			get {return Start;}
 		}
 
 		/// <summary>
@@ -118,16 +116,16 @@ namespace Tomboy.TaskManager {
 			lineend.ForwardToLineEnd ();
 			
 			if (Buffer.GetText (linestart, lineend, false).Trim ().Length == 0)
-				Start = Buffer.CreateMark (null, linestart, true);
+				Position = Buffer.CreateMark (null, linestart, true);
 			else
 			{
 				Buffer.Insert (ref lineend, System.Environment.NewLine);
-				Start = Buffer.CreateMark (null, lineend, true);
+				Position = Buffer.CreateMark (null, lineend, true);
 			}
 			
-			var end = Buffer.GetIterAtMark (Start);
+			var end = Start;
 			Buffer.Insert (ref end, "New Tasklist!\n\n");
-			var start = Buffer.GetIterAtMark (Start);
+			var start = Start;
 			
 			Buffer.ApplyTag (TaskListTag, start, end);
 			start = end; // FIXME do this when loading
@@ -150,7 +148,7 @@ namespace Tomboy.TaskManager {
 			
 			TaskListTag = tag;
 			TaskListTag.TaskList = this;
-			Start = Buffer.CreateMark (null, start, true);
+			Position = Buffer.CreateMark (null, start, true);
 			Logger.Debug ("TaskList created");
 			
 			Children = new List<AttributedTask> ();
