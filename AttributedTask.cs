@@ -46,6 +46,14 @@ namespace Tomboy.TaskManager
 	/// </summary>
 	public abstract class AttributedTask {
 	
+		public void Initialize (NoteBuffer buffer, TextIter iter, AttributedTaskTag tag)
+		{
+			this.Buffer = buffer;
+			this.Position = Buffer.CreateMark (null, iter, true);
+			this.Tag = tag;
+			Tag.AttributedTask = this;
+		}
+		
 		/// <summary>
 		/// Date when this task is overdue
 		/// </summary>

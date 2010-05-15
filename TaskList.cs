@@ -103,28 +103,31 @@ namespace Tomboy.TaskManager {
 		/// </param>
 		public TaskList (Note note)
 		{
+			//TODO: rewrite. looks a bit ugly everything...
 			ContainingNote = note;
-			Name = ("New TaskList!");
-			Buffer = note.Buffer;
+			Name = ("New TaskList!");		
 			
-			TaskListTag = (TaskListTag)ContainingNote.TagTable.CreateDynamicTag ("tasklist");
-			TaskListTag.bind (this);
+			TaskListTag tag = (TaskListTag)ContainingNote.TagTable.CreateDynamicTag ("tasklist");
+			TextIter iter;
+			NoteBuffer buffer = note.Buffer;
 			
-			int line = Buffer.GetIterAtMark (Buffer.InsertMark).Line;
-			var linestart = Buffer.GetIterAtLine (line);
+			int line = buffer.GetIterAtMark (buffer.InsertMark).Line;
+			var linestart = buffer.GetIterAtLine (line);
 			var lineend = linestart;
 			lineend.ForwardToLineEnd ();
 			
-			if (Buffer.GetText (linestart, lineend, false).Trim ().Length == 0)
-				Position = Buffer.CreateMark (null, linestart, true);
+			if (buffer.GetText (linestart, lineend, false).Trim ().Length == 0)
+				iter = linestart;
 			else
 			{
-				Buffer.Insert (ref lineend, System.Environment.NewLine);
-				Position = Buffer.CreateMark (null, lineend, true);
+				buffer.Insert (ref lineend, System.Environment.NewLine);
+				iter = lineend;
 			}
 			
+			Initialize (buffer, iter, tag);
+			
 			var end = Start;
-			Buffer.Insert (ref end, "New Tasklist!\n\n");
+			buffer.Insert (ref end, "New Tasklist!\n\n");
 			var start = Start;
 			
 			Buffer.ApplyTag (TaskListTag, start, end);
@@ -144,11 +147,8 @@ namespace Tomboy.TaskManager {
 		{
 			ContainingNote = note;
 			Name = ("New TaskList!");//FIXME
-			Buffer = note.Buffer;
 			
-			TaskListTag = tag;
-			TaskListTag.TaskList = this;
-			Position = Buffer.CreateMark (null, start, true);
+			Initialize (note.Buffer, start, tag);
 			Logger.Debug ("TaskList created");
 			
 			Children = new List<AttributedTask> ();
