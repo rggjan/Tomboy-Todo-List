@@ -6,6 +6,9 @@ using Tomboy;
 
 namespace Tomboy.TaskManager {
 	
+	/// <summary>
+	/// Class that describes behaviour of Notes (in terms of TaskManager features)
+	/// </summary>
 	public class TaskManagerNoteAddin : NoteAddin {
 		
 		Gtk.MenuItem tasklist = new Gtk.MenuItem (Catalog.GetString ("TaskList"));
@@ -17,6 +20,9 @@ namespace Tomboy.TaskManager {
 		TaskList current_task_list = null;
 		TaskNoteUtilities utils = null;
 		
+		/// <summary>
+		/// Initialize the Note (but no loading/buffer yet)
+		/// </summary>
 		public override void Initialize ()
 		{
 			Logger.Debug ("Initializing TaskManager");
@@ -73,6 +79,9 @@ namespace Tomboy.TaskManager {
 			add_priority.Activated -= OnAddPriorityActivated;
 		}
 
+		/// <summary>
+		/// Loads the content of the buffer, sets up GUI
+		/// </summary>
 		public override void OnNoteOpened ()
 		{
 			tasklist.Submenu = task_menu;
@@ -120,6 +129,15 @@ namespace Tomboy.TaskManager {
 			}
 		}
 
+		/// <summary>
+		/// Add a new tasklist into the buffer
+		/// </summary>
+		/// <param name="sender">
+		/// A <see cref="System.Object"/>
+		/// </param>
+		/// <param name="args">
+		/// A <see cref="EventArgs"/>
+		/// </param>
 		void OnAddListActivated (object sender, EventArgs args)
 		{
 			TaskList tl = new TaskList (Note);
@@ -131,6 +149,15 @@ namespace Tomboy.TaskManager {
 			TaskLists.Add (tl);
 		}
 		
+		/// <summary>
+		/// Add priority widget to some task
+		/// </summary>
+		/// <param name="sender">
+		/// A <see cref="System.Object"/>
+		/// </param>
+		/// <param name="args">
+		/// A <see cref="EventArgs"/>
+		/// </param>
 		void OnAddPriorityActivated (object sender, EventArgs args)
 		{
 			Gtk.TextIter cursor = Buffer.GetIterAtMark (Buffer.InsertMark);
@@ -151,6 +178,15 @@ namespace Tomboy.TaskManager {
 			here.LineOffset = 0;
 		}*/
 		
+		/// <summary>
+		/// Check for changes (related to taskmanager) when text is written into the buffer
+		/// </summary>
+		/// <param name="o">
+		/// A <see cref="System.Object"/>
+		/// </param>
+		/// <param name="args">
+		/// A <see cref="Gtk.InsertTextArgs"/>
+		/// </param>
 		void BufferInsertText (object o, Gtk.InsertTextArgs args)
 		{
 			if (args.Text == System.Environment.NewLine) {
@@ -189,6 +225,15 @@ namespace Tomboy.TaskManager {
 			}
 		}
 			
+		/// <summary>
+		/// Checks whether new task is needed
+		/// </summary>
+		/// <param name="sender">
+		/// A <see cref="System.Object"/>
+		/// </param>
+		/// <param name="args">
+		/// A <see cref="System.EventArgs"/>
+		/// </param>
 		void CheckIfNewTaskNeeded (object sender, System.EventArgs args)
 		{
 			if (new_task_needed) {
@@ -243,6 +288,9 @@ namespace Tomboy.TaskManager {
 			}
 		}
 		
+		/// <summary>
+		/// Loads (in terms of Tasks and Tasklists) the contents of a note
+		/// </summary>
 		public void Load ()
 		{
 			Logger.Debug ("Loading...");

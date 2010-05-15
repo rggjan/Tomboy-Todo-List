@@ -53,6 +53,9 @@ namespace Tomboy.TaskManager {
 			get; set;
 		}
 		
+		/// <summary>
+		/// Shortcut for the buffer
+		/// </summary>
 		private NoteBuffer Buffer {
 			get { return ContainingNote.Buffer; }
 		}
@@ -71,6 +74,9 @@ namespace Tomboy.TaskManager {
 			get; set;
 		}
 		
+		/// <summary>
+		/// Describes what to do when tasklist is marked as done
+		/// </summary>
 		public override bool Done { 
 			get {
 				if (Children != null)
@@ -83,12 +89,17 @@ namespace Tomboy.TaskManager {
 			}
 		}
 		
+		/// <summary>
+		/// Shortcut for attached tag
+		/// </summary>
 		private TaskListTag TaskListTag {
 			get{ return (TaskListTag) Tag; }
 			set{ Tag = value; }
 		}
 		
-		
+		/// <summary>
+		/// A mark for the start of this tasklist in the buffer
+		/// </summary>
 		private Gtk.TextMark Start {
 			get; set;
 		}
@@ -158,24 +169,11 @@ namespace Tomboy.TaskManager {
 		/// </param>
 		public void addTask (Gtk.TextIter position)
 		{
-			//Buffer.PlaceCursor (position);
 			Children.Add (new Task (this, position));
-			//var insertIter = Buffer.GetIterAtMark (at);
-			// go to beginning of the line
-			/*insertIter.LineOffset = 0;
-		
-
-			var startList = Buffer.GetIterAtMark (Start);
-			var endList = Buffer.GetIterAtMark (Buffer.InsertMark);
-			ContainingNote.Buffer.ApplyTag (Tag, startList, endList);
-			Logger.Debug(Buffer.GetText(startList, endList, false));
-			 */
-			//Children.Add (new Task (this, Buffer.CreateMark (null, insertIter, true)));
 		}
 
 		public void addTask (Gtk.TextIter position, TaskTag tag)
 		{
-			//Buffer.PlaceCursor (position);
 			Children.Add (new Task (this, position, tag));
 		}
 	}

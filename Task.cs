@@ -106,7 +106,7 @@ namespace Tomboy.TaskManager {
 			}
 		}
 		
-		//TODO
+		//TODO: Subtasks
 		public override List<AttributedTask> Children {
 			get; set;
 		}
@@ -120,6 +120,9 @@ namespace Tomboy.TaskManager {
 			}
 		}
 		
+		/// <summary>
+		/// The containing task list
+		/// </summary>
 		public TaskList ContainingTaskList {
 			get {
 				return containing_task_list;
@@ -129,6 +132,9 @@ namespace Tomboy.TaskManager {
 			}
 		}
 		
+		/// <summary>
+		/// Gets the tag attached to this task. Shortcut.
+		/// </summary>
 		private TaskTag TaskTag {
 			get{ return (TaskTag) Tag; }
 			set{ Tag = value; }
@@ -137,6 +143,7 @@ namespace Tomboy.TaskManager {
 		
 		public Task (TaskList containingList, Gtk.TextIter location)
 		{
+			//TODO: rewrite tag part (it's ugly)
 			initialize (containingList, location, (TaskTag)containingList.ContainingNote.TagTable.CreateDynamicTag ("task"));
 
 			TaskTag.bind (this);
@@ -149,6 +156,9 @@ namespace Tomboy.TaskManager {
 			Buffer.PlaceCursor (end);
 		}
 		
+		/// <summary>
+		/// Adds all widgets (besides calendar) to this task
+		/// </summary>
 		public void AddWidgets ()
 		{
 			InsertCheckButton (GetTaskStart ());
@@ -166,6 +176,18 @@ namespace Tomboy.TaskManager {
 			initialize(containingList, location, tag);
 		}
 		
+		/// <summary>
+		/// Initialize fields, tag, etc
+		/// </summary>
+		/// <param name="containingList">
+		/// A <see cref="TaskList"/>
+		/// </param>
+		/// <param name="location">
+		/// A <see cref="Gtk.TextIter"/>
+		/// </param>
+		/// <param name="tag">
+		/// A <see cref="TaskTag"/>
+		/// </param>
 		private void initialize (TaskList containingList, Gtk.TextIter location, TaskTag tag)
 		{
 			Containers = new List<AttributedTask> ();
@@ -197,11 +219,21 @@ namespace Tomboy.TaskManager {
 			CheckBox.Show ();
 		}
 
+		//TODO: do we need this?
 		public void test (object o, System.EventArgs args)
 		{
 			Logger.Debug ("destroyed");
 		}
 		
+		/// <summary>
+		/// Resets the priority of this task
+		/// </summary>
+		/// <param name="o">
+		/// A <see cref="System.Object"/>
+		/// </param>
+		/// <param name="args">
+		/// A <see cref="System.EventArgs"/>
+		/// </param>
 		private void setpriority (object o, System.EventArgs args)
 		{
 			Priority = (Priorities)priority_box.Active;
@@ -235,6 +267,9 @@ namespace Tomboy.TaskManager {
 				//priority_box.Show ();
 		}
 		
+		/// <summary>
+		/// Makes the priority widget visible
+		/// </summary>
 		public void ShowPriority ()
 		{
 			priority_box.Show ();
@@ -247,11 +282,6 @@ namespace Tomboy.TaskManager {
 		public Gtk.TextIter GetTaskStart ()
 		{
 			var start = Buffer.GetIterAtMark (Position);
-			//start.LineOffset = 0;
-			//while ((start.LineIndex < start.BytesInLine) && !start.InsideWord ()) {
-			//	start.ForwardCursorPosition ();
-			//}
-						
 			return start;
 		}
 		
@@ -262,13 +292,8 @@ namespace Tomboy.TaskManager {
 		public Gtk.TextIter GetTaskEnd ()
 		{
 			var start = GetTaskStart ();
-			//var end = Buffer.GetIterAtLine (start.Line);
-			//end.ForwardToLineEnd ();
-
-			//var endIter = Buffer.GetIterAtLine (start.Line);
-			//endIter.ForwardToLineEnd ();
 			start.ForwardLine ();
-			//start.ForwardLine ();
+			//TODO: backwardchar here?
 			return start;
 		}
 		
@@ -312,6 +337,12 @@ namespace Tomboy.TaskManager {
 			}*/
 		}
 		
+		/// <summary>
+		/// Returns true iff this task is the last (in means of buffer offset) one in containingtasklist
+		/// </summary>
+		/// <returns>
+		/// A <see cref="System.Boolean"/>
+		/// </returns>
 		public bool IsLastTask ()
 		{
 			foreach (Task task in ContainingTaskList.Children)
@@ -326,6 +357,9 @@ namespace Tomboy.TaskManager {
 			return true;
 		}
 
+		/// <summary>
+		/// Delete this task, it's widgets and corresponding tag representation
+		/// </summary>
 		public void Delete ()
 		{
 			if (!Position.Deleted)

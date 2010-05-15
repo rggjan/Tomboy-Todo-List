@@ -31,7 +31,9 @@ using Gtk;
 namespace Tomboy.TaskManager
 {
 
-
+	/// <summary>
+	/// Class for parsing notes for tasklists and tasks
+	/// </summary>
 	public class TaskNoteParser
 	{
 		
@@ -47,6 +49,16 @@ namespace Tomboy.TaskManager
 			utils = new TaskNoteUtilities (buffer);
 		}
 		
+		/// <summary>
+		/// Scans note for existing tags, sets up concrete Task and TaskList objects and returns list of
+		/// initialized tasklists (whose tasks are also initialized)
+		/// </summary>
+		/// <param name="note">
+		/// A <see cref="Note"/>
+		/// </param>
+		/// <returns>
+		/// A <see cref="List<TaskList>"/>
+		/// </returns>
 		public static List<TaskList> ParseNote(Note note)
 		{
 			List<TaskList> result = new List<TaskList> ();
@@ -56,21 +68,9 @@ namespace Tomboy.TaskManager
 			
 			foreach (KeyValuePair<TaskListTag, TextRange> kvp in tasklists){
 				result.Add (new TaskList (note, kvp.Value.Start, kvp.Key));
-				//Logger.Debug ("Tasklist found:\nStart: {0}\nEnd: {1}\nText: {2}", 
-				//            new object[]{kvp.Value.Start.Offset, kvp.Value.End.Offset, kvp.Value.Text});
 			}
 			
-//			TextIter iter = note.Buffer.StartIter;
-//			do{
-//				TaskListTag tlt = parser.utils.GetTaskListTag (iter);
-//				if (tlt != null && tlt.TaskList == null)
-//					Logger.Debug ("THIS SHOULD NOT HAPPEN");
-//			} while (iter.ForwardChar ());
-			
 			foreach (KeyValuePair<TaskTag, TextRange> kvp in tasks){
-				//Logger.Debug ("Task found:\nStart: {0}\nEnd: {1}\nText: {2}", 
-				//             new object[]{kvp.Value.Start.Offset, kvp.Value.End.Offset, kvp.Value.Text});
-				
 				TaskList tasklist = parser.utils.GetTaskList (kvp.Value.Start);
 				tasklist.addTask (kvp.Value.Start, kvp.Key);
 			}
@@ -79,6 +79,12 @@ namespace Tomboy.TaskManager
 		}
 		
 		//Ugly, but working
+		/// <summary>
+		/// Reads all existing TaskListTags and collects them together with their ranges
+		/// </summary>
+		/// <returns>
+		/// A <see cref="Dictionary<TaskListTag, TextRange>"/>
+		/// </returns>
 		private Dictionary<TaskListTag, TextRange> PrepareTaskListTags ()
 		{
 			Dictionary<TaskListTag, TextRange> result = new Dictionary<TaskListTag, TextRange> ();
@@ -100,6 +106,12 @@ namespace Tomboy.TaskManager
 			return result;
 		}
 		
+		/// <summary>
+		/// Reads all existing TaskTags and collects them together with their ranges
+		/// </summary>
+		/// <returns>
+		/// A <see cref="Dictionary<TaskTag, TextRange>"/>
+		/// </returns>
 		private Dictionary<TaskTag, TextRange> PrepareTaskTags ()
 		{
 			Dictionary<TaskTag, TextRange> result = new Dictionary<TaskTag, TextRange> ();

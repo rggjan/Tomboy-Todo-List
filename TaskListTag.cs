@@ -35,15 +35,27 @@ namespace Tomboy.TaskManager
 	public class TaskListTag : AttributedTaskTag
 	{
 		
+		/// <summary>
+		/// Shortcut for the attached tasklist
+		/// </summary>
 		public TaskList TaskList {
 			get {return (TaskList) AttributedTask;}
 			set {AttributedTask = value;}
 		}
 
+		/// <summary>
+		/// Initializes the fields to custom (not available/different in tasktag) values.
+		/// </summary>
+		/// <param name="element_name">
+		/// A <see cref="System.String"/>
+		/// </param>
 		public override void Initialize (string element_name)
 		{
 			base.Initialize (element_name);
 			Background = "red";
+			
+			//Name is not an attribute of a task, therefore set it here
+			Attributes.Add ("Name", "New TaskList!");
 		}
 	}
 }

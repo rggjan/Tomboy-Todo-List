@@ -27,6 +27,10 @@ using System;
 
 namespace Tomboy.TaskManager
 {
+	
+	/// <summary>
+	/// Class that represents the tag representation of a task or tasklist in the buffer
+	/// </summary>
 	public class AttributedTaskTag : DynamicNoteTag
 	{
 
@@ -34,13 +38,25 @@ namespace Tomboy.TaskManager
 		{
 		}
 		
+		/// <summary>
+		/// Set common (TaskList, Task) properties
+		/// </summary>
+		/// <param name="element_name">
+		/// A <see cref="System.String"/>
+		/// </param>
 		public override void Initialize (string element_name)
 		{
 			base.Initialize (element_name);
 			CanGrow = true;
 			LeftMarginSet = true;
+			
+			Attributes.Add ("Duedate", "");
+			Attributes.Add ("Priority", "LOW");
 		}
 		
+		/// <summary>
+		/// The property of the attached task or tasklist
+		/// </summary>
 		public Priorities TaskPriority {
 			get {
 				return (Priorities) Enum.Parse ( typeof (Priorities), Attributes["Priority"] );
@@ -50,7 +66,10 @@ namespace Tomboy.TaskManager
 			}
 		}
 		
-		public DateTime TaskDuedate{
+		/// <summary>
+		/// The duedate of the attached task or tasklist
+		/// </summary>
+		public DateTime TaskDuedate {
 			get {
 				return DateTime.Parse (Attributes["Duedate"]);
 			}
@@ -59,18 +78,23 @@ namespace Tomboy.TaskManager
 			}
 		}
 		
+		/// <summary>
+		/// Task this tag is (currently, but ought to be fixed) attached to
+		/// </summary>
 		public AttributedTask AttributedTask {
 			get;
 			set;
 		}
 		
+		/// <summary>
+		/// Attach a task or tasklist to this tag
+		/// </summary>
+		/// <param name="atask">
+		/// A <see cref="AttributedTask"/>
+		/// </param>
 		public void bind (AttributedTask atask)
 		{
 			AttributedTask = atask;
-			
-			Attributes.Add ("Done", "false");
-			Attributes.Add ("Duedate", "");
-			Attributes.Add ("Priority", "LOW");
 		}
 	}
 }

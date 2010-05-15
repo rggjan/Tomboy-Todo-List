@@ -30,7 +30,10 @@ using Tomboy;
 namespace Tomboy.TaskManager
 {
 
-
+	/// <summary>
+	/// Class that encapsulates often used accesses to unknown tasks or tasklists
+	/// (or their corresponding tag) via some position in the buffer
+	/// </summary>
 	public class TaskNoteUtilities
 	{
 

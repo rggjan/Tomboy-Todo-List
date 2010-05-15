@@ -31,13 +31,18 @@ using Tomboy.Notebooks;
 
 namespace Tomboy.TaskManager {
 	
+	/// <summary>
+	/// Class that describes what to do (in terms of taskmanager addin) at tomboy startup
+	/// </summary>
 	class TaskManagerApplicationAddin : ApplicationAddin {
 		
-		private bool initialized;
+		/// <summary>
+		/// Returns true iff TaskManager addin has been initialized
+		/// </summary>
 		public override bool Initialized {
-			get { return initialized; }
+			get;
+			private set;
 		}
-
 		
 		/// <summary>
 		/// Sets up the TaskManager Addin.

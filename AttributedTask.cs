@@ -28,6 +28,10 @@ using System.Collections.Generic;
 
 namespace Tomboy.TaskManager
 {
+	
+	/// <summary>
+	/// Enum used for priorities
+	/// </summary>
 	public enum Priorities {
 		VERY_LOW = 1,
 		LOW,
@@ -36,10 +40,10 @@ namespace Tomboy.TaskManager
 		VERY_HIGH
 	}
 	
-	public abstract class AttributedTask { //TODO interface?
-		
-		//TODO: Use this as an event instead
-		public bool changed;
+	/// <summary>
+	/// Class that represents the common functionality of TaskList and Task
+	/// </summary>
+	public abstract class AttributedTask {
 	
 		/// <summary>
 		/// Date when this task is overdue
@@ -93,7 +97,10 @@ namespace Tomboy.TaskManager
 			get; set;
 		}
 		
-		protected AttributedTaskTag Tag{
+		/// <summary>
+		/// Tag that is attached to this attributedtask (in the buffer)
+		/// </summary>
+		protected AttributedTaskTag Tag {
 			get; set;	
 		}
 	}

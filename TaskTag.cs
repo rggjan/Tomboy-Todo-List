@@ -35,17 +35,28 @@ namespace Tomboy.TaskManager
 	public class TaskTag : AttributedTaskTag
 	{
 		
+		/// <summary>
+		/// Shortcut for the attached task
+		/// </summary>
 		public Task Task {
 			get{ return (Task) AttributedTask; }
 			set{ AttributedTask = value; }
 		}
 
+		/// <summary>
+		/// Initializes the fields to custom (not available/different in tasktag) values.
+		/// </summary>
+		/// <param name="element_name">
+		/// A <see cref="System.String"/>
+		/// </param>
 		public override void Initialize (string element_name)
 		{
 			base.Initialize (element_name);
 
 			Foreground = "green";
 			LeftMarginSet = true;
+			//Done is not an attribute of a tasklist, therefore set it here
+			Attributes.Add ("Done", "false");
 		}
 	}
 }
