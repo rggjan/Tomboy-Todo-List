@@ -74,7 +74,7 @@ namespace Tomboy.TaskManager
 				TaskList tasklist = parser.utils.GetTaskList (kvp.Value.Start);
 				tasklist.addTask (kvp.Value.Start, kvp.Key);
 			}
-			
+
 			return result;
 		}
 		

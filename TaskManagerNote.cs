@@ -21,12 +21,29 @@ namespace Tomboy.TaskManager {
 		TaskNoteUtilities utils = null;
 		
 		/// <summary>
+		/// This constructor is used in Unit tests to initialize the addin 
+		/// for notes created in the tests on-the-fly.
+		/// It calls the underlying Initialize function in <see cref="NoteAddin"/> which takes
+		/// care of the rest.
+		/// </summary>
+		/// <param name="note">
+		/// A <see cref="Note"/> for which we want the TaskManager Addin functionality.
+		/// </param>
+		public TaskManagerNoteAddin(Note note) 
+		{
+			Initialize(note);
+		}
+		
+		/// <summary>
 		/// Initialize the Note (but no loading/buffer yet)
 		/// </summary>
 		public override void Initialize ()
 		{
 			Logger.Debug ("Initializing TaskManager");
-			// FIXME this is executed 20 times
+			// FIXME this is executed 20 times (is this really a bug? i mean if u have 20 notes then
+			// u probably want this executed 20 times (at least the tags should be registred for every note)
+			// im not sure if this holds for the gtk styles too, maybe they should be factored
+			// out to TaskManagerApplication.cs?
 				
 			string checkButtonStyleMod = @"style ""mystyle"" {
 												GtkCheckButton::indicator-spacing = 0
@@ -77,6 +94,9 @@ namespace Tomboy.TaskManager {
 		{
 			add_list.Activated -= OnAddListActivated;
 			add_priority.Activated -= OnAddPriorityActivated;
+			Buffer.InsertText -= BufferInsertText;
+			Buffer.UserActionEnded -= CheckIfNewTaskNeeded;
+			Buffer.MarkSet -= UpdateMenuSensitivity;
 		}
 
 		/// <summary>
