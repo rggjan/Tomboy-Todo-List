@@ -88,9 +88,6 @@ namespace Tomboy.TaskManager {
 		/// </summary>
 		public override void OnNoteOpened ()
 		{
-			//Buffer.MarkSet += UpdateMenuSensitivity;
-			//FIXME too often called?
-
 			Buffer.InsertText += BufferInsertText;
 			Buffer.UserActionEnded += CheckIfNewTaskNeeded;
 			
@@ -100,7 +97,6 @@ namespace Tomboy.TaskManager {
 			utils = new TaskNoteUtilities (Buffer);
 			
 			Load ();
-			
 			InitializeGui ();
 		}
 		
@@ -127,12 +123,13 @@ namespace Tomboy.TaskManager {
 		/// Makes sure that add_list and add_priority menu items Sensitive property
 		/// is set correctly according to where we currently are in the NoteBuffer
 		/// </summary>
-		void UpdateMenuSensitivity (object sender, EventArgs args) {
-			
-			Logger.Debug("UpdateMenuSensitivity");
+		void UpdateMenuSensitivity (object sender, EventArgs args)
+		{
+			Logger.Debug ("UpdateMenuSensitivity");
 			
 			// toggle sensitivity
-			if(utils.GetTask () != null) {
+			Task task = utils.GetTask ();
+			if (task != null && !task.PriorityShown) {
 				add_priority.Sensitive = true;
 				//add_list.Sensitive = false;
 			}

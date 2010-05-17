@@ -66,6 +66,9 @@ namespace Tomboy.TaskManager {
 		private Gtk.CheckButton CheckBox {
 			get; set;
 		}
+		
+		private bool priority_shown;
+		
 		Gtk.TextChildAnchor boxanchor;
 		
 		private Gtk.ComboBox priority_box;
@@ -253,6 +256,7 @@ namespace Tomboy.TaskManager {
 		public void ShowPriority ()
 		{
 			priority_box.Show ();
+			priority_shown = true;
 		}
 		
 		/// <returns>
@@ -267,6 +271,13 @@ namespace Tomboy.TaskManager {
 				return start;
 			}
 		}
+		
+		public bool PriorityShown {
+			get {
+				return priority_shown;
+			}
+		}
+		
 		
 		/// <summary>
 		/// Updates the strikethrough tag of the task description. If the checkbox is
