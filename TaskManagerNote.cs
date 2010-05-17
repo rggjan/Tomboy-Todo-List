@@ -15,6 +15,7 @@ namespace Tomboy.TaskManager {
 		Gtk.Menu task_menu = new Gtk.Menu();
 		Gtk.MenuItem add_list = new Gtk.MenuItem (Catalog.GetString ("Add TaskList"));
 		Gtk.MenuItem add_priority = new Gtk.MenuItem (Catalog.GetString ("Add Priority"));
+		Gtk.MenuItem add_duedate = new Gtk.MenuItem (Catalog.GetString ("Add Duedate"));
 		
 		bool new_task_needed = false;
 		TaskList current_task_list = null;
@@ -56,6 +57,9 @@ namespace Tomboy.TaskManager {
 
 			if (Note.TagTable.Lookup ("locked") == null)
 				Note.TagTable.Add (tag);
+			
+			if (Note.TagTable.Lookup ("duedate") == null)
+				Note.TagTable.Add (new DateTag ("duedate"));
 
 			//tag = new NoteTag ("invisible");
 			//tag.Invisible = true;
@@ -77,6 +81,7 @@ namespace Tomboy.TaskManager {
 		{
 			add_list.Activated -= OnAddListActivated;
 			add_priority.Activated -= OnAddPriorityActivated;
+			add_duedate.Activated -= OnAddDuedateActivated;
 		}
 
 		/// <summary>
@@ -89,6 +94,8 @@ namespace Tomboy.TaskManager {
 			add_priority.Activated += OnAddPriorityActivated;
 			add_priority.Sensitive = false;
 			
+			add_duedate.Activated += OnAddDuedateActivated;
+			
 			Buffer.InsertText += BufferInsertText;
 			Buffer.UserActionEnded += CheckIfNewTaskNeeded;
 			
@@ -96,6 +103,7 @@ namespace Tomboy.TaskManager {
 
 			task_menu.Add(add_list);
 			task_menu.Add(add_priority);
+			task_menu.Add(add_duedate);
 			tasklist.ShowAll();
 			
 			AddPluginMenuItem (tasklist);
@@ -149,6 +157,31 @@ namespace Tomboy.TaskManager {
 			TaskLists.Add (tl);
 		}
 		
+		void OnAddDuedateActivated (object sender, EventArgs args)
+		{
+			Dialog dialog = new Dialog
+                ("Sample", Window, Gtk.DialogFlags.DestroyWithParent);
+            dialog.Modal = true;
+			dialog.VBox.Add (new Calendar ());
+			dialog.VBox.ShowAll ();
+			dialog.AddButton ("OK", ResponseType.Ok);
+            dialog.AddButton ("Cancel", ResponseType.Cancel);
+			
+			dialog.Response += new ResponseHandler (on_dialog_response);
+            dialog.Run ();
+            dialog.Destroy ();
+		}
+		
+		void on_dialog_response (object obj, ResponseArgs args)
+		{
+			if (args.ResponseId != ResponseType.Ok)
+				return;
+			
+			Buffer.InsertWithTags (
+			    Buffer.GetIterAtMark (Buffer.InsertMark), "test",
+			    new TextTag[]{Note.TagTable.Lookup ("duedate")});
+		}
+			                                        
 		/// <summary>
 		/// Add priority widget to some task
 		/// </summary>
