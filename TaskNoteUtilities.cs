@@ -46,6 +46,12 @@ namespace Tomboy.TaskManager
 			this.Buffer = n;	
 		}
 		
+		public bool InTaskList ()
+		{
+			Gtk.TextIter here = Buffer.GetIterAtMark (Buffer.InsertMark);
+			return InTaskList (here);
+		}
+		
 		public bool InTaskList (TextIter cursor)
 		{
 			TaskListTag tlt = (TaskListTag) Buffer.GetDynamicTag ("tasklist", cursor);

@@ -72,6 +72,7 @@
     <Compile Include="Tests\FileCreator.cs" />
     <Compile Include="Tests\GtkTest.cs" />
     <Compile Include="Tests\TestNotesManager.cs" />
+    <Compile Include="DateTag.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

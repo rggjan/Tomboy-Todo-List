@@ -66,6 +66,7 @@ namespace Tomboy.TaskManager {
 		private Gtk.CheckButton CheckBox {
 			get; set;
 		}
+		
 		Gtk.TextChildAnchor boxanchor;
 		
 		private Gtk.ComboBox priority_box;
@@ -129,7 +130,7 @@ namespace Tomboy.TaskManager {
 		{
 			Buffer = containingList.ContainingNote.Buffer;
 			//TODO: rewrite tag part (it's ugly)
-			initialize (containingList, location, (TaskTag)containingList.ContainingNote.TagTable.CreateDynamicTag ("task"));
+			InitializeTask (containingList, location, (TaskTag)containingList.ContainingNote.TagTable.CreateDynamicTag ("task"));
 
 			TaskTag.bind (this);
 			
@@ -158,8 +159,7 @@ namespace Tomboy.TaskManager {
 		
 		public Task (TaskList containingList, Gtk.TextIter location, TaskTag tag)
 		{
-			Buffer = containingList.ContainingNote.Buffer;
-			initialize(containingList, location, tag);
+			InitializeTask(containingList, location, tag);
 		}
 		
 		/// <summary>
@@ -174,19 +174,14 @@ namespace Tomboy.TaskManager {
 		/// <param name="tag">
 		/// A <see cref="TaskTag"/>
 		/// </param>
-		private void initialize (TaskList containingList, Gtk.TextIter location, TaskTag tag)
-		{
-			Containers = new List<AttributedTask> ();
-			Containers.Add (ContainingTaskList);
-			
+		private void InitializeTask (TaskList containingList, Gtk.TextIter location, TaskTag tag)
+		{			
 			ContainingTaskList = containingList;
 			location.LineOffset = 0;
-			Position = Buffer.CreateMark (null, location, true);
+			
+			Initialize (ContainingTaskList.ContainingNote.Buffer, location, tag);
 			
 			Buffer.UserActionEnded += BufferChanged;
-			
-			TaskTag = tag;
-			TaskTag.Task = this;
 		}
 	
 		/// <summary>
@@ -210,6 +205,7 @@ namespace Tomboy.TaskManager {
 		{
 			Logger.Debug ("destroyed");
 		}
+
 		
 		/// <summary>
 		/// Resets the priority of this task
@@ -256,9 +252,21 @@ namespace Tomboy.TaskManager {
 		/// <summary>
 		/// Makes the priority widget visible
 		/// </summary>
+		public void AddPriority ()
+		{
+			Priority = Priorities.LOW;
+			ShowPriority ();
+		}
+		
 		public void ShowPriority ()
 		{
-			priority_box.Show ();
+			if (!PriorityUnset())
+				priority_box.Show ();
+		}
+		
+		public void HidePriority ()
+		{
+			priority_box.Hide ();
 		}
 		
 		/// <returns>
@@ -273,7 +281,7 @@ namespace Tomboy.TaskManager {
 				return start;
 			}
 		}
-		
+
 		/// <summary>
 		/// Updates the strikethrough tag of the task description. If the checkbox is
 		/// active or removes it if it's not. Also applies the tasklist tag.

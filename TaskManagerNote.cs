@@ -11,10 +11,11 @@ namespace Tomboy.TaskManager {
 	/// </summary>
 	public class TaskManagerNoteAddin : NoteAddin {
 		
-		Gtk.MenuItem tasklist = new Gtk.MenuItem (Catalog.GetString ("TaskList"));
 		Gtk.Menu task_menu = new Gtk.Menu();
 		Gtk.MenuItem add_list = new Gtk.MenuItem (Catalog.GetString ("Add TaskList"));
 		Gtk.MenuItem add_priority = new Gtk.MenuItem (Catalog.GetString ("Add Priority"));
+		Gtk.MenuItem add_duedate = new Gtk.MenuItem (Catalog.GetString ("Add Duedate"));
+		Gtk.CheckMenuItem show_priority = new Gtk.CheckMenuItem (Catalog.GetString ("Show Priorities"));
 		
 		bool new_task_needed = false;
 		TaskList current_task_list = null;
@@ -73,6 +74,9 @@ namespace Tomboy.TaskManager {
 
 			if (Note.TagTable.Lookup ("locked") == null)
 				Note.TagTable.Add (tag);
+			
+			if (Note.TagTable.Lookup ("duedate") == null)
+				Note.TagTable.Add (new DateTag ("duedate"));
 
 			//tag = new NoteTag ("invisible");
 			//tag.Invisible = true;
@@ -94,9 +98,13 @@ namespace Tomboy.TaskManager {
 		{
 			add_list.Activated -= OnAddListActivated;
 			add_priority.Activated -= OnAddPriorityActivated;
+<<<<<<< HEAD
 			Buffer.InsertText -= BufferInsertText;
 			Buffer.UserActionEnded -= CheckIfNewTaskNeeded;
 			Buffer.MarkSet -= UpdateMenuSensitivity;
+=======
+			add_duedate.Activated -= OnAddDuedateActivated; //FIXME some are missing...
+>>>>>>> 5d2a715cadd3e8fd4e64aa330f08671c9d851000
 		}
 
 		/// <summary>
@@ -104,21 +112,8 @@ namespace Tomboy.TaskManager {
 		/// </summary>
 		public override void OnNoteOpened ()
 		{
-			tasklist.Submenu = task_menu;
-			add_list.Activated += OnAddListActivated;
-			add_priority.Activated += OnAddPriorityActivated;
-			add_priority.Sensitive = false;
-			
 			Buffer.InsertText += BufferInsertText;
 			Buffer.UserActionEnded += CheckIfNewTaskNeeded;
-			
-			Buffer.MarkSet += UpdateMenuSensitivity; //FIXME too often called?
-
-			task_menu.Add(add_list);
-			task_menu.Add(add_priority);
-			tasklist.ShowAll();
-			
-			AddPluginMenuItem (tasklist);
 			
 			//Initialise tasklists list
 			//TODO: get from previous sessions?
@@ -126,26 +121,48 @@ namespace Tomboy.TaskManager {
 			utils = new TaskNoteUtilities (Buffer);
 			
 			Load ();
+			InitializeGui ();
+		}
+		
+		private void InitializeGui ()
+		{
+			task_menu.Add (add_priority);
+			add_priority.Activated += OnAddPriorityActivated;
+			
+			task_menu.Add (add_duedate);
+			add_duedate.Activated += OnAddDuedateActivated;
+			
+			task_menu.Add (show_priority);
+			show_priority.Toggled += OnShowPriorityActivated;
+			
+			Gtk.MenuToolButton menu_tool_button = new Gtk.MenuToolButton (Gtk.Stock.Strikethrough);
+			menu_tool_button.Menu = task_menu;
+			task_menu.ShowAll ();
+		
+			menu_tool_button.Clicked += OnAddListActivated;
+			menu_tool_button.ShowMenu += UpdateMenuSensitivity;
+			menu_tool_button.Show ();
+			
+			AddToolItem (menu_tool_button, -1);
 		}
 		
 		/// <summary>
 		/// Makes sure that add_list and add_priority menu items Sensitive property
 		/// is set correctly according to where we currently are in the NoteBuffer
 		/// </summary>
-		void UpdateMenuSensitivity (object sender, EventArgs args) {
-			
-			//Logger.Debug("UpdateMenuSensitivity");
-			Gtk.TextIter cursor = Buffer.GetIterAtMark (Buffer.InsertMark);
-			cursor.LineOffset = 0;
+		void UpdateMenuSensitivity (object sender, EventArgs args)
+		{
+			Logger.Debug ("UpdateMenuSensitivity");
 			
 			// toggle sensitivity
-			if(utils.InTaskList (cursor)) {
+			Task task = utils.GetTask ();
+			if (task != null && task.PriorityUnset () && show_priority.Active) {
 				add_priority.Sensitive = true;
-				add_list.Sensitive = false;
+				//add_list.Sensitive = false;
 			}
 			else {
 				add_priority.Sensitive = false;
-				add_list.Sensitive = true;
+				//add_list.Sensitive = true;
 			}
 		}
 
@@ -160,15 +177,60 @@ namespace Tomboy.TaskManager {
 		/// </param>
 		void OnAddListActivated (object sender, EventArgs args)
 		{
-			TaskList tl = new TaskList (Note);
+			if (utils.InTaskList ())
+				return;
 			
-			add_list.Sensitive = false;
-			add_priority.Sensitive = true;
+			TaskList tl = new TaskList (Note);
 			
 			//tl.Name = "New TaskList!";
 			TaskLists.Add (tl);
 		}
 		
+		void OnShowPriorityActivated (object sender, EventArgs args)
+		{
+			TogglePriorityVisibility ();
+		}
+		
+		private void TogglePriorityVisibility ()
+		{
+						if (show_priority.Active) {
+				foreach (TaskList list in TaskLists)
+					foreach (Task task in list.Children)
+						task.ShowPriority ();
+			} else {
+				foreach (TaskList list in TaskLists)
+					foreach (Task task in list.Children)
+						task.HidePriority ();
+			}
+
+		}
+		
+		void OnAddDuedateActivated (object sender, EventArgs args)
+		{
+			Dialog dialog = new Dialog
+                ("Sample", Window, Gtk.DialogFlags.DestroyWithParent);
+            dialog.Modal = true;
+			dialog.VBox.Add (new Calendar ());
+			dialog.VBox.ShowAll ();
+			dialog.AddButton ("OK", ResponseType.Ok);
+            dialog.AddButton ("Cancel", ResponseType.Cancel);
+			
+			dialog.Response += new ResponseHandler (on_dialog_response);
+            dialog.Run ();
+            dialog.Destroy ();
+		}
+		
+		void on_dialog_response (object obj, ResponseArgs args)
+		{
+			if (args.ResponseId != ResponseType.Ok)
+				return;
+			
+			var iter = Buffer.GetIterAtMark (Buffer.InsertMark);
+			
+			Buffer.InsertWithTags (ref iter, "test", 
+			    new TextTag[]{Note.TagTable.Lookup ("duedate")});
+		}
+			                                        
 		/// <summary>
 		/// Add priority widget to some task
 		/// </summary>
@@ -183,10 +245,9 @@ namespace Tomboy.TaskManager {
 			Gtk.TextIter cursor = Buffer.GetIterAtMark (Buffer.InsertMark);
 			cursor.BackwardChar ();
 			
-			Task task = utils.GetTask (cursor);
-			if(task!=null){
-				task.ShowPriority ();
-				add_priority.Sensitive = false;
+			Task task = utils.GetTask ();
+			if(task != null){
+				task.AddPriority ();
 			} else {
 				Logger.Debug ("Tried to insert Priority outside of a task");	
 			}
@@ -194,7 +255,6 @@ namespace Tomboy.TaskManager {
 		
 		/*Task GetTaskAtCursor ()
 		{
-			Gtk.TextIter here = Buffer.GetIterAtMark (Buffer.InsertMark);
 			here.LineOffset = 0;
 		}*/
 		
@@ -314,9 +374,9 @@ namespace Tomboy.TaskManager {
 		public void Load ()
 		{
 			Logger.Debug ("Loading...");
-			TaskLists = TaskNoteParser.ParseNote(Note);
+			TaskLists = TaskNoteParser.ParseNote (Note);
 			
-			Logger.Debug ("There have been {0} tasklists", new object[]{TaskLists.Count});
+			Logger.Debug ("There have been {0} tasklists", new object[] { TaskLists.Count });
 			
 			foreach (TaskList tl in TaskLists)
 			{
@@ -325,6 +385,10 @@ namespace Tomboy.TaskManager {
 					t.AddWidgets ();
 				}
 			}
+			
+			// TODO load this from the configuration?
+			show_priority.Active = true;
+			TogglePriorityVisibility ();
 		}
 	}
 }
