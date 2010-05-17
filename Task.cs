@@ -67,8 +67,6 @@ namespace Tomboy.TaskManager {
 			get; set;
 		}
 		
-		private bool priority_shown;
-		
 		Gtk.TextChildAnchor boxanchor;
 		
 		private Gtk.ComboBox priority_box;
@@ -207,6 +205,7 @@ namespace Tomboy.TaskManager {
 		{
 			Logger.Debug ("destroyed");
 		}
+
 		
 		/// <summary>
 		/// Resets the priority of this task
@@ -253,10 +252,21 @@ namespace Tomboy.TaskManager {
 		/// <summary>
 		/// Makes the priority widget visible
 		/// </summary>
+		public void AddPriority ()
+		{
+			Priority = Priorities.LOW;
+			ShowPriority ();
+		}
+		
 		public void ShowPriority ()
 		{
-			priority_box.Show ();
-			priority_shown = true;
+			if (!PriorityUnset())
+				priority_box.Show ();
+		}
+		
+		public void HidePriority ()
+		{
+			priority_box.Hide ();
 		}
 		
 		/// <returns>
@@ -271,14 +281,7 @@ namespace Tomboy.TaskManager {
 				return start;
 			}
 		}
-		
-		public bool PriorityShown {
-			get {
-				return priority_shown;
-			}
-		}
-		
-		
+
 		/// <summary>
 		/// Updates the strikethrough tag of the task description. If the checkbox is
 		/// active or removes it if it's not. Also applies the tasklist tag.

@@ -15,6 +15,7 @@ namespace Tomboy.TaskManager {
 		Gtk.MenuItem add_list = new Gtk.MenuItem (Catalog.GetString ("Add TaskList"));
 		Gtk.MenuItem add_priority = new Gtk.MenuItem (Catalog.GetString ("Add Priority"));
 		Gtk.MenuItem add_duedate = new Gtk.MenuItem (Catalog.GetString ("Add Duedate"));
+		Gtk.CheckMenuItem show_priority = new Gtk.CheckMenuItem (Catalog.GetString ("Show Priorities"));
 		
 		bool new_task_needed = false;
 		TaskList current_task_list = null;
@@ -80,7 +81,7 @@ namespace Tomboy.TaskManager {
 		{
 			add_list.Activated -= OnAddListActivated;
 			add_priority.Activated -= OnAddPriorityActivated;
-			add_duedate.Activated -= OnAddDuedateActivated;
+			add_duedate.Activated -= OnAddDuedateActivated; //FIXME some are missing...
 		}
 
 		/// <summary>
@@ -108,6 +109,9 @@ namespace Tomboy.TaskManager {
 			task_menu.Add (add_duedate);
 			add_duedate.Activated += OnAddDuedateActivated;
 			
+			task_menu.Add (show_priority);
+			show_priority.Toggled += OnShowPriorityActivated;
+			
 			Gtk.MenuToolButton menu_tool_button = new Gtk.MenuToolButton (Gtk.Stock.Strikethrough);
 			menu_tool_button.Menu = task_menu;
 			task_menu.ShowAll ();
@@ -129,7 +133,7 @@ namespace Tomboy.TaskManager {
 			
 			// toggle sensitivity
 			Task task = utils.GetTask ();
-			if (task != null && !task.PriorityShown) {
+			if (task != null && task.PriorityUnset () && show_priority.Active) {
 				add_priority.Sensitive = true;
 				//add_list.Sensitive = false;
 			}
@@ -159,6 +163,25 @@ namespace Tomboy.TaskManager {
 			TaskLists.Add (tl);
 		}
 		
+		void OnShowPriorityActivated (object sender, EventArgs args)
+		{
+			TogglePriorityVisibility ();
+		}
+		
+		private void TogglePriorityVisibility ()
+		{
+						if (show_priority.Active) {
+				foreach (TaskList list in TaskLists)
+					foreach (Task task in list.Children)
+						task.ShowPriority ();
+			} else {
+				foreach (TaskList list in TaskLists)
+					foreach (Task task in list.Children)
+						task.HidePriority ();
+			}
+
+		}
+		
 		void OnAddDuedateActivated (object sender, EventArgs args)
 		{
 			Dialog dialog = new Dialog
@@ -179,8 +202,9 @@ namespace Tomboy.TaskManager {
 			if (args.ResponseId != ResponseType.Ok)
 				return;
 			
-			Buffer.InsertWithTags (
-			    Buffer.GetIterAtMark (Buffer.InsertMark), "test",
+			var iter = Buffer.GetIterAtMark (Buffer.InsertMark);
+			
+			Buffer.InsertWithTags (ref iter, "test", 
 			    new TextTag[]{Note.TagTable.Lookup ("duedate")});
 		}
 			                                        
@@ -200,7 +224,7 @@ namespace Tomboy.TaskManager {
 			
 			Task task = utils.GetTask ();
 			if(task != null){
-				task.ShowPriority ();
+				task.AddPriority ();
 			} else {
 				Logger.Debug ("Tried to insert Priority outside of a task");	
 			}
@@ -327,9 +351,9 @@ namespace Tomboy.TaskManager {
 		public void Load ()
 		{
 			Logger.Debug ("Loading...");
-			TaskLists = TaskNoteParser.ParseNote(Note);
+			TaskLists = TaskNoteParser.ParseNote (Note);
 			
-			Logger.Debug ("There have been {0} tasklists", new object[]{TaskLists.Count});
+			Logger.Debug ("There have been {0} tasklists", new object[] { TaskLists.Count });
 			
 			foreach (TaskList tl in TaskLists)
 			{
@@ -338,6 +362,10 @@ namespace Tomboy.TaskManager {
 					t.AddWidgets ();
 				}
 			}
+			
+			// TODO load this from the configuration?
+			show_priority.Active = true;
+			TogglePriorityVisibility ();
 		}
 	}
 }

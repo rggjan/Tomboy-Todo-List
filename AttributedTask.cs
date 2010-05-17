@@ -34,7 +34,8 @@ namespace Tomboy.TaskManager
 	/// Enum used for priorities
 	/// </summary>
 	public enum Priorities {
-		VERY_LOW = 1,
+		UNSET,
+		VERY_LOW,
 		LOW,
 		NORMAL,
 		HIGH,
@@ -111,6 +112,17 @@ namespace Tomboy.TaskManager
 		/// </summary>
 		protected AttributedTaskTag Tag {
 			get; set;	
+		}
+		
+		/// <summary>
+		/// Returns true if the priority of this task is yet unset.
+		/// </summary>
+		/// <returns>
+		/// A <see cref="System.Boolean"/>
+		/// </returns>
+		public bool PriorityUnset ()
+		{
+			return (Priority == Priorities.UNSET);
 		}
 		
 		/// <summary>
