@@ -139,8 +139,6 @@ namespace Tomboy.TaskManager {
 		/// </summary>
 		public void AddWidgets ()
 		{
-			
-			
 			var start = Start;
 			start.ForwardChar ();
 			var end = start;

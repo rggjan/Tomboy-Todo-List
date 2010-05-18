@@ -95,11 +95,11 @@ namespace Tomboy.TaskManager {
 			if (Note.TagTable.Lookup ("duedate") == null)
 				Note.TagTable.Add (new DateTag ("duedate"));
 
-			//tag = new NoteTag ("invisible");
-			//tag.Invisible = true;
+			tag = new NoteTag ("invisible");
+			tag.Invisible = true;
 			
-			//if (Note.TagTable.Lookup ("invisible") == null)
-			//	Note.TagTable.Add (tag);
+			if (Note.TagTable.Lookup ("invisible") == null)
+				Note.TagTable.Add (tag);
 			
 			
 			//TaskTag
@@ -293,7 +293,7 @@ namespace Tomboy.TaskManager {
 				begin.LineOffset = 0;
 				
 				// Behaviour: onTask\n\n should delete empty checkbox
-				if (Buffer.GetText (begin, end, true).Trim ().Length == 0 && utils.InTaskList (end)) {
+				if (Buffer.GetText (begin, end, true).Trim ().Length == 1 && utils.InTaskList (end)) {
 					Task task = utils.GetTask ();
 					if (task != null && task.IsLastTask ()) {
 						task.Delete ();
