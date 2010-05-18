@@ -139,6 +139,11 @@ namespace Tomboy.TaskManager {
 			show_priority.Toggled += OnShowPriorityActivated;
 			
 			Gtk.MenuToolButton menu_tool_button = new Gtk.MenuToolButton (Gtk.Stock.Strikethrough);
+			
+			menu_tool_button.IconName = "ghi"; //Not working!
+			
+			menu_tool_button.TooltipText = Catalog.GetString("Add a new TaskList");
+			menu_tool_button.ArrowTooltipText = Catalog.GetString("Set TaskList properties");
 			menu_tool_button.Menu = task_menu;
 			task_menu.ShowAll ();
 		

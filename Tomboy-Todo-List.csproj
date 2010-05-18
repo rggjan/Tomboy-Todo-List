@@ -39,10 +39,6 @@
       <Package>gtk-sharp-2.0</Package>
     </Reference>
     <Reference Include="System.Xml" />
-    <Reference Include="Tomboy, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\tomboy\Tomboy\Tomboy.exe</HintPath>
-    </Reference>
     <Reference Include="nunit.core, Version=2.4.7.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
       <Package>mono-nunit</Package>
     </Reference>
@@ -92,4 +88,18 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
+  <ItemGroup>
+    <None Include="Tests\TasklistParserTest.cs" />
+    <None Include="Tests\FileCreator.cs" />
+    <None Include="Tests\GtkTest.cs" />
+    <None Include="Tests\TestNotesManager.cs" />
+    <None Include="Tests\SingleTaskListNote.xml" />
+    <None Include="Tests\DoubleTaskListNote.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\tomboy\Tomboy.csproj">
+      <Project>{315DBB30-1461-4A41-A23F-A888D84E1EA0}</Project>
+      <Name>Tomboy</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>
