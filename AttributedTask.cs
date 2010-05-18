@@ -81,13 +81,8 @@ namespace Tomboy.TaskManager
 		/// </summary>
 		public Priorities Priority {
 			get { return Tag.TaskPriority; }
-			set {
-				Tag.TaskPriority = value;
-				TagUpdate ();
-			}
+			set { Tag.TaskPriority = value; }
 		}
-		
-		public abstract void TagUpdate ();
 		
 		/// <summary>
 		/// Returns all Abstract Tasks that are children of this Abstracttask.

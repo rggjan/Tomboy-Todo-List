@@ -140,9 +140,9 @@ namespace Tomboy.TaskManager {
 		public void AddWidgets ()
 		{
 			var start = Start;
-			start.ForwardChar ();
+			//start.ForwardChar ();
 			var end = start;
-			end.ForwardChar ();
+			end.ForwardChars (3);
 			Buffer.ApplyTag ("priority", start, end);
 		
 			InsertCheckButton (end);
@@ -261,7 +261,7 @@ namespace Tomboy.TaskManager {
 		/// Updates the strikethrough tag of the task description. If the checkbox is
 		/// active or removes it if it's not. Also applies the tasklist tag.
 		/// </summary>
-		public override void TagUpdate ()
+		private void TagUpdate ()
 		{
 			var start = Start;
 			var end = End;
