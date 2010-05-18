@@ -98,13 +98,10 @@ namespace Tomboy.TaskManager {
 		{
 			add_list.Activated -= OnAddListActivated;
 			add_priority.Activated -= OnAddPriorityActivated;
-<<<<<<< HEAD
+			add_duedate.Activated -= OnAddDuedateActivated; //FIXME some are missing...
+
 			Buffer.InsertText -= BufferInsertText;
 			Buffer.UserActionEnded -= CheckIfNewTaskNeeded;
-			Buffer.MarkSet -= UpdateMenuSensitivity;
-=======
-			add_duedate.Activated -= OnAddDuedateActivated; //FIXME some are missing...
->>>>>>> 5d2a715cadd3e8fd4e64aa330f08671c9d851000
 		}
 
 		/// <summary>
