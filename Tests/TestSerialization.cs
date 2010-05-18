@@ -42,9 +42,6 @@ namespace Tomboy.TaskManager.Tests
 	{
 		// disabled not used warnings for notes
 		#pragma warning disable 0414
-		private Note noTaskListNote;
-		private TaskManagerNoteAddin noManager;
-		
 		private Note singleTaskListNote;
 		private TaskManagerNoteAddin singleManager;
 		
@@ -63,7 +60,6 @@ namespace Tomboy.TaskManager.Tests
 			
 			NotesCreationManager.CreateNote ("SingleTaskListNote", out singleTaskListNote, out singleManager);
 			NotesCreationManager.CreateNote ("DoubleTaskListNote", out doubleTaskListNote, out doubleManager);
-			NotesCreationManager.CreateNote ("NoTaskListNote", out noTaskListNote, out noManager);
 		}
 
 		
@@ -108,7 +104,7 @@ namespace Tomboy.TaskManager.Tests
 			changedManager.DeserializeTasklists();
 			
 			// saving worked?
-			Assert.That(singleManager.TaskLists[0].Priority == Priorities.NORMAL);
+			Assert.That(changedManager.TaskLists[0].Priority == Priorities.NORMAL);
 			Assert.That(changedManager.TaskLists[0].Children[0].Priority == Priorities.VERY_HIGH);
 		}
 		
@@ -151,8 +147,8 @@ namespace Tomboy.TaskManager.Tests
 			changedManager.DeserializeTasklists();
 			
 			// saving worked?
-			Assert.That(!singleManager.TaskLists[0].Children[0].Done);
-			Assert.That(singleManager.TaskLists[0].Children[0].Done);
+			Assert.That(!changedManager.TaskLists[0].Children[0].Done);
+			Assert.That(changedManager.TaskLists[0].Children[0].Done);
 		}
 		
 		
@@ -161,27 +157,13 @@ namespace Tomboy.TaskManager.Tests
 		/// </summary>
 		[Test()]
 		public void LoadingDueDates ()
-		{
+		{			
 			throw new NotImplementedException();
 		}
 		
 		
 		[Test()]
 		public void ChangeDueDate ()
-		{
-			throw new NotImplementedException();
-		}
-		
-		
-		[Test()]
-		public void DeleteTask ()
-		{
-			throw new NotImplementedException();
-		}
-		
-
-		[Test()]
-		public void DeleteTaskList ()
 		{
 			throw new NotImplementedException();
 		}
