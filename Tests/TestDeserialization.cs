@@ -33,8 +33,8 @@ namespace Tomboy.TaskManager.Tests
 {
 
 	/// <summary>
-	/// Tests that check if loading tasklists from notes xml files and setting up
-	/// the data structures is done correctly.
+	/// Test that check the general workings of the TaskList parser (i.e. correct number of tasks
+	/// and tasklists found in notes).
 	/// </summary>
 	[TestFixture()]
 	public class TestDeserialization : GtkTest
@@ -96,56 +96,6 @@ namespace Tomboy.TaskManager.Tests
 			Assert.That (doubleManager.TaskLists.Count == 2); // two task lists are found
 			Assert.That (doubleManager.TaskLists[0].Children.Count == 3); // 1st tasklist has 3 tasks
 			Assert.That (doubleManager.TaskLists[1].Children.Count == 2); // 2nd tasklist has 2 tasks
-		}
-	
-		
-		/// <summary>
-		/// Ensures that attribute done is loaded correctly.
-		/// </summary>
-		[Test()]
-		public void LoadingDone ()
-		{
-			doubleManager.DeserializeTasklists ();
-			
-			var notDoneTask = doubleManager.TaskLists[1].Children[0];
-			Assert.That (!notDoneTask.Done);
-			
-			var doneTask = doubleManager.TaskLists[0].Children[1];
-			Assert.That (doneTask.Done);
-			
-		}
-		
-		
-		/// <summary>
-		/// Ensures that priorities are loaded correctly from XML.
-		/// </summary>
-		[Test()]
-		public void LoadingPriorities ()
-		{
-			singleManager.DeserializeTasklists ();
-			
-			// for tasklists
-			Assert.That(singleManager.TaskLists[0].Priority == Priorities.LOW);
-			
-			// for tasks in tasklist
-			var veryLowPrioTask = singleManager.TaskLists[0].Children[0];
-			Assert.That (veryLowPrioTask.Priority == Priorities.VERY_LOW);
-			
-			var highPrioTask = singleManager.TaskLists[0].Children[1];
-			Assert.That (highPrioTask.Priority == Priorities.HIGH);
-
-			var normalPrioTask = singleManager.TaskLists[0].Children[2];
-			Assert.That (normalPrioTask.Priority == Priorities.NORMAL);
-		}
-		
-		
-		/// <summary>
-		/// Test that ensures due dates are loaded correctly.
-		/// </summary>
-		[Test()]
-		public void LoadingDueDates ()
-		{
-			throw new NotImplementedException();
 		}
 		
 		

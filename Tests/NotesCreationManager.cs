@@ -55,25 +55,53 @@ namespace Tomboy.TaskManager.Tests
 		/// The <see cref="TaskManagerNoteAddin"/> is wired together with the note to ensure that
 		/// the note has the TaskManager functionality.
 		/// </param>
-		public static void CreateNote(string fromTemplate, out Note note, out TaskManagerNoteAddin addin)
+		public static void CreateNote (string fromTemplate, out Note note, out TaskManagerNoteAddin addin)
 		{
 			var noteFile = TemporaryFileManager.CreateFile (CreateResourceName(fromTemplate));
 			
 			note = Note.Load (noteFile.FullName, null);
-			addin = new TaskManagerNoteAddin(note);
+			addin = new TaskManagerNoteAddin (note);
 			
-			createdNotes.Add(note);
+			createdNotes.Add (note);
 		}
+		
+		
+		/// <summary>
+		/// Returns a note object and its taskmanager addin instance for a given note XML file.
+		/// </summary>
+		/// <param name="fromFile">
+		/// A <see cref="System.String"/>
+		/// </param>
+		/// <param name="note">
+		/// A <see cref="Note"/>
+		/// </param>
+		/// <param name="addin">
+		/// A <see cref="TaskManagerNoteAddin"/>
+		/// </param>
+		/// <param name="delete">
+		/// A <see cref="System.Boolean"/>, if true the file will be deleted on a call to DeleteNoteFiles
+		/// </param>
+		public static void LoadNote (string fromFile, out Note note, out TaskManagerNoteAddin addin, bool delete)
+		{
+			note = Note.Load (fromFile, null);
+			addin = new TaskManagerNoteAddin (note);
+			
+			if(delete)
+				createdNotes.Add (note);
+			
+		}
+		
 		
 		/// <summary>
 		/// Deletes all corresponding note XML files which where created with 
 		/// CreateNote before.
 		/// </summary>
-		public static void DeleteNoteFiles()
+		public static void DeleteNoteFiles ()
 		{
-			createdNotes.ForEach(n => TemporaryFileManager.DeleteFile(new FileInfo(n.FilePath)));
-			createdNotes.Clear();
+			createdNotes.ForEach (n => TemporaryFileManager.DeleteFile(new FileInfo(n.FilePath)));
+			createdNotes.Clear ();
 		}
+		
 		
 		/// <summary>
 		/// Helper function which returns the correct assembly uri of note xml test files
@@ -86,7 +114,7 @@ namespace Tomboy.TaskManager.Tests
 		/// <returns>
 		/// A <see cref="System.String"/> containing the correct uri for the notes in the assembly.
 		/// </returns>
-		private static string CreateResourceName(string templateName)
+		private static string CreateResourceName (string templateName)
 		{
 			return BASE_NAMESPACE + "." + templateName + "." + NOTE_EXTENSION;
 		}

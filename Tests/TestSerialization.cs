@@ -50,18 +50,142 @@ namespace Tomboy.TaskManager.Tests
 		
 		private Note doubleTaskListNote;
 		private TaskManagerNoteAddin doubleManager;
+		
+		private Note changedNote;
+		private TaskManagerNoteAddin changedManager;
 		#pragma warning restore 0414
 		
 		
 		[SetUp()]
 		public override void Initialize ()
 		{
-			base.Initialize(); // set up gtk
+			base.Initialize (); // set up gtk
 			
 			NotesCreationManager.CreateNote ("SingleTaskListNote", out singleTaskListNote, out singleManager);
 			NotesCreationManager.CreateNote ("DoubleTaskListNote", out doubleTaskListNote, out doubleManager);
 			NotesCreationManager.CreateNote ("NoTaskListNote", out noTaskListNote, out noManager);
-		}		
+		}
+
+		
+		/// <summary>
+		/// Ensures that priorities are loaded correctly from XML.
+		/// </summary>
+		[Test()]
+		public void LoadingPriorities ()
+		{
+			singleManager.DeserializeTasklists ();
+			
+			// for tasklists
+			Assert.That(singleManager.TaskLists[0].Priority == Priorities.LOW);
+			
+			// for tasks in tasklist
+			var veryLowPrioTask = singleManager.TaskLists[0].Children[0];
+			Assert.That (veryLowPrioTask.Priority == Priorities.VERY_LOW);
+			
+			var highPrioTask = singleManager.TaskLists[0].Children[1];
+			Assert.That (highPrioTask.Priority == Priorities.HIGH);
+
+			var normalPrioTask = singleManager.TaskLists[0].Children[2];
+			Assert.That (normalPrioTask.Priority == Priorities.NORMAL);
+		}
+		
+		
+		[Test()]
+		public void ChangePriority ()
+		{
+			singleManager.DeserializeTasklists();
+			
+			// preconditions for successful testing
+			Assert.That(singleManager.TaskLists[0].Priority != Priorities.NORMAL);
+			Assert.That(singleManager.TaskLists[0].Children[0].Priority != Priorities.VERY_HIGH);
+			
+			singleManager.TaskLists[0].Priority = Priorities.NORMAL;
+			singleManager.TaskLists[0].Children[0].Priority = Priorities.VERY_HIGH;
+			singleTaskListNote.Save();
+			
+			// reload as another note object
+			NotesCreationManager.LoadNote(singleTaskListNote.FilePath, out changedNote, out changedManager, false);
+			changedManager.DeserializeTasklists();
+			
+			// saving worked?
+			Assert.That(singleManager.TaskLists[0].Priority == Priorities.NORMAL);
+			Assert.That(changedManager.TaskLists[0].Children[0].Priority == Priorities.VERY_HIGH);
+		}
+		
+		
+		/// <summary>
+		/// Ensures that attribute done is loaded correctly.
+		/// </summary>
+		[Test()]
+		public void LoadingDone ()
+		{
+			doubleManager.DeserializeTasklists ();
+			
+			var notDoneTask = doubleManager.TaskLists[1].Children[0];
+			Assert.That (!notDoneTask.Done);
+			
+			var doneTask = doubleManager.TaskLists[0].Children[1];
+			Assert.That (doneTask.Done);
+			
+		}
+		
+		
+		/// <summary>
+		/// Ensures that marking individual tasks as done is serialized correctly.
+		/// </summary>
+		[Test()]
+		public void ChangeDone ()
+		{
+			singleManager.DeserializeTasklists();
+			
+			// preconditions for successful testing
+			Assert.That(singleManager.TaskLists[0].Children[0].Done);
+			Assert.That(!singleManager.TaskLists[0].Children[1].Done);
+			
+			singleManager.TaskLists[0].Children[0].Done = false;
+			singleManager.TaskLists[0].Children[1].Done = true;
+			singleTaskListNote.Save();
+			
+			// reload as another note object
+			NotesCreationManager.LoadNote(singleTaskListNote.FilePath, out changedNote, out changedManager, false);
+			changedManager.DeserializeTasklists();
+			
+			// saving worked?
+			Assert.That(!singleManager.TaskLists[0].Children[0].Done);
+			Assert.That(singleManager.TaskLists[0].Children[0].Done);
+		}
+		
+		
+		/// <summary>
+		/// Test that ensures due dates are loaded correctly.
+		/// </summary>
+		[Test()]
+		public void LoadingDueDates ()
+		{
+			throw new NotImplementedException();
+		}
+		
+		
+		[Test()]
+		public void ChangeDueDate ()
+		{
+			throw new NotImplementedException();
+		}
+		
+		
+		[Test()]
+		public void DeleteTask ()
+		{
+			throw new NotImplementedException();
+		}
+		
+
+		[Test()]
+		public void DeleteTaskList ()
+		{
+			throw new NotImplementedException();
+		}
+		
 		
 		[TearDown()]
 		public void Cleanup ()
