@@ -34,16 +34,17 @@ namespace Tomboy.TaskManager
 	/// <summary>
 	/// Class for parsing notes for tasklists and tasks
 	/// </summary>
-	public class TaskNoteParser
+	public class TaskListParser
 	{
 		
 		private Note note;
 		private TaskNoteUtilities utils;
 		
-		private NoteBuffer buffer{
+		private NoteBuffer buffer {
 			get {return note.Buffer;}
 		}
-		private TaskNoteParser(Note note)
+		
+		public TaskListParser(Note note)
 		{
 			this.note = note;
 			utils = new TaskNoteUtilities (buffer);
@@ -59,19 +60,19 @@ namespace Tomboy.TaskManager
 		/// <returns>
 		/// A <see cref="List<TaskList>"/>
 		/// </returns>
-		public static List<TaskList> ParseNote(Note note)
+		public List<TaskList> Parse ()
 		{
 			List<TaskList> result = new List<TaskList> ();
-			TaskNoteParser parser = new TaskNoteParser (note);
-			var tasklists = parser.PrepareTaskListTags ();
-			var tasks = parser.PrepareTaskTags ();
+			
+			var tasklists = PrepareTaskListTags ();
+			var tasks = PrepareTaskTags ();
 			
 			foreach (KeyValuePair<TaskListTag, TextRange> kvp in tasklists){
 				result.Add (new TaskList (note, kvp.Value.Start, kvp.Key));
 			}
 			
 			foreach (KeyValuePair<TaskTag, TextRange> kvp in tasks){
-				TaskList tasklist = parser.utils.GetTaskList (kvp.Value.Start);
+				TaskList tasklist = utils.GetTaskList (kvp.Value.Start);
 				tasklist.addTask (kvp.Value.Start, kvp.Key);
 			}
 

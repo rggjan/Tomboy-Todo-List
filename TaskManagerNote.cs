@@ -71,7 +71,12 @@ namespace Tomboy.TaskManager {
 									";
 			
 			Gtk.Rc.ParseString (comboStyleMod);
+			
+			RegisterTags();
+		}
 		
+		public void RegisterTags()
+		{
 			NoteTag tag = new NoteTag ("locked");
 			tag.Editable = false;
 			tag.CanSerialize = false;
@@ -117,11 +122,8 @@ namespace Tomboy.TaskManager {
 			Buffer.UserActionEnded += CheckIfNewTaskNeeded;
 			
 			//Initialise tasklists list
-			//TODO: get from previous sessions?
-			TaskLists = new List<TaskList> ();
-			utils = new TaskNoteUtilities (Buffer);
-			
-			Load ();
+			//TODO: get from previous sessions?		
+			DeserializeTasklists ();
 			InitializeGui ();
 		}
 		
@@ -372,10 +374,14 @@ namespace Tomboy.TaskManager {
 		/// <summary>
 		/// Loads (in terms of Tasks and Tasklists) the contents of a note
 		/// </summary>
-		public void Load ()
+		public void DeserializeTasklists ()
 		{
 			Logger.Debug ("Loading...");
-			TaskLists = TaskNoteParser.ParseNote (Note);
+			TaskLists = new List<TaskList> ();
+			utils = new TaskNoteUtilities (Buffer);
+			
+			var parser = new TaskListParser(Note);
+			TaskLists = parser.Parse();
 			
 			Logger.Debug ("There have been {0} tasklists", new object[] { TaskLists.Count });
 			
