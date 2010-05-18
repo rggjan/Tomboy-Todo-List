@@ -37,7 +37,7 @@ namespace Tomboy.TaskManager.Tests
 	/// the data structures is done correctly.
 	/// </summary>
 	[TestFixture()]
-	public class DeserializeTests : GtkTest
+	public class TestDeserialization : GtkTest
 	{
 		// disabled not used warnings for notes
 		#pragma warning disable 0414
@@ -61,7 +61,7 @@ namespace Tomboy.TaskManager.Tests
 			NotesCreationManager.CreateNote ("DoubleTaskListNote", out doubleTaskListNote, out doubleManager);
 			NotesCreationManager.CreateNote ("NoTaskListNote", out noTaskListNote, out noManager);
 		}
-		
+
 
 		/// <summary>
 		/// Deserialize a note containing no tasklists will still work.

@@ -39,15 +39,7 @@ namespace Tomboy.TaskManager {
 	/// marked as done by crossing out the checkbox.
 	/// </summary>
 	public class Task : AttributedTask {
-		
-		
-		/// <summary>
-		/// Description of the Task the user wrote in the Buffer
-		/// </summary>
-		public string Description {
-			get; set;
-		}
-		
+				
 		/// <summary>
 		/// Is this task completed?
 		/// </summary>

@@ -74,6 +74,7 @@
     <Compile Include="Tests\NotesCreationManager.cs" />
     <Compile Include="Tests\TestDeserialization.cs" />
     <Compile Include="Tests\TestNoteIntialization.cs" />
+    <Compile Include="Tests\TestSerialization.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
