@@ -13,7 +13,6 @@ namespace Tomboy.TaskManager {
 		
 		Gtk.Menu task_menu = new Gtk.Menu();
 		Gtk.MenuItem add_list = new Gtk.MenuItem (Catalog.GetString ("Add TaskList"));
-		Gtk.MenuItem add_priority = new Gtk.MenuItem (Catalog.GetString ("Add Priority"));
 		Gtk.MenuItem add_duedate = new Gtk.MenuItem (Catalog.GetString ("Add Duedate"));
 		Gtk.CheckMenuItem show_priority = new Gtk.CheckMenuItem (Catalog.GetString ("Show Priorities"));
 		
@@ -88,6 +87,7 @@ namespace Tomboy.TaskManager {
 			tag.CanActivate = true;
 			tag.CanSerialize = false;
 			tag.Foreground = "blue";
+			tag.Activated += OnPriorityClicked;
 
 			if (Note.TagTable.Lookup ("priority") == null)
 				Note.TagTable.Add (tag);
@@ -114,7 +114,6 @@ namespace Tomboy.TaskManager {
 		public override void Shutdown ()
 		{
 			add_list.Activated -= OnAddListActivated;
-			add_priority.Activated -= OnAddPriorityActivated;
 			add_duedate.Activated -= OnAddDuedateActivated; //FIXME some are missing...
 
 			Buffer.InsertText -= BufferInsertText;
@@ -135,11 +134,18 @@ namespace Tomboy.TaskManager {
 			InitializeGui ();
 		}
 		
+		private bool OnPriorityClicked (NoteTag tag, NoteEditor editor, Gtk.TextIter start, Gtk.TextIter end)
+		{
+			Logger.Debug ("clicked!");
+			utils.GetTask (start).Priority = Priorities.VERY_HIGH;
+			utils.GetTask (start).TagUpdate ();
+			Logger.Debug(utils.GetTask (start).Priority.ToString());
+			
+			return true;
+		}
+		
 		private void InitializeGui ()
 		{
-			task_menu.Add (add_priority);
-			add_priority.Activated += OnAddPriorityActivated;
-			
 			task_menu.Add (add_duedate);
 			add_duedate.Activated += OnAddDuedateActivated;
 			
@@ -173,11 +179,11 @@ namespace Tomboy.TaskManager {
 			// toggle sensitivity
 			Task task = utils.GetTask ();
 			if (task != null && task.PriorityUnset () && show_priority.Active) {
-				add_priority.Sensitive = true;
+				//add_priority.Sensitive = true;
 				//add_list.Sensitive = false;
 			}
 			else {
-				add_priority.Sensitive = false;
+				//add_priority.Sensitive = false;
 				//add_list.Sensitive = true;
 			}
 		}

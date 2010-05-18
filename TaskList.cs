@@ -46,6 +46,12 @@ namespace Tomboy.TaskManager {
 			set;
 		}
 		
+		public override void TagUpdate ()
+		{
+			//TODO
+		}
+
+		
 		/// <summary>
 		/// Note containing the TaskList.
 		/// </summary>

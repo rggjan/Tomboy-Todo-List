@@ -206,22 +206,6 @@ namespace Tomboy.TaskManager {
 			Logger.Debug ("destroyed");
 		}
 
-		
-		/// <summary>
-		/// Resets the priority of this task
-		/// </summary>
-		/// <param name="o">
-		/// A <see cref="System.Object"/>
-		/// </param>
-		/// <param name="args">
-		/// A <see cref="System.EventArgs"/>
-		/// </param>
-		private void setpriority (object o, System.EventArgs args)
-		{
-			//Priority = (Priorities)priority_box.Active; FIXME
-			TagUpdate ();
-		}
-		
 		/// <summary>
 		/// Inserts the pr or;ty ComboBox in the TextBuffer.
 		/// </summary>
@@ -277,7 +261,7 @@ namespace Tomboy.TaskManager {
 		/// Updates the strikethrough tag of the task description. If the checkbox is
 		/// active or removes it if it's not. Also applies the tasklist tag.
 		/// </summary>
-		private void TagUpdate ()
+		public override void TagUpdate ()
 		{
 			var start = Start;
 			var end = End;
