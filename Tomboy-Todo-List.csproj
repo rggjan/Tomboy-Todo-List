@@ -68,17 +68,11 @@
     <Compile Include="AttributedTaskTag.cs" />
     <Compile Include="TaskNoteUtilities.cs" />
     <Compile Include="TaskNoteParser.cs" />
-    <Compile Include="Tests\TasklistParserTest.cs" />
-    <Compile Include="Tests\FileCreator.cs" />
-    <Compile Include="Tests\GtkTest.cs" />
-    <Compile Include="Tests\TestNotesManager.cs" />
     <Compile Include="DateTag.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <EmbeddedResource Include="TaskManager.addin.xml" />
-    <EmbeddedResource Include="Tests\SingleTaskListNote.xml" />
-    <EmbeddedResource Include="Tests\DoubleTaskListNote.xml" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -89,4 +83,12 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
+  <ItemGroup>
+    <None Include="Tests\TasklistParserTest.cs" />
+    <None Include="Tests\FileCreator.cs" />
+    <None Include="Tests\GtkTest.cs" />
+    <None Include="Tests\TestNotesManager.cs" />
+    <None Include="Tests\SingleTaskListNote.xml" />
+    <None Include="Tests\DoubleTaskListNote.xml" />
+  </ItemGroup>
 </Project>

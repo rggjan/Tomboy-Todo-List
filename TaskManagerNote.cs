@@ -30,9 +30,13 @@ namespace Tomboy.TaskManager {
 		/// <param name="note">
 		/// A <see cref="Note"/> for which we want the TaskManager Addin functionality.
 		/// </param>
-		public TaskManagerNoteAddin(Note note) 
+		public TaskManagerNoteAddin (Note note)
 		{
-			Initialize(note);
+			Initialize (note);
+		}
+		
+		public TaskManagerNoteAddin ()
+		{
 		}
 		
 		/// <summary>
