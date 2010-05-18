@@ -5,9 +5,9 @@
 
 <tasklist Duedate="" Priority="LOW" Name="New TaskList!">
 	New Tasklist!
-	<task Duedate="" Priority="LOW" Done="false">task 1</task>
-	<task Duedate="" Priority="LOW" Done="false">task 2</task>
-	<task Duedate="" Priority="LOW" Done="false">task 3</task>
+	<task Duedate="" Priority="VERY_LOW" Done="true">task 1</task>
+	<task Duedate="" Priority="HIGH" Done="false">task 2</task>
+	<task Duedate="" Priority="NORMAL" Done="True">task 3</task>
 </tasklist>
 
 </note-content></text>

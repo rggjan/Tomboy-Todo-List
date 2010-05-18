@@ -39,23 +39,40 @@ namespace Tomboy.TaskManager.Tests
 	[TestFixture()]
 	public class DeserializeTests : GtkTest
 	{
+		// disabled not used warnings for notes
+		#pragma warning disable 0414
+		private Note noTaskListNote;
+		private TaskManagerNoteAddin noManager;
 		
 		private Note singleTaskListNote;
 		private TaskManagerNoteAddin singleManager;
 		
 		private Note doubleTaskListNote;
 		private TaskManagerNoteAddin doubleManager;
+		#pragma warning restore 0414
 		
 		
 		[SetUp()]
 		public override void Initialize ()
 		{
-			base.Initialize();
+			base.Initialize(); // set up gtk
 			
 			TestNotesManager.CreateNote ("SingleTaskListNote", out singleTaskListNote, out singleManager);
 			TestNotesManager.CreateNote ("DoubleTaskListNote", out doubleTaskListNote, out doubleManager);
+			TestNotesManager.CreateNote ("NoTaskListNote", out noTaskListNote, out noManager);
 		}
+		
 
+		/// <summary>
+		/// Deserialize a note containing no tasklists will still work.
+		/// </summary>
+		[Test()]
+		public void FindNoTaskList () 
+		{
+			noManager.DeserializeTasklists ();
+			Assert.That (noManager.TaskLists.Count == 0);
+		}
+		
 		
 		/// <summary>
 		/// Checks if the parser correctly finds a tasklist and all its tasks contained.
@@ -80,15 +97,55 @@ namespace Tomboy.TaskManager.Tests
 			Assert.That (doubleManager.TaskLists[0].Children.Count == 3); // 1st tasklist has 3 tasks
 			Assert.That (doubleManager.TaskLists[1].Children.Count == 2); // 2nd tasklist has 2 tasks
 		}
+	
+		
+		/// <summary>
+		/// Ensures that attribute done is loaded correctly.
+		/// </summary>
+		[Test()]
+		public void LoadingDone ()
+		{
+			doubleManager.DeserializeTasklists ();
+			
+			var notDoneTask = doubleManager.TaskLists[1].Children[0];
+			Assert.That (!notDoneTask.Done);
+			
+			var doneTask = doubleManager.TaskLists[0].Children[1];
+			Assert.That (doneTask.Done);
+			
+		}
 		
 		
 		/// <summary>
-		/// This Test ensures that priorities are read correctly from the XML file.
+		/// Ensures that priorities are loaded correctly from XML.
 		/// </summary>
 		[Test()]
 		public void LoadingPriorities ()
 		{
+			singleManager.DeserializeTasklists ();
 			
+			// for tasklists
+			Assert.That(singleManager.TaskLists[0].Priority == Priorities.LOW);
+			
+			// for tasks in tasklist
+			var veryLowPrioTask = singleManager.TaskLists[0].Children[0];
+			Assert.That (veryLowPrioTask.Priority == Priorities.VERY_LOW);
+			
+			var highPrioTask = singleManager.TaskLists[0].Children[1];
+			Assert.That (highPrioTask.Priority == Priorities.HIGH);
+
+			var normalPrioTask = singleManager.TaskLists[0].Children[2];
+			Assert.That (normalPrioTask.Priority == Priorities.NORMAL);
+		}
+		
+		
+		/// <summary>
+		/// Test that ensures due dates are loaded correctly.
+		/// </summary>
+		[Test()]
+		public void LoadingDueDates ()
+		{
+			throw new NotImplementedException();
 		}
 		
 		
