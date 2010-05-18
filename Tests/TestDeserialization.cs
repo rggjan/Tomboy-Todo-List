@@ -57,9 +57,9 @@ namespace Tomboy.TaskManager.Tests
 		{
 			base.Initialize(); // set up gtk
 			
-			TestNotesManager.CreateNote ("SingleTaskListNote", out singleTaskListNote, out singleManager);
-			TestNotesManager.CreateNote ("DoubleTaskListNote", out doubleTaskListNote, out doubleManager);
-			TestNotesManager.CreateNote ("NoTaskListNote", out noTaskListNote, out noManager);
+			NotesCreationManager.CreateNote ("SingleTaskListNote", out singleTaskListNote, out singleManager);
+			NotesCreationManager.CreateNote ("DoubleTaskListNote", out doubleTaskListNote, out doubleManager);
+			NotesCreationManager.CreateNote ("NoTaskListNote", out noTaskListNote, out noManager);
 		}
 		
 
@@ -152,7 +152,7 @@ namespace Tomboy.TaskManager.Tests
 		[TearDown()]
 		public void Cleanup ()
 		{
-			TestNotesManager.DeleteNoteFiles ();
+			NotesCreationManager.DeleteNoteFiles ();
 		}
 		
 	}

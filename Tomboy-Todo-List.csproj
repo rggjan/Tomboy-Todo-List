@@ -67,12 +67,13 @@
     <Compile Include="OpenTasksNotebook.cs" />
     <Compile Include="AttributedTaskTag.cs" />
     <Compile Include="TaskNoteUtilities.cs" />
-    <Compile Include="TaskNoteParser.cs" />
     <Compile Include="DateTag.cs" />
+    <Compile Include="TaskListParser.cs" />
     <Compile Include="Tests\FileCreator.cs" />
     <Compile Include="Tests\GtkTest.cs" />
-    <Compile Include="Tests\TestNotesManager.cs" />
-    <Compile Include="Tests\DeserializeTests.cs" />
+    <Compile Include="Tests\NotesCreationManager.cs" />
+    <Compile Include="Tests\TestDeserialization.cs" />
+    <Compile Include="Tests\TestNoteIntialization.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

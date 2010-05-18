@@ -35,7 +35,7 @@ namespace Tomboy.TaskManager.Tests
 	/// If you want to use it simply add your own note XML in the test folder. In your tests you can then
 	/// instantiate copies of this XML file represented by <see cref="Note"/> objects.
 	/// </summary>
-	internal class TestNotesManager
+	internal class NotesCreationManager
 	{
 		private static List<Note> createdNotes = new List<Note>();
 		private static string BASE_NAMESPACE = "Tomboy.TaskManager.Tests";
