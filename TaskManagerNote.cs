@@ -65,7 +65,7 @@ namespace Tomboy.TaskManager {
 			string comboStyleMod = @"style ""combobox-style"" {
 											GtkComboBox::appears-as-list = 0
 											GtkComboBox::arrow-size = 0
-											GtkComboBox::width-request = 10
+											GtkComboBox::width-request = 0
 										}
 										widget ""*.tomboy-inline-combobox"" style ""combobox-style""
 									";
@@ -75,13 +75,21 @@ namespace Tomboy.TaskManager {
 			RegisterTags();
 		}
 		
-		public void RegisterTags()
+		public void RegisterTags ()
 		{
 			NoteTag tag = new NoteTag ("locked");
 			tag.Editable = false;
 			tag.CanSerialize = false;
 
 			if (Note.TagTable.Lookup ("locked") == null)
+				Note.TagTable.Add (tag);
+
+			tag = new NoteTag ("priority");
+			tag.CanActivate = true;
+			tag.CanSerialize = false;
+			tag.Foreground = "blue";
+
+			if (Note.TagTable.Lookup ("priority") == null)
 				Note.TagTable.Add (tag);
 			
 			if (Note.TagTable.Lookup ("duedate") == null)
