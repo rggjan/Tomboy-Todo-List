@@ -89,10 +89,8 @@
     </MonoDevelop>
   </ProjectExtensions>
   <ItemGroup>
-    <None Include="Tests\TasklistParserTest.cs" />
     <None Include="Tests\FileCreator.cs" />
     <None Include="Tests\GtkTest.cs" />
-    <None Include="Tests\TestNotesManager.cs" />
     <None Include="Tests\SingleTaskListNote.xml" />
     <None Include="Tests\DoubleTaskListNote.xml" />
   </ItemGroup>

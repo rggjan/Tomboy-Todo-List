@@ -177,6 +177,7 @@ namespace Tomboy.TaskManager {
 		/// </param>
 		private void InitializeTask (TaskList containingList, Gtk.TextIter location, TaskTag tag)
 		{			
+			Children = new List<AttributedTask> ();
 			ContainingTaskList = containingList;
 			location.LineOffset = 0;
 			

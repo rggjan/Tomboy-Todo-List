@@ -385,9 +385,16 @@ namespace Tomboy.TaskManager {
 			return text.Trim().Equals("[]");
 		}
 			
-
+		private List<TaskList> tasklists;
 		public List<TaskList> TaskLists {
-			get; private set;
+			get
+			{
+				if (tasklists == null){
+					TaskListParser parser = new TaskListParser (Note);
+					tasklists = parser.Parse ();
+				}
+				return tasklists;
+			}
 		}
 		
 		public bool HasOpenTasks {
@@ -402,13 +409,14 @@ namespace Tomboy.TaskManager {
 		public void DeserializeTasklists ()
 		{
 			Logger.Debug ("Loading...");
-			TaskLists = new List<TaskList> ();
 			utils = new TaskNoteUtilities (Buffer);
 			
-			var parser = new TaskListParser(Note);
-			TaskLists = parser.Parse();
-			
-			Logger.Debug ("There have been {0} tasklists", new object[] { TaskLists.Count });
+			//var parser = new TaskListParser(Note);
+			//TaskLists = parser.Parse();
+			/* Not necessary anymore...
+			 * I put the loader into the getter
+			 * That way, it's dynamic
+			 */ 
 			
 			foreach (TaskList tl in TaskLists)
 			{
