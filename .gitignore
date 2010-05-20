@@ -9,4 +9,5 @@
 *.userprefs
 build/*
 test-results/*
+doc/developer/*
 *~*
