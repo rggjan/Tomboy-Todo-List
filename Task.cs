@@ -139,23 +139,37 @@ namespace Tomboy.TaskManager {
 		/// </summary>
 		public void AddWidgets ()
 		{
-			var start = Start;
-			//start.ForwardChar ();
-			var end = start;
-			end.ForwardChars (2);
-			Buffer.ApplyTag ("priority", start, end);
-		
-			end.BackwardChar ();
+			var end = Start;
+			end.ForwardChar ();
 			InsertCheckButton (end);
 			
+			UpdateWidgetTags ();
+		}
+
+		public void UpdateWidgetTags ()
+		{
+			var start = Start;
+			var end = start;
+			end.ForwardChars (1);
+			Buffer.ApplyTag ("priority", start, end);
+		
 			start = Start;
 			end = start;
 			start.BackwardChar ();
 			end.ForwardChars (2);
 			Buffer.ApplyTag ("locked", start, end);
 			
-			//end.BackwardChar ();
-			//Buffer.PlaceCursor (End);
+			start = Start;
+			start.ForwardChar ();
+			end = start;
+			end.ForwardChars (1);
+			Buffer.ApplyTag ("checkbox", start, end);
+			
+			start = Start;
+			start.ForwardChars (2);
+			end = start;
+			end.ForwardChars (1);
+			Buffer.ApplyTag ("checkbox-active", start, end);
 		}
 		
 		public Task (TaskList containingList, Gtk.TextIter location, TaskTag tag)
@@ -222,9 +236,10 @@ namespace Tomboy.TaskManager {
 			Buffer.Delete (ref start, ref end);
 			
 			Gtk.TextIter iter = Start;
-			Buffer.Insert (iter, ((int)Priority).ToString());
+			Buffer.Insert (iter, ((int)Priority).ToString ());
 			
 			SetPriority ();
+			UpdateWidgetTags ();
 		}
 		
 		public void SetPriority ()
@@ -250,12 +265,18 @@ namespace Tomboy.TaskManager {
 				return start;
 			}
 		}
+		
+		public void Toggle ()
+		{
+			CheckBox.Active = !CheckBox.Active;
+			TagUpdate ();
+		}
 
 		/// <summary>
 		/// Updates the strikethrough tag of the task description. If the checkbox is
 		/// active or removes it if it's not. Also applies the tasklist tag.
 		/// </summary>
-		private void TagUpdate ()
+		public void TagUpdate ()
 		{
 			var start = Start;
 			var end = End;

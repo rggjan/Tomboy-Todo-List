@@ -93,6 +93,23 @@ namespace Tomboy.TaskManager {
 
 			if (Note.TagTable.Lookup ("priority") == null)
 				Note.TagTable.Add (tag);
+
+			tag = new NoteTag ("checkbox-active");
+			tag.CanActivate = true;
+			tag.CanSerialize = false;
+			tag.Family = "monospace";
+			tag.Activated += ToggleCheckbox;
+
+			if (Note.TagTable.Lookup ("checkbox-active") == null)
+				Note.TagTable.Add (tag);
+			
+			tag = new NoteTag ("checkbox");
+			tag.CanActivate = true;
+			tag.CanSerialize = false;
+			tag.Family = "monospace";
+
+			if (Note.TagTable.Lookup ("checkbox") == null)
+				Note.TagTable.Add (tag);
 			
 			if (Note.TagTable.Lookup ("duedate") == null)
 				Note.TagTable.Add (new DateTag ("duedate"));
@@ -233,6 +250,7 @@ namespace Tomboy.TaskManager {
 
 		}
 		
+		
 		void OnAddDuedateActivated (object sender, EventArgs args)
 		{
 			Dialog dialog = new Dialog
@@ -279,6 +297,15 @@ namespace Tomboy.TaskManager {
 			} else {
 				Logger.Debug ("Tried to insert Priority outside of a task");	
 			}
+		}
+		
+		
+		bool ToggleCheckbox (NoteTag tag, NoteEditor editor, Gtk.TextIter begin, Gtk.TextIter end)
+		{
+			Logger.Debug ("tagupdate");
+			Task task = utils.GetTask (begin);
+			task.Toggle ();
+			return true;
 		}
 		
 		/*Task GetTaskAtCursor ()
