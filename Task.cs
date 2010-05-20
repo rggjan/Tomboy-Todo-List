@@ -355,18 +355,20 @@ namespace Tomboy.TaskManager {
 		/// </summary>
 		public void Delete ()
 		{
-			//var start = Start;
-			//var end = Start;
-			//end.ForwardToLineEnd ();
-			
-			Buffer.Delete (Start, DescriptionEnd);
-			
 			var start = Start;
-			var end = start;
-			end.ForwardLines (2);
+			var end = DescriptionEnd;
+			Buffer.Delete (ref start, ref end);
+			
+			if (IsLastTask ()) {
+				start = Start;
+				end = start;
+				end.ForwardLines (2);
 				
-			Buffer.RemoveAllTags (start, end);
-			Buffer.PlaceCursor (Buffer.GetIterAtMark (Buffer.InsertMark));
+				Buffer.RemoveAllTags (start, end);
+				
+			} else {
+				
+			}
 				
 			ContainingTaskList.Children.Remove (this); //FIXME also for other containers?
 		}

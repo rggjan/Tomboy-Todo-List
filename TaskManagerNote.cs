@@ -333,9 +333,10 @@ namespace Tomboy.TaskManager {
 				Task task = utils.GetTask ();
 				
 				// Behaviour: onTask\n\n should delete empty checkbox
-				if (task != null && task.LineIsEmpty () && task.IsLastTask ()) {
-						task.Delete ();
-						return;
+				if (task != null && task.LineIsEmpty ()) {
+					task.Delete ();
+					Buffer.PlaceCursor (Buffer.GetIterAtMark (Buffer.InsertMark));
+					return;
 				}
 				
 				// Insert new checkbox if was onTask
