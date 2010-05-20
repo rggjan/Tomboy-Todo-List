@@ -1,0 +1,15 @@
+TaskManager README
+
+TaskManager is an addin which adds task management capabilities to Tomboy.
+For more information about tomboy check http://projects.gnome.org/tomboy/.
+
+Developers please check the doc/README.developer file on how to compile and run
+the sources.
+
+The requirements docuement can be found in doc/requirements. Use make to create
+a PDF from the LaTeX sources.
+
+--
+The Addin is currently hosted at github: http://github.com/rggjan/Tomboy-Todo-List.
+
+TaskManager is licensed under the LGPL, see COPYING for more details.

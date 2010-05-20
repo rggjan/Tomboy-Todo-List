@@ -1,0 +1,59 @@
+This document describes the required steps of how to download, compile and run 
+the sourcecode of TaskManager as well as Tomboy.
+
+How to compile and run TaskManager on Linux
+===========================================
+If you wan't to compile TaskManager from scratch and run it on your machine you can
+follow the following steps:
+
+1. Make a workspace directory where you keep the sources
+   $ mkdir workspace
+   $ cd workspace
+
+2. Checkout the git sources for Tomboy
+   $ git clone git@github.com:gz/tomboy.git
+   If you don't have write permissions to the repository use this git link: 
+   git://github.com/gz/tomboy.git
+   Note: Currently you need a modified version of tomboy to work with TaskManager since 
+   our patches to the tomboy code are not yet integrated into tomboy.
+
+3. Make sure to switch to the non-approved branch of our tomboy branch to make sure all changes are there
+   $ cd tomboy && git checkout non-approved
+
+4. Get the TaskManager Addin
+   $ cd .. && git clone git@github.com:rggjan/Tomboy-Todo-List.git
+   If you don't have write permissions to the repository use this git link: 
+   git://github.com/rggjan/Tomboy-Todo-List.git
+
+5. If you wan't to compile Tomboy from within monodevelop you can use a custom project file for tomboy
+   $ cp Tomboy-Todo-List/Tomboy.csproj tomboy/
+
+6. Now you can open and build Tomboy-Todo-List in Monodevelop and build it from there, if everything 
+   works you should have a TaskManager.dll binary in Tomboy-Todo-List/build/TaskManager.dll
+
+7. Make sure that tomboy sees the plugin when you start it 
+   $ ln -s Tomboy-Todo-List/build/TaskManager.dll ~/.config/tomboy/addins/
+
+Now the plugin can be tested by running our modified tomboy version.
+
+
+To compile Tomboy follow these steps:
+=====================================
+1. Change into the tomboy repository
+   $ cd tomboy
+
+2. Make sure to have all the dependencies for building tomboy
+   On Debian/Ubuntu this can be done easily by doing:
+   $ sudo apt-get build-dep tomboy
+   ...or on openSUSE: 
+   $ sudo zypper si -d tomboy
+
+3. Run autogen.sh to created the Makefiles
+   $ sh autogen.sh
+
+4. Compile Tomboy Sources
+   $ make
+
+5. Run
+   $ make run
+

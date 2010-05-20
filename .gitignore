@@ -5,5 +5,8 @@
 *.ind
 *.log
 *.out
+*.pidb
+*.userprefs
 build/*
+test-results/*
 *~*
