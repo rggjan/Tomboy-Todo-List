@@ -280,16 +280,15 @@ namespace Tomboy.TaskManager {
 		{
 			var start = Start;
 			var end = End;
-			end.ForwardChar ();
 		
 			Buffer.ApplyTag (TaskTag, start, end);
 			
 			if (CheckBox != null && CheckBox.Active) {
-				start.ForwardChars (4);
+				start.ForwardChars (3);
 				Buffer.ApplyTag ("strikethrough", start, end);
 			} 
 			else {
-				start.ForwardChars (4);
+				start.ForwardChars (3);
 				Buffer.RemoveTag ("strikethrough", start, end);
 			}
 		}
