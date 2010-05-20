@@ -124,13 +124,13 @@ namespace Tomboy.TaskManager {
 			
 			var iter = Start;
 			Buffer.PlaceCursor (iter);
-			Buffer.InsertAtCursor ("   ");
+			Buffer.InsertAtCursor ("  ");
 			
 			AddWidgets ();
 			TagUpdate ();
 
 			iter = Start;
-			iter.ForwardChars (4);
+			iter.ForwardChars (3);
 			Buffer.PlaceCursor (iter);
 		}
 		
@@ -142,7 +142,7 @@ namespace Tomboy.TaskManager {
 			var start = Start;
 			//start.ForwardChar ();
 			var end = start;
-			end.ForwardChars (3);
+			end.ForwardChars (2);
 			Buffer.ApplyTag ("priority", start, end);
 		
 			end.BackwardChar ();
@@ -151,7 +151,7 @@ namespace Tomboy.TaskManager {
 			start = Start;
 			end = start;
 			start.BackwardChar ();
-			end.ForwardChars (3);
+			end.ForwardChars (2);
 			Buffer.ApplyTag ("locked", start, end);
 			
 			//end.BackwardChar ();
@@ -215,15 +215,13 @@ namespace Tomboy.TaskManager {
 			Priority = Priorities.LOW;
 
 			Gtk.TextIter start = Start;
-			start.ForwardChar ();
 
 			Gtk.TextIter end = Start;
-			end.ForwardChars (2);
+			end.ForwardChar ();
 
 			Buffer.Delete (ref start, ref end);
 			
 			Gtk.TextIter iter = Start;
-			iter.ForwardChar ();
 			Buffer.Insert (iter, ((int)Priority).ToString());
 			
 			SetPriority ();
