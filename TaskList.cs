@@ -46,6 +46,7 @@ namespace Tomboy.TaskManager {
 			set;
 		}
 		
+		
 		/// <summary>
 		/// Note containing the TaskList.
 		/// </summary>

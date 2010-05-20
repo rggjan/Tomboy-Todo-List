@@ -80,9 +80,9 @@ namespace Tomboy.TaskManager
 		/// Note that default must be set to 3, not 0
 		/// </summary>
 		public Priorities Priority {
-			get {return Tag.TaskPriority;}
-			set {Tag.TaskPriority = value;}
-		}	
+			get { return Tag.TaskPriority; }
+			set { Tag.TaskPriority = value; }
+		}
 		
 		/// <summary>
 		/// Returns all Abstract Tasks that are children of this Abstracttask.

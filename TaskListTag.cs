@@ -52,7 +52,12 @@ namespace Tomboy.TaskManager
 		public override void Initialize (string element_name)
 		{
 			base.Initialize (element_name);
-			Background = "red";
+			/*
+			if (Tomboy.Debugging)
+				Background = "red";*/
+			
+			ParagraphBackground = "lightgray";
+			LeftMargin = 8;
 			
 			//Name is not an attribute of a task, therefore set it here
 			Attributes.Add ("Name", "New TaskList!");

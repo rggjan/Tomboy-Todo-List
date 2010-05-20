@@ -65,7 +65,7 @@ namespace Tomboy.TaskManager {
 			string comboStyleMod = @"style ""combobox-style"" {
 											GtkComboBox::appears-as-list = 0
 											GtkComboBox::arrow-size = 0
-											GtkComboBox::width-request = 10
+											GtkComboBox::width-request = 0
 										}
 										widget ""*.tomboy-inline-combobox"" style ""combobox-style""
 									";
@@ -75,7 +75,7 @@ namespace Tomboy.TaskManager {
 			RegisterTags();
 		}
 		
-		public void RegisterTags()
+		public void RegisterTags ()
 		{
 			NoteTag tag = new NoteTag ("locked");
 			tag.Editable = false;
@@ -83,15 +83,25 @@ namespace Tomboy.TaskManager {
 
 			if (Note.TagTable.Lookup ("locked") == null)
 				Note.TagTable.Add (tag);
+
+			tag = new NoteTag ("priority");
+			tag.CanActivate = true;
+			tag.CanSerialize = false;
+			tag.Foreground = "blue";
+			tag.Family = "monospace";
+			tag.Activated += OnPriorityClicked;
+
+			if (Note.TagTable.Lookup ("priority") == null)
+				Note.TagTable.Add (tag);
 			
 			if (Note.TagTable.Lookup ("duedate") == null)
 				Note.TagTable.Add (new DateTag ("duedate"));
 
-			//tag = new NoteTag ("invisible");
-			//tag.Invisible = true;
+			tag = new NoteTag ("invisible");
+			tag.Invisible = true;
 			
-			//if (Note.TagTable.Lookup ("invisible") == null)
-			//	Note.TagTable.Add (tag);
+			if (Note.TagTable.Lookup ("invisible") == null)
+				Note.TagTable.Add (tag);
 			
 			
 			//TaskTag
@@ -106,8 +116,8 @@ namespace Tomboy.TaskManager {
 		public override void Shutdown ()
 		{
 			add_list.Activated -= OnAddListActivated;
-			add_priority.Activated -= OnAddPriorityActivated;
 			add_duedate.Activated -= OnAddDuedateActivated; //FIXME some are missing...
+			add_priority.Activated -= OnAddPriorityActivated; //FIXME some are missing...
 
 			Buffer.InsertText -= BufferInsertText;
 			Buffer.UserActionEnded -= CheckIfNewTaskNeeded;
@@ -127,18 +137,33 @@ namespace Tomboy.TaskManager {
 			InitializeGui ();
 		}
 		
+		private bool OnPriorityClicked (NoteTag tag, NoteEditor editor, Gtk.TextIter start, Gtk.TextIter end)
+		{
+			Logger.Debug ("clicked!");
+			utils.GetTask (start).Priority = Priorities.VERY_HIGH;
+			//utils.GetTask (start).TagUpdate ();
+			//Logger.Debug(utils.GetTask (start).Priority.ToString());
+			
+			return true;
+		}
+		
 		private void InitializeGui ()
 		{
-			task_menu.Add (add_priority);
-			add_priority.Activated += OnAddPriorityActivated;
-			
 			task_menu.Add (add_duedate);
 			add_duedate.Activated += OnAddDuedateActivated;
+			
+			task_menu.Add (add_priority);
+			add_priority.Activated += OnAddPriorityActivated;
 			
 			task_menu.Add (show_priority);
 			show_priority.Toggled += OnShowPriorityActivated;
 			
 			Gtk.MenuToolButton menu_tool_button = new Gtk.MenuToolButton (Gtk.Stock.Strikethrough);
+			
+			menu_tool_button.IconName = "ghi"; //Not working!
+			
+			menu_tool_button.TooltipText = Catalog.GetString("Add a new TaskList");
+			menu_tool_button.ArrowTooltipText = Catalog.GetString("Set TaskList properties");
 			menu_tool_button.Menu = task_menu;
 			task_menu.ShowAll ();
 		
@@ -196,10 +221,10 @@ namespace Tomboy.TaskManager {
 		
 		private void TogglePriorityVisibility ()
 		{
-						if (show_priority.Active) {
+			if (show_priority.Active) {
 				foreach (TaskList list in TaskLists)
 					foreach (Task task in list.Children)
-						task.ShowPriority ();
+						task.SetPriority ();
 			} else {
 				foreach (TaskList list in TaskLists)
 					foreach (Task task in list.Children)
@@ -280,7 +305,7 @@ namespace Tomboy.TaskManager {
 				begin.LineOffset = 0;
 				
 				// Behaviour: onTask\n\n should delete empty checkbox
-				if (Buffer.GetText (begin, end, true).Trim ().Length == 0 && utils.InTaskList (end)) {
+				if (Buffer.GetText (begin, end, true).Trim ().Length == 1 && utils.InTaskList (end)) {
 					Task task = utils.GetTask ();
 					if (task != null && task.IsLastTask ()) {
 						task.Delete ();

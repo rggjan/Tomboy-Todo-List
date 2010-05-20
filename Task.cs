@@ -61,9 +61,6 @@ namespace Tomboy.TaskManager {
 		
 		Gtk.TextChildAnchor boxanchor;
 		
-		private Gtk.ComboBox priority_box;
-
-		
 		/// <summary>
 		/// Date until the task should be completed.
 		/// </summary>
@@ -123,15 +120,18 @@ namespace Tomboy.TaskManager {
 			Buffer = containingList.ContainingNote.Buffer;
 			//TODO: rewrite tag part (it's ugly)
 			InitializeTask (containingList, location, (TaskTag)containingList.ContainingNote.TagTable.CreateDynamicTag ("task"));
-
 			TaskTag.bind (this);
+			
+			var iter = Start;
+			Buffer.PlaceCursor (iter);
+			Buffer.InsertAtCursor ("   ");
 			
 			AddWidgets ();
 			TagUpdate ();
-			
-			var end = Start;
-			end.ForwardChars (2);
-			Buffer.PlaceCursor (end);
+
+			iter = Start;
+			iter.ForwardChars (4);
+			Buffer.PlaceCursor (iter);
 		}
 		
 		/// <summary>
@@ -139,14 +139,23 @@ namespace Tomboy.TaskManager {
 		/// </summary>
 		public void AddWidgets ()
 		{
-			InsertCheckButton (Start);
-			InsertPriorityBox (Start);
+			var start = Start;
+			//start.ForwardChar ();
+			var end = start;
+			end.ForwardChars (3);
+			Buffer.ApplyTag ("priority", start, end);
+		
+			end.BackwardChar ();
+			InsertCheckButton (end);
 			
-			var end = Start;
-			var start = end;
-			end.ForwardChar ();
+			start = Start;
+			end = start;
 			start.BackwardChar ();
+			end.ForwardChars (3);
 			Buffer.ApplyTag ("locked", start, end);
+			
+			//end.BackwardChar ();
+			//Buffer.PlaceCursor (End);
 		}
 		
 		public Task (TaskList containingList, Gtk.TextIter location, TaskTag tag)
@@ -198,67 +207,37 @@ namespace Tomboy.TaskManager {
 			Logger.Debug ("destroyed");
 		}
 
-		
-		/// <summary>
-		/// Resets the priority of this task
-		/// </summary>
-		/// <param name="o">
-		/// A <see cref="System.Object"/>
-		/// </param>
-		/// <param name="args">
-		/// A <see cref="System.EventArgs"/>
-		/// </param>
-		private void setpriority (object o, System.EventArgs args)
-		{
-			Priority = (Priorities)priority_box.Active;
-			TagUpdate ();
-		}
-		
-		/// <summary>
-		/// Inserts the pr or;ty ComboBox in the TextBuffer.
-		/// </summary>
-		/// <param name="at"> Where to insert (exactly). </param>
-		/// <returns>
-		/// A TextIter
-		/// </returns>
-		private void InsertPriorityBox (Gtk.TextIter insertIter)
-		{
-			string[] priorities = { "1", "2", "3", "4", "5" };
-			priority_box = new Gtk.ComboBox (priorities);
-			priority_box.Active = (int)Priority;
-			priority_box.Name = "tomboy-inline-combobox";
-
-			priority_box.Changed += setpriority;
-
-			Gtk.TextChildAnchor anchor = Buffer.CreateChildAnchor (ref insertIter);
-			ContainingTaskList.ContainingNote.Window.Editor.AddChildAtAnchor (priority_box, anchor);
-				
-		/*		var end = insertIter;
-				var start = insertIter;
-				start.BackwardChar ();
-				
-				Buffer.ApplyTag ("invisible", start, end);*/
-				//priority_box.Show ();
-		}
-		
 		/// <summary>
 		/// Makes the priority widget visible
 		/// </summary>
 		public void AddPriority ()
 		{
 			Priority = Priorities.LOW;
-			ShowPriority ();
+
+			Gtk.TextIter start = Start;
+			start.ForwardChar ();
+
+			Gtk.TextIter end = Start;
+			end.ForwardChars (2);
+
+			Buffer.Delete (ref start, ref end);
+			
+			Gtk.TextIter iter = Start;
+			iter.ForwardChar ();
+			Buffer.Insert (iter, ((int)Priority).ToString());
+			
+			SetPriority ();
 		}
 		
-		public void ShowPriority ()
+		public void SetPriority ()
 		{
-			if (!PriorityUnset())
-				priority_box.Show ();
+			//if (!PriorityUnset())
+			//	priority_box.Show (); //FIXME
 		}
 		
 		public void HidePriority ()
 		{
-			priority_box.Hide ();
+			// priority_box.Hide (); //FIXME
 		}
 		
 		/// <returns>
@@ -282,16 +261,16 @@ namespace Tomboy.TaskManager {
 		{
 			var start = Start;
 			var end = End;
-			//start.ForwardChar ();
+			end.ForwardChar ();
 		
-			//Tag.bind (this);
-			start.ForwardChar ();
 			Buffer.ApplyTag (TaskTag, start, end);
 			
 			if (CheckBox != null && CheckBox.Active) {
+				start.ForwardChars (4);
 				Buffer.ApplyTag ("strikethrough", start, end);
 			} 
 			else {
+				start.ForwardChars (4);
 				Buffer.RemoveTag ("strikethrough", start, end);
 			}
 		}
