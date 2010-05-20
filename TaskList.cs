@@ -45,8 +45,9 @@ namespace Tomboy.TaskManager {
 
 		protected override TextIter DescriptionEnd {
 			get {
-				// TODO
-				return Start;
+				var start = Start;
+				start.ForwardToLineEnd (); //FIXME what about \n ?
+				return start;
 			}
 		}
 
@@ -110,6 +111,54 @@ namespace Tomboy.TaskManager {
 		}
 
 		/// <summary>
+		/// Creates a new tasklists including all the given tasks.
+		/// </summary>
+		/// <param name="tasks">
+		/// A <see cref="List<Task>"/>
+		/// </param>
+		public TaskList (Note note, List<Task> tasks, String name, Gtk.TextIter start)
+		{
+			ContainingNote = note;
+			//TODO merge this with things below
+			Name = name;
+		
+
+			TaskListTag tag = (TaskListTag)ContainingNote.TagTable.CreateDynamicTag ("tasklist");
+			//TextIter iter;
+			tag.TaskPriority = Priorities.HIGH;
+			NoteBuffer buffer = note.Buffer;
+			
+			Initialize (buffer, start, tag);
+			
+			var end = Start;
+			buffer.Insert (ref end, name);
+		
+
+			start = Start;
+			end.ForwardChar ();
+			Buffer.ApplyTag (TaskListTag, start, end);
+			
+			Children = new List<AttributedTask> ();
+			
+			foreach (Task task in tasks)
+			{
+				Children.Add (task);
+				task.ContainingTaskList = this;
+				task.ApplyTag (this.Tag);
+			}
+		}
+		
+		public void DebugPrint ()
+		{
+			if (!Tomboy.Debugging)
+				return;
+			
+		    Console.WriteLine ("Tasklist '" + Description () + "':");
+			foreach (Task task in Children)
+				task.DebugPrint ();
+		}
+		
+		/// <summary>
 		/// Sets up the TaskList at cursor position.
 		/// </summary>
 		/// <param name="note">
@@ -145,7 +194,7 @@ namespace Tomboy.TaskManager {
 			var start = Start;
 			
 			Buffer.ApplyTag (TaskListTag, start, end);
-			start = end; // FIXME do this when loading
+			start = end; // FIXME do this when loading, when splitting
 			start.BackwardChar ();
 			Buffer.ApplyTag ("locked", start, end);
 			

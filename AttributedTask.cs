@@ -135,6 +135,11 @@ namespace Tomboy.TaskManager
 		
 		protected TextMark Position;
 		
+		public String Description ()
+		{
+			return Buffer.GetText (DescriptionStart, DescriptionEnd, false);
+		}
+				
 		protected TextIter Start {
 			get { return Buffer.GetIterAtMark (Position); }	
 		}

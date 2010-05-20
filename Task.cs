@@ -294,10 +294,7 @@ namespace Tomboy.TaskManager {
 		/// </summary>
 		public void TagUpdate ()
 		{
-			//var start = Start;
-			var end = End;
-		
-			Buffer.ApplyTag (TaskTag, Start, end);
+			ApplyTag (TaskTag);
 			
 			if (CheckBox != null && CheckBox.Active) {
 				Buffer.ApplyTag ("strikethrough", DescriptionStart, DescriptionEnd);
@@ -305,6 +302,13 @@ namespace Tomboy.TaskManager {
 			else {
 				Buffer.RemoveTag ("strikethrough", DescriptionStart, DescriptionEnd);
 			}
+		}
+		
+		public void ApplyTag (Gtk.TextTag tag)
+		{
+			var end = End;
+		
+			Buffer.ApplyTag (TaskTag, Start, end);
 		}
 		
 		public bool LineIsEmpty ()
@@ -346,8 +350,20 @@ namespace Tomboy.TaskManager {
 					return false;
 				}
 			}
-			Logger.Debug ("is last!");
 			return true;
+		}
+		
+		public List<Task> TasksFollowing ()
+		{
+			List<Task> tasks_following = new List<Task>();
+			foreach (Task task in ContainingTaskList.Children)
+			{
+				if (task.Start.Line > Start.Line)
+				{
+					tasks_following.Add (task);
+				}
+			}
+			return tasks_following;
 		}
 
 		/// <summary>
@@ -359,18 +375,45 @@ namespace Tomboy.TaskManager {
 			var end = DescriptionEnd;
 			Buffer.Delete (ref start, ref end);
 			
-			if (IsLastTask ()) {
-				start = Start;
-				end = start;
-				end.ForwardLines (2);
+			start = Start;
+			end = start;
+			end.ForwardLines (2);
+			
+			Buffer.RemoveAllTags (start, end);
+			ContainingTaskList.Children.Remove (this);
+
+			Logger.Debug ("Tasks removed:");
+			ContainingTaskList.DebugPrint ();
+			
+			start = Start;
+			start.ForwardLine ();
+			//end = start;
+			//end.ForwardLine ();
+			
+			var tasks_following = TasksFollowing ();
+			if (!IsLastTask ()) {
+				foreach (Task task in tasks_following)
+				{
+					ContainingTaskList.Children.Remove (task);
+				}
 				
-				Buffer.RemoveAllTags (start, end);
+				TaskList new_list = new TaskList (ContainingTaskList.ContainingNote, tasks_following, ContainingTaskList.Name + " 2", start);
 				
-			} else {
-				
+				Logger.Debug ("First List:");
+				ContainingTaskList.DebugPrint ();
+				Logger.Debug ("Second List:");
+				new_list.DebugPrint ();
 			}
-				
-			ContainingTaskList.Children.Remove (this); //FIXME also for other containers?
+			
+			//FIXME also for other containers?
+		}
+		
+		public void DebugPrint ()
+		{
+			if (!Tomboy.Debugging)
+				return;
+			
+		    Console.WriteLine ("Task: " + Description ());
 		}
 		
 		/// <summary>
