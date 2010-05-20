@@ -124,13 +124,13 @@ namespace Tomboy.TaskManager {
 			
 			var iter = Start;
 			Buffer.PlaceCursor (iter);
-			Buffer.InsertAtCursor ("   ");
+			Buffer.InsertAtCursor ("  ");
 			
 			AddWidgets ();
 			TagUpdate ();
 
 			iter = Start;
-			iter.ForwardChars (4);
+			iter.ForwardChars (3);
 			Buffer.PlaceCursor (iter);
 		}
 		
@@ -139,23 +139,37 @@ namespace Tomboy.TaskManager {
 		/// </summary>
 		public void AddWidgets ()
 		{
-			var start = Start;
-			//start.ForwardChar ();
-			var end = start;
-			end.ForwardChars (3);
-			Buffer.ApplyTag ("priority", start, end);
-		
-			end.BackwardChar ();
+			var end = Start;
+			end.ForwardChar ();
 			InsertCheckButton (end);
 			
+			UpdateWidgetTags ();
+		}
+
+		public void UpdateWidgetTags ()
+		{
+			var start = Start;
+			var end = start;
+			end.ForwardChars (1);
+			Buffer.ApplyTag ("priority", start, end);
+		
 			start = Start;
 			end = start;
 			start.BackwardChar ();
-			end.ForwardChars (3);
+			end.ForwardChars (2);
 			Buffer.ApplyTag ("locked", start, end);
 			
-			//end.BackwardChar ();
-			//Buffer.PlaceCursor (End);
+			start = Start;
+			start.ForwardChar ();
+			end = start;
+			end.ForwardChars (1);
+			Buffer.ApplyTag ("checkbox", start, end);
+			
+			start = Start;
+			start.ForwardChars (2);
+			end = start;
+			end.ForwardChars (1);
+			Buffer.ApplyTag ("checkbox-active", start, end);
 		}
 		
 		public Task (TaskList containingList, Gtk.TextIter location, TaskTag tag)
@@ -216,18 +230,17 @@ namespace Tomboy.TaskManager {
 			Priority = Priorities.LOW;
 
 			Gtk.TextIter start = Start;
-			start.ForwardChar ();
 
 			Gtk.TextIter end = Start;
-			end.ForwardChars (2);
+			end.ForwardChar ();
 
 			Buffer.Delete (ref start, ref end);
 			
 			Gtk.TextIter iter = Start;
-			iter.ForwardChar ();
-			Buffer.Insert (iter, ((int)Priority).ToString());
+			Buffer.Insert (ref iter, ((int)Priority).ToString ());
 			
 			SetPriority ();
+			UpdateWidgetTags ();
 		}
 		
 		public void SetPriority ()
@@ -249,31 +262,59 @@ namespace Tomboy.TaskManager {
 			get {
 				var start = Start;
 				start.ForwardLine ();
-				//TODO: backwardchar here?
 				return start;
 			}
+		}
+		
+		protected override Gtk.TextIter DescriptionEnd {
+			get {
+				var start = Start;
+				start.ForwardLine ();
+				start.BackwardChar ();
+				return start;
+			}
+		}
+		
+		protected override Gtk.TextIter DescriptionStart {
+			get {
+				var start = Start;
+				start.ForwardChars (3);
+				return start;
+			}
+		}
+		
+		public void Toggle ()
+		{
+			CheckBox.Active = !CheckBox.Active;
+			TagUpdate ();
 		}
 
 		/// <summary>
 		/// Updates the strikethrough tag of the task description. If the checkbox is
 		/// active or removes it if it's not. Also applies the tasklist tag.
 		/// </summary>
-		private void TagUpdate ()
+		public void TagUpdate ()
 		{
-			var start = Start;
-			var end = End;
-			end.ForwardChar ();
-		
-			Buffer.ApplyTag (TaskTag, start, end);
+			ApplyTag (TaskTag);
 			
 			if (CheckBox != null && CheckBox.Active) {
-				start.ForwardChars (4);
-				Buffer.ApplyTag ("strikethrough", start, end);
+				Buffer.ApplyTag ("strikethrough", DescriptionStart, DescriptionEnd);
 			} 
 			else {
-				start.ForwardChars (4);
-				Buffer.RemoveTag ("strikethrough", start, end);
+				Buffer.RemoveTag ("strikethrough", DescriptionStart, DescriptionEnd);
 			}
+		}
+		
+		public void ApplyTag (Gtk.TextTag tag)
+		{
+			var end = End;
+		
+			Buffer.ApplyTag (TaskTag, Start, end);
+		}
+		
+		public bool LineIsEmpty ()
+		{
+			return Buffer.GetText (DescriptionStart, DescriptionEnd, true).Trim ().Length == 0;
 		}
 		
 		/// <summary>
@@ -310,8 +351,20 @@ namespace Tomboy.TaskManager {
 					return false;
 				}
 			}
-			Logger.Debug ("is last!");
 			return true;
+		}
+		
+		public List<Task> TasksFollowing ()
+		{
+			List<Task> tasks_following = new List<Task>();
+			foreach (Task task in ContainingTaskList.Children)
+			{
+				if (task.Start.Line > Start.Line)
+				{
+					tasks_following.Add (task);
+				}
+			}
+			return tasks_following;
 		}
 
 		/// <summary>
@@ -319,24 +372,49 @@ namespace Tomboy.TaskManager {
 		/// </summary>
 		public void Delete ()
 		{
-			if (!Position.Deleted)
-			{
-				var start = Buffer.GetIterAtMark (Position);
-				var end = start;
-				end.ForwardToLineEnd ();
+			var start = Start;
+			var end = DescriptionEnd;
+			Buffer.Delete (ref start, ref end);
+			
+			start = Start;
+			end = start;
+			end.ForwardLines (2);
+			
+			Buffer.RemoveAllTags (start, end);
+			ContainingTaskList.Children.Remove (this);
+
+			Logger.Debug ("Tasks removed:");
+			ContainingTaskList.DebugPrint ();
+			
+			start = Start;
+			start.ForwardLine ();
+			//end = start;
+			//end.ForwardLine ();
+			
+			var tasks_following = TasksFollowing ();
+			if (!IsLastTask ()) {
+				foreach (Task task in tasks_following)
+				{
+					ContainingTaskList.Children.Remove (task);
+				}
 				
-				Buffer.Delete (ref start, ref end);
+				TaskList new_list = new TaskList (ContainingTaskList.ContainingNote, tasks_following, ContainingTaskList.Name + " 2", start);
 				
-				start = Buffer.GetIterAtMark (Position);
-				end = start;
-				//start.ForwardLine ();
-				end.ForwardLines (2);
-				
-				Buffer.RemoveAllTags (start, end);
-				Buffer.PlaceCursor (Buffer.GetIterAtMark (Buffer.InsertMark));
-				
-				ContainingTaskList.Children.Remove (this); //FIXME also for other containers?
+				Logger.Debug ("First List:");
+				ContainingTaskList.DebugPrint ();
+				Logger.Debug ("Second List:");
+				new_list.DebugPrint ();
 			}
+			
+			//FIXME also for other containers?
+		}
+		
+		public void DebugPrint ()
+		{
+			if (!Tomboy.Debugging)
+				return;
+			
+		    Console.WriteLine ("Task: " + Description ());
 		}
 		
 		/// <summary>

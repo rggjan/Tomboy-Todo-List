@@ -93,6 +93,23 @@ namespace Tomboy.TaskManager {
 
 			if (Note.TagTable.Lookup ("priority") == null)
 				Note.TagTable.Add (tag);
+
+			tag = new NoteTag ("checkbox-active");
+			tag.CanActivate = true;
+			tag.CanSerialize = false;
+			tag.Family = "monospace";
+			tag.Activated += ToggleCheckbox;
+
+			if (Note.TagTable.Lookup ("checkbox-active") == null)
+				Note.TagTable.Add (tag);
+			
+			tag = new NoteTag ("checkbox");
+			tag.CanActivate = true;
+			tag.CanSerialize = false;
+			tag.Family = "monospace";
+
+			if (Note.TagTable.Lookup ("checkbox") == null)
+				Note.TagTable.Add (tag);
 			
 			if (Note.TagTable.Lookup ("duedate") == null)
 				Note.TagTable.Add (new DateTag ("duedate"));
@@ -233,6 +250,7 @@ namespace Tomboy.TaskManager {
 
 		}
 		
+		
 		void OnAddDuedateActivated (object sender, EventArgs args)
 		{
 			Dialog dialog = new Dialog
@@ -281,6 +299,14 @@ namespace Tomboy.TaskManager {
 			}
 		}
 		
+		
+		bool ToggleCheckbox (NoteTag tag, NoteEditor editor, Gtk.TextIter begin, Gtk.TextIter end)
+		{
+			Task task = utils.GetTask (begin);
+			task.Toggle ();
+			return true;
+		}
+		
 		/*Task GetTaskAtCursor ()
 		{
 			here.LineOffset = 0;
@@ -301,16 +327,16 @@ namespace Tomboy.TaskManager {
 				Gtk.TextIter end = args.Pos;
 				end.BackwardChar ();
 				
-				var begin = end;
-				begin.LineOffset = 0;
+				//var begin = end;
+				//begin.LineOffset = 0;
+				
+				Task task = utils.GetTask ();
 				
 				// Behaviour: onTask\n\n should delete empty checkbox
-				if (Buffer.GetText (begin, end, true).Trim ().Length == 1 && utils.InTaskList (end)) {
-					Task task = utils.GetTask ();
-					if (task != null && task.IsLastTask ()) {
-						task.Delete ();
-						return;
-					}
+				if (task != null && task.LineIsEmpty ()) {
+					task.Delete ();
+					Buffer.PlaceCursor (Buffer.GetIterAtMark (Buffer.InsertMark));
+					return;
 				}
 				
 				// Insert new checkbox if was onTask
