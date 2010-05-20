@@ -124,7 +124,7 @@ namespace Tomboy.TaskManager {
 			
 			var iter = Start;
 			Buffer.PlaceCursor (iter);
-			Buffer.InsertAtCursor (" 3 ");
+			Buffer.InsertAtCursor ("   ");
 			
 			AddWidgets ();
 			TagUpdate ();
@@ -145,6 +145,7 @@ namespace Tomboy.TaskManager {
 			end.ForwardChars (3);
 			Buffer.ApplyTag ("priority", start, end);
 		
+			end.BackwardChar ();
 			InsertCheckButton (end);
 			
 			start = Start;
@@ -207,33 +208,28 @@ namespace Tomboy.TaskManager {
 		}
 
 		/// <summary>
-		/// Inserts the pr or;ty ComboBox in the TextBuffer.
-		/// </summary>
-		/// <param name="at"> Where to insert (exactly). </param>
-		/// <returns>
-		/// A TextIter
-		/// </returns>
-		private void InsertPriorityBox (Gtk.TextIter insertIter)
-		{
-			//priority_box.Changed += setpriority;
-			//Buffer.insert
-			//Buffer.InsertWithTagsByName (ref insertIter, "3", "priority");
-		}
-		
-		/// <summary>
 		/// Makes the priority widget visible
 		/// </summary>
 		public void AddPriority ()
 		{
 			Priority = Priorities.LOW;
 
-			var insertIter = Buffer.GetIterAtMark (Position);
+			Gtk.TextIter start = Start;
+			start.ForwardChar ();
 
+			Gtk.TextIter end = Start;
+			end.ForwardChars (2);
+
+			Buffer.Delete (ref start, ref end);
 			
-			ShowPriority ();
+			Gtk.TextIter iter = Start;
+			iter.ForwardChar ();
+			Buffer.Insert (iter, ((int)Priority).ToString());
+			
+			SetPriority ();
 		}
 		
-		public void ShowPriority ()
+		public void SetPriority ()
 		{
 			//if (!PriorityUnset())
 			//	priority_box.Show (); //FIXME

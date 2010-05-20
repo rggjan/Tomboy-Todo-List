@@ -13,6 +13,7 @@ namespace Tomboy.TaskManager {
 		
 		Gtk.Menu task_menu = new Gtk.Menu();
 		Gtk.MenuItem add_list = new Gtk.MenuItem (Catalog.GetString ("Add TaskList"));
+		Gtk.MenuItem add_priority = new Gtk.MenuItem (Catalog.GetString ("Add Priority"));
 		Gtk.MenuItem add_duedate = new Gtk.MenuItem (Catalog.GetString ("Add Duedate"));
 		Gtk.CheckMenuItem show_priority = new Gtk.CheckMenuItem (Catalog.GetString ("Show Priorities"));
 		
@@ -87,6 +88,7 @@ namespace Tomboy.TaskManager {
 			tag.CanActivate = true;
 			tag.CanSerialize = false;
 			tag.Foreground = "blue";
+			tag.Family = "monospace";
 			tag.Activated += OnPriorityClicked;
 
 			if (Note.TagTable.Lookup ("priority") == null)
@@ -115,6 +117,7 @@ namespace Tomboy.TaskManager {
 		{
 			add_list.Activated -= OnAddListActivated;
 			add_duedate.Activated -= OnAddDuedateActivated; //FIXME some are missing...
+			add_priority.Activated -= OnAddPriorityActivated; //FIXME some are missing...
 
 			Buffer.InsertText -= BufferInsertText;
 			Buffer.UserActionEnded -= CheckIfNewTaskNeeded;
@@ -149,6 +152,9 @@ namespace Tomboy.TaskManager {
 			task_menu.Add (add_duedate);
 			add_duedate.Activated += OnAddDuedateActivated;
 			
+			task_menu.Add (add_priority);
+			add_priority.Activated += OnAddPriorityActivated;
+			
 			task_menu.Add (show_priority);
 			show_priority.Toggled += OnShowPriorityActivated;
 			
@@ -179,11 +185,11 @@ namespace Tomboy.TaskManager {
 			// toggle sensitivity
 			Task task = utils.GetTask ();
 			if (task != null && task.PriorityUnset () && show_priority.Active) {
-				//add_priority.Sensitive = true;
+				add_priority.Sensitive = true;
 				//add_list.Sensitive = false;
 			}
 			else {
-				//add_priority.Sensitive = false;
+				add_priority.Sensitive = false;
 				//add_list.Sensitive = true;
 			}
 		}
@@ -215,10 +221,10 @@ namespace Tomboy.TaskManager {
 		
 		private void TogglePriorityVisibility ()
 		{
-						if (show_priority.Active) {
+			if (show_priority.Active) {
 				foreach (TaskList list in TaskLists)
 					foreach (Task task in list.Children)
-						task.ShowPriority ();
+						task.SetPriority ();
 			} else {
 				foreach (TaskList list in TaskLists)
 					foreach (Task task in list.Children)
