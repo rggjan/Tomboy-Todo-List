@@ -37,7 +37,20 @@ namespace Tomboy.TaskManager {
 	/// </summary>
 	public class TaskList : AttributedTask {
 	
+		protected override TextIter DescriptionStart {
+			get {
+				return Start;
+			}
+		}
 
+		protected override TextIter DescriptionEnd {
+			get {
+				// TODO
+				return Start;
+			}
+		}
+
+		
 		/// <summary>
 		/// Name of this task list
 		/// </summary>

@@ -302,7 +302,6 @@ namespace Tomboy.TaskManager {
 		
 		bool ToggleCheckbox (NoteTag tag, NoteEditor editor, Gtk.TextIter begin, Gtk.TextIter end)
 		{
-			Logger.Debug ("tagupdate");
 			Task task = utils.GetTask (begin);
 			task.Toggle ();
 			return true;
@@ -328,16 +327,15 @@ namespace Tomboy.TaskManager {
 				Gtk.TextIter end = args.Pos;
 				end.BackwardChar ();
 				
-				var begin = end;
-				begin.LineOffset = 0;
+				//var begin = end;
+				//begin.LineOffset = 0;
+				
+				Task task = utils.GetTask ();
 				
 				// Behaviour: onTask\n\n should delete empty checkbox
-				if (Buffer.GetText (begin, end, true).Trim ().Length == 1 && utils.InTaskList (end)) {
-					Task task = utils.GetTask ();
-					if (task != null && task.IsLastTask ()) {
+				if (task != null && task.LineIsEmpty () && task.IsLastTask ()) {
 						task.Delete ();
 						return;
-					}
 				}
 				
 				// Insert new checkbox if was onTask

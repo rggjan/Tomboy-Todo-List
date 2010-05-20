@@ -236,7 +236,7 @@ namespace Tomboy.TaskManager {
 			Buffer.Delete (ref start, ref end);
 			
 			Gtk.TextIter iter = Start;
-			Buffer.Insert (iter, ((int)Priority).ToString ());
+			Buffer.Insert (ref iter, ((int)Priority).ToString ());
 			
 			SetPriority ();
 			UpdateWidgetTags ();
@@ -261,7 +261,23 @@ namespace Tomboy.TaskManager {
 			get {
 				var start = Start;
 				start.ForwardLine ();
-				//TODO: backwardchar here?
+				return start;
+			}
+		}
+		
+		protected override Gtk.TextIter DescriptionEnd {
+			get {
+				var start = Start;
+				start.ForwardLine ();
+				start.BackwardChar ();
+				return start;
+			}
+		}
+		
+		protected override Gtk.TextIter DescriptionStart {
+			get {
+				var start = Start;
+				start.ForwardChars (3);
 				return start;
 			}
 		}
@@ -278,19 +294,22 @@ namespace Tomboy.TaskManager {
 		/// </summary>
 		public void TagUpdate ()
 		{
-			var start = Start;
+			//var start = Start;
 			var end = End;
 		
-			Buffer.ApplyTag (TaskTag, start, end);
+			Buffer.ApplyTag (TaskTag, Start, end);
 			
 			if (CheckBox != null && CheckBox.Active) {
-				start.ForwardChars (3);
-				Buffer.ApplyTag ("strikethrough", start, end);
+				Buffer.ApplyTag ("strikethrough", DescriptionStart, DescriptionEnd);
 			} 
 			else {
-				start.ForwardChars (3);
-				Buffer.RemoveTag ("strikethrough", start, end);
+				Buffer.RemoveTag ("strikethrough", DescriptionStart, DescriptionEnd);
 			}
+		}
+		
+		public bool LineIsEmpty ()
+		{
+			return Buffer.GetText (DescriptionStart, DescriptionEnd, true).Trim ().Length == 0;
 		}
 		
 		/// <summary>
