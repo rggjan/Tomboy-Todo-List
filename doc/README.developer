@@ -10,34 +10,34 @@ follow the following steps:
    $ mkdir workspace
    $ cd workspace
 
-2. Checkout the git sources for Tomboy
+2. Checkout the sources for tomboy with git
    $ git clone git@github.com:gz/tomboy.git
-   If you don't have write permissions to the repository use this git link: 
+   If you don't have write permissions on the repository use this git link: 
    git://github.com/gz/tomboy.git
    Note: Currently you need a modified version of tomboy to work with TaskManager since 
-   our patches to the tomboy code are not yet integrated into tomboy.
+   our patches in the tomboy code are not yet integrated into tomboy.
 
-3. Make sure to switch to the non-approved branch of our tomboy branch to make sure all changes are there
+3. Make sure to switch to the non-approved branch in your tomboy checkout to make sure all changes are there
    $ cd tomboy && git checkout non-approved
 
-4. Get the TaskManager Addin
+4. Get the TaskManager addin
    $ cd .. && git clone git@github.com:rggjan/Tomboy-Todo-List.git
-   If you don't have write permissions to the repository use this git link: 
+   If you don't have write permissions on the repository use this git link: 
    git://github.com/rggjan/Tomboy-Todo-List.git
 
-5. If you wan't to compile Tomboy from within monodevelop you can use a custom project file for tomboy
+5. If you want to compile tomboy from within Monodevelop you can use a custom project file for tomboy
    $ cp Tomboy-Todo-List/Tomboy.csproj tomboy/
 
-6. Now you can open and build Tomboy-Todo-List in Monodevelop and build it from there, if everything 
-   works you should have a TaskManager.dll binary in Tomboy-Todo-List/build/TaskManager.dll
+6. Now you can open Tomboy-Todo-List in Monodevelop and build it from there, if everything 
+   works you should have a TaskManager.dll binary in Tomboy-Todo-List/build/
 
-7. Make sure that tomboy sees the plugin when you start it 
+7. Make sure that tomboy has the addin on startup
    $ ln -s Tomboy-Todo-List/build/TaskManager.dll ~/.config/tomboy/addins/
 
-Now the plugin can be tested by running our modified tomboy version.
+Now the addin can be tested by running the modified tomboy version.
 
 
-To compile Tomboy follow these steps:
+To compile tomboy follow these steps:
 =====================================
 1. Change into the tomboy repository
    $ cd tomboy
@@ -51,7 +51,7 @@ To compile Tomboy follow these steps:
 3. Run autogen.sh to created the Makefiles
    $ sh autogen.sh
 
-4. Compile Tomboy Sources
+4. Compile tomboy Sources
    $ make
 
 5. Run
