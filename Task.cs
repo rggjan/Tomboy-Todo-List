@@ -109,7 +109,7 @@ namespace Tomboy.TaskManager {
 		/// <summary>
 		/// Gets the tag attached to this task. Shortcut.
 		/// </summary>
-		private TaskTag TaskTag {
+		public TaskTag TaskTag {
 			get{ return (TaskTag) Tag; }
 			set{ Tag = value; }
 		}
@@ -350,6 +350,8 @@ namespace Tomboy.TaskManager {
 		/// </summary>
 		public void TagUpdate ()
 		{
+			//TaskTag.Indent = 0;
+			//TaskTag.Priority = Notes.;
 			ApplyTag (TaskTag);
 			
 			if (CheckBox != null && CheckBox.Active) {

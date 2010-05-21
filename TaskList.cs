@@ -121,7 +121,6 @@ namespace Tomboy.TaskManager {
 			ContainingNote = note;
 			//TODO merge this with things below
 			Name = name;
-		
 
 			TaskListTag tag = (TaskListTag)ContainingNote.TagTable.CreateDynamicTag ("tasklist");
 			//TextIter iter;
@@ -143,7 +142,12 @@ namespace Tomboy.TaskManager {
 			{
 				Children.Add (task);
 				task.RemoveTag (task.ContainingTaskList.Tag);
+
 				task.ContainingTaskList = this;
+				
+				// This is required for intendation
+				this.Tag.Priority = 0;
+
 				task.ApplyTag (this.Tag);
 			}
 		}
