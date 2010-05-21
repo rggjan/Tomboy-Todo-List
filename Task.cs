@@ -177,6 +177,67 @@ namespace Tomboy.TaskManager {
 			InitializeTask(containingList, location, tag);
 		}
 		
+		public bool TaskTagValid(Gtk.TextIter iter)
+		{
+			bool tag_existing = false;
+			foreach (Gtk.TextTag tag in iter.Tags) {
+				if (tag is TaskTag) {
+					TaskTag tasktag = (TaskTag) tag;
+					if (tasktag.Task != this)
+						return false;
+					else
+						tag_existing = true;
+				}
+			}
+			
+			if (!tag_existing)
+				return false;
+			
+			return true;
+		}
+		
+		public bool WasDeleted ()
+		{
+			if (TaskTagValid (Start))
+				return false;
+			else
+				return true;
+		}
+		
+		public bool IsValid ()
+		{
+			//if (!TaskTagValid (DescriptionStart))
+			//	return false;
+			
+			var iter = Start;
+			iter.ForwardChars (2);
+
+			if (!TaskTagValid (iter))
+				return false;
+			
+			bool found = false;
+			foreach (Gtk.TextTag tag in iter.Tags)
+			{
+				if (tag.Name == "checkbox-active")
+				{
+					found = true;
+					break;
+				}
+			}
+			if (!found)
+				return false;
+			
+			// Checkbox deleted
+/*			if (boxanchor.Deleted)
+				return false;
+			
+			// Enter inserted too early
+			if (DescriptionStart.Line != Start.Line)
+				return false;*/
+			
+			return true;
+		}
+		
 		/// <summary>
 		/// Initialize fields, tag, etc
 		/// </summary>
@@ -190,7 +251,7 @@ namespace Tomboy.TaskManager {
 		/// A <see cref="TaskTag"/>
 		/// </param>
 		private void InitializeTask (TaskList containingList, Gtk.TextIter location, TaskTag tag)
-		{			
+		{
 			Children = new List<AttributedTask> ();
 			ContainingTaskList = containingList;
 			location.LineOffset = 0;
@@ -199,6 +260,7 @@ namespace Tomboy.TaskManager {
 			
 			Buffer.UserActionEnded += BufferChanged;
 		}
+		
 	
 		/// <summary>
 		/// Inserts a CheckButton at cursor position.
@@ -214,12 +276,6 @@ namespace Tomboy.TaskManager {
 			boxanchor = Buffer.CreateChildAnchor (ref insertIter);
 			ContainingTaskList.ContainingNote.Window.Editor.AddChildAtAnchor (CheckBox, boxanchor);
 			CheckBox.Show ();
-		}
-
-		//TODO: do we need this?
-		public void test (object o, System.EventArgs args)
-		{
-			Logger.Debug ("destroyed");
 		}
 
 		/// <summary>
@@ -269,8 +325,7 @@ namespace Tomboy.TaskManager {
 		protected override Gtk.TextIter DescriptionEnd {
 			get {
 				var start = Start;
-				start.ForwardLine ();
-				start.BackwardChar ();
+				start.ForwardToLineEnd ();
 				return start;
 			}
 		}
@@ -343,11 +398,13 @@ namespace Tomboy.TaskManager {
 		/// </returns>
 		public bool IsLastTask ()
 		{
-			foreach (Task task in ContainingTaskList.Children)
+			var list = ContainingTaskList.Children;
+			Logger.Debug(list.Count.ToString());
+			
+			foreach (Task task in list)
 			{
 				if (task.Start.Line > Start.Line)
 				{
-					Logger.Debug ("is not last!");
 					return false;
 				}
 			}
@@ -372,6 +429,7 @@ namespace Tomboy.TaskManager {
 		/// </summary>
 		public void Delete ()
 		{
+			Logger.Debug ("deleting task");
 			var start = Start;
 			var end = DescriptionEnd;
 			Buffer.Delete (ref start, ref end);
@@ -386,17 +444,23 @@ namespace Tomboy.TaskManager {
 			Logger.Debug ("Tasks removed:");
 			ContainingTaskList.DebugPrint ();
 			
+			Logger.Debug ("done!");
 			start = Start;
 			start.ForwardLine ();
 			//end = start;
 			//end.ForwardLine ();
 			
 			var tasks_following = TasksFollowing ();
+				Logger.Debug("before if");
+			
 			if (!IsLastTask ()) {
+				Logger.Debug("before foreach");
 				foreach (Task task in tasks_following)
 				{
+					Logger.Debug("in foreach");
 					ContainingTaskList.Children.Remove (task);
 				}
+					Logger.Debug("out foreach");
 				
 				TaskList new_list = new TaskList (ContainingTaskList.ContainingNote, tasks_following, ContainingTaskList.Name + " 2", start);
 				

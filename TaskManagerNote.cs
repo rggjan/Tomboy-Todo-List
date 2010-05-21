@@ -147,6 +147,7 @@ namespace Tomboy.TaskManager {
 		{
 			Buffer.InsertText += BufferInsertText;
 			Buffer.UserActionEnded += CheckIfNewTaskNeeded;
+			Buffer.DeleteRange += DeleteRange;
 			
 			//Initialise tasklists list
 			//TODO: get from previous sessions?		
@@ -307,6 +308,31 @@ namespace Tomboy.TaskManager {
 			return true;
 		}
 		
+		
+		void DeleteRange (object o, Gtk.DeleteRangeArgs args)
+		{
+			// Recursion problem without this:
+			Buffer.DeleteRange -= DeleteRange;
+			
+			Buffer.Undoer.ClearUndoHistory ();
+			//TODO apply this everywhere!
+
+			TaskList tasklist1 = utils.GetTaskList (args.Start);
+			if (tasklist1 != null)
+				Logger.Debug ("Tasklist start deleted!");
+			
+			var iter = args.Start;
+			iter.BackwardChar ();
+
+			TaskList tasklist2 = utils.GetTaskList (iter);
+			if (tasklist2 != null)
+			{
+				tasklist2.FixEnd ();
+				Logger.Debug ("Tasklist end deleted!");			
+			}
+			Buffer.DeleteRange += DeleteRange;
+		}
+		
 		/*Task GetTaskAtCursor ()
 		{
 			here.LineOffset = 0;
@@ -334,8 +360,13 @@ namespace Tomboy.TaskManager {
 				
 				// Behaviour: onTask\n\n should delete empty checkbox
 				if (task != null && task.LineIsEmpty ()) {
+					// Recursion problem without this:
+					Buffer.DeleteRange -= DeleteRange;
+					
 					task.Delete ();
 					Buffer.PlaceCursor (Buffer.GetIterAtMark (Buffer.InsertMark));
+					
+					Buffer.DeleteRange += DeleteRange;
 					return;
 				}
 				

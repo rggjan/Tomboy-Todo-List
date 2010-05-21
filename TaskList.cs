@@ -148,6 +148,45 @@ namespace Tomboy.TaskManager {
 			}
 		}
 		
+		public void FixEnd ()
+		{
+			Logger.Debug ("fixing end");
+			
+			List<Task> to_remove = new List<Task>();
+			List<Task> to_delete = new List<Task>();
+
+			Logger.Debug(Children.Count.ToString());
+			
+			foreach (Task task in Children)
+			{
+				if (task.WasDeleted())
+				{
+					Logger.Debug ("Found Deleted Task");
+					to_remove.Add (task);
+				} else {
+					if (task.IsValid()) {
+						Logger.Debug (task.Description() + " is valid!");
+					} else {
+						Logger.Debug ("Found invalid Task");
+						to_delete.Add(task);
+					}
+				}
+			}
+			
+			foreach (Task task in to_remove)
+				Children.Remove (task);
+			
+			if (to_delete.Count > 0) {
+				if (to_delete.Count > 1)
+					Logger.Fatal ("Something has gone wrong!");
+				else
+					to_delete[0].Delete();
+			}
+				
+					
+		}
+		
+		
 		public void DebugPrint ()
 		{
 			if (!Tomboy.Debugging)
