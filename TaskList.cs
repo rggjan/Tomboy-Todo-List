@@ -132,7 +132,6 @@ namespace Tomboy.TaskManager {
 			
 			var end = Start;
 			buffer.Insert (ref end, name);
-		
 
 			start = Start;
 			end.ForwardChar ();
@@ -143,6 +142,7 @@ namespace Tomboy.TaskManager {
 			foreach (Task task in tasks)
 			{
 				Children.Add (task);
+				task.RemoveTag (task.ContainingTaskList.Tag);
 				task.ContainingTaskList = this;
 				task.ApplyTag (this.Tag);
 			}
@@ -195,6 +195,8 @@ namespace Tomboy.TaskManager {
 		    Console.WriteLine ("Tasklist '" + Description () + "':");
 			foreach (Task task in Children)
 				task.DebugPrint ();
+				
+			Console.WriteLine();
 		}
 		
 		/// <summary>

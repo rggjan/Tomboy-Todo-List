@@ -359,12 +359,20 @@ namespace Tomboy.TaskManager {
 				Buffer.RemoveTag ("strikethrough", DescriptionStart, DescriptionEnd);
 			}
 		}
+
+		
+		public void RemoveTag (Gtk.TextTag tag)
+		{
+			var end = End;
+		
+			Buffer.RemoveTag (tag, Start, end);
+		}
 		
 		public void ApplyTag (Gtk.TextTag tag)
 		{
 			var end = End;
 		
-			Buffer.ApplyTag (TaskTag, Start, end);
+			Buffer.ApplyTag (tag, Start, end);
 		}
 		
 		public bool LineIsEmpty ()
@@ -399,7 +407,6 @@ namespace Tomboy.TaskManager {
 		public bool IsLastTask ()
 		{
 			var list = ContainingTaskList.Children;
-			Logger.Debug(list.Count.ToString());
 			
 			foreach (Task task in list)
 			{
@@ -427,9 +434,8 @@ namespace Tomboy.TaskManager {
 		/// <summary>
 		/// Delete this task, it's widgets and corresponding tag representation
 		/// </summary>
-		public void Delete ()
+		public TaskList Delete ()
 		{
-			Logger.Debug ("deleting task");
 			var start = Start;
 			var end = DescriptionEnd;
 			Buffer.Delete (ref start, ref end);
@@ -440,35 +446,27 @@ namespace Tomboy.TaskManager {
 			
 			Buffer.RemoveAllTags (start, end);
 			ContainingTaskList.Children.Remove (this);
-
-			Logger.Debug ("Tasks removed:");
-			ContainingTaskList.DebugPrint ();
 			
-			Logger.Debug ("done!");
 			start = Start;
 			start.ForwardLine ();
 			//end = start;
 			//end.ForwardLine ();
 			
 			var tasks_following = TasksFollowing ();
-				Logger.Debug("before if");
 			
 			if (!IsLastTask ()) {
-				Logger.Debug("before foreach");
+				Logger.Debug("is not last task");
 				foreach (Task task in tasks_following)
 				{
-					Logger.Debug("in foreach");
 					ContainingTaskList.Children.Remove (task);
 				}
-					Logger.Debug("out foreach");
 				
 				TaskList new_list = new TaskList (ContainingTaskList.ContainingNote, tasks_following, ContainingTaskList.Name + " 2", start);
 				
-				Logger.Debug ("First List:");
-				ContainingTaskList.DebugPrint ();
-				Logger.Debug ("Second List:");
-				new_list.DebugPrint ();
+				return new_list;
 			}
+			
+			return null;
 			
 			//FIXME also for other containers?
 		}

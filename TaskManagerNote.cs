@@ -175,6 +175,13 @@ namespace Tomboy.TaskManager {
 			
 			task_menu.Add (show_priority);
 			show_priority.Toggled += OnShowPriorityActivated;
+
+			if (Tomboy.Debugging)
+			{
+				Gtk.MenuItem print_structure = new Gtk.MenuItem (Catalog.GetString ("Print Structure"));
+				task_menu.Add (print_structure);
+				print_structure.Activated += OnPrintStructureActivated;
+			}
 			
 			Gtk.MenuToolButton menu_tool_button = new Gtk.MenuToolButton (Gtk.Stock.Strikethrough);
 			
@@ -227,7 +234,7 @@ namespace Tomboy.TaskManager {
 				return;
 			
 			TaskList tl = new TaskList (Note);
-			
+
 			//tl.Name = "New TaskList!";
 			TaskLists.Add (tl);
 		}
@@ -235,6 +242,15 @@ namespace Tomboy.TaskManager {
 		void OnShowPriorityActivated (object sender, EventArgs args)
 		{
 			TogglePriorityVisibility ();
+		}
+		
+		
+		void OnPrintStructureActivated (object sender, EventArgs args)
+		{
+			Logger.Debug ("----------------Printing structure!------------------");
+			foreach (TaskList list in tasklists)
+				list.DebugPrint();
+			Logger.Debug ("-----------------------------------------------------");
 		}
 		
 		private void TogglePriorityVisibility ()
@@ -250,7 +266,6 @@ namespace Tomboy.TaskManager {
 			}
 
 		}
-		
 		
 		void OnAddDuedateActivated (object sender, EventArgs args)
 		{
@@ -363,7 +378,10 @@ namespace Tomboy.TaskManager {
 					// Recursion problem without this:
 					Buffer.DeleteRange -= DeleteRange;
 					
-					task.Delete ();
+					TaskList list = task.Delete ();
+					if (list != null)
+						tasklists.Add (list);
+					
 					Buffer.PlaceCursor (Buffer.GetIterAtMark (Buffer.InsertMark));
 					
 					Buffer.DeleteRange += DeleteRange;
@@ -443,6 +461,7 @@ namespace Tomboy.TaskManager {
 		}
 			
 		private List<TaskList> tasklists;
+		
 		public List<TaskList> TaskLists {
 			get
 			{
