@@ -408,6 +408,15 @@ namespace Tomboy.TaskManager {
 		}
 
 		/// <summary>
+		/// Should be called when the task is removed.
+		/// </summary>
+		public void Cleanup ()
+		{
+			ContainingTaskList.Children.Remove (this);
+			Buffer.TagTable.Remove (TaskTag);
+		}
+		
+		/// <summary>
 		/// Delete this task, it's widgets and corresponding tag representation
 		/// </summary>
 		public TaskList Delete ()
@@ -421,30 +430,33 @@ namespace Tomboy.TaskManager {
 			end.ForwardLines (2);
 			
 			Buffer.RemoveAllTags (start, end);
-			ContainingTaskList.Children.Remove (this);
 			
-			start = Start;
-			start.ForwardLine ();
-			//end = start;
-			//end.ForwardLine ();
-			
-			var tasks_following = TasksFollowing ();
+			Cleanup ();
 			
 			if (!IsLastTask ()) {
-				Logger.Debug("is not last task");
-				foreach (Task task in tasks_following)
-				{
-					ContainingTaskList.Children.Remove (task);
-				}
+				Logger.Debug ("is not last task");
 				
-				TaskList new_list = new TaskList (ContainingTaskList.ContainingNote, tasks_following, ContainingTaskList.Name + " 2", start);
-				
-				return new_list;
+				return Split ();
 			}
 			
 			return null;
 			
 			//FIXME also for other containers?
+		}
+		
+		private TaskList Split ()
+		{
+			var tasks_following = TasksFollowing ();
+
+			foreach (Task task in tasks_following)
+			{
+				ContainingTaskList.Children.Remove (task);
+			}
+			
+			var start = Start;
+			start.ForwardLine ();
+			TaskList new_list = new TaskList (ContainingTaskList.ContainingNote, tasks_following, ContainingTaskList.Name + " 2", start);
+			return new_list;
 		}
 		
 		public void DebugPrint ()
