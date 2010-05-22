@@ -410,7 +410,7 @@ namespace Tomboy.TaskManager {
 		/// <summary>
 		/// Should be called when the task is removed.
 		/// </summary>
-		public void Cleanup ()
+		public void Delete ()
 		{
 			ContainingTaskList.Children.Remove (this);
 			Buffer.TagTable.Remove (TaskTag);
@@ -419,7 +419,7 @@ namespace Tomboy.TaskManager {
 		/// <summary>
 		/// Delete this task, it's widgets and corresponding tag representation
 		/// </summary>
-		public TaskList Delete ()
+		public TaskList DeleteWithLine ()
 		{
 			var start = Start;
 			var end = DescriptionEnd;
@@ -431,7 +431,7 @@ namespace Tomboy.TaskManager {
 			
 			Buffer.RemoveAllTags (start, end);
 			
-			Cleanup ();
+			Delete ();
 			
 			if (!IsLastTask ()) {
 				Logger.Debug ("is not last task");

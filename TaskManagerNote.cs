@@ -243,7 +243,7 @@ namespace Tomboy.TaskManager {
 				// Recursion problem without this:
 				Buffer.DeleteRange -= DeleteRange;
 				
-				TaskList list = task_deletion_needed.Delete ();
+				TaskList list = task_deletion_needed.DeleteWithLine ();
 				if (list != null)
 					tasklists.Add (list);
 				

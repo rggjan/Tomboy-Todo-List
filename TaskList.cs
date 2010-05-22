@@ -187,14 +187,14 @@ namespace Tomboy.TaskManager {
 			
 			foreach (Task task in to_remove)
 			{
-				Children.Remove (task);
+				task.Delete ();
 			}
 			
 			if (to_delete.Count > 0) {
 				if (to_delete.Count > 1)
 					Logger.Fatal ("Something has gone wrong!");
 				else
-					to_delete[0].Delete ();
+					to_delete[0].DeleteWithLine ();
 			}
 		}
 		
