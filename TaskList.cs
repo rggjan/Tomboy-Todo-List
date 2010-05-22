@@ -165,6 +165,21 @@ namespace Tomboy.TaskManager {
 			var end = Start;
 			buffer.Insert (ref end, name);
 		
+		
+		
+		
+		
+		
+		
+		
+
+		
+		
+		
+
+		
+
+
 			start = Start;
 			end.ForwardChar ();
 			Buffer.ApplyTag (TaskListTag, start, end);
@@ -179,6 +194,8 @@ namespace Tomboy.TaskManager {
 				
 				// This is required for intendation
 				this.Tag.Priority = 0;
+				Logger.Info (Start.Line.ToString());
+				Logger.Info (task.Start.Line.ToString());
 				task.ApplyTag (this.Tag);
 			}
 		}

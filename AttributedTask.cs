@@ -139,7 +139,7 @@ namespace Tomboy.TaskManager
 			return Buffer.GetText (DescriptionStart, DescriptionEnd, false);
 		}
 				
-		protected TextIter Start {
+		public TextIter Start {
 			get { return Buffer.GetIterAtMark (Position); }	
 		}
 

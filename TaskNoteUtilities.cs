@@ -81,7 +81,12 @@ namespace Tomboy.TaskManager
 		
 		public TaskTag GetTaskTag (TextIter iter)
 		{
-			return (TaskTag) Buffer.GetDynamicTag ("task", iter);
+			return (TaskTag)Buffer.GetDynamicTag ("task", iter);
+		}
+		
+		public void ResetCursor ()
+		{
+			Buffer.PlaceCursor (Buffer.GetIterAtMark(Buffer.InsertMark));
 		}
 		
 		public TaskList GetTaskList ()

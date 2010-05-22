@@ -373,6 +373,7 @@ namespace Tomboy.TaskManager {
 			var end = End;
 		
 			Buffer.ApplyTag (tag, Start, end);
+			Logger.Info(Buffer.GetText (Start, end, true));
 		}
 		
 		public bool LineIsEmpty ()
@@ -434,7 +435,7 @@ namespace Tomboy.TaskManager {
 		
 		public TaskList DeleteWithLine ()
 		{
-			return DeleteWithLine (null);
+			return DeleteWithLine ("");
 		}
 		
 		/// <summary>
@@ -463,7 +464,7 @@ namespace Tomboy.TaskManager {
 			if (!IsLastTask ()) {
 				Logger.Debug ("is not last task");
 				
-				if (name == null)
+				if (name.Equals(""))
 					return Split ();
 				else
 					return Split (name);
@@ -474,16 +475,15 @@ namespace Tomboy.TaskManager {
 			//FIXME also for other containers?
 		}
 		
-		public void Fix ()
+		public TaskList Fix ()
 		{
-			RemoveTaskStuff ();
+			var end = DescriptionEnd;
+			Buffer.Insert(ref end, "\n");
+			return DeleteWithLine (Buffer.GetText(Start, DescriptionEnd, false).TrimStart());
 		}
 		
 		public void RemoveTaskStuff ()
 		{
-			var end = End;
-			Buffer.Insert(ref end, "\n");
-			DeleteWithLine (Buffer.GetText(Start, DescriptionEnd, false).TrimStart());
 			
 		/*	var start = Start;
 			var middle = start;

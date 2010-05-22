@@ -130,8 +130,13 @@ namespace Tomboy.TaskManager {
 			if (task_to_fix != null)
 			{
 				StopListeners ();
-				task_to_fix.Fix ();
+				
+				TaskList list = task_to_fix.Fix ();
+				if (list != null)
+					tasklists.Add (list);
+				
 				task_to_fix = null;
+				utils.ResetCursor ();
 				StartListeners ();
 			}
 			
