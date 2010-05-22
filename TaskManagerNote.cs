@@ -14,7 +14,9 @@ namespace Tomboy.TaskManager {
 		private TaskManagerGui gui;
 		private TaskNoteUtilities utils;
 		private bool new_task_needed = false;
+		private Task task_deletion_needed = null;
 		private TaskList current_task_list = null;
+
 		
 		private List<TaskList> tasklists;
 		public List<TaskList> TaskLists {
@@ -117,6 +119,7 @@ namespace Tomboy.TaskManager {
 		{
 			Buffer.InsertText -= BufferInsertText;
 			Buffer.UserActionEnded -= CheckIfNewTaskNeeded;
+			Buffer.DeleteRange -= DeleteRange;
 			
 			gui.StopListeners ();
 		}
@@ -200,16 +203,8 @@ namespace Tomboy.TaskManager {
 				
 				// Behaviour: onTask\n\n should delete empty checkbox
 				if (task != null && task.LineIsEmpty ()) {
-					// Recursion problem without this:
-					Buffer.DeleteRange -= DeleteRange;
+					task_deletion_needed = task;
 					
-					TaskList list = task.Delete ();
-					if (list != null)
-						tasklists.Add (list);
-					
-					Buffer.PlaceCursor (Buffer.GetIterAtMark (Buffer.InsertMark));
-					
-					Buffer.DeleteRange += DeleteRange;
 					return;
 				}
 				
@@ -244,6 +239,22 @@ namespace Tomboy.TaskManager {
 		/// </param>
 		void CheckIfNewTaskNeeded (object sender, System.EventArgs args)
 		{
+			if (task_deletion_needed != null) {
+				// Recursion problem without this:
+				Buffer.DeleteRange -= DeleteRange;
+				
+				TaskList list = task_deletion_needed.Delete ();
+				if (list != null)
+					tasklists.Add (list);
+				
+				Buffer.PlaceCursor (Buffer.GetIterAtMark (Buffer.InsertMark));
+				
+				Buffer.DeleteRange += DeleteRange;
+				
+				task_deletion_needed = null;
+				return;
+			}
+			
 			if (new_task_needed) {
 				Logger.Debug ("Adding a new Task");
 				

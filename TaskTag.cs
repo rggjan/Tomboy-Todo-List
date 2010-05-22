@@ -54,7 +54,7 @@ namespace Tomboy.TaskManager
 			base.Initialize (element_name);
 
 			if (Tomboy.Debugging)
-				Foreground = "green";
+				Foreground = "red";
 			
 			LeftMargin = 20;
 			//Done is not an attribute of a tasklist, therefore set it here
