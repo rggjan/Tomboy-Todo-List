@@ -184,11 +184,30 @@ namespace Tomboy.TaskManager {
 			return true;
 		}
 		
-		
+		public void ValidateTaskLists ()
+		{
+			List<TaskList> to_delete = new List<TaskList> ();
+			
+			foreach (TaskList tasklist in tasklists)
+			{
+				if (tasklist.WasDeleted ())
+				{
+					Logger.Debug ("Deleting removed tasklist");
+					to_delete.Add (tasklist);
+				}
+			}
+			
+			foreach (TaskList tasklist in to_delete) {
+				tasklist.Delete ();
+				tasklists.Remove (tasklist);
+			}
+		}
 		
 		void DeleteRange (object o, Gtk.DeleteRangeArgs args)
 		{
 			StopListeners ();
+			
+			ValidateTaskLists ();
 			
 			Buffer.Undoer.ClearUndoHistory ();
 			//TODO apply this everywhere!

@@ -248,6 +248,23 @@ namespace Tomboy.TaskManager {
 			return result;
 		}
 		
+		public bool WasDeleted ()
+		{
+			TaskListTag tag = (TaskListTag)Buffer.GetDynamicTag ("tasklist", Start);
+			if (tag != this.Tag)
+				return true;
+			//Fixme what if only start deleted?
+			
+			return false;
+		}
+		
+		public void Delete ()
+		{
+			ContainingNote.TagTable.Remove (this.TaskListTag);
+			foreach (Task task in Children)
+				task.DeleteTag ();
+		}
+		
 		public void DebugPrint ()
 		{
 			if (!Tomboy.Debugging)

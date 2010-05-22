@@ -419,6 +419,11 @@ namespace Tomboy.TaskManager {
 		public void Delete ()
 		{
 			ContainingTaskList.Children.Remove (this);
+			DeleteTag ();
+		}
+		
+		public void DeleteTag ()
+		{
 			Buffer.TagTable.Remove (TaskTag);
 		}
 		
