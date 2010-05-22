@@ -39,7 +39,7 @@ namespace Tomboy.TaskManager {
 	/// marked as done by crossing out the checkbox.
 	/// </summary>
 	public class Task : AttributedTask {
-				
+
 		/// <summary>
 		/// Is this task completed?
 		/// </summary>
@@ -276,30 +276,43 @@ namespace Tomboy.TaskManager {
 		public void AddPriority ()
 		{
 			Priority = Priorities.LOW;
-
-			Gtk.TextIter start = Start;
-
-			Gtk.TextIter end = Start;
-			end.ForwardChar ();
-
-			Buffer.Delete (ref start, ref end);
-			
-			Gtk.TextIter iter = Start;
-			Buffer.Insert (ref iter, ((int)Priority).ToString ());
-			
-			SetPriority ();
-			UpdateWidgetTags ();
+			ShowPriority ();
 		}
 		
-		public void SetPriority ()
+		
+		public void Replace (String after)
 		{
-			//if (!PriorityUnset())
-			//	priority_box.Show (); //FIXME
+			var iter = Buffer.GetIterAtMark (Buffer.InsertMark);
+			int offset = iter.Offset;
+			
+			var start = Start;
+			start.ForwardChar ();
+			
+			Buffer.PlaceCursor (start);
+			Buffer.InsertAtCursor (after);
+			
+			start = Start;
+			Gtk.TextIter end = Start;
+			end.ForwardChar ();
+			Buffer.Delete (ref start, ref end);
+			
+			Buffer.PlaceCursor (Buffer.GetIterAtOffset(offset));
+		}
+		
+		public void ShowPriority ()
+		{
+			if (PriorityUnset ())
+				Replace (" ");
+			else
+				Replace (((int)Priority).ToString ());
+			
+			UpdateWidgetTags ();
 		}
 		
 		public void HidePriority ()
 		{
-			// priority_box.Hide (); //FIXME
+			Replace (" ");
+			UpdateWidgetTags ();
 		}
 		
 		/// <returns>

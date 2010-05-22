@@ -164,22 +164,6 @@ namespace Tomboy.TaskManager {
 			
 			var end = Start;
 			buffer.Insert (ref end, name);
-		
-		
-		
-		
-		
-		
-		
-		
-
-		
-		
-		
-
-		
-
-
 			start = Start;
 			end.ForwardChar ();
 			Buffer.ApplyTag (TaskListTag, start, end);

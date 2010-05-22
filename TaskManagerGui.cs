@@ -183,6 +183,7 @@ namespace Tomboy.TaskManager
 		/// </param>
 		void OnAddPriorityActivated (object sender, EventArgs args)
 		{
+			addin.StopListeners ();
 			Gtk.TextIter cursor = Buffer.GetIterAtMark (Buffer.InsertMark);
 			cursor.BackwardChar ();
 			
@@ -192,6 +193,7 @@ namespace Tomboy.TaskManager
 			} else {
 				Logger.Debug ("Tried to insert Priority outside of a task");	
 			}
+			addin.StartListeners ();
 		}
 		
 		private void OnShowPriorityActivated (object sender, EventArgs args)
@@ -209,15 +211,17 @@ namespace Tomboy.TaskManager
 		
 		private void TogglePriorityVisibility ()
 		{
+			addin.StopListeners ();
 			if (PriorityShown) {
 				foreach (TaskList list in addin.TaskLists)
 					foreach (Task task in list.Children)
-						task.SetPriority ();
+						task.ShowPriority ();
 			} else {
 				foreach (TaskList list in addin.TaskLists)
 					foreach (Task task in list.Children)
 						task.HidePriority ();
 			}
+			addin.StartListeners ();
 		}
 		
 		/// <summary>
