@@ -17,6 +17,7 @@ namespace Tomboy.TaskManager {
 		private Task task_deletion_needed = null;
 		private TaskList current_task_list = null;
 		private TaskList lock_end_needed = null;
+		private Task task_to_fix = null;
 
 		
 		private List<TaskList> tasklists;
@@ -120,12 +121,20 @@ namespace Tomboy.TaskManager {
 			Buffer.UserActionEnded += CheckIfNewTaskNeeded;
 			Buffer.DeleteRange += DeleteRange;
 			
-			this.Note.Window.Editor.KeyReleaseEvent += FixEnd;
+			this.Note.Window.Editor.KeyReleaseEvent += Repair;
 			//this.Note.Window.Editor.
 		}
 		
-		public void FixEnd (object o, Gtk.KeyReleaseEventArgs args)
+		public void Repair (object o, Gtk.KeyReleaseEventArgs args)
 		{
+			if (task_to_fix != null)
+			{
+				StopListeners ();
+				task_to_fix.Fix ();
+				task_to_fix = null;
+				StartListeners ();
+			}
+			
 			if (lock_end_needed != null)
 			{
 				StopListeners ();
@@ -145,7 +154,7 @@ namespace Tomboy.TaskManager {
 		
 		public void StopListeners ()
 		{
-			this.Note.Window.Editor.KeyReleaseEvent -= FixEnd;
+			this.Note.Window.Editor.KeyReleaseEvent -= Repair;
 			
 			Buffer.InsertText -= BufferInsertText;
 			Buffer.UserActionEnded -= CheckIfNewTaskNeeded;
@@ -186,6 +195,8 @@ namespace Tomboy.TaskManager {
 		
 		public void ValidateTaskLists ()
 		{
+			Logger.Debug ("Validating");
+			
 			List<TaskList> to_delete = new List<TaskList> ();
 			
 			foreach (TaskList tasklist in tasklists)
@@ -218,13 +229,20 @@ namespace Tomboy.TaskManager {
 			
 			var iter = args.Start;
 			iter.BackwardChar ();
-		
-
 			TaskList tasklist2 = utils.GetTaskList (iter);
+			
 			if (tasklist2 != null)
 			{
 				Logger.Debug ("Tasklist end deleted!");
 				tasklist2.FixEnd ();
+				
+				Task task = utils.GetTask ();
+				if (task != null && !utils.GetTask ().IsValid ())
+				{
+					task_to_fix = task;
+					Logger.Debug ("Have to fix Task!");
+				}
+					
 				lock_end_needed = tasklist2;
 				//tasklist2.PlaceCursorAtEnd ();
 			}
@@ -257,7 +275,6 @@ namespace Tomboy.TaskManager {
 				// Behaviour: onTask\n\n should delete empty checkbox
 				if (task != null && task.LineIsEmpty ()) {
 					task_deletion_needed = task;
-					
 					return;
 				}
 				

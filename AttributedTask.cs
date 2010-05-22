@@ -110,7 +110,7 @@ namespace Tomboy.TaskManager
 		/// <summary>
 		/// Tag that is attached to this attributedtask (in the buffer)
 		/// </summary>
-		protected AttributedTaskTag Tag {
+		public AttributedTaskTag Tag {
 			get; set;	
 		}
 		

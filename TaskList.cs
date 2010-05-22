@@ -164,7 +164,7 @@ namespace Tomboy.TaskManager {
 			
 			var end = Start;
 			buffer.Insert (ref end, name);
-
+		
 			start = Start;
 			end.ForwardChar ();
 			Buffer.ApplyTag (TaskListTag, start, end);
@@ -188,8 +188,8 @@ namespace Tomboy.TaskManager {
 			Logger.Debug ("fixing end");
 			
 			List<Task> to_remove = new List<Task> ();
-			List<Task> to_delete = new List<Task> ();
-
+			//List<Task> to_delete = new List<Task> ();
+		
 			Logger.Debug (Children.Count.ToString ());
 			
 			foreach (Task task in Children)
@@ -203,7 +203,7 @@ namespace Tomboy.TaskManager {
 						Logger.Debug (task.Description () + " is valid!");
 					} else {
 						Logger.Debug ("Found invalid Task");
-						to_delete.Add (task);
+						//to_delete.Add (task);
 					}
 				}
 			}
@@ -213,14 +213,12 @@ namespace Tomboy.TaskManager {
 				task.Delete ();
 			}
 			
-			if (to_delete.Count > 0) {
+		/*	if (to_delete.Count > 0) {
 				if (to_delete.Count > 1)
 					Logger.Fatal ("Something has gone wrong!");
 				else
 					to_delete[0].DeleteWithLine ();
-			}
-		
-			
+			}*/
 		}
 		
 		/// <summary>

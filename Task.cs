@@ -422,18 +422,34 @@ namespace Tomboy.TaskManager {
 			DeleteTag ();
 		}
 		
+/*		public void Fix ()
+		{
+			TagUpdate ();
+		}*/
+		
 		public void DeleteTag ()
 		{
 			Buffer.TagTable.Remove (TaskTag);
 		}
 		
+		public TaskList DeleteWithLine ()
+		{
+			return DeleteWithLine (null);
+		}
+		
 		/// <summary>
 		/// Delete this task, it's widgets and corresponding tag representation
 		/// </summary>
-		public TaskList DeleteWithLine ()
+		public TaskList DeleteWithLine (String name)
 		{
 			var start = Start;
+			//			var end = DescriptionStart;
+			
+		//	if (end.Line != start.Line)
+			//		end = DescriptionEnd;
 			var end = DescriptionEnd;
+			
+			
 			Buffer.Delete (ref start, ref end);
 			
 			start = Start;
@@ -441,13 +457,16 @@ namespace Tomboy.TaskManager {
 			end.ForwardLines (2);
 			
 			Buffer.RemoveAllTags (start, end);
-			
+
 			Delete ();
 			
 			if (!IsLastTask ()) {
 				Logger.Debug ("is not last task");
 				
-				return Split ();
+				if (name == null)
+					return Split ();
+				else
+					return Split (name);
 			}
 			
 			return null;
@@ -455,7 +474,50 @@ namespace Tomboy.TaskManager {
 			//FIXME also for other containers?
 		}
 		
-		private TaskList Split ()
+		public void Fix ()
+		{
+			RemoveTaskStuff ();
+		}
+		
+		public void RemoveTaskStuff ()
+		{
+			var end = End;
+			Buffer.Insert(ref end, "\n");
+			DeleteWithLine (Buffer.GetText(Start, DescriptionEnd, false).TrimStart());
+			
+		/*	var start = Start;
+			var middle = start;
+			var end = End;
+			while (HasSpecialTag (middle) && !middle.Equal (end))
+			{
+				middle.ForwardChar ();
+			}
+			//Buffer.Delete (ref start, ref middle);
+		
+		
+
+
+			//start = Start;
+			//end = End;
+			String name = Buffer.GetText (middle, end, false);
+			Buffer.InsertAtCursor ("\n");
+			//Buffer.Delete (ref start, ref end);
+			
+			//end = End;
+			DeleteWithLine(name);*/
+		}
+
+		public bool HasSpecialTag (Gtk.TextIter iter)
+		{
+			foreach (Gtk.TextTag tag in iter.Tags)
+			{
+				if (tag.Name == "priority" || tag.Name == "checkbox" || tag.Name == "checkbox-active" || tag.Name == "locked")
+					return true;
+			}
+			return false;
+		}
+		
+		public TaskList Split (String name)
 		{
 			var tasks_following = TasksFollowing ();
 
@@ -466,8 +528,13 @@ namespace Tomboy.TaskManager {
 			
 			var start = Start;
 			start.ForwardLine ();
-			TaskList new_list = new TaskList (ContainingTaskList.ContainingNote, tasks_following, ContainingTaskList.Name + " 2", start);
+			TaskList new_list = new TaskList (ContainingTaskList.ContainingNote, tasks_following, name, start);
 			return new_list;
+		}
+		
+		public TaskList Split ()
+		{
+			return Split (ContainingTaskList.Name + "(2)");
 		}
 		
 		public void DebugPrint ()
