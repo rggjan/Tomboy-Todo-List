@@ -66,8 +66,11 @@ namespace Tomboy.TaskManager
 			return show_priority.Active;
 		}
 		set {
-			show_priority.Active = value;
-			TogglePriorityVisibility ();
+			if (show_priority.Active != value)
+				{
+					show_priority.Active = value;
+					TogglePriorityVisibility ();
+				}
 		}
 	}
 
@@ -139,8 +142,6 @@ namespace Tomboy.TaskManager
 			dialog.Destroy ();
 		}
 		
-		
-		
 		void on_dialog_response (object obj, ResponseArgs args)
 		{
 			if (args.ResponseId != ResponseType.Ok)
@@ -188,7 +189,8 @@ namespace Tomboy.TaskManager
 			cursor.BackwardChar ();
 			
 			Task task = utils.GetTask ();
-			if(task != null){
+			if (task != null) {
+				PriorityShown = true;
 				task.AddPriority ();
 			} else {
 				Logger.Debug ("Tried to insert Priority outside of a task");	
@@ -233,11 +235,11 @@ namespace Tomboy.TaskManager
 			// toggle sensitivity
 			Task task = utils.GetTask ();
 			if (task != null && task.PriorityUnset () && show_priority.Active) {
-				add_priority.Sensitive = true;
+				//add_priority.Sensitive = true;
 				//add_list.Sensitive = false;
 			}
 			else {
-				add_priority.Sensitive = false;
+				//add_priority.Sensitive = false;
 				//add_list.Sensitive = true;
 			}
 		}

@@ -185,6 +185,11 @@ namespace Tomboy.TaskManager {
 		{
 			Logger.Debug ("clicked!");
 			utils.GetTask (start).Priority = Priorities.VERY_HIGH;
+			
+			StopListeners ();
+			gui.PriorityShown = true;
+			utils.GetTask (start).ShowPriority ();
+			StartListeners ();
 			//utils.GetTask (start).TagUpdate ();
 			//Logger.Debug(utils.GetTask (start).Priority.ToString());
 			
