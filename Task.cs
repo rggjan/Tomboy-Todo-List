@@ -314,6 +314,12 @@ namespace Tomboy.TaskManager {
 			}
 		}
 		
+		public int Line {
+			get {
+				return Start.Line;
+			}
+		}
+		
 		protected override Gtk.TextIter DescriptionEnd {
 			get {
 				var start = Start;

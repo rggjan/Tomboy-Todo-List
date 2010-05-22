@@ -111,9 +111,37 @@ namespace Tomboy.TaskManager {
 			set{ Tag = value; }
 		}
 		
-		//TODO
 		protected override TextIter End {
-			get {return Start;}
+			get {
+				Gtk.TextIter iter = Buffer.GetIterAtLine (LastTaskLine);
+				iter.ForwardToLineEnd ();
+				
+/*				var nextiter = iter;
+				nextiter.ForwardChar ();
+				
+				while (Buffer.GetDynamicTag ("tasklist", nextiter) == Tag)
+				{
+					iter = nextiter;
+					nextiter.ForwardChar ();
+				}*/
+				
+				return iter;
+			}
+		}
+		
+		/// <summary>
+		/// Returns the last line where a Task is on;
+		/// </summary>
+		public int LastTaskLine {
+			get {
+				int line = -1;
+				foreach (Task task in Children)
+				{
+					if (task.Line > line)
+						line = task.Line;
+				}
+				return line;
+			}
 		}
 
 		/// <summary>
@@ -127,13 +155,10 @@ namespace Tomboy.TaskManager {
 			ContainingNote = note;
 			//TODO merge this with things below
 			Name = name;
-		
-
 			TaskListTag tag = (TaskListTag)ContainingNote.TagTable.CreateDynamicTag ("tasklist");
 			//TextIter iter;
 			tag.TaskPriority = Priorities.HIGH;
 			NoteBuffer buffer = note.Buffer;
-			
 			
 			Initialize (start, tag);
 			
@@ -150,14 +175,13 @@ namespace Tomboy.TaskManager {
 			{
 				Children.Add (task);
 				task.RemoveTag (task.ContainingTaskList.Tag);
-
 				task.ContainingTaskList = this;
 				
 				// This is required for intendation
 				this.Tag.Priority = 0;
-
 				task.ApplyTag (this.Tag);
 			}
+			LockEnd ();			
 		}
 		
 		public void FixEnd ()
@@ -196,6 +220,8 @@ namespace Tomboy.TaskManager {
 				else
 					to_delete[0].DeleteWithLine ();
 			}
+			
+			LockEnd ();
 		}
 		
 		
@@ -221,7 +247,7 @@ namespace Tomboy.TaskManager {
 		{
 			//TODO: rewrite. looks a bit ugly everything...
 			ContainingNote = note;
-			Name = ("New TaskList!");		
+			Name = ("New TaskList!");
 			
 			TaskListTag tag = (TaskListTag)ContainingNote.TagTable.CreateDynamicTag ("tasklist");
 			TextIter iter;
@@ -245,11 +271,11 @@ namespace Tomboy.TaskManager {
 			var end = Start;
 			buffer.Insert (ref end, "New Tasklist!\n\n");
 			var start = Start;
-			
 			Buffer.ApplyTag (TaskListTag, start, end);
-			start = end; // FIXME do this when loading, when splitting
+
+/*			start = end;
 			start.BackwardChar ();
-			Buffer.ApplyTag ("locked", start, end);
+			Buffer.ApplyTag ("locked", start, end);*/
 			
 			Logger.Debug ("TaskList created");
 			//Logger.Debug (iter.Char.ToString());
@@ -257,6 +283,22 @@ namespace Tomboy.TaskManager {
 			Children = new List<AttributedTask> ();
 			end.BackwardChar ();
 			addTask (end);
+			
+			LockEnd ();
+		}
+		
+		public void LockEnd ()
+		{
+			if (Buffer.GetDynamicTag("tasklist", End) != Tag)
+			{
+				Logger.Debug ("no enter there");
+				//	var start = end;
+				//	Buffer.Insert (ref end, System.Environment.NewLine);
+				//	Buffer.ApplyTag ("locked", start, end);
+			} else {
+				Logger.Debug ("enter there");
+			}
+			
 		}
 		
 		public TaskList (Note note, Gtk.TextIter start, TaskListTag tag)
