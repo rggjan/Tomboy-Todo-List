@@ -45,37 +45,26 @@ namespace Tomboy.TaskManager {
 		/// </summary>
 		public override bool Done {
 			get {
-				return (CheckBox != null && CheckBox.Active);
+				return (check_box != null && check_box.Active);
 			}
 			set {
-				CheckBox.Active = value;
+				check_box.Active = value;
+			}
+		}
+		
+		protected override NoteBuffer Buffer {
+			get {
+				return ContainingTaskList.ContainingNote.Buffer;
 			}
 		}
 		
 		/// <summary>
 		/// Corresponding Widget for Completed Tasks.
 		/// </summary>
-		private Gtk.CheckButton CheckBox {
-			get; set;
-		}
-		
-		Gtk.TextChildAnchor boxanchor;
-		
-		/// <summary>
-		/// Date until the task should be completed.
-		/// </summary>
-		// NOTE: deleted DueDate as already defined in AttributedTask
-		private Gtk.Calendar DateWidget {
-			get; set; 
-		}
-		
-		
-		/// <summary>
-		/// TaskList containing this task.
-		/// </summary>
-		private TaskList containing_task_list;
+		private Gtk.CheckButton check_box;
 		
 		private List<AttributedTask> containers;
+		
 		public override List<AttributedTask> Containers {
 			get {
 				if (containers == null){
@@ -89,10 +78,10 @@ namespace Tomboy.TaskManager {
 			}
 		}
 		
-		//TODO: Subtasks
-		public override List<AttributedTask> Children {
-			get; set;
-		}
+		/// <summary>
+		/// TaskList containing this task.
+		/// </summary>
+		private TaskList containing_task_list;
 		
 		/// <summary>
 		/// The containing task list
@@ -110,14 +99,17 @@ namespace Tomboy.TaskManager {
 		/// Gets the tag attached to this task. Shortcut.
 		/// </summary>
 		public TaskTag TaskTag {
-			get{ return (TaskTag) Tag; }
-			set{ Tag = value; }
+			get { return (TaskTag)Tag; }
+			set { Tag = value; }
 		}
 		
+		//TODO: Subtasks
+		public override List<AttributedTask> Children {
+			get; set;
+		}
 		
 		public Task (TaskList containingList, Gtk.TextIter location)
 		{
-			Buffer = containingList.ContainingNote.Buffer;
 			//TODO: rewrite tag part (it's ugly)
 			InitializeTask (containingList, location, (TaskTag)containingList.ContainingNote.TagTable.CreateDynamicTag ("task"));
 			TaskTag.bind (this);
@@ -256,9 +248,9 @@ namespace Tomboy.TaskManager {
 			ContainingTaskList = containingList;
 			location.LineOffset = 0;
 			
-			Initialize (ContainingTaskList.ContainingNote.Buffer, location, tag);
+			Initialize (location, tag);
 			
-			Buffer.UserActionEnded += BufferChanged;
+			//Buffer.UserActionEnded += BufferChanged;
 		}
 		
 	
@@ -269,13 +261,13 @@ namespace Tomboy.TaskManager {
 		{
 			//Gtk.TextIter insertIter = Buffer.GetIterAtMark (Buffer.InsertMark);
 			
-			CheckBox = new Gtk.CheckButton ();
-			CheckBox.Name = "tomboy-inline-checkbox";
-			CheckBox.Toggled += ToggleCheckBox;
+			check_box = new Gtk.CheckButton ();
+			check_box.Name = "tomboy-inline-checkbox";
+			check_box.Toggled += ToggleCheckBox;
 			
-			boxanchor = Buffer.CreateChildAnchor (ref insertIter);
-			ContainingTaskList.ContainingNote.Window.Editor.AddChildAtAnchor (CheckBox, boxanchor);
-			CheckBox.Show ();
+			var check_box_anchor = Buffer.CreateChildAnchor (ref insertIter);
+			ContainingTaskList.ContainingNote.Window.Editor.AddChildAtAnchor (check_box, check_box_anchor);
+			check_box.Show ();
 		}
 
 		/// <summary>
@@ -340,7 +332,7 @@ namespace Tomboy.TaskManager {
 		
 		public void Toggle ()
 		{
-			CheckBox.Active = !CheckBox.Active;
+			check_box.Active = !check_box.Active;
 			TagUpdate ();
 		}
 
@@ -354,7 +346,7 @@ namespace Tomboy.TaskManager {
 			//TaskTag.Priority = Notes.;
 			ApplyTag (TaskTag);
 			
-			if (CheckBox != null && CheckBox.Active) {
+			if (check_box != null && check_box.Active) {
 				Buffer.ApplyTag ("strikethrough", DescriptionStart, DescriptionEnd);
 			} 
 			else {
@@ -380,24 +372,6 @@ namespace Tomboy.TaskManager {
 		public bool LineIsEmpty ()
 		{
 			return Buffer.GetText (DescriptionStart, DescriptionEnd, true).Trim ().Length == 0;
-		}
-		
-		/// <summary>
-		/// Called when the buffer is changed. Currently this watches for changes in the Task
-		/// description and updates the strikethrough task.
-		/// </summary>
-		private void BufferChanged (object sender, EventArgs e)
-		{
-			if (boxanchor.Deleted)
-			{
-				// Delete (); //FIXME
-			}
-			/*Debug.Assert (Buffer == sender); // no other buffer should be registred here	
-			int line = Buffer.GetIterAtMark (Buffer.InsertMark).Line;
-
-			if (line == GetTaskStart ().Line) {
-				TagUpdate ();
-			}*/
 		}
 		
 		/// <summary>
@@ -487,7 +461,7 @@ namespace Tomboy.TaskManager {
 		/// </summary>
 		private void ToggleCheckBox (object sender, EventArgs e)
 		{
-			Debug.Assert (CheckBox == sender); // no other checkbox should be registred here
+			Debug.Assert (check_box == sender); // no other checkbox should be registred here
 			TagUpdate ();
 			
 			// TODO some signalling here?

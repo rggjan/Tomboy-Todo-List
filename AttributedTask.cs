@@ -47,9 +47,9 @@ namespace Tomboy.TaskManager
 	/// </summary>
 	public abstract class AttributedTask {
 	
-		public void Initialize (NoteBuffer buffer, TextIter iter, AttributedTaskTag tag)
+		public void Initialize (TextIter iter, AttributedTaskTag tag)
 		{
-			this.Buffer = buffer;
+			//this.Buffer = buffer;
 			this.Position = Buffer.CreateMark (null, iter, true);
 			this.Tag = tag;
 			Tag.AttributedTask = this;
@@ -128,9 +128,8 @@ namespace Tomboy.TaskManager
 		/// <summary>
 		/// Describes the shortcut to the buffer
 		/// </summary>
-		protected NoteBuffer Buffer {
+		protected abstract NoteBuffer Buffer {
 			get;
-			set;
 		}
 		
 		protected TextMark Position;

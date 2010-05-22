@@ -29,9 +29,11 @@ using Gtk;
 using Tomboy;
 
 namespace Tomboy.TaskManager
-{
+{	
 	
-	
+	/// <summary>
+	/// The class that manages the Menu and GUI stuff of our Addin.
+	/// </summary>
 	public class TaskManagerGui
 	{
 		private Gtk.Menu task_menu = new Gtk.Menu ();

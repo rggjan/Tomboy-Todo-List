@@ -51,6 +51,12 @@ namespace Tomboy.TaskManager {
 			}
 		}
 
+		protected override NoteBuffer Buffer {
+			get {
+				return ContainingNote.Buffer;
+			}
+		}
+
 		
 		/// <summary>
 		/// Name of this task list
@@ -121,13 +127,15 @@ namespace Tomboy.TaskManager {
 			ContainingNote = note;
 			//TODO merge this with things below
 			Name = name;
+		
 
 			TaskListTag tag = (TaskListTag)ContainingNote.TagTable.CreateDynamicTag ("tasklist");
 			//TextIter iter;
 			tag.TaskPriority = Priorities.HIGH;
 			NoteBuffer buffer = note.Buffer;
 			
-			Initialize (buffer, start, tag);
+			
+			Initialize (start, tag);
 			
 			var end = Start;
 			buffer.Insert (ref end, name);
@@ -232,7 +240,7 @@ namespace Tomboy.TaskManager {
 				iter = lineend;
 			}
 			
-			Initialize (buffer, iter, tag);
+			Initialize (iter, tag);
 			
 			var end = Start;
 			buffer.Insert (ref end, "New Tasklist!\n\n");
@@ -256,7 +264,7 @@ namespace Tomboy.TaskManager {
 			ContainingNote = note;
 			Name = ("New TaskList!");//FIXME
 			
-			Initialize (note.Buffer, start, tag);
+			Initialize (start, tag);
 			Logger.Debug ("TaskList created");
 			
 			Children = new List<AttributedTask> ();
