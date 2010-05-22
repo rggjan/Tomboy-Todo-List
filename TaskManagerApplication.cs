@@ -58,6 +58,18 @@ namespace Tomboy.TaskManager {
 				NotebookManager.AddSpecialNotebook(openTasksNotebook);
 				
 				initialized = true;
+				
+				
+				string checkButtonStyleMod = @"style ""mystyle"" {
+												GtkCheckButton::indicator-spacing = 0
+												GtkCheckButton::focus-padding = 0
+												GtkCheckButton::focus-line-width = 0
+												GtkCheckButton::indicator-size = 13
+											}
+											widget ""*.tomboy-inline-checkbox"" style ""mystyle""
+										 ";
+			
+				Gtk.Rc.ParseString (checkButtonStyleMod);
 			}
 			
 		}
