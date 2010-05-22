@@ -16,6 +16,7 @@ namespace Tomboy.TaskManager {
 		private bool new_task_needed = false;
 		private Task task_deletion_needed = null;
 		private TaskList current_task_list = null;
+		private TaskList lock_end_needed = null;
 
 		
 		private List<TaskList> tasklists;
@@ -110,18 +111,45 @@ namespace Tomboy.TaskManager {
 			if (!Note.TagTable.IsDynamicTagRegistered ("tasklist"))
 				Note.TagTable.RegisterDynamicTag ("tasklist", typeof(TaskListTag));
 			
+			//StartListeners ();
+		}
+		
+		public void StartListeners ()
+		{
 			Buffer.InsertText += BufferInsertText;
 			Buffer.UserActionEnded += CheckIfNewTaskNeeded;
 			Buffer.DeleteRange += DeleteRange;
+			
+			this.Note.Window.Editor.KeyReleaseEvent += FixEnd;
+			//this.Note.Window.Editor.
+		}
+		
+		public void FixEnd (object o, Gtk.KeyReleaseEventArgs args)
+		{
+			if (lock_end_needed != null)
+			{
+				StopListeners ();
+				if (lock_end_needed.LockEnd ())
+					lock_end_needed.PlaceCursorAtEnd ();
+				
+				lock_end_needed = null;
+				StartListeners ();
+			}
 		}
 
 		public override void Shutdown ()
 		{
+			StopListeners ();
+			gui.StopListeners ();
+		}
+		
+		public void StopListeners ()
+		{
+			this.Note.Window.Editor.KeyReleaseEvent -= FixEnd;
+			
 			Buffer.InsertText -= BufferInsertText;
 			Buffer.UserActionEnded -= CheckIfNewTaskNeeded;
 			Buffer.DeleteRange -= DeleteRange;
-			
-			gui.StopListeners ();
 		}
 
 		/// <summary>
@@ -132,6 +160,7 @@ namespace Tomboy.TaskManager {
 		{
 			gui = new TaskManagerGui (this);
 			gui.StartListeners ();
+			StartListeners ();
 			
 			//Initialise tasklists list
 			//TODO: get from previous sessions?		
@@ -155,28 +184,33 @@ namespace Tomboy.TaskManager {
 			return true;
 		}
 		
+		
+		
 		void DeleteRange (object o, Gtk.DeleteRangeArgs args)
 		{
-			// Recursion problem without this:
-			Buffer.DeleteRange -= DeleteRange;
+			StopListeners ();
 			
 			Buffer.Undoer.ClearUndoHistory ();
 			//TODO apply this everywhere!
-
+		
 			TaskList tasklist1 = utils.GetTaskList (args.Start);
 			if (tasklist1 != null)
 				Logger.Debug ("Tasklist start deleted!");
 			
 			var iter = args.Start;
 			iter.BackwardChar ();
+		
 
 			TaskList tasklist2 = utils.GetTaskList (iter);
 			if (tasklist2 != null)
 			{
+				Logger.Debug ("Tasklist end deleted!");
 				tasklist2.FixEnd ();
-				Logger.Debug ("Tasklist end deleted!");			
+				lock_end_needed = tasklist2;
+				//tasklist2.PlaceCursorAtEnd ();
 			}
-			Buffer.DeleteRange += DeleteRange;
+			
+			StartListeners ();
 		}
 		
 		/*Task GetTaskAtCursor ()
@@ -195,7 +229,7 @@ namespace Tomboy.TaskManager {
 		/// </param>
 		void BufferInsertText (object o, Gtk.InsertTextArgs args)
 		{
-			if (args.Text == System.Environment.NewLine) {
+			if (args.Text == System.Environment.NewLine) {//FIXME enter at very beginning of last task problem
 				Gtk.TextIter end = args.Pos;
 				end.BackwardChar ();
 				
@@ -277,11 +311,11 @@ namespace Tomboy.TaskManager {
 					end.ForwardToLineEnd ();
 					
 					TaskTag tt = utils.GetTaskTag (iter);
-					if(tt!=null){
+					if (tt != null) {
 						Logger.Debug ("removing old tasktag");
 						Buffer.RemoveTag (tt, iter, end);
 					}
-//					Buffer.RemoveTag ("locked", iter, end);
+					//					Buffer.RemoveTag ("locked", iter, end);
 					
 					current_task_list.addTask (iter);
 				}
@@ -289,6 +323,7 @@ namespace Tomboy.TaskManager {
 			}
 			//TODO: also check for tasklist name change
 		}
+		
 		
 		private bool IsTextTodoItem (String text)
 		{

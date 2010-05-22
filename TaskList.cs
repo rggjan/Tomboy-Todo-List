@@ -181,9 +181,8 @@ namespace Tomboy.TaskManager {
 				this.Tag.Priority = 0;
 				task.ApplyTag (this.Tag);
 			}
-			LockEnd ();			
 		}
-		
+
 		public void FixEnd ()
 		{
 			Logger.Debug ("fixing end");
@@ -220,10 +219,34 @@ namespace Tomboy.TaskManager {
 				else
 					to_delete[0].DeleteWithLine ();
 			}
+		
 			
-			LockEnd ();
 		}
 		
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns>
+		/// A <see cref="System.Boolean"/>, true if a newline was inserted
+		/// </returns>
+		public bool LockEnd ()
+		{
+			bool result = false;
+			
+			Logger.Debug ("locking end");
+			var end = End;
+			if (Buffer.GetDynamicTag ("tasklist", end) != Tag) {
+				result = true;
+				Logger.Debug ("inserting \\n");
+				Buffer.Insert (ref end, System.Environment.NewLine);
+			}
+			
+			end = End;
+			var start = end;
+			end.ForwardChar ();
+			Buffer.ApplyTag ("locked", start, end);
+			return result;
+		}
 		
 		public void DebugPrint ()
 		{
@@ -283,22 +306,11 @@ namespace Tomboy.TaskManager {
 			Children = new List<AttributedTask> ();
 			end.BackwardChar ();
 			addTask (end);
-			
-			LockEnd ();
 		}
 		
-		public void LockEnd ()
+		public void PlaceCursorAtEnd ()
 		{
-			if (Buffer.GetDynamicTag("tasklist", End) != Tag)
-			{
-				Logger.Debug ("no enter there");
-				//	var start = end;
-				//	Buffer.Insert (ref end, System.Environment.NewLine);
-				//	Buffer.ApplyTag ("locked", start, end);
-			} else {
-				Logger.Debug ("enter there");
-			}
-			
+			Buffer.PlaceCursor (End);
 		}
 		
 		public TaskList (Note note, Gtk.TextIter start, TaskListTag tag)
