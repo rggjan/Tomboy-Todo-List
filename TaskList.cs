@@ -219,13 +219,14 @@ namespace Tomboy.TaskManager {
 		
 		public void FixTitle ()
 		{
-			if (StartDeleted ())
-			{
-				Logger.Debug ("Start Deleted");
-			} else {
+			//if (StartDeleted ())
+			//{
+			//	Logger.Debug ("Start Deleted");
+				
+			//} else {
 				utils.RemoveTaskTags (DescriptionStart, DescriptionEnd);
 				Buffer.ApplyTag (Tag, DescriptionStart, DescriptionEnd);
-			}
+			//}
 		}
 
 		/// <summary>

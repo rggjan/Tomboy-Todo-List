@@ -250,7 +250,8 @@ namespace Tomboy.TaskManager {
 				}
 			} else if (tasklist1 != null) {
 				Logger.Debug ("Fixing Start");
-				//TODO
+				tasklist1.FixTitle ();
+				tasklist1.RemoveDeletedTasks ();
 			} else {
 				Logger.Debug ("Fixing End");
 				tasklist2.FixWithin (args.Start.Line);
