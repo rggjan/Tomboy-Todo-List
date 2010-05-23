@@ -211,7 +211,7 @@ namespace Tomboy.TaskManager {
 			if (tasktag != null) {
 				Task task = tasktag.Task;
 				return task.Fix ();
-			} else {
+			} else { // In title
 				FixTitle ();
 				return null;
 			}
@@ -221,7 +221,7 @@ namespace Tomboy.TaskManager {
 		{
 			if (StartDeleted ())
 			{
-				//TODO
+				Logger.Debug ("Start Deleted");
 			} else {
 				utils.RemoveTaskTags (DescriptionStart, DescriptionEnd);
 				Buffer.ApplyTag (Tag, DescriptionStart, DescriptionEnd);
@@ -384,7 +384,7 @@ namespace Tomboy.TaskManager {
 
 			/*start = end;
 			start.BackwardChar ();
-			Buffer.ApplyTag ("locked", start, end);*/
+			Buffer.ApplyTag ("locked", start, end);*/ //TODO lock start!
 			
 			Logger.Debug ("TaskList created");
 			//Logger.Debug (iter.Char.ToString());
