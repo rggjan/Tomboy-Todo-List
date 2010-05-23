@@ -184,7 +184,7 @@ namespace Tomboy.TaskManager {
 		private bool OnPriorityClicked (NoteTag tag, NoteEditor editor, Gtk.TextIter start, Gtk.TextIter end)
 		{
 			Logger.Debug ("clicked!");
-			utils.GetTask (start).Priority = Priorities.VERY_HIGH;
+			utils.GetTask (start).Priority = Priority.VERY_HIGH;
 			
 			StopListeners ();
 			gui.PriorityShown = true;
@@ -363,7 +363,7 @@ namespace Tomboy.TaskManager {
 					}
 					//					Buffer.RemoveTag ("locked", iter, end);
 					
-					current_task_list.addTask (iter);
+					current_task_list.AddTask (iter);
 				}
 				new_task_needed = false;
 			}

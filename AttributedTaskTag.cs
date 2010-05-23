@@ -50,16 +50,16 @@ namespace Tomboy.TaskManager
 			CanGrow = true;
 			LeftMarginSet = true;
 			
-			Attributes.Add ("Duedate", "");
+			Attributes.Add ("Duedate", String.Empty);
 			Attributes.Add ("Priority", "UNSET");
 		}
 		
 		/// <summary>
 		/// The property of the attached task or tasklist
 		/// </summary>
-		public Priorities TaskPriority {
+		public Priority TaskPriority {
 			get {
-				return (Priorities)Enum.Parse (typeof(Priorities), Attributes["Priority"]);
+				return (Priority)Enum.Parse (typeof(Priority), Attributes["Priority"]);
 			}
 			set {
 				Attributes["Priority"] = value.ToString ();
@@ -92,7 +92,7 @@ namespace Tomboy.TaskManager
 		/// <param name="atask">
 		/// A <see cref="AttributedTask"/>
 		/// </param>
-		public void bind (AttributedTask atask)
+		public void Bind (AttributedTask atask)
 		{
 			AttributedTask = atask;
 		}

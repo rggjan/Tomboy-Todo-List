@@ -99,7 +99,7 @@ namespace Tomboy.TaskManager {
 					return true;
 			}
 			set {
-				Children.ForEach(c => c.Done = true);
+				Children.ForEach(c => c.Done = value);
 			}
 		}
 		
@@ -157,7 +157,7 @@ namespace Tomboy.TaskManager {
 			Name = name;
 			TaskListTag tag = (TaskListTag)ContainingNote.TagTable.CreateDynamicTag ("tasklist");
 			//TextIter iter;
-			tag.TaskPriority = Priorities.HIGH;
+			tag.TaskPriority = Priority.HIGH;
 			NoteBuffer buffer = note.Buffer;
 			
 			Initialize (start, tag);
@@ -321,7 +321,7 @@ namespace Tomboy.TaskManager {
 			
 			Children = new List<AttributedTask> ();
 			end.BackwardChar ();
-			addTask (end);
+			AddTask (end);
 		}
 		
 		public void PlaceCursorAtEnd ()
@@ -346,12 +346,12 @@ namespace Tomboy.TaskManager {
 		/// <param name="at">
 		/// <see cref="Gtk.TextMark"/> Where to add the task in the Buffer.
 		/// </param>
-		public void addTask (Gtk.TextIter position)
+		public void AddTask (Gtk.TextIter position)
 		{
 			Children.Add (new Task (this, position));
 		}
 
-		public void addTask (Gtk.TextIter position, TaskTag tag)
+		public void AddTask (Gtk.TextIter position, TaskTag tag)
 		{
 			Children.Add (new Task (this, position, tag));
 		}

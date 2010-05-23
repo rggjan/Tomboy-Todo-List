@@ -67,7 +67,7 @@ namespace Tomboy.TaskManager {
 		
 		public override List<AttributedTask> Containers {
 			get {
-				if (containers == null){
+				if (containers == null) {
 					List<AttributedTask> result = new List<AttributedTask> ();
 					result.Add (containing_task_list);
 				}
@@ -112,7 +112,7 @@ namespace Tomboy.TaskManager {
 		{
 			//TODO: rewrite tag part (it's ugly)
 			InitializeTask (containingList, location, (TaskTag)containingList.ContainingNote.TagTable.CreateDynamicTag ("task"));
-			TaskTag.bind (this);
+			TaskTag.Bind (this);
 			
 			var iter = Start;
 			Buffer.PlaceCursor (iter);
@@ -275,7 +275,7 @@ namespace Tomboy.TaskManager {
 		/// </summary>
 		public void AddPriority ()
 		{
-			Priority = Priorities.LOW;
+			Priority = Priority.LOW;
 			ShowPriority ();
 		}
 		
@@ -448,7 +448,7 @@ namespace Tomboy.TaskManager {
 		
 		public TaskList DeleteWithLine ()
 		{
-			return DeleteWithLine ("");
+			return DeleteWithLine (String.Empty);
 		}
 		
 		/// <summary>
@@ -477,7 +477,7 @@ namespace Tomboy.TaskManager {
 			if (!IsLastTask ()) {
 				Logger.Debug ("is not last task");
 				
-				if (name.Equals(""))
+				if (name.Equals(String.Empty))
 					return Split ();
 				else
 					return Split (name);

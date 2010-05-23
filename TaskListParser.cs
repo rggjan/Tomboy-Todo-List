@@ -78,7 +78,7 @@ namespace Tomboy.TaskManager
 			
 			foreach (KeyValuePair<TaskTag, TextRange> kvp in tasks){
 				TaskList tasklist = utils.GetTaskList (kvp.Value.Start);
-				tasklist.addTask (kvp.Value.Start, kvp.Key);
+				tasklist.AddTask (kvp.Value.Start, kvp.Key);
 			}
 
 			foreach (TextRange r in links) {

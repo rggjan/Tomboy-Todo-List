@@ -64,25 +64,25 @@ namespace Tomboy.TaskManager.Tests
 
 		
 		/// <summary>
-		/// Ensures that priorities are loaded correctly from XML.
+		/// Ensures that Priority are loaded correctly from XML.
 		/// </summary>
 		[Test()]
-		public void LoadingPriorities ()
+		public void LoadingPriority ()
 		{
 			singleManager.DeserializeTasklists ();
 			
 			// for tasklists
-			Assert.That(singleManager.TaskLists[0].Priority == Priorities.LOW);
+			Assert.That(singleManager.TaskLists[0].Priority == Priority.LOW);
 			
 			// for tasks in tasklist
 			var veryLowPrioTask = singleManager.TaskLists[0].Children[0];
-			Assert.That (veryLowPrioTask.Priority == Priorities.VERY_LOW);
+			Assert.That (veryLowPrioTask.Priority == Priority.VERY_LOW);
 			
 			var highPrioTask = singleManager.TaskLists[0].Children[1];
-			Assert.That (highPrioTask.Priority == Priorities.HIGH);
+			Assert.That (highPrioTask.Priority == Priority.HIGH);
 
 			var normalPrioTask = singleManager.TaskLists[0].Children[2];
-			Assert.That (normalPrioTask.Priority == Priorities.NORMAL);
+			Assert.That (normalPrioTask.Priority == Priority.NORMAL);
 		}
 		
 		
@@ -92,11 +92,11 @@ namespace Tomboy.TaskManager.Tests
 			singleManager.DeserializeTasklists();
 			
 			// preconditions for successful testing
-			Assert.That(singleManager.TaskLists[0].Priority != Priorities.NORMAL);
-			Assert.That(singleManager.TaskLists[0].Children[0].Priority != Priorities.VERY_HIGH);
+			Assert.That(singleManager.TaskLists[0].Priority != Priority.NORMAL);
+			Assert.That(singleManager.TaskLists[0].Children[0].Priority != Priority.VERY_HIGH);
 			
-			singleManager.TaskLists[0].Priority = Priorities.NORMAL;
-			singleManager.TaskLists[0].Children[0].Priority = Priorities.VERY_HIGH;
+			singleManager.TaskLists[0].Priority = Priority.NORMAL;
+			singleManager.TaskLists[0].Children[0].Priority = Priority.VERY_HIGH;
 			singleTaskListNote.Save();
 			
 			// reload as another note object
@@ -104,8 +104,8 @@ namespace Tomboy.TaskManager.Tests
 			changedManager.DeserializeTasklists();
 			
 			// saving worked?
-			Assert.That(changedManager.TaskLists[0].Priority == Priorities.NORMAL);
-			Assert.That(changedManager.TaskLists[0].Children[0].Priority == Priorities.VERY_HIGH);
+			Assert.That(changedManager.TaskLists[0].Priority == Priority.NORMAL);
+			Assert.That(changedManager.TaskLists[0].Children[0].Priority == Priority.VERY_HIGH);
 		}
 		
 		

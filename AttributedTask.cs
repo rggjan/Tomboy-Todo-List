@@ -33,7 +33,7 @@ namespace Tomboy.TaskManager
 	/// <summary>
 	/// Enum used for priorities
 	/// </summary>
-	public enum Priorities {
+	public enum Priority {
 		UNSET,
 		VERY_LOW,
 		LOW,
@@ -69,7 +69,7 @@ namespace Tomboy.TaskManager
 		/// <returns>
 		/// A <see cref="boolean"/>; 
 		/// </returns>
-		public bool isOverdue ()
+		public bool IsOverdue ()
 		{
 			return DueDate.CompareTo(DateTime.Now) <= 0;
 		}
@@ -79,7 +79,7 @@ namespace Tomboy.TaskManager
 		/// The priority that is assigned to this task.
 		/// Note that default must be set to 3, not 0
 		/// </summary>
-		public Priorities Priority {
+		public Priority Priority {
 			get { return Tag.TaskPriority; }
 			set { Tag.TaskPriority = value; }
 		}
@@ -122,7 +122,7 @@ namespace Tomboy.TaskManager
 		/// </returns>
 		public bool PriorityUnset ()
 		{
-			return (Priority == Priorities.UNSET);
+			return (Priority == Priority.UNSET);
 		}
 		
 		/// <summary>
