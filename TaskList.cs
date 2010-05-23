@@ -193,6 +193,27 @@ namespace Tomboy.TaskManager {
 			}
 		}
 		
+		public void TransferTasksTo (TaskList tasklist)
+		{
+			List<Task> to_transfer = new List<Task> ();
+			
+			foreach (Task task in Children) {
+				if (!task.WasDeleted) {
+					Logger.Debug ("adding task " + task.Description ());
+					to_transfer.Add (task);
+				}
+			}
+			
+			foreach (Task task in to_transfer) {
+				tasklist.AddFinishedTask (task);
+				task.RemoveTag (Tag);
+				Children.Remove (task);
+			}
+			
+			Delete ();
+			tasklist.LockEnd ();
+		}
+		
 		public TaskList FixWithin (int line)
 		{
 			Logger.Debug ("FixWithin");
@@ -211,7 +232,9 @@ namespace Tomboy.TaskManager {
 			if (tasktag != null) {
 				Task task = tasktag.Task;
 				return task.Fix ();
-			} else { // In title
+			} else {
+				// In title
+				Logger.Debug ("Fixing title");
 				FixTitle ();
 				return null;
 			}
@@ -225,7 +248,7 @@ namespace Tomboy.TaskManager {
 				
 			//} else {
 				utils.RemoveTaskTags (DescriptionStart, DescriptionEnd);
-				Buffer.ApplyTag (Tag, DescriptionStart, DescriptionEnd);
+				Buffer.ApplyTag (Tag, DescriptionStart, End);
 			//}
 		}
 
@@ -241,7 +264,7 @@ namespace Tomboy.TaskManager {
 
 			foreach (Task task in Children)
 			{
-				if (task.WasDeleted ())
+				if (task.WasDeleted)
 				{
 					Logger.Debug ("Found Deleted Task");
 					remove_list.Add (task);
@@ -408,6 +431,12 @@ namespace Tomboy.TaskManager {
 		public void AddTask (Gtk.TextIter position)
 		{
 			Children.Add (new Task (this, position));
+		}
+		
+		public void AddFinishedTask(Task task)
+		{
+			Children.Add (task);
+			task.ApplyTag (Tag);
 		}
 
 		public void AddTask (Gtk.TextIter position, TaskTag tag)

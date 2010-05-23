@@ -246,7 +246,9 @@ namespace Tomboy.TaskManager {
 						tasklists.Add (new_list);
 				} else {
 					Logger.Debug ("Oh No, have to merge two TaskLists!");
-					//TODO
+					tasklist2.FixWithin (args.Start.Line);
+					tasklist1.TransferTasksTo (tasklist2);
+					tasklists.Remove (tasklist1);
 				}
 			} else if (tasklist1 != null) {
 				Logger.Debug ("Fixing Start");
@@ -262,6 +264,8 @@ namespace Tomboy.TaskManager {
 			
 			StartListeners ();
 		}
+		
+		//TODO beginning of task lists need fix
 		
 		/*Task GetTaskAtCursor ()
 		{

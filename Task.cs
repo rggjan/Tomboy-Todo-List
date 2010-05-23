@@ -189,12 +189,14 @@ namespace Tomboy.TaskManager {
 			return true;
 		}
 		
-		public bool WasDeleted ()
+		public bool WasDeleted
 		{
-			if (TaskTagValid (Start) && Start.LineOffset == 0)
-				return false;
-			else
-				return true;
+			get {
+				if (TaskTagValid (Start) && Start.LineOffset == 0)
+					return false;
+				else
+					return true;
+			}
 		}
 		
 		public bool IsValid
