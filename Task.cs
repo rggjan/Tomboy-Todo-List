@@ -190,7 +190,7 @@ namespace Tomboy.TaskManager {
 		
 		public bool WasDeleted ()
 		{
-			if (TaskTagValid (Start))
+			if (TaskTagValid (Start) && Start.LineOffset == 0)
 				return false;
 			else
 				return true;
@@ -202,21 +202,22 @@ namespace Tomboy.TaskManager {
 				//if (!TaskTagValid (DescriptionStart))
 				//	return false;
 			
-			var iter = Start;
+				var iter = Start;
 				iter.ForwardChars (2);
 
-			if (!TaskTagValid (iter))
+				if (!TaskTagValid (iter))
 					return false;
 			
-			bool found = false;
+				bool found = false;
 				foreach (Gtk.TextTag tag in iter.Tags)
-			{
-					if (tag.Name == "checkbox-active")
 				{
+					if (tag.Name == "checkbox-active")
+					{
 						found = true;
 						break;
 					}
 				}
+				
 				if (!found)
 					return false;
 			
@@ -484,18 +485,55 @@ namespace Tomboy.TaskManager {
 			//FIXME also for other containers?
 		}
 		
+		
+		public void RemoveTaskTags (Gtk.TextIter start, Gtk.TextIter end)
+		{
+			var iter = start;
+
+			Buffer.RemoveTag ("locked", start, end);
+			Buffer.RemoveTag ("checkbox", start, end);
+			Buffer.RemoveTag ("checkbox-active", start, end);
+			Buffer.RemoveTag ("priority", start, end);
+			Buffer.RemoveTag ("duedate", start, end);
+			
+			while (!iter.Equal (end))
+			{
+				bool found = true;
+				while (found) {
+					found = false;
+					Gtk.TextTag tag = Buffer.GetDynamicTag ("task", iter);
+					if (tag != null) {
+						Buffer.RemoveTag (tag, start, end);
+						found = true;
+						Logger.Debug ("found");
+					}
+				}
+				iter.ForwardChar ();
+			}
+		}
+		
 		public TaskList Fix ()
 		{
 			Logger.Debug ("Fixing");
 			if (IsValid)
-				return null;
-			//TODO merge...
-			else
 			{
+				Logger.Debug ("removing all tags in ");
+				Logger.Debug (Buffer.GetText (DescriptionStart, DescriptionEnd, false));
+				RemoveTaskTags (DescriptionStart, DescriptionEnd);
+				TagUpdate ();
+				return null;
+			}
+			else { 
 				return DeleteAndSplit ();
 			}
 		}
 		
+		/// <summary>
+		/// Deletes this task and Splits / Merges the two remaining task list parts.
+		/// </summary>
+		/// <returns>
+		/// A <see cref="TaskList"/>
+		/// </returns>
 		public TaskList DeleteAndSplit ()
 		{
 			Logger.Debug ("Deleting and Splitting");

@@ -95,12 +95,6 @@ namespace Tomboy.TaskManager {
 			if (Note.TagTable.Lookup ("checkbox") == null)
 				Note.TagTable.Add (tag);
 			
-			tag = new NoteTag ("invisible");
-			tag.Invisible = true;
-			
-			if (Note.TagTable.Lookup ("invisible") == null)
-				Note.TagTable.Add (tag);
-			
 			if (Note.TagTable.Lookup ("duedate") == null)
 				Note.TagTable.Add (new DateTag ("duedate"));
 
