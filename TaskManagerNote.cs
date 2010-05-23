@@ -171,7 +171,6 @@ namespace Tomboy.TaskManager {
 			StartListeners ();
 			
 			//Initialise tasklists list
-			//TODO: get from previous sessions?		
 			DeserializeTasklists ();
 		}
 		
@@ -222,7 +221,6 @@ namespace Tomboy.TaskManager {
 
 			Buffer.Undoer.ClearUndoHistory ();
 			//TODO apply this everywhere!
-			
 
 			TaskList tasklist1 = utils.GetTaskList (args.Start);
 			if (tasklist1 != null)
@@ -233,27 +231,11 @@ namespace Tomboy.TaskManager {
 			TaskList tasklist2 = utils.GetTaskList (iter);
 			
 			if (tasklist2 != null)
-			{
 				Logger.Debug ("Tasklist end deleted!");
-				
-				/*tasklist2.FixEnd ();
-				
-				Task task = utils.GetTask ();
-				if (task != null && !utils.GetTask ().IsValid ())
-		{
-					task_to_fix = task;
-					Logger.Debug ("Have to fix Task!");
-				}
-				
-				lock_end_needed = tasklist2;*/			
 
 
-			
-				//tasklist2.PlaceCursorAtEnd ();
-			}		
-		
 			if (tasklist2 == null && tasklist1 == null) {
-				Logger.Debug ("Checking for Whole deleted tasks");
+				Logger.Debug ("Checking for Deleted Tasks");
 				ValidateTaskLists ();
 			} else if (tasklist1 != null && tasklist2 != null) {
 				if (tasklist1 == tasklist2)
@@ -262,11 +244,19 @@ namespace Tomboy.TaskManager {
 					TaskList new_list = tasklist1.FixWithin (args.Start.Line);
 					if (new_list != null)
 						tasklists.Add (new_list);
+				} else {
+					Logger.Debug ("Oh No, have to merge two TaskLists!");
+					//TODO
 				}
-				//TODO other cases
-				
+			} else if (tasklist1 != null) {
+				Logger.Debug ("Fixing Start");
+				//TODO
+			} else {
+				Logger.Debug ("Fixing End");
+				tasklist2.FixWithin (args.Start.Line);
+				tasklist2.LockEnd ();
 			}
-			
+		
 			StartListeners ();
 		}
 		
@@ -410,7 +400,7 @@ namespace Tomboy.TaskManager {
 				{
 					t.AddWidgets ();
 				}
-				tl.FixEnd ();
+				tl.LockEnd ();
 			}
 			
 			// TODO load this from the configuration?

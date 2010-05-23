@@ -228,25 +228,6 @@ namespace Tomboy.TaskManager {
 			}
 		}
 
-		
-		public void FixEnd ()
-		{
-			Logger.Debug ("fixing end");
-			
-		
-			Logger.Debug (Children.Count.ToString ());
-			
-			RemoveDeletedTasks ();
-			
-			
-		/*	if (to_delete.Count > 0) {
-				if (to_delete.Count > 1)
-					Logger.Fatal ("Something has gone wrong!");
-				else
-					to_delete[0].DeleteWithLine ();
-			}*/
-		}
-		
 		/// <summary>
 		/// Returns a list of Invalid Tasks
 		/// </summary>
@@ -297,6 +278,11 @@ namespace Tomboy.TaskManager {
 				result = true;
 				Logger.Debug ("inserting \\n");
 				Buffer.Insert (ref end, System.Environment.NewLine);
+				if (Buffer.GetIterAtMark (Buffer.InsertMark).Equal (end))
+				{
+					end.BackwardChar ();
+					Buffer.PlaceCursor (end);
+				}
 			}
 			
 			end = End;
