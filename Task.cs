@@ -499,9 +499,19 @@ namespace Tomboy.TaskManager {
 		public TaskList DeleteAndSplit ()
 		{
 			Logger.Debug ("Deleting and Splitting");
-			var end = DescriptionEnd;
-			Buffer.Insert (ref end, "\n");
-			return DeleteWithLine (Buffer.GetText(Start, DescriptionEnd, false).TrimStart());
+			if (Buffer.GetText (Start, End, false).Trim ().Length == 0)
+			{
+				Logger.Debug ("Merging");
+				var start = Start;
+				var end = End;
+				Buffer.Delete (ref start, ref end);
+				Delete ();
+				return null;
+			} else {
+				var end = DescriptionEnd;
+				Buffer.Insert (ref end, "\n");
+				return DeleteWithLine (Buffer.GetText (Start, DescriptionEnd, false).TrimStart ());
+			}
 		}
 		
 		public void RemoveTaskStuff ()
