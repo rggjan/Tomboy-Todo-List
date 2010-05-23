@@ -244,6 +244,7 @@ namespace Tomboy.TaskManager {
 			var start = end;
 			end.ForwardChar ();
 			Buffer.ApplyTag ("locked", start, end);
+			
 			return result;
 		}
 		
@@ -312,7 +313,7 @@ namespace Tomboy.TaskManager {
 			var start = Start;
 			Buffer.ApplyTag (TaskListTag, start, end);
 
-/*			start = end;
+			/*start = end;
 			start.BackwardChar ();
 			Buffer.ApplyTag ("locked", start, end);*/
 			
@@ -322,6 +323,8 @@ namespace Tomboy.TaskManager {
 			Children = new List<AttributedTask> ();
 			end.BackwardChar ();
 			AddTask (end);
+			
+			LockEnd ();
 		}
 		
 		public void PlaceCursorAtEnd ()

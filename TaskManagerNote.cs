@@ -282,6 +282,8 @@ namespace Tomboy.TaskManager {
 		/// </param>
 		void BufferInsertText (object o, Gtk.InsertTextArgs args)
 		{
+			//TODO check if inserted at x:  "3[]X ..."
+			//TODO same but with enter...
 			if (args.Text == System.Environment.NewLine) {//FIXME enter at very beginning of last task problem
 				Gtk.TextIter end = args.Pos;
 				end.BackwardChar ();
@@ -405,7 +407,7 @@ namespace Tomboy.TaskManager {
 				{
 					t.AddWidgets ();
 				}
-				tl.LockEnd ();
+				tl.FixEnd ();
 			}
 			
 			// TODO load this from the configuration?
