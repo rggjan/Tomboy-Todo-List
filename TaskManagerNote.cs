@@ -256,7 +256,9 @@ namespace Tomboy.TaskManager {
 				tasklist2.FixWithin (args.Start.Line);
 				tasklist2.LockEnd ();
 			}
-		
+			
+			utils.ResetCursor ();
+			
 			StartListeners ();
 		}
 		
