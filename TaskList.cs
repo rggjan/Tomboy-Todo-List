@@ -163,6 +163,9 @@ namespace Tomboy.TaskManager {
 			Initialize (start, tag);
 			
 			var end = Start;
+			if (tasks.Count == 0)
+				name = name + "\n";
+			
 			buffer.Insert (ref end, name);
 			start = Start;
 			end.ForwardChar ();
@@ -170,17 +173,23 @@ namespace Tomboy.TaskManager {
 			
 			Children = new List<AttributedTask> ();
 			
-			foreach (Task task in tasks)
+			if (tasks.Count > 0)
+				foreach (Task task in tasks)
 			{
-				Children.Add (task);
-				task.RemoveTag (task.ContainingTaskList.Tag);
-				task.ContainingTaskList = this;
+					Children.Add (task);
+					task.RemoveTag (task.ContainingTaskList.Tag);
+					task.ContainingTaskList = this;
 				
 				// This is required for intendation
-				this.Tag.Priority = 0;
-				Logger.Info (Start.Line.ToString ());
-				Logger.Info (task.Start.Line.ToString ());
-				task.ApplyTag (this.Tag);
+					this.Tag.Priority = 0;
+					Logger.Info (Start.Line.ToString ());
+					Logger.Info (task.Start.Line.ToString ());
+					task.ApplyTag (this.Tag);
+				}
+			else
+			{
+				end.BackwardChar ();
+				AddTask (end);
 			}
 		}
 		

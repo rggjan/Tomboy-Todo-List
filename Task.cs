@@ -460,7 +460,6 @@ namespace Tomboy.TaskManager {
 			//		end = DescriptionEnd;
 			var end = DescriptionEnd;
 			
-			
 			Buffer.Delete (ref start, ref end);
 			
 			start = Start;
@@ -471,12 +470,12 @@ namespace Tomboy.TaskManager {
 
 			Delete ();
 			
-			if (!IsLastTask ()) {
+			if (!IsLastTask () || name.Length > 0) {
 				Logger.Debug ("is not last task");
 				
-				if (name.Equals(String.Empty))
+				/*if (name.Equals(String.Empty))
 					return Split ();
-				else
+				else*/
 					return Split (name);
 			}
 			
@@ -487,19 +486,21 @@ namespace Tomboy.TaskManager {
 		
 		public TaskList Fix ()
 		{
-			Logger.Debug("Fixing");
+			Logger.Debug ("Fixing");
 			if (IsValid)
 				return null;
 			//TODO merge...
 			else
+			{
 				return DeleteAndSplit ();
+			}
 		}
 		
 		public TaskList DeleteAndSplit ()
 		{
 			Logger.Debug ("Deleting and Splitting");
 			var end = DescriptionEnd;
-			Buffer.Insert(ref end, "\n");
+			Buffer.Insert (ref end, "\n");
 			return DeleteWithLine (Buffer.GetText(Start, DescriptionEnd, false).TrimStart());
 		}
 		
