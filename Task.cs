@@ -52,6 +52,7 @@ namespace Tomboy.TaskManager {
 			}
 		}
 		
+		
 		protected override NoteBuffer Buffer {
 			get {
 				return ContainingTaskList.ContainingNote.Buffer;
@@ -486,32 +487,6 @@ namespace Tomboy.TaskManager {
 		}
 		
 		
-		public void RemoveTaskTags (Gtk.TextIter start, Gtk.TextIter end)
-		{
-			var iter = start;
-
-			Buffer.RemoveTag ("locked", start, end);
-			Buffer.RemoveTag ("checkbox", start, end);
-			Buffer.RemoveTag ("checkbox-active", start, end);
-			Buffer.RemoveTag ("priority", start, end);
-			Buffer.RemoveTag ("duedate", start, end);
-			
-			while (!iter.Equal (end))
-			{
-				bool found = true;
-				while (found) {
-					found = false;
-					Gtk.TextTag tag = Buffer.GetDynamicTag ("task", iter);
-					if (tag != null) {
-						Buffer.RemoveTag (tag, start, end);
-						found = true;
-						Logger.Debug ("found");
-					}
-				}
-				iter.ForwardChar ();
-			}
-		}
-		
 		public TaskList Fix ()
 		{
 			Logger.Debug ("Fixing");
@@ -519,8 +494,9 @@ namespace Tomboy.TaskManager {
 			{
 				Logger.Debug ("removing all tags in ");
 				Logger.Debug (Buffer.GetText (DescriptionStart, DescriptionEnd, false));
-				RemoveTaskTags (DescriptionStart, DescriptionEnd);
+				utils.RemoveTaskTags (DescriptionStart, DescriptionEnd);
 				TagUpdate ();
+				ApplyTag (ContainingTaskList.Tag);
 				return null;
 			}
 			else { 

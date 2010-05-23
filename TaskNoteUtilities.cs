@@ -92,11 +92,40 @@ namespace Tomboy.TaskManager
 		public TaskList GetTaskList ()
 		{
 			TaskListTag tag = GetTaskListTag ();
-			if(tag != null)
-				return tag.TaskList; 
+			if (tag != null)
+				return tag.TaskList;
 			return null;
 		}
 		
+		public void RemoveTaskTags (Gtk.TextIter start, Gtk.TextIter end)
+		{
+			var iter = start;
+
+			Buffer.RemoveTag ("locked", start, end);
+			Buffer.RemoveTag ("checkbox", start, end);
+			Buffer.RemoveTag ("checkbox-active", start, end);
+			Buffer.RemoveTag ("priority", start, end);
+			Buffer.RemoveTag ("duedate", start, end);
+			
+			while (!iter.Equal (end))
+			{
+				bool found = true;
+				while (found) {
+					found = false;
+					Gtk.TextTag tag = Buffer.GetDynamicTag ("task", iter);
+					if (tag != null) {
+						Buffer.RemoveTag (tag, start, end);
+						found = true;
+					}
+					tag = Buffer.GetDynamicTag ("tasklist", iter);
+					if (tag != null) {
+						Buffer.RemoveTag (tag, start, end);
+						found = true;
+					}
+				}
+				iter.ForwardChar ();
+			}
+		}		
 		public TaskList GetTaskList (TextIter iter)
 		{
 			TaskListTag tag = GetTaskListTag (iter);

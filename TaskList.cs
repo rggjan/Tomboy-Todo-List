@@ -196,7 +196,6 @@ namespace Tomboy.TaskManager {
 		public TaskList FixWithin (int line)
 		{
 			Logger.Debug ("FixWithin");
-			//TODO part of title deleted
 			var invalid_list = RemoveDeletedTasks ();
 			if (invalid_list.Count >= 1) {
 				foreach (Task inv_task in invalid_list) {
@@ -208,9 +207,25 @@ namespace Tomboy.TaskManager {
 			}
 			
 			TaskTag tasktag = (TaskTag)Buffer.GetDynamicTag ("task", Buffer.GetIterAtLine (line));
-			Task task = tasktag.Task;
-			
-			return task.Fix ();
+			// Not in title
+			if (tasktag != null) {
+				Task task = tasktag.Task;
+				return task.Fix ();
+			} else {
+				FixTitle ();
+				return null;
+			}
+		}
+		
+		public void FixTitle ()
+		{
+			if (StartDeleted ())
+			{
+				//TODO
+			} else {
+				utils.RemoveTaskTags (DescriptionStart, DescriptionEnd);
+				Buffer.ApplyTag (Tag, DescriptionStart, DescriptionEnd);
+			}
 		}
 
 		
@@ -290,6 +305,16 @@ namespace Tomboy.TaskManager {
 			Buffer.ApplyTag ("locked", start, end);
 			
 			return result;
+		}
+		
+		public bool StartDeleted ()
+		{
+			TaskListTag tag = (TaskListTag)Buffer.GetDynamicTag ("tasklist", Start);
+			if (tag != this.Tag)
+				return true;
+			//FIXME what if only start deleted?
+			
+			return false;
 		}
 		
 		public bool WasDeleted ()

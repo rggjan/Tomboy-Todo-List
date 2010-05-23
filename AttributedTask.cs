@@ -47,12 +47,16 @@ namespace Tomboy.TaskManager
 	/// </summary>
 	public abstract class AttributedTask {
 	
+		protected TaskNoteUtilities utils;
+		
 		public void Initialize (TextIter iter, AttributedTaskTag tag)
 		{
 			//this.Buffer = buffer;
 			this.Position = Buffer.CreateMark (null, iter, true);
 			this.Tag = tag;
 			Tag.AttributedTask = this;
+			
+			utils = new TaskNoteUtilities (Buffer);
 		}
 		
 		/// <summary>
