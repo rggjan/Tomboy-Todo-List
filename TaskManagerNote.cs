@@ -227,12 +227,11 @@ namespace Tomboy.TaskManager {
 		void DeleteRange (object o, Gtk.DeleteRangeArgs args)
 		{
 			StopListeners ();
-			
-			ValidateTaskLists ();
-			
+
 			Buffer.Undoer.ClearUndoHistory ();
 			//TODO apply this everywhere!
-		
+			
+
 			TaskList tasklist1 = utils.GetTaskList (args.Start);
 			if (tasklist1 != null)
 				Logger.Debug ("Tasklist start deleted!");
@@ -244,17 +243,24 @@ namespace Tomboy.TaskManager {
 			if (tasklist2 != null)
 			{
 				Logger.Debug ("Tasklist end deleted!");
-				tasklist2.FixEnd ();
+				
+				/*tasklist2.FixEnd ();
 				
 				Task task = utils.GetTask ();
 				if (task != null && !utils.GetTask ().IsValid ())
-				{
+{
 					task_to_fix = task;
 					Logger.Debug ("Have to fix Task!");
 				}
-					
-				lock_end_needed = tasklist2;
+				
+				lock_end_needed = tasklist2;*/
 				//tasklist2.PlaceCursorAtEnd ();
+			}
+			
+			if (tasklist2 == null && tasklist1 == null)
+			{
+				Logger.Debug ("Checking for Whole deleted tasks");
+				ValidateTaskLists ();
 			}
 			
 			StartListeners ();
@@ -399,6 +405,7 @@ namespace Tomboy.TaskManager {
 				{
 					t.AddWidgets ();
 				}
+				tl.LockEnd ();
 			}
 			
 			// TODO load this from the configuration?
