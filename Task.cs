@@ -196,38 +196,40 @@ namespace Tomboy.TaskManager {
 				return true;
 		}
 		
-		public bool IsValid ()
+		public bool IsValid
 		{
-			//if (!TaskTagValid (DescriptionStart))
-			//	return false;
+			get {
+				//if (!TaskTagValid (DescriptionStart))
+				//	return false;
 			
 			var iter = Start;
-			iter.ForwardChars (2);
+				iter.ForwardChars (2);
 
 			if (!TaskTagValid (iter))
-				return false;
+					return false;
 			
 			bool found = false;
-			foreach (Gtk.TextTag tag in iter.Tags)
+				foreach (Gtk.TextTag tag in iter.Tags)
 			{
-				if (tag.Name == "checkbox-active")
+					if (tag.Name == "checkbox-active")
 				{
-					found = true;
-					break;
+						found = true;
+						break;
+					}
 				}
-			}
-			if (!found)
-				return false;
+				if (!found)
+					return false;
 			
 			// Checkbox deleted
-/*			if (boxanchor.Deleted)
+								/*			if (boxanchor.Deleted)
 				return false;
 			
 			// Enter inserted too early
 			if (DescriptionStart.Line != Start.Line)
 				return false;*/
-			
-			return true;
+		
+				return true;
+			}
 		}
 		
 		/// <summary>
@@ -436,11 +438,6 @@ namespace Tomboy.TaskManager {
 			DeleteTag ();
 		}
 		
-/*		public void Fix ()
-		{
-			TagUpdate ();
-		}*/
-		
 		public void DeleteTag ()
 		{
 			Buffer.TagTable.Remove (TaskTag);
@@ -490,6 +487,17 @@ namespace Tomboy.TaskManager {
 		
 		public TaskList Fix ()
 		{
+			Logger.Debug("Fixing");
+			if (IsValid)
+				return null;
+			//TODO merge...
+			else
+				return DeleteAndSplit ();
+		}
+		
+		public TaskList DeleteAndSplit ()
+		{
+			Logger.Debug ("Deleting and Splitting");
 			var end = DescriptionEnd;
 			Buffer.Insert(ref end, "\n");
 			return DeleteWithLine (Buffer.GetText(Start, DescriptionEnd, false).TrimStart());

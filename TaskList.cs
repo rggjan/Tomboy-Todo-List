@@ -178,41 +178,42 @@ namespace Tomboy.TaskManager {
 				
 				// This is required for intendation
 				this.Tag.Priority = 0;
-				Logger.Info (Start.Line.ToString());
-				Logger.Info (task.Start.Line.ToString());
+				Logger.Info (Start.Line.ToString ());
+				Logger.Info (task.Start.Line.ToString ());
 				task.ApplyTag (this.Tag);
 			}
 		}
-
-		public void FixEnd ()
-		{
-			Logger.Debug ("fixing end");
-			
-			List<Task> to_remove = new List<Task> ();
-			//List<Task> to_delete = new List<Task> ();
 		
-			Logger.Debug (Children.Count.ToString ());
-			
-			foreach (Task task in Children)
-			{
-				if (task.WasDeleted ())
-				{
-					Logger.Debug ("Found Deleted Task");
-					to_remove.Add (task);
-				} else {
-					if (task.IsValid ()) {
-						Logger.Debug (task.Description () + " is valid!");
-					} else {
-						Logger.Debug ("Found invalid Task");
-						//to_delete.Add (task);
+		public TaskList FixWithin (int line)
+		{
+			Logger.Debug ("FixWithin");
+			//TODO part of title deleted
+			var invalid_list = RemoveDeletedTasks ();
+			if (invalid_list.Count >= 1) {
+				foreach (Task inv_task in invalid_list) {
+					if (inv_task.Line != line) {
+						Logger.Fatal ("Got wrong line!");
+						return null;
 					}
 				}
 			}
 			
-			foreach (Task task in to_remove)
-			{
-				task.Delete ();
-			}
+			TaskTag tasktag = (TaskTag)Buffer.GetDynamicTag ("task", Buffer.GetIterAtLine (line));
+			Task task = tasktag.Task;
+			
+			return task.Fix ();
+		}
+
+		
+		public void FixEnd ()
+		{
+			Logger.Debug ("fixing end");
+			
+		
+			Logger.Debug (Children.Count.ToString ());
+			
+			RemoveDeletedTasks ();
+			
 			
 		/*	if (to_delete.Count > 0) {
 				if (to_delete.Count > 1)
@@ -220,6 +221,40 @@ namespace Tomboy.TaskManager {
 				else
 					to_delete[0].DeleteWithLine ();
 			}*/
+		}
+		
+		/// <summary>
+		/// Returns a list of Invalid Tasks
+		/// </summary>
+		/// <param name="task"> A Task </param>
+		/// <param name="to_remove"> A List<Task> </param>
+		public List<Task> RemoveDeletedTasks ()
+		{
+			List<Task> remove_list = new List<Task> ();
+			List<Task> invalid_list = new List<Task> ();
+
+			foreach (Task task in Children)
+			{
+				if (task.WasDeleted ())
+				{
+					Logger.Debug ("Found Deleted Task");
+					remove_list.Add (task);
+				} else {
+					if (task.IsValid) {
+						Logger.Debug (task.Description () + " is valid!");
+					} else {
+						Logger.Debug ("Found invalid Task");
+						invalid_list.Add (task);
+					}
+				}
+			}
+
+			foreach (Task task in remove_list)
+			{
+				task.Delete ();
+			}
+			
+			return invalid_list;
 		}
 		
 		/// <summary>
@@ -253,7 +288,7 @@ namespace Tomboy.TaskManager {
 			TaskListTag tag = (TaskListTag)Buffer.GetDynamicTag ("tasklist", Start);
 			if (tag != this.Tag)
 				return true;
-			//Fixme what if only start deleted?
+			//FIXME what if only start deleted?
 			
 			return false;
 		}

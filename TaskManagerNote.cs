@@ -131,7 +131,7 @@ namespace Tomboy.TaskManager {
 			{
 				StopListeners ();
 				
-				TaskList list = task_to_fix.Fix ();
+				TaskList list = task_to_fix.DeleteAndSplit ();
 				if (list != null)
 					tasklists.Add (list);
 				
@@ -205,8 +205,6 @@ namespace Tomboy.TaskManager {
 		
 		public void ValidateTaskLists ()
 		{
-			Logger.Debug ("Validating");
-			
 			List<TaskList> to_delete = new List<TaskList> ();
 			
 			foreach (TaskList tasklist in tasklists)
@@ -248,19 +246,31 @@ namespace Tomboy.TaskManager {
 				
 				Task task = utils.GetTask ();
 				if (task != null && !utils.GetTask ().IsValid ())
-{
+		{
 					task_to_fix = task;
 					Logger.Debug ("Have to fix Task!");
 				}
 				
-				lock_end_needed = tasklist2;*/
-				//tasklist2.PlaceCursorAtEnd ();
-			}
+				lock_end_needed = tasklist2;*/			
+
+
 			
-			if (tasklist2 == null && tasklist1 == null)
-			{
+				//tasklist2.PlaceCursorAtEnd ();
+			}		
+		
+			if (tasklist2 == null && tasklist1 == null) {
 				Logger.Debug ("Checking for Whole deleted tasks");
 				ValidateTaskLists ();
+			} else if (tasklist1 != null && tasklist2 != null) {
+				if (tasklist1 == tasklist2)
+				{
+					Logger.Debug ("Have to repair within TaskList");
+					TaskList new_list = tasklist1.FixWithin (args.Start.Line);
+					if (new_list != null)
+						tasklists.Add (new_list);
+				}
+				//TODO other cases
+				
 			}
 			
 			StartListeners ();
@@ -366,10 +376,9 @@ namespace Tomboy.TaskManager {
 					
 					TaskTag tt = utils.GetTaskTag (iter);
 					if (tt != null) {
-						Logger.Debug ("removing old tasktag");
+						//Logger.Debug ("removing old tasktag");
 						Buffer.RemoveTag (tt, iter, end);
 					}
-					//					Buffer.RemoveTag ("locked", iter, end);
 					
 					current_task_list.AddTask (iter);
 				}
