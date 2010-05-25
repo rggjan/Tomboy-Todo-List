@@ -33,9 +33,15 @@ namespace Tomboy.TaskManager
 	public class DateTag : NoteTag
 	{
 		
-		public DateTag (string name) : base (name)
+		private Calendar calendar;
+		private TextRange range;
+		private Note note;
+		
+		public DateTag (string name, Note note) : base (name)
 		{
+			this.note = note;
 		}
+		
 		public override void Initialize (string element_name)
 		{
 			base.Initialize (element_name);
@@ -48,8 +54,28 @@ namespace Tomboy.TaskManager
 		
 		protected override bool OnActivate (NoteEditor editor, Gtk.TextIter start, Gtk.TextIter end)
 		{
-			//TODO
+			calendar = new Calendar ();
+			range = new TextRange (start, end);
+			Dialog dialog = new Dialog ();
+			dialog.Modal = true;
+			dialog.VBox.Add (calendar);
+			dialog.VBox.ShowAll ();
+			dialog.AddButton ("OK", ResponseType.Ok);
+			dialog.AddButton ("Cancel", ResponseType.Cancel);
+			
+			dialog.Response += new ResponseHandler (on_dialog_response);
+			dialog.Run ();
+			dialog.Destroy ();
 			return true;
+		}
+		
+		void on_dialog_response (object obj, ResponseArgs args)
+		{	
+			if (args.ResponseId != ResponseType.Ok)
+				return;
+			
+			string newdate = calendar.GetDate ().ToShortDateString ();
+			note.Buffer.InsertAtCursor (newdate);
 		}
 
 	}

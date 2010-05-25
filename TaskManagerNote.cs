@@ -96,7 +96,7 @@ namespace Tomboy.TaskManager {
 				Note.TagTable.Add (tag);
 			
 			if (Note.TagTable.Lookup ("duedate") == null)
-				Note.TagTable.Add (new DateTag ("duedate"));
+				Note.TagTable.Add (new DateTag ("duedate", Note));
 
 			//TaskTag
 			if (!Note.TagTable.IsDynamicTagRegistered ("task"))
