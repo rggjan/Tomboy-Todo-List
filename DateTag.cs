@@ -35,11 +35,10 @@ namespace Tomboy.TaskManager
 		
 		private Calendar calendar;
 		private TextRange range;
-		private Note note;
+		private NoteEditor editor;
 		
-		public DateTag (string name, Note note) : base (name)
+		public DateTag (string name) : base (name)
 		{
-			this.note = note;
 		}
 		
 		public override void Initialize (string element_name)
@@ -56,6 +55,8 @@ namespace Tomboy.TaskManager
 		{
 			calendar = new Calendar ();
 			range = new TextRange (start, end);
+			this.editor = editor;
+			
 			Dialog dialog = new Dialog ();
 			dialog.Modal = true;
 			dialog.VBox.Add (calendar);
@@ -66,6 +67,7 @@ namespace Tomboy.TaskManager
 			dialog.Response += new ResponseHandler (on_dialog_response);
 			dialog.Run ();
 			dialog.Destroy ();
+			
 			return true;
 		}
 		
@@ -74,8 +76,12 @@ namespace Tomboy.TaskManager
 			if (args.ResponseId != ResponseType.Ok)
 				return;
 			
+			TextIter start = range.Start;
+			TextIter end = range.End;
+			
 			string newdate = calendar.GetDate ().ToShortDateString ();
-			note.Buffer.InsertAtCursor (newdate);
+			editor.Buffer.Delete (ref start, ref end);
+			editor.Buffer.InsertWithTags (ref start, newdate, new TextTag[]{editor.Buffer.TagTable.Lookup ("duedate")});
 		}
 
 	}
