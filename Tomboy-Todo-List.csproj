@@ -76,6 +76,7 @@
     <Compile Include="Visitors\GetDoneVisitor.cs" />
     <Compile Include="Visitors\SetDoneVisitor.cs" />
     <Compile Include="Visitors\Visitor.cs" />
+    <Compile Include="Visitors\GetMinDueDateVisitor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

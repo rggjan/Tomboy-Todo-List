@@ -132,9 +132,12 @@ namespace Tomboy.TaskManager
 		{
 			Task t = utils.GetTask (Buffer.GetIterAtMark (Buffer.InsertMark));
 			
-			//TODO: replace with min of children or similar
-			if (t != null && !t.DueDateSet)
-				t.AddDueDate (DateTime.Today.ToShortDateString ());
+			if (t != null && !t.DueDateSet){
+				GetMinDueDateVisitor visitor = new GetMinDueDateVisitor ();
+				visitor.visit (t);
+				
+				t.AddDueDate (visitor.Result);
+			}
 		}
 		
 		/// <summary>

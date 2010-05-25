@@ -593,10 +593,19 @@ namespace Tomboy.TaskManager {
 		}
 		
 		public bool DueDateSet {
-			get;
-			private set;
+			get 
+			{
+				bool result = false;
+				TextIter iter = Start;
+				do {
+					for (int i=0;i<iter.Tags.Length && !result;i++)
+						result = iter.Tags[i].Name == "duedate";
+				} while (!result && iter.ForwardChar () && iter.Compare(End)<=0);
+				return result;
+			}
 		}
-		public void AddDueDate (string date){
+		public void AddDueDate (DateTime date){
+			this.DueDate = date;
 			TextIter end = End;
 			end.BackwardChar ();
 			
@@ -605,9 +614,7 @@ namespace Tomboy.TaskManager {
 			tags[tags.Length-1] = Buffer.TagTable.Lookup ("duedate");
 			
 			Buffer.Insert (ref end, " ");
-			Buffer.InsertWithTags (ref end, date, tags);
-			
-			DueDateSet = true;
+			Buffer.InsertWithTags (ref end, date.ToShortDateString (), tags);
 		}
 	}
 }
