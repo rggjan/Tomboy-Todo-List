@@ -91,7 +91,7 @@ namespace Tomboy.TaskManager {
 		}
 		
 		//TODO: Subtasks
-		public List<AttributedTask> Subtasks {
+		public List<TaskList> Subtasks {
 			get; set;
 		}
 		
@@ -236,7 +236,7 @@ namespace Tomboy.TaskManager {
 		/// </param>
 		private void InitializeTask (TaskList containingList, Gtk.TextIter location, TaskTag tag)
 		{
-			Subtasks = new List<AttributedTask> ();
+			Subtasks = new List<TaskList> ();
 			ContainingTaskList = containingList;
 			location.LineOffset = 0;
 			
@@ -586,8 +586,9 @@ namespace Tomboy.TaskManager {
 		private void ToggleCheckBox (object sender, EventArgs e)
 		{
 			Debug.Assert (check_box == sender); // no other checkbox should be registred here
-			TagUpdate ();
 			
+			SetDoneVisitor visitor = new SetDoneVisitor (check_box.Active, this);
+			visitor.visit (this);
 			// TODO some signalling here?
 		}
 		

@@ -24,6 +24,7 @@
 // 
 
 using System;
+using System.Collections.Generic;
 
 namespace Tomboy.TaskManager
 {
@@ -34,10 +35,12 @@ namespace Tomboy.TaskManager
 		
 		private bool done;
 		private AttributedTask sender;
+		private List<AttributedTask> visited;
 		public SetDoneVisitor (bool done, Task sender)
 		{
 			this.done = done;
 			this.sender = sender;
+			visited = new List<AttributedTask> ();
 		}
 		
 		public void visit (Note n)
@@ -48,16 +51,25 @@ namespace Tomboy.TaskManager
 		
 		public void visit (TaskList tl)
 		{
+			if (visited.Contains (tl))
+				return;
+			
+			visited.Add (tl);
 			foreach (Task t in tl.Tasks)
 				this.visit (t);
 		}
 		
 		public void visit (Task t)
 		{
+			if (visited.Contains (t))
+				return;
+			
 			if(t == sender)
 				t.TagUpdate ();
-			else
+			else if (!t.Done == done)
 				t.Toggle ();
+			
+			visited.Add (t);
 			
 			foreach (TaskList tl in t.Subtasks)
 				this.visit (tl);
