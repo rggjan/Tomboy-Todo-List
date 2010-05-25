@@ -130,27 +130,11 @@ namespace Tomboy.TaskManager
 		
 		void OnAddDuedateActivated (object sender, EventArgs args)
 		{
-			Dialog dialog = new Dialog ("Sample", addin.Window, Gtk.DialogFlags.DestroyWithParent);
-			dialog.Modal = true;
-			dialog.VBox.Add (new Calendar ());
-			dialog.VBox.ShowAll ();
-			dialog.AddButton ("OK", ResponseType.Ok);
-			dialog.AddButton ("Cancel", ResponseType.Cancel);
+			Task t = utils.GetTask (Buffer.GetIterAtMark (Buffer.InsertMark));
 			
-			dialog.Response += new ResponseHandler (on_dialog_response);
-			dialog.Run ();
-			dialog.Destroy ();
-		}
-		
-		void on_dialog_response (object obj, ResponseArgs args)
-		{
-			if (args.ResponseId != ResponseType.Ok)
-				return;
-			
-			var iter = Buffer.GetIterAtMark (Buffer.InsertMark);
-			
-			Buffer.InsertWithTags (ref iter, "test", 
-			    new TextTag[] { Note.TagTable.Lookup ("duedate") });
+			//TODO: replace with min of children or similar
+			if (t != null && !t.DueDateSet)
+				t.AddDueDate (DateTime.Today.ToShortDateString ());
 		}
 		
 		/// <summary>

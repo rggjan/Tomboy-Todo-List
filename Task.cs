@@ -604,5 +604,23 @@ namespace Tomboy.TaskManager {
 			
 			// TODO some signalling here?
 		}
+		
+		public bool DueDateSet {
+			get;
+			private set;
+		}
+		public void AddDueDate (string date){
+			TextIter end = End;
+			end.BackwardChar ();
+			
+			TextTag[] tags = new TextTag[end.Tags.Length+1];
+			Array.Copy (end.Tags, tags, end.Tags.Length);
+			tags[tags.Length-1] = Buffer.TagTable.Lookup ("duedate");
+			
+			Buffer.Insert (ref end, " ");
+			Buffer.InsertWithTags (ref end, date, tags);
+			
+			DueDateSet = true;
+		}
 	}
 }
