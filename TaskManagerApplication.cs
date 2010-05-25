@@ -57,7 +57,9 @@ namespace Tomboy.TaskManager {
 				OpenTasksNotebook openTasksNotebook = new OpenTasksNotebook ();
 				NotebookManager.AddSpecialNotebook(openTasksNotebook);
 				
-				initialized = true;
+				OverdueTasksNotebook overdueTasksNotebook = new OverdueTasksNotebook ();
+				NotebookManager.AddSpecialNotebook(overdueTasksNotebook);
+				
 				
 				
 				string checkButtonStyleMod = @"style ""mystyle"" {
@@ -70,6 +72,7 @@ namespace Tomboy.TaskManager {
 										 ";
 			
 				Gtk.Rc.ParseString (checkButtonStyleMod);
+				initialized = true;
 			}
 			
 		}

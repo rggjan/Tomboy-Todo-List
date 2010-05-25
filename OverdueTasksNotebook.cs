@@ -33,24 +33,25 @@ namespace Tomboy.TaskManager {
 	/// <summary>
 	/// This represents a Dialog in the Tomboy Search Notes Dialog
 	/// and is responsible for showing all notes who have tasklists
-	/// containing tasks that are not done.
+	/// containing tasks that are not done but their due date is already
+	/// in the past.
 	/// </summary>
-	public class OpenTasksNotebook : SpecialNotebook
+	public class OverdueTasksNotebook : SpecialNotebook
 	{
 		
-		public OpenTasksNotebook () : base ()
+		public OverdueTasksNotebook () : base ()
 		{}
 		
 		
 		public override string Name
 		{
-			get { return Catalog.GetString ("Open Tasks"); }
+			get { return Catalog.GetString ("Overdue Tasks"); }
 		}
 		
 		
 		public override string NormalizedName
 		{
-			get { return "___NotebookManager___OpenTasksNotes__Notebook___"; }
+			get { return "___NotebookManager___OverdueTasksNotes__Notebook___"; }
 		}
 		
 		
@@ -72,20 +73,13 @@ namespace Tomboy.TaskManager {
 		/// A <see cref="Note"/>
 		/// </param>
 		/// <returns>
-		/// A <see cref="System.Boolean"/>, false if all tasks in the note are
-		/// marked as done, true otherwise.
+		/// A <see cref="System.Boolean"/>, true if a task has his due date
+		/// in the past and is not yet marked as done.
 		/// </returns>
 		public override bool ContainsNote(Note n) 
 		{
-			var tls = TaskListParser.ParseNote(n);
-			
-			bool allTaskListsDone = true;
-			
-			foreach (AttributedTask tl in tls.Children) {
-				allTaskListsDone |= tl.Done;
-			}
-			
-			return !allTaskListsDone;
+			// TODO
+			return false;
 		}
 	}
 }
