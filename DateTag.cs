@@ -79,6 +79,16 @@ namespace Tomboy.TaskManager
 			TextIter start = range.Start;
 			TextIter end = range.End;
 			
+			//TODO
+//			TaskNoteUtilities utils = new TaskNoteUtilities (note);
+//			Task t = utils.GetTask (start);
+//			
+//			if (t==null){
+//				Logger.Debug ("Error updating duedate: no task found here");
+//			}
+//			
+//			t.DueDate = calendar.GetDate;
+			
 			string newdate = calendar.GetDate ().ToShortDateString ();
 			editor.Buffer.Delete (ref start, ref end);
 			editor.Buffer.InsertWithTags (ref start, newdate, new TextTag[]{editor.Buffer.TagTable.Lookup ("duedate")});

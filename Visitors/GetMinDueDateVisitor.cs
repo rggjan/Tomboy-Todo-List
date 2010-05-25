@@ -35,8 +35,8 @@ namespace Tomboy.TaskManager
 
 		private DateTime result;
 		public DateTime Result {
-			get { 
-				if (result==DateTime.MaxValue)
+			get {
+				if (result.CompareTo(DateTime.MaxValue)==0)
 					return DateTime.Today;
 				return result;
 			}
@@ -63,7 +63,9 @@ namespace Tomboy.TaskManager
 		
 		public void visit (Task t)
 		{
-			result = t.DueDate < result? t.DueDate : result;
+			if (t.DueDate != DateTime.MinValue){
+				result = t.DueDate < result? t.DueDate : result;
+			}
 			visited.Add (t);
 			
 			foreach (TaskList tl in t.Subtasks)

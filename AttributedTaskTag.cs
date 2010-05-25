@@ -71,10 +71,15 @@ namespace Tomboy.TaskManager
 		/// </summary>
 		public DateTime TaskDuedate {
 			get {
-				return DateTime.Parse (Attributes["Duedate"]);
+				DateTime result;
+				//Error happens when empty string is parsed
+				try {
+					result = DateTime.Parse (Attributes["Duedate"]);
+				} catch (FormatException ex) {return DateTime.MinValue;}
+				return result;
 			}
 			set {
-				Attributes["Duedate"] = value.ToString ();
+				Attributes["Duedate"] = value.ToShortDateString ();
 			}
 		}
 		
