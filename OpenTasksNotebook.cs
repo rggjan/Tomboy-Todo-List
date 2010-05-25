@@ -77,11 +77,12 @@ namespace Tomboy.TaskManager {
 		/// </returns>
 		public override bool ContainsNote(Note n) 
 		{
-			var tls = TaskListParser.ParseNote(n);
+			TaskListParser parser = new TaskListParser(n);
+			var tls = parser.Parse();
 			
 			bool allTaskListsDone = true;
 			
-			foreach (AttributedTask tl in tls.Children) {
+			foreach (TaskList tl in tls) {
 				allTaskListsDone |= tl.Done;
 			}
 			
