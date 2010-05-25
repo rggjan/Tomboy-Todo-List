@@ -403,7 +403,7 @@ namespace Tomboy.TaskManager {
 		
 			foreach (TaskList tl in TaskLists)
 			{
-				foreach (Task t in tl.Children)
+				foreach (Task t in tl.Tasks)
 				{
 					t.AddWidgets ();
 				}

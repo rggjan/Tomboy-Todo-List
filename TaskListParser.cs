@@ -98,7 +98,7 @@ namespace Tomboy.TaskManager
 					List<TaskList> sublists = subparser.Parse ();
 					
 					foreach (TaskList tl in sublists)
-						atStart.Children.Add (tl);
+						atStart.Subtasks.Add (tl);
 					
 					Logger.Debug ("{0} subtasks found", new object[]{sublists.Count});
 				}

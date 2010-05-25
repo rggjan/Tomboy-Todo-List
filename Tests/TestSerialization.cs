@@ -75,13 +75,13 @@ namespace Tomboy.TaskManager.Tests
 			Assert.That(singleManager.TaskLists[0].Priority == Priority.LOW);
 			
 			// for tasks in tasklist
-			var veryLowPrioTask = singleManager.TaskLists[0].Children[0];
+			var veryLowPrioTask = singleManager.TaskLists[0].Tasks[0];
 			Assert.That (veryLowPrioTask.Priority == Priority.VERY_LOW);
 			
-			var highPrioTask = singleManager.TaskLists[0].Children[1];
+			var highPrioTask = singleManager.TaskLists[0].Tasks[1];
 			Assert.That (highPrioTask.Priority == Priority.HIGH);
 
-			var normalPrioTask = singleManager.TaskLists[0].Children[2];
+			var normalPrioTask = singleManager.TaskLists[0].Tasks[2];
 			Assert.That (normalPrioTask.Priority == Priority.NORMAL);
 		}
 		
@@ -93,10 +93,10 @@ namespace Tomboy.TaskManager.Tests
 			
 			// preconditions for successful testing
 			Assert.That(singleManager.TaskLists[0].Priority != Priority.NORMAL);
-			Assert.That(singleManager.TaskLists[0].Children[0].Priority != Priority.VERY_HIGH);
+			Assert.That(singleManager.TaskLists[0].Tasks[0].Priority != Priority.VERY_HIGH);
 			
 			singleManager.TaskLists[0].Priority = Priority.NORMAL;
-			singleManager.TaskLists[0].Children[0].Priority = Priority.VERY_HIGH;
+			singleManager.TaskLists[0].Tasks[0].Priority = Priority.VERY_HIGH;
 			singleTaskListNote.Save();
 			
 			// reload as another note object
@@ -105,7 +105,7 @@ namespace Tomboy.TaskManager.Tests
 			
 			// saving worked?
 			Assert.That(changedManager.TaskLists[0].Priority == Priority.NORMAL);
-			Assert.That(changedManager.TaskLists[0].Children[0].Priority == Priority.VERY_HIGH);
+			Assert.That(changedManager.TaskLists[0].Tasks[0].Priority == Priority.VERY_HIGH);
 		}
 		
 		
@@ -117,10 +117,10 @@ namespace Tomboy.TaskManager.Tests
 		{
 			doubleManager.DeserializeTasklists ();
 			
-			var notDoneTask = doubleManager.TaskLists[1].Children[0];
+			var notDoneTask = doubleManager.TaskLists[1].Tasks[0];
 			Assert.That (!notDoneTask.Done);
 			
-			var doneTask = doubleManager.TaskLists[0].Children[1];
+			var doneTask = doubleManager.TaskLists[0].Tasks[1];
 			Assert.That (doneTask.Done);
 			
 		}
@@ -135,11 +135,11 @@ namespace Tomboy.TaskManager.Tests
 			singleManager.DeserializeTasklists();
 			
 			// preconditions for successful testing
-			Assert.That(singleManager.TaskLists[0].Children[0].Done);
-			Assert.That(!singleManager.TaskLists[0].Children[1].Done);
+			Assert.That(singleManager.TaskLists[0].Tasks[0].Done);
+			Assert.That(!singleManager.TaskLists[0].Tasks[1].Done);
 			
-			singleManager.TaskLists[0].Children[0].Done = false;
-			singleManager.TaskLists[0].Children[1].Done = true;
+			singleManager.TaskLists[0].Tasks[0].Done = false;
+			singleManager.TaskLists[0].Tasks[1].Done = true;
 			singleTaskListNote.Save();
 			
 			// reload as another note object
@@ -147,8 +147,8 @@ namespace Tomboy.TaskManager.Tests
 			changedManager.DeserializeTasklists();
 			
 			// saving worked?
-			Assert.That(!changedManager.TaskLists[0].Children[0].Done);
-			Assert.That(changedManager.TaskLists[0].Children[0].Done);
+			Assert.That(!changedManager.TaskLists[0].Tasks[0].Done);
+			Assert.That(changedManager.TaskLists[0].Tasks[0].Done);
 		}
 		
 		

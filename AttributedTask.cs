@@ -89,22 +89,6 @@ namespace Tomboy.TaskManager
 		}
 		
 		/// <summary>
-		/// Returns all Abstract Tasks that are children of this Abstracttask.
-		/// TaskList -> Tasks
-		/// Tasks -> Subtasks (linked via TaskNotes to TaskLists)
-		/// </summary>
-		public abstract List<AttributedTask> Children {
-			get; set;
-		}
-		
-		/// <summary>
-		/// As implicitly described by Children (other way arround)
-		/// </summary>
-		public abstract List<AttributedTask> Containers {
-			get; set;
-		}
-		
-		/// <summary>
 		/// Whether or not this task has been completed
 		/// </summary>
 		public abstract bool Done {

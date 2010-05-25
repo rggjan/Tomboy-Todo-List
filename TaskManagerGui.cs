@@ -200,11 +200,11 @@ namespace Tomboy.TaskManager
 			addin.StopListeners ();
 			if (PriorityShown) {
 				foreach (TaskList list in addin.TaskLists)
-					foreach (Task task in list.Children)
+					foreach (Task task in list.Tasks)
 						task.ShowPriority ();
 			} else {
 				foreach (TaskList list in addin.TaskLists)
-					foreach (Task task in list.Children)
+					foreach (Task task in list.Tasks)
 						task.HidePriority ();
 			}
 			addin.StartListeners ();

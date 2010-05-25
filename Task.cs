@@ -64,20 +64,6 @@ namespace Tomboy.TaskManager {
 		/// </summary>
 		private Gtk.CheckButton check_box;
 		
-		private List<AttributedTask> containers;
-		
-		public override List<AttributedTask> Containers {
-			get {
-				if (containers == null) {
-					List<AttributedTask> result = new List<AttributedTask> ();
-					result.Add (containing_task_list);
-				}
-				return containers;
-			}
-			set { 
-				containers = value; 
-			}
-		}
 		
 		/// <summary>
 		/// TaskList containing this task.
@@ -105,7 +91,7 @@ namespace Tomboy.TaskManager {
 		}
 		
 		//TODO: Subtasks
-		public override List<AttributedTask> Children {
+		public List<AttributedTask> Subtasks {
 			get; set;
 		}
 		
@@ -250,7 +236,7 @@ namespace Tomboy.TaskManager {
 		/// </param>
 		private void InitializeTask (TaskList containingList, Gtk.TextIter location, TaskTag tag)
 		{
-			Children = new List<AttributedTask> ();
+			Subtasks = new List<AttributedTask> ();
 			ContainingTaskList = containingList;
 			location.LineOffset = 0;
 			
@@ -408,7 +394,7 @@ namespace Tomboy.TaskManager {
 		/// </returns>
 		public bool IsLastTask ()
 		{
-			var list = ContainingTaskList.Children;
+			var list = ContainingTaskList.Tasks;
 			
 			foreach (Task task in list)
 			{
@@ -423,7 +409,7 @@ namespace Tomboy.TaskManager {
 		public List<Task> TasksFollowing ()
 		{
 			List<Task> tasks_following = new List<Task>();
-			foreach (Task task in ContainingTaskList.Children)
+			foreach (Task task in ContainingTaskList.Tasks)
 			{
 				if (task.Start.Line > Start.Line)
 				{
@@ -438,7 +424,7 @@ namespace Tomboy.TaskManager {
 		/// </summary>
 		public void Delete ()
 		{
-			ContainingTaskList.Children.Remove (this);
+			ContainingTaskList.Tasks.Remove (this);
 			DeleteTag ();
 		}
 		
@@ -571,7 +557,7 @@ namespace Tomboy.TaskManager {
 
 			foreach (Task task in tasks_following)
 			{
-				ContainingTaskList.Children.Remove (task);
+				ContainingTaskList.Tasks.Remove (task);
 			}
 			
 			var start = Start;

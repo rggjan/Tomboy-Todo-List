@@ -75,16 +75,16 @@ namespace Tomboy.TaskManager {
 		}
 		
 		/// <summary>
-		/// Children for ITask interface
+		/// Tasks for ITask interface
 		/// </summary>
-		public override List<AttributedTask> Children {
+		public List<Task> Tasks {
 			get; set;
 		}
 		
 		/// <summary>
-		/// Containers for ITask interface
+		/// LinkingTasks for ITask interface
 		/// </summary>
-		public override List<AttributedTask> Containers { 
+		public List<Task> LinkinTasks { 
 			get; set;
 		}
 		
@@ -93,13 +93,13 @@ namespace Tomboy.TaskManager {
 		/// </summary>
 		public override bool Done { 
 			get {
-				if (Children != null)
-					return Children.FindAll(c => c.Done == true).Count == Children.Count;
+				if (Tasks != null)
+					return Tasks.FindAll(c => c.Done == true).Count == Tasks.Count;
 				else
 					return true;
 			}
 			set {
-				Children.ForEach(c => c.Done = value);
+				Tasks.ForEach(c => c.Done = value);
 			}
 		}
 		
@@ -135,7 +135,7 @@ namespace Tomboy.TaskManager {
 		public int LastTaskLine {
 			get {
 				int line = -1;
-				foreach (Task task in Children)
+				foreach (Task task in Tasks)
 				{
 					if (task.Line > line)
 						line = task.Line;
@@ -171,12 +171,12 @@ namespace Tomboy.TaskManager {
 			end.ForwardChar ();
 			Buffer.ApplyTag (TaskListTag, start, end);
 			
-			Children = new List<AttributedTask> ();
+			Tasks = new List<Task> ();
 			
 			if (tasks.Count > 0)
 				foreach (Task task in tasks)
 			{
-					Children.Add (task);
+					Tasks.Add (task);
 					task.RemoveTag (task.ContainingTaskList.Tag);
 					task.ContainingTaskList = this;
 				
@@ -197,7 +197,7 @@ namespace Tomboy.TaskManager {
 		{
 			List<Task> to_transfer = new List<Task> ();
 			
-			foreach (Task task in Children) {
+			foreach (Task task in Tasks) {
 				if (!task.WasDeleted) {
 					Logger.Debug ("adding task " + task.Description ());
 					to_transfer.Add (task);
@@ -207,7 +207,7 @@ namespace Tomboy.TaskManager {
 			foreach (Task task in to_transfer) {
 				tasklist.AddFinishedTask (task);
 				task.RemoveTag (Tag);
-				Children.Remove (task);
+				Tasks.Remove (task);
 			}
 			
 			Delete ();
@@ -262,7 +262,7 @@ namespace Tomboy.TaskManager {
 			List<Task> remove_list = new List<Task> ();
 			List<Task> invalid_list = new List<Task> ();
 
-			foreach (Task task in Children)
+			foreach (Task task in Tasks)
 			{
 				if (task.WasDeleted)
 				{
@@ -340,7 +340,7 @@ namespace Tomboy.TaskManager {
 		public void Delete ()
 		{
 			ContainingNote.TagTable.Remove (this.TaskListTag);
-			foreach (Task task in Children)
+			foreach (Task task in Tasks)
 				task.DeleteTag ();
 		}
 		
@@ -350,7 +350,7 @@ namespace Tomboy.TaskManager {
 				return;
 			
 		    Console.WriteLine ("Tasklist '" + Description () + "':");
-			foreach (Task task in Children)
+			foreach (Task task in Tasks)
 				task.DebugPrint ();
 				
 			Console.WriteLine();
@@ -399,7 +399,7 @@ namespace Tomboy.TaskManager {
 			Logger.Debug ("TaskList created");
 			//Logger.Debug (iter.Char.ToString());
 			
-			Children = new List<AttributedTask> ();
+			Tasks = new List<Task> ();
 			end.BackwardChar ();
 			AddTask (end);
 			
@@ -419,7 +419,7 @@ namespace Tomboy.TaskManager {
 			Initialize (start, tag);
 			Logger.Debug ("TaskList created");
 			
-			Children = new List<AttributedTask> ();
+			Tasks = new List<Task> ();
 		}
 		
 		/// <summary>
@@ -430,18 +430,18 @@ namespace Tomboy.TaskManager {
 		/// </param>
 		public void AddTask (Gtk.TextIter position)
 		{
-			Children.Add (new Task (this, position));
+			Tasks.Add (new Task (this, position));
 		}
 		
 		public void AddFinishedTask(Task task)
 		{
-			Children.Add (task);
+			Tasks.Add (task);
 			task.ApplyTag (Tag);
 		}
 
 		public void AddTask (Gtk.TextIter position, TaskTag tag)
 		{
-			Children.Add (new Task (this, position, tag));
+			Tasks.Add (new Task (this, position, tag));
 		}
 	}
 }

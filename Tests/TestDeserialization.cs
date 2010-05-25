@@ -82,7 +82,7 @@ namespace Tomboy.TaskManager.Tests
 		{
 			singleManager.DeserializeTasklists ();
 			Assert.That (singleManager.TaskLists.Count == 1); // one task list is found
-			Assert.That (singleManager.TaskLists[0].Children.Count == 3); // with 3 tasks
+			Assert.That (singleManager.TaskLists[0].Tasks.Count == 3); // with 3 tasks
 		}
 
 		
@@ -94,8 +94,8 @@ namespace Tomboy.TaskManager.Tests
 		{
 			doubleManager.DeserializeTasklists ();
 			Assert.That (doubleManager.TaskLists.Count == 2); // two task lists are found
-			Assert.That (doubleManager.TaskLists[0].Children.Count == 3); // 1st tasklist has 3 tasks
-			Assert.That (doubleManager.TaskLists[1].Children.Count == 2); // 2nd tasklist has 2 tasks
+			Assert.That (doubleManager.TaskLists[0].Tasks.Count == 3); // 1st tasklist has 3 tasks
+			Assert.That (doubleManager.TaskLists[1].Tasks.Count == 2); // 2nd tasklist has 2 tasks
 		}
 		
 		
