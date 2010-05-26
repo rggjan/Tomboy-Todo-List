@@ -170,7 +170,6 @@ namespace Tomboy.TaskManager
 			
 			this.DueDate = date;
 			TextIter end = DescriptionEnd;
-			end.BackwardChar ();
 			
 			Buffer.Insert (ref end, " ");
 			Buffer.InsertWithTags (ref end, date.ToShortDateString (), new TextTag[]{DateTag});
