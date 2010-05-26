@@ -88,7 +88,10 @@ namespace Tomboy.TaskManager.Tests
 		[Test()]
 		public void CheckOverdueTasks ()
 		{
-			throw new NotImplementedException();
+			Assert.That(overdueTasksNotebook.ContainsNote(doubleTaskListNote));
+			Assert.That(!overdueTasksNotebook.ContainsNote(singleTaskListNote));
+			Assert.That(!overdueTasksNotebook.ContainsNote(allDoneTaskListNote));
+			Assert.That(!overdueTasksNotebook.ContainsNote(noTaskListNote));
 		}
 		
 		

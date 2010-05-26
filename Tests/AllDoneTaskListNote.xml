@@ -3,11 +3,11 @@
   <title>Testcase</title>
   <text xml:space="preserve"><note-content version="0.1">Testcase All Done
 
-<tasklist Duedate="" Priority="LOW" Name="New TaskList!">
+<tasklist>
 	New Tasklist!
-	<task Duedate="" Priority="VERY_LOW" Done="true">task 1</task>
-	<task Duedate="" Priority="HIGH" Done="true">task 2</task>
-	<task Duedate="" Priority="NORMAL" Done="true">task 3</task>
+	<task Priority="VERY_LOW" Done="true">task 1 <duedate>5/29/2010</duedate></task>
+	<task Priority="HIGH" Done="true">task 2</task>
+	<task Priority="NORMAL" Done="true">task 3 <duedate>6/29/2010</duedate></task>
 </tasklist>
 
 </note-content></text>

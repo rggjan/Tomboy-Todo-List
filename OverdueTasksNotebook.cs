@@ -78,8 +78,18 @@ namespace Tomboy.TaskManager {
 		/// </returns>
 		public override bool ContainsNote(Note n) 
 		{
-			// TODO
-			return false;
+			TaskListParser parser = new TaskListParser (n);
+			var tls = parser.Parse ();
+			
+			bool isOverdue = false;
+			
+			foreach (TaskList tl in tls) {
+				foreach(Task t in tl.Tasks) {
+					isOverdue |= (!t.Done && t.DueDateSet && t.DueDate <= DateTime.Now);
+				}
+			}
+			
+			return isOverdue;
 		}
 	}
 }
