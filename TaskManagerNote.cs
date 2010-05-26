@@ -285,14 +285,10 @@ namespace Tomboy.TaskManager {
 			//TODO same but with enter...
 			foreach (Gtk.TextTag t in args.Pos.Tags)
 			{
-				if (t.Name != null && t.Name.Equals("checkbox-active"))
+				if (t.Name != null && (t.Name.Equals("checkbox-active") || t.Name.Equals("duedate")))
 				{
-					fix_list.Add(new FixUndoAction(this));
-				} else if (t.Name != null && t.Name.Equals ("duedate")) {
-					if (args.Text.Contains (System.Environment.NewLine)) {
-						fix_list.Add (new FixUndoAction (this));
-						return;
-					}
+					fix_list.Add (new FixUndoAction (this));
+					return;
 				}
 			}
 			
