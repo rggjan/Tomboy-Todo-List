@@ -13,10 +13,7 @@ namespace Tomboy.TaskManager {
 
 		private TaskManagerGui gui;
 		private TaskNoteUtilities utils;
-		private bool new_task_needed = false;
-		private TaskList current_task_list = null;
 		private TaskList lock_end_needed = null;
-		private Task task_to_fix = null;
 		private List<FixAction> fix_list = new List<FixAction>();
 
 		private List<TaskList> tasklists;
@@ -153,29 +150,17 @@ namespace Tomboy.TaskManager {
 			
 			foreach (FixAction action in fix_list)
 			{
-				Logger.Info ("fixing... high");
 				if (action.Priority)
 					action.fix ();
 			}
 			
 			foreach (FixAction action in fix_list)
 			{
-				Logger.Info("fixing... low");
 				if (!action.Priority)
 					action.fix ();
 			}
 			fix_list.Clear ();
-			
-			if (task_to_fix != null)
-			{
-				TaskList list = task_to_fix.DeleteAndSplit ();
-				if (list != null)
-					tasklists.Add (list);
-				
-				task_to_fix = null;
-				utils.ResetCursor ();
-			}
-			
+
 			if (lock_end_needed != null)
 			{
 				if (lock_end_needed.LockEnd ())
@@ -314,7 +299,6 @@ namespace Tomboy.TaskManager {
 				
 				// Behaviour: onTask\n\n should delete empty checkbox
 				if (task != null && task.LineIsEmpty ()) {
-					Logger.Info("deletion_needed");
 					fix_list.Add(new FixDeleteTaskAction(this, task));
 					return;
 				}
@@ -322,19 +306,16 @@ namespace Tomboy.TaskManager {
 				// Insert new checkbox if was onTask
 				TaskList tasklist = utils.GetTaskList (end);
 				if (tasklist != null) {
-					current_task_list = tasklist;
-					new_task_needed = true;
+					fix_list.Add(new NewTaskAction(this, tasklist));
 					return;
 				}
 				
 				end = args.Pos;
 				Gtk.TextIter start = args.Pos;
-				
 				start.BackwardLine ();
 				
 				if (IsTextTodoItem (Buffer.GetText (start, end, false))) {
-					current_task_list = null;
-					new_task_needed = true;
+					fix_list.Add(new NewTaskAction(this));
 				}
 			}
 		}
@@ -354,37 +335,8 @@ namespace Tomboy.TaskManager {
 		
 			StopListeners ();
 			
-			if (new_task_needed) {
-				Logger.Debug ("Adding a new Task");
-				
-				if (current_task_list == null) {
-					Gtk.TextIter start = Buffer.GetIterAtMark (Buffer.InsertMark);
-					Gtk.TextIter end = start;
-					
-					start.BackwardLine ();
-					//end.ForwardChars (2);
-					
-					//TODO: Use the rest of this line as the title of the new task list
-					
-					// Logger.Debug(Buffer.GetText(start, end, false));
-					Buffer.Delete (ref start, ref end);
-					
-					TaskLists.Add (new TaskList (Note));
-				} else {
-					var iter = Buffer.GetIterAtMark (Buffer.InsertMark);
-					var end = iter;
-					end.ForwardToLineEnd ();
-					
-					TaskTag tt = utils.GetTaskTag (iter);
-					if (tt != null) {
-						//Logger.Debug ("removing old tasktag");
-						Buffer.RemoveTag (tt, iter, end);
-					}
-					
-					current_task_list.AddTask (iter);
-				}
-				new_task_needed = false;
-			}
+			
+			
 			StartListeners ();
 			//TODO: also check for tasklist name change
 		}
