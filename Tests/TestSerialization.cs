@@ -148,7 +148,7 @@ namespace Tomboy.TaskManager.Tests
 			
 			// saving worked?
 			Assert.That(!changedManager.TaskLists[0].Tasks[0].Done);
-			Assert.That(changedManager.TaskLists[0].Tasks[0].Done);
+			Assert.That(changedManager.TaskLists[0].Tasks[1].Done);
 		}
 		
 		

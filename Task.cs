@@ -45,10 +45,10 @@ namespace Tomboy.TaskManager {
 		/// </summary>
 		public override bool Done {
 			get {
-				return (check_box != null && check_box.Active);
+				return Boolean.Parse(TaskTag.Attributes["Done"]);
 			}
 			set {
-				check_box.Active = value;
+				TaskTag.Attributes["Done"] = value.ToString();
 			}
 		}
 		
@@ -569,9 +569,9 @@ namespace Tomboy.TaskManager {
 		{
 			Debug.Assert (check_box == sender); // no other checkbox should be registred here
 			
+			Done = check_box.Active;
 			SetDoneVisitor visitor = new SetDoneVisitor (check_box.Active, this);
 			visitor.visit (this);
-			// TODO some signalling here?
 		}
 	}
 }
