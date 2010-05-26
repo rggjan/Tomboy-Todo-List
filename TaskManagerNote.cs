@@ -20,7 +20,6 @@ namespace Tomboy.TaskManager {
 		private Task task_to_fix = null;
 		private List<FixAction> fix_list = new List<FixAction>();
 
-		
 		private List<TaskList> tasklists;
 		
 		public List<TaskList> TaskLists {
@@ -202,6 +201,7 @@ namespace Tomboy.TaskManager {
 			
 			//Initialise tasklists list
 			DeserializeTasklists ();
+			gui.PriorityShown = true;
 		}
 		
 		private bool OnPriorityClicked (NoteTag tag, NoteEditor editor, Gtk.TextIter start, Gtk.TextIter end)
@@ -408,8 +408,7 @@ namespace Tomboy.TaskManager {
 				tl.LockEnd ();
 			}
 			
-			// TODO load this from the configuration?
-			gui.PriorityShown = true;
+			// TODO load "PriorityShown" from the configuration?
 		}
 	}
 	
