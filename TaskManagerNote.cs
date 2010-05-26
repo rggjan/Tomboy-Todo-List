@@ -122,6 +122,7 @@ namespace Tomboy.TaskManager {
 		/// </summary>
 		public void StartListeners ()
 		{
+			StopListeners();
 			Buffer.InsertText += BufferInsertText;
 			Buffer.UserActionEnded += CheckIfNewTaskNeeded;
 			Buffer.DeleteRange += DeleteRange;
@@ -159,7 +160,16 @@ namespace Tomboy.TaskManager {
 			
 			foreach (FixAction action in fix_list)
 			{
-				action.fix ();
+				Logger.Info ("fixing... high");
+				if (action.Priority)
+					action.fix ();
+			}
+			
+			foreach (FixAction action in fix_list)
+			{
+				Logger.Info("fixing... low");
+				if (!action.Priority)
+					action.fix ();
 			}
 			fix_list.Clear ();
 			
@@ -180,6 +190,7 @@ namespace Tomboy.TaskManager {
 				
 				lock_end_needed = null;
 			}
+			
 			StartListeners ();
 		}
 
@@ -283,9 +294,25 @@ namespace Tomboy.TaskManager {
 		/// A <see cref="Gtk.InsertTextArgs"/>
 		/// </param>
 		void BufferInsertText (object o, Gtk.InsertTextArgs args)
-		{
-			//TODO check if inserted at x:  "3[]X ..."
+		{			
+			Logger.Info("Bufferinserttext");
+			//check if inserted at x:  "3[]X ..." done
 			//TODO same but with enter...
+			foreach (Gtk.TextTag t in args.Pos.Tags)
+			{
+				Logger.Info(t.Name);
+				if (t.Name != null && t.Name.Equals("checkbox-active"))
+				{
+					Logger.Debug("adding undo");
+					fix_list.Add(new FixUndoAction(this));
+				} else 
+				{
+					Logger.Debug("name==null");	
+				}
+			}
+			Logger.Info("ok");
+			//Logger.Info(t.Name);
+			
 			if (args.Text == System.Environment.NewLine) {//FIXME enter at very beginning of last task problem
 				Gtk.TextIter end = args.Pos;
 				end.BackwardChar ();
@@ -338,6 +365,8 @@ namespace Tomboy.TaskManager {
 				Buffer.PlaceCursor (Buffer.GetIterAtMark (Buffer.InsertMark));
 								
 				task_deletion_needed = null;
+				
+				StartListeners ();
 				return;
 			}
 			
@@ -411,62 +440,6 @@ namespace Tomboy.TaskManager {
 			// TODO load "PriorityShown" from the configuration?
 		}
 	}
-	
-	public abstract class FixAction
-	{
-		public abstract void fix();
-	}
-	
-	public class FixDeleteAction: FixAction
-	{
-		TaskManagerNoteAddin addin;
-		TaskList tasklist1;
-		TaskList tasklist2;
-		int line;
-		
-		public FixDeleteAction (TaskManagerNoteAddin addin, TaskList tasklist1, TaskList tasklist2, int line)
-		{
-			this.addin = addin;
-			this.tasklist1 = tasklist1;
-			this.tasklist2 = tasklist2;
-			this.line = line;
-		}
-		
-		public override void fix()
-		{
-			addin.StopListeners ();
-			addin.Buffer.Undoer.ClearUndoHistory ();
-			//TODO apply this everywhere!
-			if (tasklist2 == null && tasklist1 == null) {
-				Logger.Debug ("Checking for Deleted Tasks");
-				addin.ValidateTaskLists ();
-			} else if (tasklist1 != null && tasklist2 != null) {
-				if (tasklist1 == tasklist2)
-				{
-					Logger.Debug ("Have to repair within TaskList");
-					TaskList new_list = tasklist1.FixWithin (line);
-					if (new_list != null)
-						addin.TaskLists.Add (new_list);
-				} else {
-					Logger.Debug ("Oh No, have to merge two TaskLists!");
-					tasklist2.FixWithin (line);
-					tasklist1.TransferTasksTo (tasklist2);
-					addin.TaskLists.Remove (tasklist1);
-				}
-			} else if (tasklist1 != null) {
-				Logger.Debug ("Fixing Start");
-				tasklist1.FixTitle ();
-				tasklist1.RemoveDeletedTasks ();
-			} else {
-				Logger.Debug ("Fixing End");
-				tasklist2.FixWithin (line);
-				tasklist2.LockEnd ();
-			}
-			
-			addin.Utils.ResetCursor ();
-			
-			addin.StartListeners ();
-		}
-	}
+
 	
 }

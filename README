@@ -9,6 +9,8 @@ the sources.
 The requirements docuement can be found in doc/requirements. Use make to create
 a PDF from the LaTeX sources.
 
+Many thanks to http://hbons.deviantart.com/ for the todo list icon.
+
 --
 The Addin is currently hosted on github: http://github.com/rggjan/Tomboy-Todo-List.
 
