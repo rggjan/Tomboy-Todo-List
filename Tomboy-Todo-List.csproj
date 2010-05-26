@@ -87,10 +87,9 @@
     <EmbeddedResource Include="Tests\DoubleTaskListNote.xml" />
     <EmbeddedResource Include="Tests\NoTaskListNote.xml" />
     <EmbeddedResource Include="Tests\AllDoneTaskListNote.xml" />
-    <EmbeddedResource Include="Icons\todo-icon.png" />
-    <EmbeddedResource Include="Icons\todo-icon32.png" />
-    <EmbeddedResource Include="Icons\todo-icon16.png" />
     <EmbeddedResource Include="Icons\todo-icon24.png" />
+    <EmbeddedResource Include="Icons\duedate-icon22.png" />
+    <EmbeddedResource Include="Icons\priority-icon22.png" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

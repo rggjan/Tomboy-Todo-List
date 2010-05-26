@@ -40,9 +40,8 @@ namespace Tomboy.TaskManager
 	public class TaskManagerGui
 	{
 		private Gtk.Menu task_menu = new Gtk.Menu ();
-		private Gtk.MenuItem add_list = new Gtk.MenuItem (Catalog.GetString ("Add TaskList"));
-		private Gtk.MenuItem add_priority = new Gtk.MenuItem (Catalog.GetString ("Add Priority"));
-		private Gtk.MenuItem add_duedate = new Gtk.MenuItem (Catalog.GetString ("Add Duedate"));
+		private Gtk.ImageMenuItem add_priority = new Gtk.ImageMenuItem (Catalog.GetString ("Add Priority"));
+		private Gtk.ImageMenuItem add_duedate = new Gtk.ImageMenuItem (Catalog.GetString ("Add Duedate"));
 		private Gtk.CheckMenuItem show_priority = new Gtk.CheckMenuItem (Catalog.GetString ("Show Priorities"));
 		private Gtk.MenuToolButton menu_tool_button;
 			
@@ -63,19 +62,19 @@ namespace Tomboy.TaskManager
 			}
 		}
 		
-	public bool PriorityShown
-	{
-		get {
-			return show_priority.Active;
+		public bool PriorityShown
+		{
+			get {
+				return show_priority.Active;
+			}
+			set {
+				if (show_priority.Active != value)
+					{
+						show_priority.Active = value;
+						TogglePriorityVisibility ();
+					}
+			}
 		}
-		set {
-			if (show_priority.Active != value)
-				{
-					show_priority.Active = value;
-					TogglePriorityVisibility ();
-				}
-		}
-	}
 
 		TaskNoteUtilities utils = null;
 		
@@ -83,6 +82,12 @@ namespace Tomboy.TaskManager
 		{
 			this.addin = addin;
 			utils = new TaskNoteUtilities (addin.Buffer);
+			
+			var duedateImage = new Gtk.Image(null, "Tomboy.TaskManager.Icons.duedate-icon22.png");
+			add_duedate.Image = duedateImage;
+			
+			var priorityImage = new Gtk.Image(null, "Tomboy.TaskManager.Icons.priority-icon22.png");
+			add_priority.Image = priorityImage;
 			
 			task_menu.Add (add_duedate);
 			task_menu.Add (add_priority);
@@ -94,8 +99,8 @@ namespace Tomboy.TaskManager
 				task_menu.Add (print_structure);
 			}
 			
-			var image = new Gtk.Image(null, "Tomboy.TaskManager.Icons.todo-icon24.png");
-			menu_tool_button = new Gtk.MenuToolButton (image, null);
+			var todoImage = new Gtk.Image(null, "Tomboy.TaskManager.Icons.todo-icon24.png");
+			menu_tool_button = new Gtk.MenuToolButton (todoImage, null);
 			
 			menu_tool_button.TooltipText = Catalog.GetString ("Add a new TaskList");
 			menu_tool_button.ArrowTooltipText = Catalog.GetString ("Set TaskList properties");
@@ -113,8 +118,6 @@ namespace Tomboy.TaskManager
 			add_priority.Activated += OnAddPriorityActivated;
 			show_priority.Toggled += OnShowPriorityActivated;
 			
-			add_list.Activated += OnAddListActivated;
-
 			menu_tool_button.Clicked += OnAddListActivated;
 			menu_tool_button.ShowMenu += UpdateMenuSensitivity;
 		}
@@ -125,8 +128,6 @@ namespace Tomboy.TaskManager
 			add_priority.Activated -= OnAddPriorityActivated;
 			show_priority.Toggled -= OnShowPriorityActivated;
 			
-			add_list.Activated -= OnAddListActivated;
-
 			menu_tool_button.Clicked -= OnAddListActivated;
 			menu_tool_button.ShowMenu -= UpdateMenuSensitivity;
 		}
@@ -217,7 +218,7 @@ namespace Tomboy.TaskManager
 		}
 		
 		/// <summary>
-		/// Makes sure that add_list and add_priority menu items Sensitive property
+		/// Makes sure that add_priority menu items Sensitive property
 		/// is set correctly according to where we currently are in the NoteBuffer
 		/// </summary>
 		void UpdateMenuSensitivity (object sender, EventArgs args)
@@ -226,11 +227,9 @@ namespace Tomboy.TaskManager
 			Task task = utils.GetTask ();
 			if (task != null && task.PriorityUnset () && show_priority.Active) {
 				//add_priority.Sensitive = true;
-				//add_list.Sensitive = false;
 			}
 			else {
 				//add_priority.Sensitive = false;
-				//add_list.Sensitive = true;
 			}
 		}
 	}
