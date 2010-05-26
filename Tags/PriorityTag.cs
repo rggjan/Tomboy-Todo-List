@@ -33,7 +33,7 @@ namespace Tomboy.TaskManager
 	public class PriorityTag : NoteTag
 	{
 		private ComboBox box;
-		private TextRange range;
+		private Task task;
 		private TaskManagerNoteAddin addin;
 		
 		public PriorityTag (string name, TaskManagerNoteAddin addin) : base (name)
@@ -55,8 +55,17 @@ namespace Tomboy.TaskManager
 		{
 			string[] prios = {"0 (unset)","1 (very low)","2 (low)","3 (normal)","4 (high)","5 (very high)"};
 			box = new ComboBox (prios);
-			box.Active = 3;
-			range = new TextRange (start, end);
+			
+			//Member priority is shadowing the enum, therefore explicit here)
+			box.Active = (int)TaskManager.Priority.NORMAL;
+			
+			task = addin.Utils.GetTask (start);
+			if (task.Priority == TaskManager.Priority.UNSET){
+				GetAvPriorityVisitor visitor = new GetAvPriorityVisitor ();
+				
+				visitor.visit (task);
+				box.Active = visitor.IntResult;
+			}
 			
 			Dialog dialog = new Dialog ();
 			dialog.Modal = true;
@@ -76,24 +85,9 @@ namespace Tomboy.TaskManager
 		{	
 			if (args.ResponseId != ResponseType.Ok)
 				return;
-
-			string newprio = box.Active == 0 ? " " : box.Active.ToString ();
-			//TaskNoteUtilities utils = new TaskNoteUtilities (Buffer);
 			
-			//Logger.Debug (range.Text);
-			//Logger.Debug ("Length of prio tag: {0}", new object[]{range.Length});
-			
-//			TextTag[] tags = range.Start.Tags;
-//			TextIter start = range.Start;
-//			TextIter end = range.End;
-			
-//			Buffer.Delete (ref start, ref end);
-//			Buffer.InsertWithTags (ref start, newprio, tags);
-			
-			//Notify the task itself
-			Task t = addin.Utils.GetTask (range.Start);
-			t.Priority = (Priority)int.Parse (newprio);
-			addin.OnPriorityClicked (t);
+			task.Priority = (Priority) box.Active;
+			addin.OnPriorityClicked (task);
 		}
 	}
 }

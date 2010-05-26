@@ -29,23 +29,33 @@ using System.Collections.Generic;
 namespace Tomboy.TaskManager
 {
 
-
-	public class GetMinDueDateVisitor : Visitor
+	public class GetAvPriorityVisitor : Visitor
 	{
 
-		private DateTime? result;
-		public DateTime Result {
+		private int setints;
+		private double result;
+		
+		public int IntResult {
 			get {
-				if (result == null || ((DateTime)result) == DateTime.MaxValue)
-					return DateTime.Today;
-				return ((DateTime)result);
+				if (result == 0)
+					return (int)Priority.NORMAL;
+				
+				double res = result/setints;
+				int rounded = (int) Math.Round (res);
+				return rounded;
+			}
+		}
+		public Priority Result {
+			get {
+				return (Priority) IntResult;
 			}
 		}
 		private List<AttributedTask> visited;
 		
-		public GetMinDueDateVisitor ()
+		public GetAvPriorityVisitor ()
 		{
-			result = DateTime.MaxValue;
+			result = 0;
+			setints = 0;
 			visited = new List<AttributedTask>();
 		}
 		
@@ -56,28 +66,23 @@ namespace Tomboy.TaskManager
 		
 		public void visit (TaskList tl)
 		{
+			//Tasklist do not have priorities. Ignore them
 			visited.Add (tl);
-			
-			DateTime? date = tl.DueDate;
-			if (date != null){
-				result = ((DateTime) date) < result? date : result;
-			}
-			
 			foreach (Task t in tl.Tasks)
-				this.visit (t);
+				visit (t);
 		}
 		
 		public void visit (Task t)
 		{
 			visited.Add (t);
 			
-			DateTime? date = t.DueDate;
-			if (date != null){
-				result = ((DateTime) date) < result? date : result;
+			if (t.Priority != Priority.UNSET){
+				result += (int)t.Priority;
+				setints += 1;
 			}
 			
 			foreach (TaskList tl in t.Subtasks)
-				this.visit (tl);
+				visit (tl);
 		}
 	}
 }
