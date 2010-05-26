@@ -75,15 +75,15 @@ namespace Tomboy.TaskManager {
 		/// A <see cref="System.Boolean"/>, false if all tasks in the note are
 		/// marked as done, true otherwise.
 		/// </returns>
-		public override bool ContainsNote(Note n) 
+		public override bool ContainsNote (Note n)
 		{
-			TaskListParser parser = new TaskListParser(n);
-			var tls = parser.Parse();
+			TaskListParser parser = new TaskListParser (n);
+			var tls = parser.Parse ();
 			
 			bool allTaskListsDone = true;
 			
-			foreach (TaskList tl in tls) {
-				allTaskListsDone |= tl.Done;
+			foreach (TaskList tl in tls) { // TODO is called very often... (once for each notebook?), do some kind of caching?
+				allTaskListsDone &= tl.Done;
 			}
 			
 			return !allTaskListsDone;

@@ -31,6 +31,8 @@ using Tomboy;
 namespace Tomboy.TaskManager.Tests
 {
 
+	//TODO test delete file
+	
 	/// <summary>
 	/// Makes sure Notes get initialized correctly by the TaskManager Addin.
 	/// </summary>

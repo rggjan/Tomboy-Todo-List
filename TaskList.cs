@@ -91,10 +91,14 @@ namespace Tomboy.TaskManager {
 		/// <summary>
 		/// Describes what to do when tasklist is marked as done
 		/// </summary>
-		public override bool Done { 
+		public override bool Done {
 			get {
 				if (Tasks != null)
-					return Tasks.FindAll(c => c.Done == true).Count == Tasks.Count;
+				{
+					Logger.Info (Description ());
+					Logger.Debug ("Tasklist done " + (Tasks.FindAll (c => c.Done == true).Count == Tasks.Count).ToString ());
+					return Tasks.FindAll (c => c.Done == true).Count == Tasks.Count;
+				}
 				else
 					return true;
 			}

@@ -45,6 +45,7 @@ namespace Tomboy.TaskManager {
 		/// </summary>
 		public override bool Done {
 			get {
+				Logger.Debug ("Done " + (check_box != null && check_box.Active).ToString());
 				return (check_box != null && check_box.Active);
 			}
 			set {
