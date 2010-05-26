@@ -67,23 +67,6 @@ namespace Tomboy.TaskManager
 		}
 		
 		/// <summary>
-		/// The duedate of the attached task or tasklist
-		/// </summary>
-		public DateTime TaskDuedate {
-			get {
-				DateTime result;
-				//Error happens when empty string is parsed
-				try {
-					result = DateTime.Parse (Attributes["Duedate"]);
-				} catch (FormatException ex) {return DateTime.MinValue;}
-				return result;
-			}
-			set {
-				Attributes["Duedate"] = value.ToShortDateString ();
-			}
-		}
-		
-		/// <summary>
 		/// Task this tag is (currently, but ought to be fixed) attached to
 		/// </summary>
 		public AttributedTask AttributedTask {

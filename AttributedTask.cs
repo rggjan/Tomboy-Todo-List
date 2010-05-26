@@ -60,11 +60,11 @@ namespace Tomboy.TaskManager
 		}
 		
 		/// <summary>
-		/// Date when this task is overdue
+		/// TODO: parse
 		/// </summary>
 		public DateTime DueDate {
-			get { return Tag.TaskDuedate; }
-			set { Tag.TaskDuedate = value; }
+			get { return new DateTime (); }
+			set { ; }
 		}
 		
 		/// <summary>
@@ -141,6 +141,39 @@ namespace Tomboy.TaskManager
 		
 		protected abstract TextIter End {
 			get;	
+		}
+		
+		public bool DueDateSet {
+			get 
+			{
+				bool result = false;
+				TextIter iter = DescriptionStart;
+				do {
+					for (int i=0;i<iter.Tags.Length && !result;i++)
+						result = iter.Tags[i].Name == "duedate";
+				} while (!result && iter.ForwardChar () && iter.Compare(DescriptionEnd)<=0);
+				return result;
+			}
+		}
+		
+		private DateTag datetag;
+		private DateTag DateTag{
+			get {
+				if (datetag ==null)
+					datetag = (DateTag) Buffer.TagTable.Lookup ("duedate");
+			
+				return datetag;
+			}	
+		}
+		
+		public void AddDueDate (DateTime date){
+			
+			this.DueDate = date;
+			TextIter end = DescriptionEnd;
+			end.BackwardChar ();
+			
+			Buffer.Insert (ref end, " ");
+			Buffer.InsertWithTags (ref end, date.ToShortDateString (), new TextTag[]{DateTag});
 		}
 	}
 }

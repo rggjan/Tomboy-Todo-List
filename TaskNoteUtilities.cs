@@ -105,7 +105,7 @@ namespace Tomboy.TaskManager
 			Buffer.RemoveTag ("checkbox", start, end);
 			Buffer.RemoveTag ("checkbox-active", start, end);
 			Buffer.RemoveTag ("priority", start, end);
-			Buffer.RemoveTag ("duedate", start, end);
+			//Buffer.RemoveTag ("duedate", start, end);
 			
 			while (!iter.Equal (end))
 			{
@@ -142,15 +142,6 @@ namespace Tomboy.TaskManager
 		public TaskListTag GetTaskListTag (TextIter iter)
 		{
 			return (TaskListTag) Buffer.GetDynamicTag ("tasklist", iter);
-		}
-		
-		public DateTag GetDateTag ()
-		{
-			return GetDateTag (Buffer.GetIterAtMark (Buffer.InsertMark));	
-		}
-		public DateTag GetDateTag (TextIter iter)
-		{
-			return (DateTag) Buffer.GetDynamicTag ("duedate", iter);	
 		}
 	}
 }

@@ -30,15 +30,14 @@ namespace Tomboy.TaskManager
 {
 
 
-	public class DateTag : DynamicNoteTag
+	public class DateTag : NoteTag
 	{
 		
 		private Calendar calendar;
 		private TextRange range;
 		private NoteEditor editor;
-		private Task Task;
 		
-		public DateTag ()
+		public DateTag (string name) : base (name)
 		{
 		}
 		
@@ -80,24 +79,9 @@ namespace Tomboy.TaskManager
 			TextIter start = range.Start;
 			TextIter end = range.End;
 			
-			if (Task == null)
-				Logger.Debug ("OOPS!");
-			Task.DueDate = calendar.GetDate ();
-			
 			string newdate = calendar.GetDate ().ToShortDateString ();
-			Task.ContainingTaskList.ContainingNote.Buffer.Delete (ref start, ref end);
+			editor.Buffer.Delete (ref start, ref end);
 			editor.Buffer.InsertWithTags (ref start, newdate, new TextTag[]{this});
-		}
-
-		/// <summary>
-		/// Attach a task to this tag
-		/// </summary>
-		/// <param name="atask">
-		/// A <see cref="AttributedTask"/>
-		/// </param>
-		public void Bind (Task atask)
-		{
-			Task = atask;
 		}
 	}
 }

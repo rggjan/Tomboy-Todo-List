@@ -611,34 +611,5 @@ namespace Tomboy.TaskManager {
 			visitor.visit (this);
 			// TODO some signalling here?
 		}
-		
-		public bool DueDateSet {
-			get 
-			{
-				bool result = false;
-				TextIter iter = Start;
-				do {
-					for (int i=0;i<iter.Tags.Length && !result;i++)
-						result = iter.Tags[i].Name == "duedate";
-				} while (!result && iter.ForwardChar () && iter.Compare(End)<=0);
-				return result;
-			}
-		}
-		public void AddDueDate (DateTime date){
-			
-			DateTag tag = (DateTag) ContainingTaskList.ContainingNote.TagTable.CreateDynamicTag ("duedate");
-			tag.Bind (this);
-			
-			this.DueDate = date;
-			TextIter end = End;
-			end.BackwardChar ();
-			
-			TextTag[] tags = new TextTag[end.Tags.Length+1];
-			Array.Copy (end.Tags, tags, end.Tags.Length);
-			tags[tags.Length-1] = tag;
-			
-			Buffer.Insert (ref end, " ");
-			Buffer.InsertWithTags (ref end, date.ToShortDateString (), tags);
-		}
 	}
 }
