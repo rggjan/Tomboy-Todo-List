@@ -79,8 +79,7 @@ namespace Tomboy.TaskManager {
 //			tag.Family = "monospace";
 //			tag.Activated += OnPriorityClicked;
 			
-			tag = new PriorityTag ("priority");
-			tag.Activated += OnPriorityClicked;
+			tag = new PriorityTag ("priority", this);
 
 			if (Note.TagTable.Lookup ("priority") == null)
 				Note.TagTable.Add (tag);
@@ -202,9 +201,9 @@ namespace Tomboy.TaskManager {
 		public override void OnNoteOpened ()
 		{
 			
-			//Now that Buffer exists and does not give bugs, assign it to prio tag
-			PriorityTag tag = (PriorityTag) Buffer.TagTable.Lookup ("priority");
-			tag.Buffer = Buffer;
+//			//Now that Buffer and Note exists and does not give bugs, assign it to prio tag
+//			PriorityTag tag = (PriorityTag) Buffer.TagTable.Lookup ("priority");
+//			tag.Buffer = Buffer;
 			
 			gui = new TaskManagerGui (this);
 			gui.StartListeners ();
@@ -215,14 +214,13 @@ namespace Tomboy.TaskManager {
 			gui.PriorityShown = true;
 		}
 		
-		private bool OnPriorityClicked (NoteTag tag, NoteEditor editor, Gtk.TextIter start, Gtk.TextIter end)
+		public bool OnPriorityClicked (Task t)
 		{
 			Logger.Debug ("clicked!");
-			utils.GetTask (start).Priority = Priority.VERY_HIGH;
 			
 			StopListeners ();
 			gui.PriorityShown = true;
-			utils.GetTask (start).ShowPriority ();
+			t.ShowPriority ();
 			StartListeners ();
 			//utils.GetTask (start).TagUpdate ();
 			//Logger.Debug(utils.GetTask (start).Priority.ToString());

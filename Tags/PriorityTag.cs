@@ -33,14 +33,12 @@ namespace Tomboy.TaskManager
 	public class PriorityTag : NoteTag
 	{
 		private ComboBox box;
-		public NoteBuffer Buffer{
-			get;
-			set;
-		}
 		private TextRange range;
+		private TaskManagerNoteAddin addin;
 		
-		public PriorityTag (string name) : base (name)
+		public PriorityTag (string name, TaskManagerNoteAddin addin) : base (name)
 		{
+			this.addin = addin;
 		}
 		
 		public override void Initialize (string element_name)
@@ -85,17 +83,17 @@ namespace Tomboy.TaskManager
 			//Logger.Debug (range.Text);
 			//Logger.Debug ("Length of prio tag: {0}", new object[]{range.Length});
 			
-			TextTag[] tags = range.Start.Tags;
-			TextIter start = range.Start;
-			TextIter end = range.End;
+//			TextTag[] tags = range.Start.Tags;
+//			TextIter start = range.Start;
+//			TextIter end = range.End;
 			
-			Buffer.Delete (ref start, ref end);
-			Buffer.InsertWithTags (ref start, newprio, tags);
+//			Buffer.Delete (ref start, ref end);
+//			Buffer.InsertWithTags (ref start, newprio, tags);
 			
 			//Notify the task itself
-			TaskNoteUtilities utils = new TaskNoteUtilities (Buffer);
-			Task t = utils.GetTask (range.Start);
-			t.Priority = (Priority) int.Parse (newprio);
+			Task t = addin.Utils.GetTask (range.Start);
+			t.Priority = (Priority)int.Parse (newprio);
+			addin.OnPriorityClicked (t);
 		}
 	}
 }
