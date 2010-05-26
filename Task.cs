@@ -459,7 +459,7 @@ namespace Tomboy.TaskManager {
 			var end = DescriptionEnd;
 			
 			Buffer.Delete (ref start, ref end);
-			
+
 			start = Start;
 			end = start;
 			end.ForwardLines (2);
@@ -468,7 +468,7 @@ namespace Tomboy.TaskManager {
 
 			Delete ();
 			
-			if (!IsLastTask () || name.Length > 0) {
+			if (!IsLastTask () || (name != null && name.Length > 0)) {
 				Logger.Debug ("is not last task");
 				
 				if (name == null)
