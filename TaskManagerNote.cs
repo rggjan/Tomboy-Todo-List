@@ -204,8 +204,7 @@ namespace Tomboy.TaskManager {
 			
 			//Now that Buffer exists and does not give bugs, assign it to prio tag
 			PriorityTag tag = (PriorityTag) Buffer.TagTable.Lookup ("priority");
-			if (tag.Buffer == null)
-				tag.Buffer = Buffer;
+			tag.Buffer = Buffer;
 			
 			gui = new TaskManagerGui (this);
 			gui.StartListeners ();
