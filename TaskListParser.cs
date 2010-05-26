@@ -71,7 +71,6 @@ namespace Tomboy.TaskManager
 			var tasklists = PrepareTaskListTags ();
 			var tasks = PrepareTaskTags ();
 			var duedates = PrepareDueDates ();
-			TextTagEnumerator links = new TextTagEnumerator (buffer, "link:internal");
 			
 			foreach (KeyValuePair<TaskListTag, TextRange> kvp in tasklists){
 				result.Add (new TaskList (note, kvp.Value.Start, kvp.Key));
@@ -80,29 +79,6 @@ namespace Tomboy.TaskManager
 			foreach (KeyValuePair<TaskTag, TextRange> kvp in tasks){
 				TaskList tasklist = utils.GetTaskList (kvp.Value.Start);
 				tasklist.AddTask (kvp.Value.Start, kvp.Key);
-			}
-
-			foreach (TextRange r in links) {
-				Task atStart = utils.GetTask (r.Start);
-				Task atEnd = utils.GetTask (r.End);
-				if (atStart == null || atEnd == null)
-					break;
-				if (atStart == atEnd){
-					Logger.Debug ("Internal link found!");
-					Logger.Debug ("Name: {0}", new object[]{r.Text});
-					Note linkedNote = Tomboy.DefaultNoteManager.Find (r.Text);
-					
-					if (!linkedNote.IsLoaded)
-						Note.Load (linkedNote.FilePath, Tomboy.DefaultNoteManager);
-					
-					TaskListParser subparser = new TaskListParser (linkedNote);
-					List<TaskList> sublists = subparser.Parse ();
-					
-					foreach (TaskList tl in sublists)
-						atStart.Subtasks.Add (tl);
-					
-					Logger.Debug ("{0} subtasks found", new object[]{sublists.Count});
-				}
 			}
 			
 			foreach (KeyValuePair<DateTag, TextRange> kvp in duedates){	

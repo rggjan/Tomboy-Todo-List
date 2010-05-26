@@ -81,12 +81,13 @@ namespace Tomboy.TaskManager {
 			get; set;
 		}
 		
-		/// <summary>
-		/// LinkingTasks for ITask interface
-		/// </summary>
-		public List<Task> LinkinTasks { 
-			get; set;
-		}
+		//Dropped for now
+//		/// <summary>
+//		/// LinkingTasks for ITask interface
+//		/// </summary>
+//		public List<Task> LinkinTasks { 
+//			get; set;
+//		}
 		
 		/// <summary>
 		/// Describes what to do when tasklist is marked as done

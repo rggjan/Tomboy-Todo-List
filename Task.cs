@@ -93,7 +93,28 @@ namespace Tomboy.TaskManager {
 		
 		//TODO: Subtasks
 		public List<TaskList> Subtasks {
-			get; set;
+			get 
+			{
+				List<TaskList> result = new List<TaskList> ();
+				TextTagEnumerator links = new TextTagEnumerator (Buffer, "link:internal");
+				
+				foreach (TextRange r in links) {
+					if (r.Start.Compare (Start)>=0 && r.End.Compare (End)<=0) {
+						
+						Note linkedNote = Tomboy.DefaultNoteManager.Find (r.Text);
+					
+						if (!linkedNote.IsLoaded)
+							Note.Load (linkedNote.FilePath, Tomboy.DefaultNoteManager);
+					
+						TaskListParser subparser = new TaskListParser (linkedNote);
+						List<TaskList> sublists = subparser.Parse ();
+					
+						result.AddRange (sublists);
+					}
+				}
+				
+				return result;
+			}
 		}
 		
 		public Task (TaskList containingList, Gtk.TextIter location)
@@ -237,7 +258,6 @@ namespace Tomboy.TaskManager {
 		/// </param>
 		private void InitializeTask (TaskList containingList, Gtk.TextIter location, TaskTag tag)
 		{
-			Subtasks = new List<TaskList> ();
 			ContainingTaskList = containingList;
 			location.LineOffset = 0;
 			
