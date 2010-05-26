@@ -159,8 +159,8 @@ namespace Tomboy.TaskManager {
 			//TODO merge this with things below
 			Name = name;
 			TaskListTag tag = (TaskListTag)ContainingNote.TagTable.CreateDynamicTag ("tasklist");
-			//TextIter iter;
-			tag.TaskPriority = Priority.HIGH;
+
+			tag.TaskPriority = Priority.HIGH; //TODO fix this...
 			NoteBuffer buffer = note.Buffer;
 			
 			Initialize (start, tag);
@@ -171,6 +171,10 @@ namespace Tomboy.TaskManager {
 			
 			buffer.Insert (ref end, name);
 			start = Start;
+			
+			if (!end.EndsLine())
+				end.ForwardToLineEnd();
+			
 			end.ForwardChar ();
 			Buffer.ApplyTag (TaskListTag, start, end);
 			
@@ -243,14 +247,8 @@ namespace Tomboy.TaskManager {
 		
 		public void FixTitle ()
 		{
-			//if (StartDeleted ())
-			//{
-			//	Logger.Debug ("Start Deleted");
-				
-			//} else {
-				utils.RemoveTaskTags (DescriptionStart, DescriptionEnd);
-				Buffer.ApplyTag (Tag, DescriptionStart, End);
-			//}
+			utils.RemoveTaskTags (DescriptionStart, DescriptionEnd);
+			Buffer.ApplyTag (Tag, DescriptionStart, End);
 		}
 
 		/// <summary>

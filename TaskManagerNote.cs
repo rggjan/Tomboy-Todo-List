@@ -294,7 +294,20 @@ namespace Tomboy.TaskManager {
 			// Forbid insertion of text at certain places...
 			foreach (Gtk.TextTag t in args.Pos.Tags)
 			{
-				if (t.Name != null && (t.Name.Equals("checkbox-active") || t.Name.Equals("duedate")))
+				if (t.Name != null && t.Name.Equals("duedate"))
+				{
+					var iter = args.Pos;
+					iter.BackwardChar();
+					foreach (Gtk.TextTag t2 in iter.Tags)
+					{
+						if (t2.Name != null && t2.Name.Equals("duedate"))
+						{
+							fix_list.Add (new FixUndoAction (this));
+							return;
+						}
+					}
+				}
+				if (t.Name != null && t.Name.Equals("checkbox-active"))
 				{
 					fix_list.Add (new FixUndoAction (this));
 					return;

@@ -45,9 +45,10 @@ namespace Tomboy.TaskManager {
 		/// </summary>
 		public override bool Done {
 			get {
-				return (check_box != null && check_box.Active);
+				return Boolean.Parse(TaskTag.Attributes["Done"]);
 			}
 			set {
+				TaskTag.Attributes["Done"] = value.ToString();
 				check_box.Active = value;
 			}
 		}
@@ -62,8 +63,7 @@ namespace Tomboy.TaskManager {
 		/// <summary>
 		/// Corresponding Widget for Completed Tasks.
 		/// </summary>
-		private Gtk.CheckButton check_box;
-		
+		private Gtk.CheckButton check_box = new Gtk.CheckButton ();
 		
 		/// <summary>
 		/// TaskList containing this task.
@@ -259,6 +259,10 @@ namespace Tomboy.TaskManager {
 			
 			Initialize (location, tag);
 			
+			if(tag.Attributes["Done"] == true.ToString())
+				check_box.Active = true;
+			
+			
 			//Buffer.UserActionEnded += BufferChanged;
 		}
 		
@@ -270,7 +274,6 @@ namespace Tomboy.TaskManager {
 		{
 			//Gtk.TextIter insertIter = Buffer.GetIterAtMark (Buffer.InsertMark);
 			
-			check_box = new Gtk.CheckButton ();
 			check_box.Name = "tomboy-inline-checkbox";
 			check_box.Toggled += ToggleCheckBox;
 			
@@ -459,7 +462,7 @@ namespace Tomboy.TaskManager {
 			var end = DescriptionEnd;
 			
 			Buffer.Delete (ref start, ref end);
-			
+
 			start = Start;
 			end = start;
 			end.ForwardLines (2);
@@ -468,7 +471,7 @@ namespace Tomboy.TaskManager {
 
 			Delete ();
 			
-			if (!IsLastTask () || name.Length > 0) {
+			if (!IsLastTask () || (name != null && name.Length > 0)) {
 				Logger.Debug ("is not last task");
 				
 				if (name == null)
@@ -569,9 +572,9 @@ namespace Tomboy.TaskManager {
 		{
 			Debug.Assert (check_box == sender); // no other checkbox should be registred here
 			
+			Done = check_box.Active;
 			SetDoneVisitor visitor = new SetDoneVisitor (check_box.Active, this);
 			visitor.visit (this);
-			// TODO some signalling here?
 		}
 	}
 }
