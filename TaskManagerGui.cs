@@ -24,8 +24,11 @@
 // 
 
 using System;
+using System.IO;
+using System.Reflection;
 using Mono.Unix;
 using Gtk;
+using Gdk;
 using Tomboy;
 
 namespace Tomboy.TaskManager
@@ -41,7 +44,7 @@ namespace Tomboy.TaskManager
 		private Gtk.MenuItem add_priority = new Gtk.MenuItem (Catalog.GetString ("Add Priority"));
 		private Gtk.MenuItem add_duedate = new Gtk.MenuItem (Catalog.GetString ("Add Duedate"));
 		private Gtk.CheckMenuItem show_priority = new Gtk.CheckMenuItem (Catalog.GetString ("Show Priorities"));
-		private Gtk.MenuToolButton menu_tool_button = new Gtk.MenuToolButton (Gtk.Stock.Strikethrough);
+		private Gtk.MenuToolButton menu_tool_button;
 			
 		private TaskManagerNoteAddin addin;
 		
@@ -91,8 +94,8 @@ namespace Tomboy.TaskManager
 				task_menu.Add (print_structure);
 			}
 			
-			menu_tool_button.IconName = "ghi";
-			//Not working!
+			var image = new Gtk.Image(null, "Tomboy.TaskManager.Icons.todo-icon24.png");
+			menu_tool_button = new Gtk.MenuToolButton (image, null);
 			
 			menu_tool_button.TooltipText = Catalog.GetString ("Add a new TaskList");
 			menu_tool_button.ArrowTooltipText = Catalog.GetString ("Set TaskList properties");
