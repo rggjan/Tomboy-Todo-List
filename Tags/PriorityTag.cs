@@ -33,8 +33,11 @@ namespace Tomboy.TaskManager
 	public class PriorityTag : NoteTag
 	{
 		private ComboBox box;
+		public NoteBuffer Buffer{
+			get;
+			set;
+		}
 		private TextRange range;
-		private NoteEditor editor;
 		
 		public PriorityTag (string name) : base (name)
 		{
@@ -47,14 +50,15 @@ namespace Tomboy.TaskManager
 			CanActivate = true;
 			Foreground = "blue";
 			Family = "monospace";
+			CanSerialize = false;
 		}
 		
 		protected override bool OnActivate (NoteEditor editor, Gtk.TextIter start, Gtk.TextIter end)
 		{
 			string[] prios = {"0 (unset)","1 (very low)","2 (low)","3 (normal)","4 (high)","5 (very high)"};
 			box = new ComboBox (prios);
+			box.Active = 3;
 			range = new TextRange (start, end);
-			this.editor = editor;
 			
 			Dialog dialog = new Dialog ();
 			dialog.Modal = true;
@@ -74,13 +78,19 @@ namespace Tomboy.TaskManager
 		{	
 			if (args.ResponseId != ResponseType.Ok)
 				return;
+
+			string newprio = box.Active == 0 ? " " : box.Active.ToString ();
+			//TaskNoteUtilities utils = new TaskNoteUtilities (Buffer);
 			
+			//Logger.Debug (range.Text);
+			//Logger.Debug ("Length of prio tag: {0}", new object[]{range.Length});
+			
+			TextTag[] tags = range.Start.Tags;
 			TextIter start = range.Start;
 			TextIter end = range.End;
 			
-			string newprio = box.Active == 0 ? " " : box.Active.ToString ();
-			editor.Buffer.Delete (ref start, ref end);
-			editor.Buffer.InsertWithTags (ref start, newprio, new TextTag[]{this});
+			Buffer.Delete (ref start, ref end);
+			Buffer.InsertWithTags (ref start, newprio, tags);
 		}
 	}
 }

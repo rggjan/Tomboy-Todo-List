@@ -50,7 +50,6 @@ namespace Tomboy.TaskManager
 			CanGrow = true;
 			LeftMarginSet = true;
 			
-			Attributes.Add ("Duedate", String.Empty);
 			Attributes.Add ("Priority", "UNSET");
 		}
 		

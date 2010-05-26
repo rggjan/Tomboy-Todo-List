@@ -72,11 +72,14 @@ namespace Tomboy.TaskManager {
 			if (Note.TagTable.Lookup ("locked") == null)
 				Note.TagTable.Add (tag);
 
-			tag = new NoteTag ("priority");
-			tag.CanActivate = true;
-			tag.CanSerialize = false;
-			tag.Foreground = "blue";
-			tag.Family = "monospace";
+//			tag = new NoteTag ("priority");
+//			tag.CanActivate = true;
+//			tag.CanSerialize = false;
+//			tag.Foreground = "blue";
+//			tag.Family = "monospace";
+//			tag.Activated += OnPriorityClicked;
+			
+			tag = new PriorityTag ("priority");
 			tag.Activated += OnPriorityClicked;
 
 			if (Note.TagTable.Lookup ("priority") == null)
@@ -198,6 +201,12 @@ namespace Tomboy.TaskManager {
 		/// </summary>
 		public override void OnNoteOpened ()
 		{
+			
+			//Now that Buffer exists and does not give bugs, assign it to prio tag
+			PriorityTag tag = (PriorityTag) Buffer.TagTable.Lookup ("priority");
+			if (tag.Buffer == null)
+				tag.Buffer = Buffer;
+			
 			gui = new TaskManagerGui (this);
 			gui.StartListeners ();
 			StartListeners ();
