@@ -69,8 +69,8 @@ namespace Tomboy.TaskManager {
 		/// Note that default must be set to 3, not 0
 		/// </summary>
 		public Priority Priority {
-			get { return Tag.TaskPriority; }
-			set { Tag.TaskPriority = value; }
+			get { return TaskTag.TaskPriority; }
+			set { TaskTag.TaskPriority = value; }
 		}
 		
 		protected override NoteBuffer Buffer {

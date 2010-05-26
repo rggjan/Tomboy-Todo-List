@@ -49,21 +49,8 @@ namespace Tomboy.TaskManager
 			base.Initialize (element_name);
 			CanGrow = true;
 			LeftMarginSet = true;
-			
-			Attributes.Add ("Priority", "UNSET");
 		}
 		
-		/// <summary>
-		/// The property of the attached task or tasklist
-		/// </summary>
-		public Priority TaskPriority {
-			get {
-				return (Priority)Enum.Parse (typeof(Priority), Attributes["Priority"]);
-			}
-			set {
-				Attributes["Priority"] = value.ToString ();
-			}
-		}
 		
 		/// <summary>
 		/// Task this tag is (currently, but ought to be fixed) attached to
