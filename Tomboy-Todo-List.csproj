@@ -78,6 +78,7 @@
     <Compile Include="Visitors\Visitor.cs" />
     <Compile Include="Visitors\GetMinDueDateVisitor.cs" />
     <Compile Include="Tests\TestSpecialNotebooks.cs" />
+    <Compile Include="FixAction.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
