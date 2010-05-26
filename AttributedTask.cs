@@ -167,12 +167,12 @@ namespace Tomboy.TaskManager
 		}
 		
 		public void AddDueDate (DateTime date){
-			
-			this.DueDate = date;
-			TextIter end = DescriptionEnd;
-			
-			Buffer.Insert (ref end, " ");
-			Buffer.InsertWithTags (ref end, date.ToShortDateString (), new TextTag[]{DateTag});
+			TextIter pos = Buffer.GetIterAtMark (Buffer.InsertMark);
+			Buffer.InsertWithTags (
+			                       ref pos, 
+			                       date.ToShortDateString (), 
+			                       new TextTag[]{DateTag}
+			);
 		}
 	}
 }
