@@ -168,6 +168,7 @@ namespace Tomboy.TaskManager {
 				
 				lock_end_needed = null;
 			}
+			
 			StartListeners ();
 		}
 		
@@ -299,7 +300,7 @@ namespace Tomboy.TaskManager {
 				
 				// Behaviour: onTask\n\n should delete empty checkbox
 				if (task != null && task.LineIsEmpty ()) {
-					fix_list.Add(new FixDeleteTaskAction(this, task));
+					fix_list.Add(new FixDeleteEmptyCheckBoxAction(this, task));
 					return;
 				}
 				

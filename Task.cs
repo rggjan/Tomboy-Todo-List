@@ -449,21 +449,13 @@ namespace Tomboy.TaskManager {
 			Buffer.TagTable.Remove (TaskTag);
 		}
 		
-		public TaskList DeleteWithLine ()
-		{
-			return DeleteWithLine (String.Empty);
-		}
-		
 		/// <summary>
-		/// Delete this task, it's widgets and corresponding tag representation
+		/// Deletes this task or splits this tasklist, depending on whether we are on the last line or not.
+		/// When splitting, returns newly created tasklist.
 		/// </summary>
-		public TaskList DeleteWithLine (String name)
+		public TaskList DeleteEmptyCheckBox (String name)
 		{
-			var start = Start;
-			//			var end = DescriptionStart;
-			
-		//	if (end.Line != start.Line)
-			//		end = DescriptionEnd;
+			var start = Start;			
 			var end = DescriptionEnd;
 			
 			Buffer.Delete (ref start, ref end);
@@ -479,15 +471,13 @@ namespace Tomboy.TaskManager {
 			if (!IsLastTask () || name.Length > 0) {
 				Logger.Debug ("is not last task");
 				
-				if (name.Equals(String.Empty))
+				if (name == null)
 					return Split ();
 				else
 					return Split (name);
 			}
 			
 			return null;
-			
-			//FIXME also for other containers?
 		}
 		
 		
@@ -528,9 +518,10 @@ namespace Tomboy.TaskManager {
 			} else {
 				var end = DescriptionEnd;
 				Buffer.Insert (ref end, "\n");
-				return DeleteWithLine (Buffer.GetText (Start, DescriptionEnd, false).TrimStart ());
+				return DeleteEmptyCheckBox (Buffer.GetText (Start, DescriptionEnd, false).TrimStart ());
 			}
 		}
+
 
 		public bool HasSpecialTag (Gtk.TextIter iter)
 		{

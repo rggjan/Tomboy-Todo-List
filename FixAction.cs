@@ -70,11 +70,11 @@ namespace Tomboy.TaskManager
 	/// <summary>
 	/// Does a simple undo.
 	/// </summary>
-	public class FixDeleteTaskAction : FixAction
+	public class FixDeleteEmptyCheckBoxAction : FixAction
 	{
 		Task task;
 
-		public FixDeleteTaskAction (TaskManagerNoteAddin addin, Task task) : base(addin)
+		public FixDeleteEmptyCheckBoxAction (TaskManagerNoteAddin addin, Task task) : base(addin)
 		{
 			this.task = task;
 			Priority = false;
@@ -82,7 +82,23 @@ namespace Tomboy.TaskManager
 
 		public override void fix ()
 		{
-			TaskList list = task.DeleteWithLine ();
+			var iter = addin.Buffer.GetIterAtLine(task.Start.Line+1);
+			var start = iter;
+			var end = iter;
+			
+			if (!end.EndsLine())
+				end.ForwardToLineEnd();
+			
+			string text = addin.Buffer.GetText(start, end, false);
+			
+			TaskList list;
+			
+			if (text.Trim().Length == 0)
+				list = task.DeleteEmptyCheckBox (null);
+			else
+				list = task.DeleteEmptyCheckBox (string.Empty);
+				
+			
 			if (list != null)
 				addin.TaskLists.Add (list);
 			
@@ -111,10 +127,6 @@ namespace Tomboy.TaskManager
 
 		public override void fix ()
 		{
-			addin.StopListeners ();
-			addin.Buffer.Undoer.ClearUndoHistory ();
-			//TODO apply this everywhere!
-			
 			if (tasklist2 == null && tasklist1 == null) {
 				Logger.Debug ("Checking for Deleted Tasks");
 				addin.ValidateTaskLists ();
@@ -141,8 +153,7 @@ namespace Tomboy.TaskManager
 			}
 			
 			addin.Utils.ResetCursor ();
-			
-			addin.StartListeners ();
+			addin.Buffer.Undoer.ClearUndoHistory ();
 		}
 	}
 
