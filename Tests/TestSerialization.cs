@@ -158,14 +158,9 @@ namespace Tomboy.TaskManager.Tests
 		[Test()]
 		public void LoadingDueDates ()
 		{			
-			throw new NotImplementedException();
-		}
-		
-		
-		[Test()]
-		public void ChangeDueDate ()
-		{
-			throw new NotImplementedException();
+			singleManager.DeserializeTasklists();
+			
+			Assert.That(singleManager.TaskLists[0].Tasks[0].DueDate == new DateTime(2010, 4, 26));
 		}
 		
 		
