@@ -14,7 +14,6 @@ namespace Tomboy.TaskManager {
 		private TaskManagerGui gui;
 		private TaskNoteUtilities utils;
 		private bool new_task_needed = false;
-		private Task task_deletion_needed = null;
 		private TaskList current_task_list = null;
 		private TaskList lock_end_needed = null;
 		private Task task_to_fix = null;
@@ -146,15 +145,9 @@ namespace Tomboy.TaskManager {
 		}
 		
 		/// <summary>
-		/// Do all the Buffer modifications that can not be done during the actual events
+		/// Fixes all the items in the fix_list
 		/// </summary>
-		/// <param name="o">
-		/// A <see cref="System.Object"/>
-		/// </param>
-		/// <param name="args">
-		/// A <see cref="Gtk.KeyReleaseEventArgs"/>
-		/// </param>
-		public void Repair (object o, Gtk.KeyReleaseEventArgs args)
+		public void FixList()
 		{
 			StopListeners ();
 			
@@ -190,8 +183,21 @@ namespace Tomboy.TaskManager {
 				
 				lock_end_needed = null;
 			}
-			
 			StartListeners ();
+		}
+		
+		/// <summary>
+		/// Do all the Buffer modifications that can not be done during the actual events
+		/// </summary>
+		/// <param name="o">
+		/// A <see cref="System.Object"/>
+		/// </param>
+		/// <param name="args">
+		/// A <see cref="Gtk.KeyReleaseEventArgs"/>
+		/// </param>
+		public void Repair (object o, Gtk.KeyReleaseEventArgs args)
+		{
+			FixList();
 		}
 
 		public override void Shutdown ()
@@ -279,11 +285,6 @@ namespace Tomboy.TaskManager {
 		
 		//TODO beginning of task lists need fix
 		
-		/*Task GetTaskAtCursor ()
-		{
-			here.LineOffset = 0;
-		}*/
-		
 		/// <summary>
 		/// Check for changes (related to taskmanager) when text is written into the buffer
 		/// </summary>
@@ -295,23 +296,15 @@ namespace Tomboy.TaskManager {
 		/// </param>
 		void BufferInsertText (object o, Gtk.InsertTextArgs args)
 		{			
-			Logger.Info("Bufferinserttext");
 			//check if inserted at x:  "3[]X ..." done
 			//TODO same but with enter...
 			foreach (Gtk.TextTag t in args.Pos.Tags)
 			{
-				Logger.Info(t.Name);
 				if (t.Name != null && t.Name.Equals("checkbox-active"))
 				{
-					Logger.Debug("adding undo");
 					fix_list.Add(new FixUndoAction(this));
-				} else 
-				{
-					Logger.Debug("name==null");	
 				}
 			}
-			Logger.Info("ok");
-			//Logger.Info(t.Name);
 			
 			if (args.Text == System.Environment.NewLine) {//FIXME enter at very beginning of last task problem
 				Gtk.TextIter end = args.Pos;
@@ -321,7 +314,8 @@ namespace Tomboy.TaskManager {
 				
 				// Behaviour: onTask\n\n should delete empty checkbox
 				if (task != null && task.LineIsEmpty ()) {
-					task_deletion_needed = task;
+					Logger.Info("deletion_needed");
+					fix_list.Add(new FixDeleteTaskAction(this, task));
 					return;
 				}
 				
@@ -356,19 +350,9 @@ namespace Tomboy.TaskManager {
 		/// </param>
 		void CheckIfNewTaskNeeded (object sender, System.EventArgs args)
 		{
+			FixList();
+		
 			StopListeners ();
-			if (task_deletion_needed != null) {
-				TaskList list = task_deletion_needed.DeleteWithLine ();
-				if (list != null)
-					tasklists.Add (list);
-				
-				Buffer.PlaceCursor (Buffer.GetIterAtMark (Buffer.InsertMark));
-								
-				task_deletion_needed = null;
-				
-				StartListeners ();
-				return;
-			}
 			
 			if (new_task_needed) {
 				Logger.Debug ("Adding a new Task");

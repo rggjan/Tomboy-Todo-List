@@ -67,7 +67,32 @@ namespace Tomboy.TaskManager {
 	}
 	
 	/// <summary>
-	/// Action that Fixes a Delete Event. Can merge and cleanup up to two tasklists.
+	/// Does a simple undo.
+	/// </summary>
+	public class FixDeleteTaskAction: FixAction
+	{		
+		Task task;
+		
+		public FixDeleteTaskAction(TaskManagerNoteAddin addin, Task task): base(addin)
+		{	
+			this.task = task;
+			Priority = false;
+		}
+		
+		public override void fix ()
+		{
+			TaskList list = task.DeleteWithLine ();
+			if (list != null)
+				addin.TaskLists.Add (list);
+			
+			var buffer = addin.Buffer;
+			buffer.PlaceCursor (buffer.GetIterAtMark (buffer.InsertMark));
+		}
+		
+	}
+	
+	/// <summary>
+	/// Action that Deletes (cleanly) a Task
 	/// </summary>
 	public class FixDeleteAction: FixAction
 	{
