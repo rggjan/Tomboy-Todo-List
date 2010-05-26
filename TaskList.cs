@@ -33,7 +33,7 @@ namespace Tomboy.TaskManager {
 
 	/// <summary>
 	/// A task list is a collection of tasks grouped together.
-	/// It may have a title, a priority and a due date.
+	/// It may have a title and a due date.
 	/// </summary>
 	public class TaskList : AttributedTask {
 	
@@ -160,7 +160,6 @@ namespace Tomboy.TaskManager {
 			Name = name;
 			TaskListTag tag = (TaskListTag)ContainingNote.TagTable.CreateDynamicTag ("tasklist");
 
-			tag.TaskPriority = Priority.HIGH; //TODO fix this...
 			NoteBuffer buffer = note.Buffer;
 			
 			Initialize (start, tag);

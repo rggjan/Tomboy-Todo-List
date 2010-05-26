@@ -59,6 +59,19 @@ namespace Tomboy.TaskManager
 			LeftMargin = 20;
 			//Done is not an attribute of a tasklist, therefore set it here
 			Attributes.Add ("Done", "false");
+			Attributes.Add ("Priority", "UNSET");
+		}
+		
+		/// <summary>
+		/// The priority of the attached task
+		/// </summary>
+		public Priority TaskPriority {
+			get {
+				return (Priority)Enum.Parse (typeof(Priority), Attributes["Priority"]);
+			}
+			set {
+				Attributes["Priority"] = value.ToString ();
+			}
 		}
 	}
 }
