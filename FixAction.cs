@@ -23,7 +23,8 @@
 //       Gerd Zellweger <mail@gerdzellweger.com>
 // 
 
-namespace Tomboy.TaskManager {
+namespace Tomboy.TaskManager
+{
 
 	/// <summary>
 	/// This class can be used to create Actions that should be carried out on the Buffer, but have
@@ -32,83 +33,83 @@ namespace Tomboy.TaskManager {
 	public abstract class FixAction
 	{
 		protected TaskManagerNoteAddin addin;
-		
+
 		/// <summary>
 		/// If set to true, this will be handled before other FixActions
 		/// </summary>
 		public bool Priority;
-		
+
 		public FixAction (TaskManagerNoteAddin addin)
 		{
-			this.addin = addin;	
+			this.addin = addin;
 		}
-		
+
 		/// <summary>
 		/// The actual fix to perform
 		/// </summary>
-		public abstract void fix();
+		public abstract void fix ();
 	}
-	
+
 	/// <summary>
 	/// Does a simple undo.
 	/// </summary>
-	public class FixUndoAction: FixAction
-	{		
-		public FixUndoAction(TaskManagerNoteAddin addin): base(addin)
-		{	
+	public class FixUndoAction : FixAction
+	{
+		public FixUndoAction (TaskManagerNoteAddin addin) : base(addin)
+		{
 			Priority = false;
 		}
-		
+
 		public override void fix ()
 		{
-			addin.Buffer.Undoer.Undo();
+			addin.Buffer.Undoer.Undo ();
 		}
 		
 	}
-	
+
 	/// <summary>
 	/// Does a simple undo.
 	/// </summary>
-	public class FixDeleteTaskAction: FixAction
-	{		
+	public class FixDeleteTaskAction : FixAction
+	{
 		Task task;
-		
-		public FixDeleteTaskAction(TaskManagerNoteAddin addin, Task task): base(addin)
-		{	
+
+		public FixDeleteTaskAction (TaskManagerNoteAddin addin, Task task) : base(addin)
+		{
 			this.task = task;
 			Priority = false;
 		}
-		
+
 		public override void fix ()
 		{
 			TaskList list = task.DeleteWithLine ();
 			if (list != null)
 				addin.TaskLists.Add (list);
 			
-			var buffer = addin.Buffer;
-			buffer.PlaceCursor (buffer.GetIterAtMark (buffer.InsertMark));
+			addin.Utils.ResetCursor ();
+			addin.Buffer.Undoer.ClearUndoHistory ();
 		}
 		
 	}
-	
+
 	/// <summary>
 	/// Action that Deletes (cleanly) a Task
 	/// </summary>
-	public class FixDeleteAction: FixAction
+	public class FixDeleteAction : FixAction
 	{
 		TaskList tasklist1;
 		TaskList tasklist2;
 		int line;
-		
-		public FixDeleteAction (TaskManagerNoteAddin addin, TaskList tasklist1, TaskList tasklist2, int line): base(addin)
+
+		public FixDeleteAction (TaskManagerNoteAddin addin, TaskList tasklist1, TaskList tasklist2, int line) : base(addin)
 		{
 			Priority = false;
 			this.tasklist1 = tasklist1;
 			this.tasklist2 = tasklist2;
 			this.line = line;
 		}
-		
-		public override void fix()
+
+		public override void fix ()
 		{
 			addin.StopListeners ();
 			addin.Buffer.Undoer.ClearUndoHistory ();
@@ -118,8 +119,7 @@ namespace Tomboy.TaskManager {
 				Logger.Debug ("Checking for Deleted Tasks");
 				addin.ValidateTaskLists ();
 			} else if (tasklist1 != null && tasklist2 != null) {
-				if (tasklist1 == tasklist2)
-				{
+				if (tasklist1 == tasklist2) {
 					Logger.Debug ("Have to repair within TaskList");
 					TaskList new_list = tasklist1.FixWithin (line);
 					if (new_list != null)
@@ -145,49 +145,52 @@ namespace Tomboy.TaskManager {
 			addin.StartListeners ();
 		}
 	}
-	
+
 	/// <summary>
 	/// Action that adds a Task
 	/// </summary>
-	public class NewTaskAction: FixAction
+	public class NewTaskAction : FixAction
 	{
 		TaskList tasklist;
-		
-		public NewTaskAction (TaskManagerNoteAddin addin, TaskList tasklist): base(addin)
+
+		public NewTaskAction (TaskManagerNoteAddin addin, TaskList tasklist) : base(addin)
 		{
 			Priority = false;
 			this.tasklist = tasklist;
 		}
-		
-		public NewTaskAction (TaskManagerNoteAddin addin): base(addin)
+
+		public NewTaskAction (TaskManagerNoteAddin addin) : base(addin)
 		{
 			Priority = false;
 		}
-		
-		public override void fix()
+
+		public override void fix ()
 		{
-					Logger.Debug ("Adding a new Task");
-					
-					if (tasklist == null) {
-						Gtk.TextIter start = addin.Buffer.GetIterAtMark (addin.Buffer.InsertMark);
-						Gtk.TextIter end = start;
-						
-						start.BackwardLine ();
-						addin.Buffer.Delete (ref start, ref end);
-						addin.TaskLists.Add (new TaskList (addin.Note));
-					} else {
-						var iter = addin.Buffer.GetIterAtMark (addin.Buffer.InsertMark);
-						var end = iter;
-						end.ForwardToLineEnd ();
-						
-						TaskTag tt = addin.Utils.GetTaskTag (iter);
-						if (tt != null) {
-							//Remove Old TaskTag
-							addin.Buffer.RemoveTag (tt, iter, end);
-						}
-						
-						tasklist.AddTask (iter);
-					}
+			Logger.Debug ("Adding a new Task");
+			
+			if (tasklist == null) {
+				Gtk.TextIter start = addin.Buffer.GetIterAtMark (addin.Buffer.InsertMark);
+				Gtk.TextIter end = start;
+				
+				start.BackwardLine ();
+				addin.Buffer.Delete (ref start, ref end);
+				addin.TaskLists.Add (new TaskList (addin.Note));
+			} else {
+				var iter = addin.Buffer.GetIterAtMark (addin.Buffer.InsertMark);
+				var end = iter;
+				end.ForwardToLineEnd ();
+				
+				TaskTag tt = addin.Utils.GetTaskTag (iter);
+				if (tt != null) {
+					//Remove Old TaskTag
+					addin.Buffer.RemoveTag (tt, iter, end);
 				}
+				
+				tasklist.AddTask (iter);
+			}
+			
+			addin.Utils.ResetCursor();
+			addin.Buffer.Undoer.ClearUndoHistory();
+		}
 	}
 }
