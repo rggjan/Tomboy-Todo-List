@@ -134,13 +134,21 @@ namespace Tomboy.TaskManager
 		
 		void OnAddDuedateActivated (object sender, EventArgs args)
 		{
-			Task t = utils.GetTask (Buffer.GetIterAtMark (Buffer.InsertMark));
+			Task t = utils.GetTask ();
+			TaskList tl = utils.GetTaskList ();
 			
 			if (t != null && !t.DueDateSet){
 				GetMinDueDateVisitor visitor = new GetMinDueDateVisitor ();
 				visitor.visit (t);
 				
 				t.AddDueDate (visitor.Result);
+			}
+			
+			if (t == null && tl != null && !tl.DueDateSet){
+				GetMinDueDateVisitor visitor = new GetMinDueDateVisitor ();
+				visitor.visit (tl);
+				
+				tl.AddDueDate (visitor.Result);
 			}
 		}
 		
