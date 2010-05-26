@@ -531,31 +531,6 @@ namespace Tomboy.TaskManager {
 				return DeleteWithLine (Buffer.GetText (Start, DescriptionEnd, false).TrimStart ());
 			}
 		}
-		
-		public void RemoveTaskStuff ()
-		{
-			
-		/*	var start = Start;
-			var middle = start;
-			var end = End;
-			while (HasSpecialTag (middle) && !middle.Equal (end))
-			{
-				middle.ForwardChar ();
-			}
-			//Buffer.Delete (ref start, ref middle);
-		
-		
-
-
-			//start = Start;
-			//end = End;
-			String name = Buffer.GetText (middle, end, false);
-			Buffer.InsertAtCursor ("\n");
-			//Buffer.Delete (ref start, ref end);
-			
-			//end = End;
-			DeleteWithLine(name);*/
-		}
 
 		public bool HasSpecialTag (Gtk.TextIter iter)
 		{
