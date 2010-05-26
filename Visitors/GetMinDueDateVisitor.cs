@@ -33,12 +33,12 @@ namespace Tomboy.TaskManager
 	public class GetMinDueDateVisitor : Visitor
 	{
 
-		private DateTime result;
+		private DateTime? result;
 		public DateTime Result {
 			get {
-				if (result.CompareTo(DateTime.MaxValue)==0)
+				if (result == null || ((DateTime)result) == DateTime.MaxValue)
 					return DateTime.Today;
-				return result;
+				return ((DateTime)result);
 			}
 		}
 		private List<AttributedTask> visited;
@@ -56,6 +56,10 @@ namespace Tomboy.TaskManager
 		
 		public void visit (TaskList tl)
 		{
+			DateTime? date = tl.DueDate;
+			if (date != null){
+				result = ((DateTime) date) < result? date : result;
+			}
 			visited.Add (tl);
 			foreach (Task t in tl.Tasks)
 				this.visit (t);
@@ -63,8 +67,9 @@ namespace Tomboy.TaskManager
 		
 		public void visit (Task t)
 		{
-			if (t.DueDate != DateTime.MinValue){
-				result = t.DueDate < result? t.DueDate : result;
+			DateTime? date = t.DueDate;
+			if (date != null){
+				result = ((DateTime) date) < result? date : result;
 			}
 			visited.Add (t);
 			
