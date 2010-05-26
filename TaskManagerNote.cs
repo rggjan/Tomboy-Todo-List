@@ -21,6 +21,7 @@ namespace Tomboy.TaskManager {
 
 		
 		private List<TaskList> tasklists;
+		
 		public List<TaskList> TaskLists {
 			get
 			{
@@ -109,6 +110,9 @@ namespace Tomboy.TaskManager {
 			//StartListeners ();
 		}
 		
+		/// <summary>
+		/// Start all the TextBuffer listeners, + the keyrelease repair listener.
+		/// </summary>
 		public void StartListeners ()
 		{
 			Buffer.InsertText += BufferInsertText;
@@ -120,6 +124,9 @@ namespace Tomboy.TaskManager {
 			//this.Note.Window.Editor.
 		}
 		
+		/// <summary>
+		/// Stop all the TextBuffer listeners, + the keyrelease repair listener
+		/// </summary>
 		public void StopListeners ()
 		{
 			if (HasWindow)
@@ -128,31 +135,38 @@ namespace Tomboy.TaskManager {
 			Buffer.InsertText -= BufferInsertText;
 			Buffer.UserActionEnded -= CheckIfNewTaskNeeded;
 			Buffer.DeleteRange -= DeleteRange;
-		}		
+		}
+		
+		/// <summary>
+		/// Do all the Buffer modifications that can not be done during the actual events
+		/// </summary>
+		/// <param name="o">
+		/// A <see cref="System.Object"/>
+		/// </param>
+		/// <param name="args">
+		/// A <see cref="Gtk.KeyReleaseEventArgs"/>
+		/// </param>
 		public void Repair (object o, Gtk.KeyReleaseEventArgs args)
 		{
+			StopListeners ();
 			if (task_to_fix != null)
 			{
-				StopListeners ();
-				
 				TaskList list = task_to_fix.DeleteAndSplit ();
 				if (list != null)
 					tasklists.Add (list);
 				
 				task_to_fix = null;
 				utils.ResetCursor ();
-				StartListeners ();
 			}
 			
 			if (lock_end_needed != null)
 			{
-				StopListeners ();
 				if (lock_end_needed.LockEnd ())
 					lock_end_needed.PlaceCursorAtEnd ();
 				
 				lock_end_needed = null;
-				StartListeners ();
 			}
+			StartListeners ();
 		}
 
 		public override void Shutdown ()
@@ -163,7 +177,6 @@ namespace Tomboy.TaskManager {
 
 
 		/// <summary>
-
 		/// Loads the content of the buffer, sets up GUI
 		/// </summary>
 		public override void OnNoteOpened ()
