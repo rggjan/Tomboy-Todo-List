@@ -49,6 +49,7 @@ namespace Tomboy.TaskManager {
 			}
 			set {
 				TaskTag.Attributes["Done"] = value.ToString();
+				check_box.Active = value;
 			}
 		}
 		
@@ -62,8 +63,7 @@ namespace Tomboy.TaskManager {
 		/// <summary>
 		/// Corresponding Widget for Completed Tasks.
 		/// </summary>
-		private Gtk.CheckButton check_box;
-		
+		private Gtk.CheckButton check_box = new Gtk.CheckButton ();
 		
 		/// <summary>
 		/// TaskList containing this task.
@@ -259,6 +259,10 @@ namespace Tomboy.TaskManager {
 			
 			Initialize (location, tag);
 			
+			if(tag.Attributes["Done"] == true.ToString())
+				check_box.Active = true;
+			
+			
 			//Buffer.UserActionEnded += BufferChanged;
 		}
 		
@@ -270,7 +274,6 @@ namespace Tomboy.TaskManager {
 		{
 			//Gtk.TextIter insertIter = Buffer.GetIterAtMark (Buffer.InsertMark);
 			
-			check_box = new Gtk.CheckButton ();
 			check_box.Name = "tomboy-inline-checkbox";
 			check_box.Toggled += ToggleCheckBox;
 			
