@@ -115,10 +115,20 @@ namespace Tomboy.TaskManager {
 			Buffer.UserActionEnded += CheckIfNewTaskNeeded;
 			Buffer.DeleteRange += DeleteRange;
 			
-			this.Note.Window.Editor.KeyReleaseEvent += Repair;
+			if (HasWindow)
+				Window.Editor.KeyReleaseEvent += Repair;
 			//this.Note.Window.Editor.
 		}
 		
+		public void StopListeners ()
+		{
+			if (HasWindow)
+				Window.Editor.KeyReleaseEvent -= Repair;
+			
+			Buffer.InsertText -= BufferInsertText;
+			Buffer.UserActionEnded -= CheckIfNewTaskNeeded;
+			Buffer.DeleteRange -= DeleteRange;
+		}		
 		public void Repair (object o, Gtk.KeyReleaseEventArgs args)
 		{
 			if (task_to_fix != null)
@@ -150,15 +160,7 @@ namespace Tomboy.TaskManager {
 			StopListeners ();
 			gui.StopListeners ();
 		}
-		
-		public void StopListeners ()
-		{
-			this.Note.Window.Editor.KeyReleaseEvent -= Repair;
-			
-			Buffer.InsertText -= BufferInsertText;
-			Buffer.UserActionEnded -= CheckIfNewTaskNeeded;
-			Buffer.DeleteRange -= DeleteRange;
-		}
+
 
 		/// <summary>
 
