@@ -78,6 +78,11 @@ namespace Tomboy.TaskManager
 		{
 			return GetTaskTag (Buffer.GetIterAtMark (Buffer.InsertMark));
 		}
+				
+		public bool IsTextTodoItem (String text)
+		{
+			return text.Trim().Equals("[]");
+		}
 		
 		public TaskTag GetTaskTag (TextIter iter)
 		{

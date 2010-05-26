@@ -120,7 +120,7 @@ namespace Tomboy.TaskManager {
 		{
 			StopListeners();
 			Buffer.InsertText += BufferInsertText;
-			Buffer.UserActionEnded += CheckIfNewTaskNeeded;
+			Buffer.UserActionEnded += Repair;
 			Buffer.DeleteRange += DeleteRange;
 			
 			if (HasWindow)
@@ -137,7 +137,7 @@ namespace Tomboy.TaskManager {
 				Window.Editor.KeyReleaseEvent -= Repair;
 			
 			Buffer.InsertText -= BufferInsertText;
-			Buffer.UserActionEnded -= CheckIfNewTaskNeeded;
+			Buffer.UserActionEnded -= Repair;
 			Buffer.DeleteRange -= DeleteRange;
 		}
 		
@@ -180,7 +180,7 @@ namespace Tomboy.TaskManager {
 		/// <param name="args">
 		/// A <see cref="Gtk.KeyReleaseEventArgs"/>
 		/// </param>
-		public void Repair (object o, Gtk.KeyReleaseEventArgs args)
+		public void Repair (object o, EventArgs args)
 		{
 			FixList();
 		}
@@ -314,40 +314,12 @@ namespace Tomboy.TaskManager {
 				Gtk.TextIter start = args.Pos;
 				start.BackwardLine ();
 				
-				if (IsTextTodoItem (Buffer.GetText (start, end, false))) {
+				if (utils.IsTextTodoItem (Buffer.GetText (start, end, false))) {
 					fix_list.Add(new NewTaskAction(this));
 				}
 			}
 		}
-			
-		/// <summary>
-		/// Checks whether new task is needed
-		/// </summary>
-		/// <param name="sender">
-		/// A <see cref="System.Object"/>
-		/// </param>
-		/// <param name="args">
-		/// A <see cref="System.EventArgs"/>
-		/// </param>
-		void CheckIfNewTaskNeeded (object sender, System.EventArgs args)
-		{
-			FixList();
-		
-			StopListeners ();
-			
-			
-			
-			StartListeners ();
-			//TODO: also check for tasklist name change
-		}
-		
-		
-		private bool IsTextTodoItem (String text)
-		{
-			//Logger.Debug(text.Trim());
-			return text.Trim().Equals("[]");
-		}
-			
+
 		
 		/// <summary>
 		/// Loads (in terms of Tasks and Tasklists) the contents of a note
