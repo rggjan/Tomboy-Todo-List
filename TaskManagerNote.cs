@@ -329,18 +329,14 @@ namespace Tomboy.TaskManager {
 		/// </param>
 		void CheckIfNewTaskNeeded (object sender, System.EventArgs args)
 		{
+			StopListeners ();
 			if (task_deletion_needed != null) {
-				// Recursion problem without this:
-				Buffer.DeleteRange -= DeleteRange;
-				
 				TaskList list = task_deletion_needed.DeleteWithLine ();
 				if (list != null)
 					tasklists.Add (list);
 				
 				Buffer.PlaceCursor (Buffer.GetIterAtMark (Buffer.InsertMark));
-				
-				Buffer.DeleteRange += DeleteRange;
-				
+								
 				task_deletion_needed = null;
 				return;
 			}
@@ -376,6 +372,7 @@ namespace Tomboy.TaskManager {
 				}
 				new_task_needed = false;
 			}
+			StartListeners ();
 			//TODO: also check for tasklist name change
 		}
 		

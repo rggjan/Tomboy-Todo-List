@@ -463,9 +463,9 @@ namespace Tomboy.TaskManager {
 			if (!IsLastTask () || name.Length > 0) {
 				Logger.Debug ("is not last task");
 				
-				/*if (name.Equals(String.Empty))
+				if (name.Equals(String.Empty))
 					return Split ();
-				else*/
+				else
 					return Split (name);
 			}
 			
