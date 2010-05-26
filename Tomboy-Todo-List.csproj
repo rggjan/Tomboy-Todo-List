@@ -58,12 +58,8 @@
     <Compile Include="TaskList.cs" />
     <Compile Include="Task.cs" />
     <Compile Include="AttributedTask.cs" />
-    <Compile Include="TaskListTag.cs" />
-    <Compile Include="TaskTag.cs" />
     <Compile Include="OpenTasksNotebook.cs" />
-    <Compile Include="AttributedTaskTag.cs" />
     <Compile Include="TaskNoteUtilities.cs" />
-    <Compile Include="DateTag.cs" />
     <Compile Include="TaskListParser.cs" />
     <Compile Include="Tests\FileCreator.cs" />
     <Compile Include="Tests\GtkTest.cs" />
@@ -79,6 +75,11 @@
     <Compile Include="Visitors\GetMinDueDateVisitor.cs" />
     <Compile Include="Tests\TestSpecialNotebooks.cs" />
     <Compile Include="FixAction.cs" />
+    <Compile Include="Tags\AttributedTaskTag.cs" />
+    <Compile Include="Tags\DateTag.cs" />
+    <Compile Include="Tags\PriorityTag.cs" />
+    <Compile Include="Tags\TaskListTag.cs" />
+    <Compile Include="Tags\TaskTag.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -108,5 +109,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\" />
+    <Folder Include="Tags\" />
   </ItemGroup>
 </Project>
