@@ -24,16 +24,63 @@
 // 
 
 using System;
+using Gtk;
 
 namespace Tomboy.TaskManager
 {
 
 
-	public class PriorityTag
+	public class PriorityTag : NoteTag
 	{
-
-		public PriorityTag ()
+		private ComboBox box;
+		private TextRange range;
+		private NoteEditor editor;
+		
+		public PriorityTag (string name) : base (name)
 		{
+		}
+		
+		public override void Initialize (string element_name)
+		{
+			base.Initialize (element_name);
+
+			CanActivate = true;
+			Foreground = "blue";
+			Family = "monospace";
+		}
+		
+		protected override bool OnActivate (NoteEditor editor, Gtk.TextIter start, Gtk.TextIter end)
+		{
+			string[] prios = {"0 (unset)","1 (very low)","2 (low)","3 (normal)","4 (high)","5 (very high)"};
+			box = new ComboBox (prios);
+			range = new TextRange (start, end);
+			this.editor = editor;
+			
+			Dialog dialog = new Dialog ();
+			dialog.Modal = true;
+			dialog.VBox.Add (box);
+			dialog.VBox.ShowAll ();
+			dialog.AddButton ("OK", ResponseType.Ok);
+			dialog.AddButton ("Cancel", ResponseType.Cancel);
+			
+			dialog.Response += new ResponseHandler (on_dialog_response);
+			dialog.Run ();
+			dialog.Destroy ();
+			
+			return true;
+		}
+		
+		void on_dialog_response (object obj, ResponseArgs args)
+		{	
+			if (args.ResponseId != ResponseType.Ok)
+				return;
+			
+			TextIter start = range.Start;
+			TextIter end = range.End;
+			
+			string newprio = box.Active == 0 ? " " : box.Active.ToString ();
+			editor.Buffer.Delete (ref start, ref end);
+			editor.Buffer.InsertWithTags (ref start, newprio, new TextTag[]{this});
 		}
 	}
 }
