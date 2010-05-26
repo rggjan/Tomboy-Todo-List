@@ -306,7 +306,9 @@ namespace Tomboy.TaskManager {
 		/// </summary>
 		public void AddPriority ()
 		{
-			Priority = Priority.LOW;
+			GetAvPriorityVisitor visitor = new GetAvPriorityVisitor ();
+			visitor.visit (this);
+			Priority = visitor.Result;
 			ShowPriority ();
 		}
 		
