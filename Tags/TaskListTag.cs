@@ -58,9 +58,6 @@ namespace Tomboy.TaskManager
 			
 			ParagraphBackground = "lightgray";
 			LeftMargin = 8;
-			
-			//Name is not an attribute of a task, therefore set it here
-			Attributes.Add ("Name", "New TaskList!");
 		}
 	}
 }
