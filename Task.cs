@@ -605,13 +605,17 @@ namespace Tomboy.TaskManager {
 			}
 		}
 		public void AddDueDate (DateTime date){
+			
+			DateTag tag = (DateTag) ContainingTaskList.ContainingNote.TagTable.CreateDynamicTag ("duedate");
+			tag.Bind (this);
+			
 			this.DueDate = date;
 			TextIter end = End;
 			end.BackwardChar ();
 			
 			TextTag[] tags = new TextTag[end.Tags.Length+1];
 			Array.Copy (end.Tags, tags, end.Tags.Length);
-			tags[tags.Length-1] = Buffer.TagTable.Lookup ("duedate");
+			tags[tags.Length-1] = tag;
 			
 			Buffer.Insert (ref end, " ");
 			Buffer.InsertWithTags (ref end, date.ToShortDateString (), tags);

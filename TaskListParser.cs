@@ -70,6 +70,7 @@ namespace Tomboy.TaskManager
 			
 			var tasklists = PrepareTaskListTags ();
 			var tasks = PrepareTaskTags ();
+			var duedates = PrepareDueDates ();
 			TextTagEnumerator links = new TextTagEnumerator (buffer, "link:internal");
 			
 			foreach (KeyValuePair<TaskListTag, TextRange> kvp in tasklists){
@@ -104,6 +105,13 @@ namespace Tomboy.TaskManager
 				}
 			}
 			
+			foreach (KeyValuePair<DateTag, TextRange> kvp in duedates){	
+				Task t = utils.GetTask (kvp.Value.Start);
+				if (t == null)
+					Logger.Debug ("task is null but should not be");
+				
+				kvp.Key.Bind (t);
+			}
 			return result;
 		}
 		
@@ -179,6 +187,26 @@ namespace Tomboy.TaskManager
 				}
 			} while (iter.ForwardChar ());
 				
+			return result;
+		}
+		
+		private Dictionary<DateTag, TextRange> PrepareDueDates ()
+		{
+			Dictionary<DateTag, TextRange> result = new Dictionary<DateTag, TextRange> ();
+			
+			TextIter iter = buffer.StartIter;
+			do{
+				DateTag tag = utils.GetDateTag (iter);
+				if  (tag != null){
+					if (!result.ContainsKey (tag))
+						result.Add (tag, new TextRange (iter, iter));
+					else {
+						TextRange range = result[tag];
+						result[tag] = new TextRange (range.Start, iter);
+					}
+				}
+			} while (iter.ForwardChar ());
+			
 			return result;
 		}
 	}

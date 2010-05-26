@@ -63,8 +63,8 @@ namespace Tomboy.TaskManager
 		/// Date when this task is overdue
 		/// </summary>
 		public DateTime DueDate {
-			get;
-			set;
+			get { return Tag.TaskDuedate; }
+			set { Tag.TaskDuedate = value; }
 		}
 		
 		/// <summary>

@@ -30,14 +30,15 @@ namespace Tomboy.TaskManager
 {
 
 
-	public class DateTag : NoteTag
+	public class DateTag : DynamicNoteTag
 	{
 		
 		private Calendar calendar;
 		private TextRange range;
 		private NoteEditor editor;
+		private Task Task;
 		
-		public DateTag (string name) : base (name)
+		public DateTag ()
 		{
 		}
 		
@@ -79,20 +80,24 @@ namespace Tomboy.TaskManager
 			TextIter start = range.Start;
 			TextIter end = range.End;
 			
-			//TODO
-//			TaskNoteUtilities utils = new TaskNoteUtilities (note);
-//			Task t = utils.GetTask (start);
-//			
-//			if (t==null){
-//				Logger.Debug ("Error updating duedate: no task found here");
-//			}
-//			
-//			t.DueDate = calendar.GetDate;
+			if (Task == null)
+				Logger.Debug ("OOPS!");
+			Task.DueDate = calendar.GetDate ();
 			
 			string newdate = calendar.GetDate ().ToShortDateString ();
-			editor.Buffer.Delete (ref start, ref end);
-			editor.Buffer.InsertWithTags (ref start, newdate, new TextTag[]{editor.Buffer.TagTable.Lookup ("duedate")});
+			Task.ContainingTaskList.ContainingNote.Buffer.Delete (ref start, ref end);
+			editor.Buffer.InsertWithTags (ref start, newdate, new TextTag[]{this});
 		}
 
+		/// <summary>
+		/// Attach a task to this tag
+		/// </summary>
+		/// <param name="atask">
+		/// A <see cref="AttributedTask"/>
+		/// </param>
+		public void Bind (Task atask)
+		{
+			Task = atask;
+		}
 	}
 }

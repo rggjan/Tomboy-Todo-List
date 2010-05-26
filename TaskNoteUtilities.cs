@@ -143,5 +143,14 @@ namespace Tomboy.TaskManager
 		{
 			return (TaskListTag) Buffer.GetDynamicTag ("tasklist", iter);
 		}
+		
+		public DateTag GetDateTag ()
+		{
+			return GetDateTag (Buffer.GetIterAtMark (Buffer.InsertMark));	
+		}
+		public DateTag GetDateTag (TextIter iter)
+		{
+			return (DateTag) Buffer.GetDynamicTag ("duedate", iter);	
+		}
 	}
 }
