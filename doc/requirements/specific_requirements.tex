@@ -44,7 +44,7 @@ For example, a \textit{risk=L/priority=1} feature that is implemented in 10 minu
 
 \begin{samepage}\begin{requirement}{Priorities for Tasks}
 	\label{requirements:functional:task_priority}
-    \desc{The user can optionally add priorities to individual tasks and task lists.}
+    \desc{The user can optionally add priorities to individual tasks}
     \priority{1}
     \riskref{H}
 \end{requirement}\end{samepage}
@@ -125,7 +125,7 @@ For example, a \textit{risk=L/priority=1} feature that is implemented in 10 minu
       \label{requirements:interfaces:user:due_date:set}
       \desc{The user is able to set a due date for a single task or an entire task list by adding a widget for the due date over a menu button and/or a
       shortcut text. The widget will be located somewhere next to the task/task list. If the tasks consists of subtasks (see
-      \ref{requirements:functional:subtask}) then the system will set the default due date to the maximum due date of all the task in the subtasks. }
+      \ref{requirements:functional:subtask}) then the system will set the default due date to the minimum due date of all the task in the subtasks. }
       \priority{3}
       \riskref{L}
     \end{requirement}\end{samepage}
@@ -140,7 +140,7 @@ For example, a \textit{risk=L/priority=1} feature that is implemented in 10 minu
 
     \begin{samepage}\begin{requirement}{Set Priority}
       \label{requirements:interfaces:user:priority:set}
-      \desc{The user is able to set a priority for a single task or an entire task list by adding a widget for the priority over a menu button and/or a shortcut text. The widget will be located somewhere next to the task/task list.}
+      \desc{The user is able to set a priority for a single task, in form of a highlighted character in front of the task, by clicking the corresponding menu button or the designated buffer position.}
       \priority{1}
       \riskref{H}
     \end{requirement}\end{samepage}
