@@ -91,6 +91,11 @@ namespace Tomboy.TaskManager
 			
 			Buffer.Delete (ref start, ref end);
 			Buffer.InsertWithTags (ref start, newprio, tags);
+			
+			//Notify the task itself
+			TaskNoteUtilities utils = new TaskNoteUtilities (Buffer);
+			Task t = utils.GetTask (range.Start);
+			t.Priority = (Priority) int.Parse (newprio);
 		}
 	}
 }

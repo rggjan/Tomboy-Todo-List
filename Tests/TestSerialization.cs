@@ -72,7 +72,7 @@ namespace Tomboy.TaskManager.Tests
 			singleManager.DeserializeTasklists ();
 			
 			// for tasklists
-			Assert.That(singleManager.TaskLists[0].Priority == Priority.LOW);
+			//Assert.That(singleManager.TaskLists[0].Priority == Priority.LOW);
 			
 			// for tasks in tasklist
 			var veryLowPrioTask = singleManager.TaskLists[0].Tasks[0];
@@ -92,10 +92,10 @@ namespace Tomboy.TaskManager.Tests
 			singleManager.DeserializeTasklists();
 			
 			// preconditions for successful testing
-			Assert.That(singleManager.TaskLists[0].Priority != Priority.NORMAL);
+			//Assert.That(singleManager.TaskLists[0].Priority != Priority.NORMAL);
 			Assert.That(singleManager.TaskLists[0].Tasks[0].Priority != Priority.VERY_HIGH);
 			
-			singleManager.TaskLists[0].Priority = Priority.NORMAL;
+			//singleManager.TaskLists[0].Priority = Priority.NORMAL;
 			singleManager.TaskLists[0].Tasks[0].Priority = Priority.VERY_HIGH;
 			singleTaskListNote.Save();
 			
@@ -104,7 +104,7 @@ namespace Tomboy.TaskManager.Tests
 			changedManager.DeserializeTasklists();
 			
 			// saving worked?
-			Assert.That(changedManager.TaskLists[0].Priority == Priority.NORMAL);
+			//Assert.That(changedManager.TaskLists[0].Priority == Priority.NORMAL);
 			Assert.That(changedManager.TaskLists[0].Tasks[0].Priority == Priority.VERY_HIGH);
 		}
 		

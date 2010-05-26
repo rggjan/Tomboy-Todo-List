@@ -54,6 +54,25 @@ namespace Tomboy.TaskManager {
 		}
 		
 		
+		/// <summary>
+		/// Returns true if the priority of this task is yet unset.
+		/// </summary>
+		/// <returns>
+		/// A <see cref="System.Boolean"/>
+		/// </returns>
+		public bool PriorityUnset ()
+		{
+			return (Priority == Priority.UNSET);
+		}
+		/// <summary>
+		/// The priority that is assigned to this task.
+		/// Note that default must be set to 3, not 0
+		/// </summary>
+		public Priority Priority {
+			get { return Tag.TaskPriority; }
+			set { Tag.TaskPriority = value; }
+		}
+		
 		protected override NoteBuffer Buffer {
 			get {
 				return ContainingTaskList.ContainingNote.Buffer;

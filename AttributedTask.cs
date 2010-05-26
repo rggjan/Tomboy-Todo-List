@@ -96,16 +96,6 @@ namespace Tomboy.TaskManager
 			return false;
 		}
 		
-		
-		/// <summary>
-		/// The priority that is assigned to this task.
-		/// Note that default must be set to 3, not 0
-		/// </summary>
-		public Priority Priority {
-			get { return Tag.TaskPriority; }
-			set { Tag.TaskPriority = value; }
-		}
-		
 		/// <summary>
 		/// Whether or not this task has been completed
 		/// </summary>
@@ -118,17 +108,6 @@ namespace Tomboy.TaskManager
 		/// </summary>
 		public AttributedTaskTag Tag {
 			get; set;	
-		}
-		
-		/// <summary>
-		/// Returns true if the priority of this task is yet unset.
-		/// </summary>
-		/// <returns>
-		/// A <see cref="System.Boolean"/>
-		/// </returns>
-		public bool PriorityUnset ()
-		{
-			return (Priority == Priority.UNSET);
 		}
 		
 		/// <summary>
