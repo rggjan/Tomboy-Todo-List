@@ -60,22 +60,40 @@ namespace Tomboy.TaskManager
 		}
 		
 		/// <summary>
-		/// TODO: parse
+		/// The duedate of the corresponding task or tasklist
+		/// if DateTime.MinValue
 		/// </summary>
-		public DateTime DueDate {
-			get { return new DateTime (); }
-			set { ; }
+		public Nullable<DateTime> DueDate {
+			
+			get { 
+				TextTagEnumerator dates = new TextTagEnumerator (Buffer, "duedate");
+				
+				foreach (TextRange r in dates) {
+					if (r.Start.Compare (DescriptionStart) >= 0 && r.End.Compare (DescriptionEnd) <=0){
+						try{
+						 	return DateTime.Parse (r.Text);
+						} catch (FormatException ex) {
+							return null;	
+						}
+					}
+				}
+				
+				return null;
+			}
 		}
 		
 		/// <summary>
-		/// True iff (if and only if) this task's duedate lies in the past
+		/// True if this task's duedate lies in the past, false if the duedates time is in the future or not set.
 		/// </summary>
 		/// <returns>
 		/// A <see cref="boolean"/>; 
 		/// </returns>
 		public bool IsOverdue ()
 		{
-			return DueDate.CompareTo(DateTime.Now) <= 0;
+			DateTime? date = DueDate;
+			if (DueDate != null)
+				return ((DateTime)date).CompareTo(DateTime.Now) <= 0;
+			return false;
 		}
 		
 		
@@ -142,6 +160,7 @@ namespace Tomboy.TaskManager
 		protected abstract TextIter End {
 			get;	
 		}
+		
 		
 		public bool DueDateSet {
 			get 
