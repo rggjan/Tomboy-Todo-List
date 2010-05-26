@@ -146,13 +146,15 @@ namespace Tomboy.TaskManager
 		public bool DueDateSet {
 			get 
 			{
-				bool result = false;
-				TextIter iter = DescriptionStart;
-				do {
-					for (int i=0;i<iter.Tags.Length && !result;i++)
-						result = iter.Tags[i].Name == "duedate";
-				} while (!result && iter.ForwardChar () && iter.Compare(DescriptionEnd)<=0);
-				return result;
+				TextTagEnumerator dates = new TextTagEnumerator (Buffer, "duedate");
+				
+				foreach (TextRange r in dates)
+				{
+					if (r.Start.Compare (DescriptionStart) >= 0 && r.End.Compare (DescriptionEnd) <=0)
+						return true;
+				}
+				
+				return false;
 			}
 		}
 		
