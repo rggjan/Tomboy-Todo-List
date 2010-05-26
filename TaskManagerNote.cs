@@ -281,8 +281,7 @@ namespace Tomboy.TaskManager {
 		/// </param>
 		void BufferInsertText (object o, Gtk.InsertTextArgs args)
 		{			
-			//check if inserted at x:  "3[]X ..." done
-			//TODO same but with enter...
+			// Forbid insertion of text at certain places...
 			foreach (Gtk.TextTag t in args.Pos.Tags)
 			{
 				if (t.Name != null && (t.Name.Equals("checkbox-active") || t.Name.Equals("duedate")))

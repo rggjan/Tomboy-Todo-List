@@ -173,13 +173,7 @@ namespace Tomboy.TaskManager {
 						Gtk.TextIter end = start;
 						
 						start.BackwardLine ();
-						//end.ForwardChars (2);
-						
-						//TODO: Use the rest of this line as the title of the new task list
-						
-						// Logger.Debug(Buffer.GetText(start, end, false));
 						addin.Buffer.Delete (ref start, ref end);
-						
 						addin.TaskLists.Add (new TaskList (addin.Note));
 					} else {
 						var iter = addin.Buffer.GetIterAtMark (addin.Buffer.InsertMark);
@@ -188,7 +182,7 @@ namespace Tomboy.TaskManager {
 						
 						TaskTag tt = addin.Utils.GetTaskTag (iter);
 						if (tt != null) {
-							//Logger.Debug ("removing old tasktag");
+							//Remove Old TaskTag
 							addin.Buffer.RemoveTag (tt, iter, end);
 						}
 						
