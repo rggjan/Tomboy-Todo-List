@@ -25,10 +25,17 @@
 
 namespace Tomboy.TaskManager {
 
+	/// <summary>
+	/// This class can be used to create Actions that should be carried out on the Buffer, but have
+	/// to be deferred because it would render still used Gtk.TextIters useless, crashing Tomboy...
+	/// </summary>
 	public abstract class FixAction
 	{
 		protected TaskManagerNoteAddin addin;
 		
+		/// <summary>
+		/// If set to true, this will be handled before other FixActions
+		/// </summary>
 		public bool Priority;
 		
 		public FixAction (TaskManagerNoteAddin addin)
@@ -36,9 +43,15 @@ namespace Tomboy.TaskManager {
 			this.addin = addin;	
 		}
 		
+		/// <summary>
+		/// The actual fix to perform
+		/// </summary>
 		public abstract void fix();
 	}
 	
+	/// <summary>
+	/// Does a simple undo.
+	/// </summary>
 	public class FixUndoAction: FixAction
 	{		
 		public FixUndoAction(TaskManagerNoteAddin addin): base(addin)
@@ -53,6 +66,9 @@ namespace Tomboy.TaskManager {
 		
 	}
 	
+	/// <summary>
+	/// Action that Fixes a Delete Event. Can merge and cleanup up to two tasklists.
+	/// </summary>
 	public class FixDeleteAction: FixAction
 	{
 		TaskList tasklist1;
