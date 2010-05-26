@@ -303,6 +303,11 @@ namespace Tomboy.TaskManager {
 				if (t.Name != null && t.Name.Equals("checkbox-active"))
 				{
 					fix_list.Add(new FixUndoAction(this));
+				} else if (t.Name != null && t.Name.Equals ("duedate")) {
+					if (args.Text.Contains (System.Environment.NewLine)) {
+						fix_list.Add (new FixUndoAction (this));
+						return;
+					}
 				}
 			}
 			

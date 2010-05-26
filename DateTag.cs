@@ -48,7 +48,7 @@ namespace Tomboy.TaskManager
 			//Underline = Pango.Underline.Single;
 			Foreground = "purple";
 			CanActivate = true;
-			Editable = false;
+			CanGrow = true;
 		}
 		
 		protected override bool OnActivate (NoteEditor editor, Gtk.TextIter start, Gtk.TextIter end)

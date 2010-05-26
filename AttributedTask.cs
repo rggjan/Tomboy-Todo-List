@@ -173,8 +173,6 @@ namespace Tomboy.TaskManager
 			
 			Buffer.Insert (ref end, " ");
 			Buffer.InsertWithTags (ref end, date.ToShortDateString (), new TextTag[]{DateTag});
-			//So that can hit enter after tag also
-			Buffer.Insert (ref end, " ");
 		}
 	}
 }
