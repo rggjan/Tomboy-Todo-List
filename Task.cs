@@ -209,9 +209,6 @@ namespace Tomboy.TaskManager {
 		public bool IsValid
 		{
 			get {
-				//if (!TaskTagValid (DescriptionStart))
-				//	return false;
-			
 				var iter = Start;
 				iter.ForwardChars (2);
 

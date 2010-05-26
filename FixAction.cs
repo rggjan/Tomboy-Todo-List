@@ -145,4 +145,55 @@ namespace Tomboy.TaskManager {
 			addin.StartListeners ();
 		}
 	}
+	
+	/// <summary>
+	/// Action that adds a Task
+	/// </summary>
+	public class NewTaskAction: FixAction
+	{
+		TaskList tasklist;
+		
+		public NewTaskAction (TaskManagerNoteAddin addin, TaskList tasklist): base(addin)
+		{
+			Priority = false;
+			this.tasklist = tasklist;
+		}
+		
+		public NewTaskAction (TaskManagerNoteAddin addin): base(addin)
+		{
+			Priority = false;
+		}
+		
+		public override void fix()
+		{
+					Logger.Debug ("Adding a new Task");
+					
+					if (tasklist == null) {
+						Gtk.TextIter start = addin.Buffer.GetIterAtMark (addin.Buffer.InsertMark);
+						Gtk.TextIter end = start;
+						
+						start.BackwardLine ();
+						//end.ForwardChars (2);
+						
+						//TODO: Use the rest of this line as the title of the new task list
+						
+						// Logger.Debug(Buffer.GetText(start, end, false));
+						addin.Buffer.Delete (ref start, ref end);
+						
+						addin.TaskLists.Add (new TaskList (addin.Note));
+					} else {
+						var iter = addin.Buffer.GetIterAtMark (addin.Buffer.InsertMark);
+						var end = iter;
+						end.ForwardToLineEnd ();
+						
+						TaskTag tt = addin.Utils.GetTaskTag (iter);
+						if (tt != null) {
+							//Logger.Debug ("removing old tasktag");
+							addin.Buffer.RemoveTag (tt, iter, end);
+						}
+						
+						tasklist.AddTask (iter);
+					}
+				}
+	}
 }
