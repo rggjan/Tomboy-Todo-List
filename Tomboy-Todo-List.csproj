@@ -77,6 +77,7 @@
     <Compile Include="Visitors\SetDoneVisitor.cs" />
     <Compile Include="Visitors\Visitor.cs" />
     <Compile Include="Visitors\GetMinDueDateVisitor.cs" />
+    <Compile Include="Tests\TestSpecialNotebooks.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -84,6 +85,7 @@
     <EmbeddedResource Include="Tests\SingleTaskListNote.xml" />
     <EmbeddedResource Include="Tests\DoubleTaskListNote.xml" />
     <EmbeddedResource Include="Tests\NoTaskListNote.xml" />
+    <EmbeddedResource Include="Tests\AllDoneTaskListNote.xml" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

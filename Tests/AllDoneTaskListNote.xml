@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <note version="0.3" xmlns:link="http://beatniksoftware.com/tomboy/link" xmlns:size="http://beatniksoftware.com/tomboy/size" xmlns="http://beatniksoftware.com/tomboy">
   <title>Testcase</title>
-  <text xml:space="preserve"><note-content version="0.1">Testcase
+  <text xml:space="preserve"><note-content version="0.1">Testcase All Done
 
 <tasklist Duedate="" Priority="LOW" Name="New TaskList!">
 	New Tasklist!
 	<task Duedate="" Priority="VERY_LOW" Done="true">task 1</task>
-	<task Duedate="" Priority="HIGH" Done="false">task 2</task>
+	<task Duedate="" Priority="HIGH" Done="true">task 2</task>
 	<task Duedate="" Priority="NORMAL" Done="true">task 3</task>
 </tasklist>
 
