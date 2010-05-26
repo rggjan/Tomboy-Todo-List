@@ -379,7 +379,6 @@ namespace Tomboy.TaskManager {
 			var end = End;
 		
 			Buffer.ApplyTag (tag, Start, end);
-			Logger.Info(Buffer.GetText (Start, end, true));
 		}
 		
 		public bool LineIsEmpty ()

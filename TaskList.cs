@@ -95,8 +95,6 @@ namespace Tomboy.TaskManager {
 			get {
 				if (Tasks != null)
 				{
-					Logger.Info (Description ());
-					Logger.Debug ("Tasklist done " + (Tasks.FindAll (c => c.Done == true).Count == Tasks.Count).ToString ());
 					return Tasks.FindAll (c => c.Done == true).Count == Tasks.Count;
 				}
 				else
@@ -186,8 +184,6 @@ namespace Tomboy.TaskManager {
 				
 				// This is required for intendation
 					this.Tag.Priority = 0;
-					Logger.Info (Start.Line.ToString ());
-					Logger.Info (task.Start.Line.ToString ());
 					task.ApplyTag (this.Tag);
 				}
 			else

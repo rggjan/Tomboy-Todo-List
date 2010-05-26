@@ -18,6 +18,7 @@ namespace Tomboy.TaskManager {
 		private TaskList current_task_list = null;
 		private TaskList lock_end_needed = null;
 		private Task task_to_fix = null;
+		private List<FixAction> fix_list = new List<FixAction>();
 
 		
 		private List<TaskList> tasklists;
@@ -38,6 +39,13 @@ namespace Tomboy.TaskManager {
 				return TaskLists.FindAll(c => c.Done == true).Count == TaskLists.Count;
 			}
 		}
+		
+		public TaskNoteUtilities Utils {
+			get {
+				return utils;
+			}
+		}
+		
 		
 		/// <summary>
 		/// This constructor is used in Unit tests to initialize the addin 
@@ -149,6 +157,13 @@ namespace Tomboy.TaskManager {
 		public void Repair (object o, Gtk.KeyReleaseEventArgs args)
 		{
 			StopListeners ();
+			
+			foreach (FixAction action in fix_list)
+			{
+				action.fix ();
+			}
+			fix_list.Clear ();
+			
 			if (task_to_fix != null)
 			{
 				TaskList list = task_to_fix.DeleteAndSplit ();
@@ -232,52 +247,23 @@ namespace Tomboy.TaskManager {
 		
 		void DeleteRange (object o, Gtk.DeleteRangeArgs args)
 		{
-			StopListeners ();
-
-			Buffer.Undoer.ClearUndoHistory ();
-			//TODO apply this everywhere!
-
-			TaskList tasklist1 = utils.GetTaskList (args.Start);
-			if (tasklist1 != null)
-				Logger.Debug ("Tasklist start deleted!");
-			
-			var iter = args.Start;
-			iter.BackwardChar ();
-			TaskList tasklist2 = utils.GetTaskList (iter);
-			
-			if (tasklist2 != null)
-				Logger.Debug ("Tasklist end deleted!");
-
-
-			if (tasklist2 == null && tasklist1 == null) {
-				Logger.Debug ("Checking for Deleted Tasks");
-				ValidateTaskLists ();
-			} else if (tasklist1 != null && tasklist2 != null) {
-				if (tasklist1 == tasklist2)
+				if (fix_list.Count == 0)
 				{
-					Logger.Debug ("Have to repair within TaskList");
-					TaskList new_list = tasklist1.FixWithin (args.Start.Line);
-					if (new_list != null)
-						tasklists.Add (new_list);
-				} else {
-					Logger.Debug ("Oh No, have to merge two TaskLists!");
-					tasklist2.FixWithin (args.Start.Line);
-					tasklist1.TransferTasksTo (tasklist2);
-					tasklists.Remove (tasklist1);
-				}
-			} else if (tasklist1 != null) {
-				Logger.Debug ("Fixing Start");
-				tasklist1.FixTitle ();
-				tasklist1.RemoveDeletedTasks ();
-			} else {
-				Logger.Debug ("Fixing End");
-				tasklist2.FixWithin (args.Start.Line);
-				tasklist2.LockEnd ();
+					TaskList tasklist1 = utils.GetTaskList (args.Start);
+					if (tasklist1 != null)
+						Logger.Debug ("Tasklist start deleted!");
+				
+				var iter = args.Start;
+					iter.BackwardChar ();
+					TaskList tasklist2 = utils.GetTaskList (iter);
+				
+				if (tasklist2 != null)
+						Logger.Debug ("Tasklist end deleted!");
+				
+				FixDeleteAction action = new FixDeleteAction (this, tasklist1, tasklist2, args.Start.Line);
+
+				fix_list.Add (action);
 			}
-			
-			utils.ResetCursor ();
-			
-			StartListeners ();
 		}
 		
 		//TODO beginning of task lists need fix
@@ -429,4 +415,62 @@ namespace Tomboy.TaskManager {
 			gui.PriorityShown = true;
 		}
 	}
+	
+	public abstract class FixAction
+	{
+		public abstract void fix();
+	}
+	
+	public class FixDeleteAction: FixAction
+	{
+		TaskManagerNoteAddin addin;
+		TaskList tasklist1;
+		TaskList tasklist2;
+		int line;
+		
+		public FixDeleteAction (TaskManagerNoteAddin addin, TaskList tasklist1, TaskList tasklist2, int line)
+		{
+			this.addin = addin;
+			this.tasklist1 = tasklist1;
+			this.tasklist2 = tasklist2;
+			this.line = line;
+		}
+		
+		public override void fix()
+		{
+			addin.StopListeners ();
+			addin.Buffer.Undoer.ClearUndoHistory ();
+			//TODO apply this everywhere!
+			if (tasklist2 == null && tasklist1 == null) {
+				Logger.Debug ("Checking for Deleted Tasks");
+				addin.ValidateTaskLists ();
+			} else if (tasklist1 != null && tasklist2 != null) {
+				if (tasklist1 == tasklist2)
+				{
+					Logger.Debug ("Have to repair within TaskList");
+					TaskList new_list = tasklist1.FixWithin (line);
+					if (new_list != null)
+						addin.TaskLists.Add (new_list);
+				} else {
+					Logger.Debug ("Oh No, have to merge two TaskLists!");
+					tasklist2.FixWithin (line);
+					tasklist1.TransferTasksTo (tasklist2);
+					addin.TaskLists.Remove (tasklist1);
+				}
+			} else if (tasklist1 != null) {
+				Logger.Debug ("Fixing Start");
+				tasklist1.FixTitle ();
+				tasklist1.RemoveDeletedTasks ();
+			} else {
+				Logger.Debug ("Fixing End");
+				tasklist2.FixWithin (line);
+				tasklist2.LockEnd ();
+			}
+			
+			addin.Utils.ResetCursor ();
+			
+			addin.StartListeners ();
+		}
+	}
+	
 }
