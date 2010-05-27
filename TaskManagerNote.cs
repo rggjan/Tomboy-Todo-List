@@ -314,7 +314,7 @@ namespace Tomboy.TaskManager {
 				}
 			}
 			
-			if (args.Text == System.Environment.NewLine) {//FIXME enter at very beginning of last task problem
+			if (args.Text == System.Environment.NewLine) {
 				Gtk.TextIter end = args.Pos;
 				end.BackwardChar ();
 				
