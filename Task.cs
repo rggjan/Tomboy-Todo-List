@@ -369,8 +369,14 @@ namespace Tomboy.TaskManager {
 			Debug.Assert (check_box == sender); // no other checkbox should be registred here
 			
 			Done = check_box.Active;
-			SetDoneVisitor visitor = new SetDoneVisitor (check_box.Active, this);
-			visitor.visit (this);
+			
+			//Downward setting
+			SetDoneVisitor dvisitor = new SetDoneVisitor (check_box.Active, this);
+			dvisitor.visit (this);
+			
+			//Uppward checking
+			CheckDoneVisitor uvisitor = new CheckDoneVisitor ();
+			uvisitor.visit (ContainingTaskList);
 		}
 		
 		/// <summary>

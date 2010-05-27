@@ -85,10 +85,10 @@ namespace Tomboy.TaskManager {
 				Note.TagTable.Add (tag);
 
 			tag = new NoteTag ("checkbox-active");
-			tag.CanActivate = true;
+			//tag.CanActivate = true;
 			tag.CanSerialize = false;
 			tag.Family = "monospace";
-			tag.Activated += ToggleCheckbox;
+			//tag.Activated += ToggleCheckbox;
 
 			if (Note.TagTable.Lookup ("checkbox-active") == null)
 				Note.TagTable.Add (tag);
@@ -231,12 +231,12 @@ namespace Tomboy.TaskManager {
 			return true;
 		}
 		
-		bool ToggleCheckbox (NoteTag tag, NoteEditor editor, Gtk.TextIter begin, Gtk.TextIter end)
-		{
-			Task task = utils.GetTask (begin);
-			task.Toggle ();
-			return true;
-		}
+//		bool ToggleCheckbox (NoteTag tag, NoteEditor editor, Gtk.TextIter begin, Gtk.TextIter end)
+//		{
+//			Task task = utils.GetTask (begin);
+//			task.Toggle ();
+//			return true;
+//		}
 		
 		public void ValidateTaskLists ()
 		{
