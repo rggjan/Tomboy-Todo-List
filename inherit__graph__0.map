@@ -1,0 +1,5 @@
+<map id="G" name="G">
+<area shape="rect" href="$class_tomboy_1_1_task_manager_1_1_attributed_task.html" title="Class that represents the common functionality of TaskList and Task." alt="" coords="5,32,243,61"/>
+<area shape="rect" href="$class_tomboy_1_1_task_manager_1_1_task.html" title="A Task is a piece of text representing a “todo” item, accompanied with a checkbox..." alt="" coords="301,5,483,35"/>
+<area shape="rect" href="$class_tomboy_1_1_task_manager_1_1_task_list.html" title="A task list is a collection of tasks grouped together. It may have a title and a..." alt="" coords="291,59,493,88"/>
+</map>
