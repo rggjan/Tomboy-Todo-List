@@ -29,62 +29,73 @@ using System.Collections.Generic;
 namespace Tomboy.TaskManager
 {
 
+	/// <summary>
+	/// Traverses the tasks structure depth first for the average priority of the (direct and indirect) children of some task or tasklist
+	/// The result can be either retrieved as Priority or Integer, rounded.
+	/// If all lower level attributedtasks' priorities are unset, Priority.NORMAL is passed back
+	/// </summary>
 	public class GetAvPriorityVisitor : Visitor
 	{
 
-		private int setints;
+		private int set_ints;
 		private double result;
 		
+		/// <summary>
+		/// The result of the traversation as an integer
+		/// </summary>
 		public int IntResult {
 			get {
 				if (result == 0)
 					return (int)Priority.NORMAL;
 				
-				double res = result/setints;
+				double res = result/set_ints;
 				int rounded = (int) Math.Round (res);
 				return rounded;
 			}
 		}
+		
+		/// <summary>
+		/// The result of the traversation as Priority instance
+		/// </summary>
 		public Priority Result {
 			get {
 				return (Priority) IntResult;
 			}
 		}
-		private List<AttributedTask> visited;
 		
 		public GetAvPriorityVisitor ()
 		{
 			result = 0;
-			setints = 0;
+			set_ints = 0;
 			visited = new List<AttributedTask>();
 		}
 		
-		public void visit (Note n)
+		public override void visit (Note note)
 		{
 			//Again, nothing here	
 		}
 		
-		public void visit (TaskList tl)
+		public override void visit (TaskList taskList)
 		{
 			//Tasklist do not have priorities. Ignore them
-			visited.Add (tl);
-			foreach (Task t in tl.Tasks)
-				if (!visited.Contains (t))
-					visit (t);
+			visited.Add (taskList);
+			foreach (Task task in taskList.Tasks)
+				if (!visited.Contains (task))
+					this.visit (task);
 		}
 		
-		public void visit (Task t)
+		public override void visit (Task task)
 		{
-			visited.Add (t);
+			visited.Add (task);
 			
-			if (t.Priority != Priority.UNSET){
-				result += (int)t.Priority;
-				setints += 1;
+			if (task.Priority != Priority.UNSET){
+				result += (int)task.Priority;
+				set_ints += 1;
 			}
 			
-			foreach (TaskList tl in t.Subtasks)
-				if (!visited.Contains (tl))
-					visit (tl);
+			foreach (TaskList taskList in task.Subtasks)
+				if (!visited.Contains (taskList))
+					this.visit (taskList);
 		}
 	}
 }
