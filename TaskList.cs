@@ -132,6 +132,31 @@ namespace Tomboy.TaskManager
 //		public List<Task> LinkinTasks { 
 //			get; set;
 //		}
+		
+		/// <summary>
+		/// Method that looks for all linking tasks
+		/// Use this method sparingly, as it loads all un-loaded notes and does an exhaustive search,
+		/// including the forward-parsing in the tasks themselfs
+		/// </summary>
+		public List<Task> SuperTasks {
+			get {
+				List<Task> result = new List<Task> ();
+				foreach (Note n in Tomboy.DefaultNoteManager.Notes) {
+					if (n == ContainingNote)
+						continue;
+					
+					if (!n.IsLoaded)
+						Note.Load (n.FilePath, Tomboy.DefaultNoteManager);
+					
+					foreach (TaskList tl in new TaskListParser (n).Parse ())
+						foreach (Task t in tl.Tasks)
+							if (t.Subtasks.Contains (this))
+								result.Add (t);
+				}
+				
+				return result;
+			}
+		}
 
 		/// <summary>
 		/// Creates a new tasklists including all the given tasks.

@@ -69,7 +69,6 @@
     <Compile Include="Tests\TestSerialization.cs" />
     <Compile Include="TaskManagerGui.cs" />
     <Compile Include="OverdueTasksNotebook.cs" />
-    <Compile Include="Visitors\GetDoneVisitor.cs" />
     <Compile Include="Visitors\SetDoneVisitor.cs" />
     <Compile Include="Visitors\Visitor.cs" />
     <Compile Include="Visitors\GetMinDueDateVisitor.cs" />
@@ -82,6 +81,7 @@
     <Compile Include="Tags\TaskTag.cs" />
     <Compile Include="Visitors\GetAvPriorityVisitor.cs" />
     <Compile Include="Priority.cs" />
+    <Compile Include="Visitors\CheckDoneVisitor.cs" />
     <Compile Include="Tags\ColorTag.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

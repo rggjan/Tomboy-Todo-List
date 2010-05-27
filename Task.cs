@@ -52,6 +52,7 @@ namespace Tomboy.TaskManager {
 		
 		/// <summary>
 		/// Is this task completed?
+		/// Caution: the setter does not update the buffer (strikethrough), just the attribute of the tag and the checkbox
 		/// </summary>
 		public override bool Done {
 			get {

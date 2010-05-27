@@ -69,7 +69,8 @@ namespace Tomboy.TaskManager
 			//Tasklist do not have priorities. Ignore them
 			visited.Add (tl);
 			foreach (Task t in tl.Tasks)
-				visit (t);
+				if (!visited.Contains (t))
+					visit (t);
 		}
 		
 		public void visit (Task t)
@@ -82,7 +83,8 @@ namespace Tomboy.TaskManager
 			}
 			
 			foreach (TaskList tl in t.Subtasks)
-				visit (tl);
+				if (!visited.Contains (tl))
+					visit (tl);
 		}
 	}
 }
