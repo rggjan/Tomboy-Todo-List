@@ -203,6 +203,7 @@ namespace Tomboy.TaskManager {
 		/// </summary>
 		public override void OnNoteOpened ()
 		{
+			//Makes note window wider so it shows by default the tasklist menu
 			Window.DefaultWidth += 200;
 			
 			gui = new TaskManagerGui (this);
