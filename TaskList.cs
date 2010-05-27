@@ -96,7 +96,8 @@ namespace Tomboy.TaskManager
 		protected override TextIter DescriptionEnd {
 			get {
 				var start = Start;
-				start.ForwardToLineEnd ();
+				if (!start.EndsLine())
+					start.ForwardToLineEnd ();
 				return start;
 			}
 		}
@@ -255,11 +256,7 @@ namespace Tomboy.TaskManager
 			buffer.Insert (ref end, "New Tasklist!\n\n");
 			var start = Start;
 			Buffer.ApplyTag (TaskListTag, start, end);
-			
-			/*start = end;
-			start.BackwardChar ();
-			Buffer.ApplyTag ("locked", start, end);*/			//TODO lock start!
-
+		
 			Logger.Debug ("TaskList created");
 			//Logger.Debug (iter.Char.ToString());
 			
