@@ -31,10 +31,12 @@ namespace Tomboy.TaskManager
 	public class CheckDoneVisitor : Visitor
 	{
 		private List<AttributedTask> visited;
+		private bool done;
 	
-		public CheckDoneVisitor ()
+		public CheckDoneVisitor (bool done)
 		{
 			visited = new List<AttributedTask> ();
+			this.done = done;
 		}
 		
 		public void visit (Note n)
@@ -55,12 +57,26 @@ namespace Tomboy.TaskManager
 		public void visit (Task t)
 		{
 			visited.Add (t);
-			//Assume that subtasks have propagated their value before
-			if (t.Subtasks.FindAll (c => c.Done==true).Count == t.Subtasks.Count)
-				if (t.Done == false) t.Toggle ();
+			/*If checking upward for freshly completed tasks, check whether all subtasks have been done
+			 *Assume all values have been propagated - change only if this task matters
+			 * x && true = x
+			 */
+			if (done && !t.Done){
+				if (t.Subtasks.FindAll (c => c.Done==true).Count == t.Subtasks.Count)
+					if (t.Done == false) t.Toggle ();
 			
-			if (!visited.Contains (t.ContainingTaskList))
-				visit (t.ContainingTaskList);
+				if (!visited.Contains (t.ContainingTaskList))
+					visit (t.ContainingTaskList);
+			}
+			
+			/* If checking upward for freshly 'not completed anymore tasks', need no check.
+			 * x && false = false
+			 */
+			if (!done && t.Done){
+				t.Toggle ();
+				if (!visited.Contains (t.ContainingTaskList))
+					visit (t.ContainingTaskList);
+			}
 		}
 	}
 }

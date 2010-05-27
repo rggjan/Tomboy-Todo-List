@@ -40,6 +40,22 @@ namespace Tomboy.TaskManager {
 	/// </summary>
 	public class Task : AttributedTask {
 		
+		public bool CheckUpComplete {
+			get; set;	
+		}
+		
+		public bool CheckUpIncomplete {
+			get; set;	
+		}
+		
+		public bool SetDownComplete {
+			get; set;	
+		}
+		
+		public bool SetDownIncomplete {
+			get; set;	
+		}
+		
 		/// <summary>
 		/// Corresponding Widget for Completed Tasks.
 		/// </summary>
@@ -280,9 +296,9 @@ namespace Tomboy.TaskManager {
 		/// </param>
 		public Task (TaskList containingList, Gtk.TextIter location)
 		{
-			//TODO: rewrite tag part (it's ugly)
-			InitializeTask (containingList, location, (TaskTag)containingList.ContainingNote.TagTable.CreateDynamicTag ("task"));
-			TaskTag.Bind (this);
+			TaskTag tt = (TaskTag) containingList.ContainingNote.TagTable.CreateDynamicTag ("task");
+			tt.Bind (this);
+			InitializeTask (containingList, location, tt);
 			
 			var iter = Start;
 			Buffer.PlaceCursor (iter);
@@ -318,9 +334,20 @@ namespace Tomboy.TaskManager {
 			if(tag.Attributes["Done"] == true.ToString())
 				check_box.Active = true;
 			
-			
+			CheckUpComplete = true;
+			CheckUpIncomplete = false;
+			SetDownComplete = true;
+			SetDownIncomplete = false;
 			//Buffer.UserActionEnded += BufferChanged;
-		}	
+		}
+		
+		public void SetAllVisitorPolicies (bool upcom, bool upin, bool downcom, bool downin)
+		{
+			CheckUpComplete = upcom;
+			CheckUpIncomplete = upin;
+			SetDownComplete = downcom;
+			SetDownIncomplete = downin;
+		}
 			
 		/// <summary>
 		/// Inserts a CheckButton at cursor position.
@@ -371,12 +398,26 @@ namespace Tomboy.TaskManager {
 			Done = check_box.Active;
 			
 			//Downward setting
-			SetDoneVisitor dvisitor = new SetDoneVisitor (check_box.Active, this);
-			dvisitor.visit (this);
-			
-			//Uppward checking
-			//CheckDoneVisitor uvisitor = new CheckDoneVisitor ();
-			//uvisitor.visit (ContainingTaskList);
+			if (Done){
+				
+				if (SetDownComplete){
+					SetDoneVisitor dvisitor = new SetDoneVisitor (true, this);
+					dvisitor.visit (this);
+				}
+				if (CheckUpComplete){
+					CheckDoneVisitor uvisitor = new CheckDoneVisitor (true);
+					uvisitor.visit (ContainingTaskList);
+				}
+			} else {
+				if (SetDownIncomplete){
+					SetDoneVisitor dvisitor = new SetDoneVisitor (false, this);
+					dvisitor.visit (this);
+				}
+				if (CheckUpIncomplete){
+					CheckDoneVisitor uvisitor = new CheckDoneVisitor (false);
+					uvisitor.visit (ContainingTaskList);
+				}
+			}
 		}
 		
 		/// <summary>
