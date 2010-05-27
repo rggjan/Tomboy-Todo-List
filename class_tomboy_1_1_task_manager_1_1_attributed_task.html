@@ -36,14 +36,14 @@ Collaboration diagram for Tomboy.TaskManager.AttributedTask:</div>
 <div class="dynsection">
 <div class="center"><img src="class_tomboy_1_1_task_manager_1_1_attributed_task__coll__graph.png" border="0" usemap="#_tomboy_8_task_manager_8_attributed_task_coll__map" alt="Collaboration graph"/></div>
 <map name="_tomboy_8_task_manager_8_attributed_task_coll__map" id="_tomboy_8_task_manager_8_attributed_task_coll__map">
-<area shape="rect" href="class_tomboy_1_1_task_manager_1_1_task_note_utilities.html" title="Class that encapsulates often used accesses to unknown tasks or tasklists (or their..." alt="" coords="5,5,256,35"/></map>
+<area shape="rect" href="class_tomboy_1_1_task_manager_1_1_task_list.html" title="A task list is a collection of tasks grouped together. It may have a title and a..." alt="" coords="149,197,352,227"/><area shape="rect" href="class_tomboy_1_1_task_manager_1_1_date_tag.html" title="Tag that identifies a duedate. It is responsible for listening to clicks (opening..." alt="" coords="5,464,205,493"/><area shape="rect" href="class_tomboy_1_1_task_manager_1_1_task_manager_note_addin.html" title="Class that describes behaviour of Notes (in terms of TaskManager features)." alt="" coords="136,293,427,323"/><area shape="rect" href="class_tomboy_1_1_task_manager_1_1_task_manager_gui.html" title="The class that manages the Menu and GUI stuff of our Addin." alt="" coords="233,464,484,493"/><area shape="rect" href="class_tomboy_1_1_task_manager_1_1_task_note_utilities.html" title="Class that encapsulates often used accesses to unknown tasks or tasklists (or their..." alt="" coords="269,5,520,35"/></map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 
 <p><a href="class_tomboy_1_1_task_manager_1_1_attributed_task-members.html">List of all members.</a></p>
 <table border="0" cellpadding="0" cellspacing="0">
 <tr><td colspan="2"><h2>Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aad5dc033b0392e9ba917a16504f6c9d2"></a><!-- doxytag: member="Tomboy::TaskManager::AttributedTask::Initialize" ref="aad5dc033b0392e9ba917a16504f6c9d2" args="(TextIter iter, AttributedTaskTag tag)" -->
-void&nbsp;</td><td class="memItemRight" valign="bottom"><b>Initialize</b> (TextIter iter, AttributedTaskTag tag)</td></tr>
+void&nbsp;</td><td class="memItemRight" valign="bottom"><b>Initialize</b> (TextIter iter, <a class="el" href="class_tomboy_1_1_task_manager_1_1_attributed_task_tag.html">AttributedTaskTag</a> tag)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tomboy_1_1_task_manager_1_1_attributed_task.html#abe45361d20c7aa095b0ceeebaefb8847">IsOverdue</a> ()</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">True if this task's duedate lies in the past, false if the duedates time is in the future or not set.  <a href="#abe45361d20c7aa095b0ceeebaefb8847"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0285cf0dca7463ffa0debbd3c2f86df9"></a><!-- doxytag: member="Tomboy::TaskManager::AttributedTask::Description" ref="a0285cf0dca7463ffa0debbd3c2f86df9" args="()" -->
@@ -60,7 +60,7 @@ TextMark&nbsp;</td><td class="memItemRight" valign="bottom"><b>Position</b></td>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">The duedate of the corresponding task or tasklist if DateTime.MinValue.  <a href="#a70f674f0de4514f7151664e173d713e5"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">abstract bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tomboy_1_1_task_manager_1_1_attributed_task.html#a08add0c4e96ab4e5863c510cd9f5224f">Done</a><code> [get, set]</code></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Whether or not this task has been completed.  <a href="#a08add0c4e96ab4e5863c510cd9f5224f"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">AttributedTaskTag&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tomboy_1_1_task_manager_1_1_attributed_task.html#ad48e4acf4880152ff2ad2d04cf149b17">Tag</a><code> [get, set]</code></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_tomboy_1_1_task_manager_1_1_attributed_task_tag.html">AttributedTaskTag</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tomboy_1_1_task_manager_1_1_attributed_task.html#ad48e4acf4880152ff2ad2d04cf149b17">Tag</a><code> [get, set]</code></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Tag that is attached to this attributedtask (in the buffer).  <a href="#ad48e4acf4880152ff2ad2d04cf149b17"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">abstract NoteBuffer&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tomboy_1_1_task_manager_1_1_attributed_task.html#a7d40751ffdb43dbb4d6643c94706656d">Buffer</a><code> [get]</code></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Describes the shortcut to the buffer.  <a href="#a7d40751ffdb43dbb4d6643c94706656d"></a><br/></td></tr>
@@ -153,7 +153,7 @@ bool&nbsp;</td><td class="memItemRight" valign="bottom"><b>DueDateSet</b><code> 
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">AttributedTaskTag Tomboy.TaskManager.AttributedTask.Tag<code> [get, set]</code></td>
+          <td class="memname"><a class="el" href="class_tomboy_1_1_task_manager_1_1_attributed_task_tag.html">AttributedTaskTag</a> Tomboy.TaskManager.AttributedTask.Tag<code> [get, set]</code></td>
         </tr>
       </table>
 </div>
@@ -167,7 +167,7 @@ bool&nbsp;</td><td class="memItemRight" valign="bottom"><b>DueDateSet</b><code> 
 <li>AttributedTask.cs</li>
 </ul>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Thu May 27 22:01:08 2010 for TaskManager by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Thu May 27 22:26:58 2010 for TaskManager by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

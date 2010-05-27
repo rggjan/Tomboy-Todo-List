@@ -36,7 +36,7 @@ Collaboration diagram for Tomboy.TaskManager.TaskList:</div>
 <div class="dynsection">
 <div class="center"><img src="class_tomboy_1_1_task_manager_1_1_task_list__coll__graph.png" border="0" usemap="#_tomboy_8_task_manager_8_task_list_coll__map" alt="Collaboration graph"/></div>
 <map name="_tomboy_8_task_manager_8_task_list_coll__map" id="_tomboy_8_task_manager_8_task_list_coll__map">
-<area shape="rect" href="class_tomboy_1_1_task_manager_1_1_attributed_task.html" title="Class that represents the common functionality of TaskList and Task." alt="" coords="12,101,249,131"/><area shape="rect" href="class_tomboy_1_1_task_manager_1_1_task_note_utilities.html" title="Class that encapsulates often used accesses to unknown tasks or tasklists (or their..." alt="" coords="5,5,256,35"/></map>
+<area shape="rect" href="class_tomboy_1_1_task_manager_1_1_task_manager_note_addin.html" title="Class that describes behaviour of Notes (in terms of TaskManager features)." alt="" coords="68,101,359,131"/><area shape="rect" href="class_tomboy_1_1_task_manager_1_1_attributed_task.html" title="Class that represents the common functionality of TaskList and Task." alt="" coords="49,368,287,397"/><area shape="rect" href="class_tomboy_1_1_task_manager_1_1_date_tag.html" title="Tag that identifies a duedate. It is responsible for listening to clicks (opening..." alt="" coords="68,272,268,301"/><area shape="rect" href="class_tomboy_1_1_task_manager_1_1_task_manager_gui.html" title="The class that manages the Menu and GUI stuff of our Addin." alt="" coords="292,272,543,301"/><area shape="rect" href="class_tomboy_1_1_task_manager_1_1_task_note_utilities.html" title="Class that encapsulates often used accesses to unknown tasks or tasklists (or their..." alt="" coords="281,5,532,35"/></map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 
 <p><a href="class_tomboy_1_1_task_manager_1_1_task_list-members.html">List of all members.</a></p>
@@ -44,7 +44,7 @@ Collaboration diagram for Tomboy.TaskManager.TaskList:</div>
 <tr><td colspan="2"><h2>Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tomboy_1_1_task_manager_1_1_task_list.html#a1506bb1c5eb400835c3efa184120077e">TaskList</a> (Note note, List&lt; <a class="el" href="class_tomboy_1_1_task_manager_1_1_task.html">Task</a> &gt; tasks, String name, Gtk.TextIter start)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Creates a new tasklists including all the given tasks.  <a href="#a1506bb1c5eb400835c3efa184120077e"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tomboy_1_1_task_manager_1_1_task_list.html#a1cae3cee2a5ca143522092354b87cefa">TaskList</a> (Note note, Gtk.TextIter start, TaskListTag tag)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tomboy_1_1_task_manager_1_1_task_list.html#a1cae3cee2a5ca143522092354b87cefa">TaskList</a> (Note note, Gtk.TextIter start, <a class="el" href="class_tomboy_1_1_task_manager_1_1_task_list_tag.html">TaskListTag</a> tag)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Creates a new task list with existing tags.  <a href="#a1cae3cee2a5ca143522092354b87cefa"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tomboy_1_1_task_manager_1_1_task_list.html#a1dc03550c87f7a936a75959b41f456fb">TaskList</a> (Note note)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Sets up the <a class="el" href="class_tomboy_1_1_task_manager_1_1_task_list.html" title="A task list is a collection of tasks grouped together. It may have a title and a...">TaskList</a> at cursor position.  <a href="#a1dc03550c87f7a936a75959b41f456fb"></a><br/></td></tr>
@@ -72,7 +72,7 @@ Collaboration diagram for Tomboy.TaskManager.TaskList:</div>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Creates a new <a class="el" href="class_tomboy_1_1_task_manager_1_1_task.html" title="A Task is a piece of text representing a “todo” item, accompanied with a checkbox...">Task</a> and add it to the `Tasks` list.  <a href="#ada64dd3aef313f94147bc941c8f56e5e"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tomboy_1_1_task_manager_1_1_task_list.html#a5a56c90a96ed5fe8b5aef5972e9a633a">AddFinishedTask</a> (<a class="el" href="class_tomboy_1_1_task_manager_1_1_task.html">Task</a> task)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Add an existing task to this list.  <a href="#a5a56c90a96ed5fe8b5aef5972e9a633a"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tomboy_1_1_task_manager_1_1_task_list.html#af24166d7877b55321ec8031b4fd37d36">AddTask</a> (Gtk.TextIter position, TaskTag tag)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tomboy_1_1_task_manager_1_1_task_list.html#af24166d7877b55321ec8031b4fd37d36">AddTask</a> (Gtk.TextIter position, <a class="el" href="class_tomboy_1_1_task_manager_1_1_task_tag.html">TaskTag</a> tag)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Add a new task to this tasklist.  <a href="#af24166d7877b55321ec8031b4fd37d36"></a><br/></td></tr>
 <tr><td colspan="2"><h2>Properties</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">string&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tomboy_1_1_task_manager_1_1_task_list.html#a78b27aa457a7bae4cf7c2a65aaed8647">Name</a><code> [get, set]</code></td></tr>
@@ -163,7 +163,7 @@ Collaboration diagram for Tomboy.TaskManager.TaskList:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">TaskListTag&nbsp;</td>
+          <td class="paramtype"><a class="el" href="class_tomboy_1_1_task_manager_1_1_task_list_tag.html">TaskListTag</a>&nbsp;</td>
           <td class="paramname"> <em>tag</em></td><td>&nbsp;</td>
         </tr>
         <tr>
@@ -245,7 +245,7 @@ Collaboration diagram for Tomboy.TaskManager.TaskList:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">TaskTag&nbsp;</td>
+          <td class="paramtype"><a class="el" href="class_tomboy_1_1_task_manager_1_1_task_tag.html">TaskTag</a>&nbsp;</td>
           <td class="paramname"> <em>tag</em></td><td>&nbsp;</td>
         </tr>
         <tr>
@@ -261,7 +261,7 @@ Collaboration diagram for Tomboy.TaskManager.TaskList:</div>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>position</em>&nbsp;</td><td>A Gtk.TextIter, where to insert the task </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>tag</em>&nbsp;</td><td>A TaskTag, what tag to give the new task </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>tag</em>&nbsp;</td><td>A <a class="el" href="class_tomboy_1_1_task_manager_1_1_task_tag.html" title="Marks a Task in a NoteBuffer. Currently this does nothing (used to restore notes)...">TaskTag</a>, what tag to give the new task </td></tr>
   </table>
   </dd>
 </dl>
@@ -651,7 +651,7 @@ Collaboration diagram for Tomboy.TaskManager.TaskList:</div>
 <li>TaskList.cs</li>
 </ul>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Thu May 27 22:01:08 2010 for TaskManager by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Thu May 27 22:27:04 2010 for TaskManager by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

@@ -1,0 +1,9 @@
+<map id="G" name="G">
+<area shape="rect" href="$class_tomboy_1_1_task_manager_1_1_tests_1_1_gtk_test.html" title="Tomboy.TaskManager.Tests.GtkTest" alt="" coords="7,139,241,168"/>
+<area shape="rect" href="$class_tomboy_1_1_task_manager_1_1_tests_1_1_test_deserialization.html" title="Test that check the general workings of the TaskList parser (i.e. correct number..." alt="" coords="301,5,600,35"/>
+<area shape="rect" href="$class_tomboy_1_1_task_manager_1_1_tests_1_1_test_note_initialization.html" title="Makes sure Notes get initialized correctly by the TaskManager Addin." alt="" coords="296,59,605,88"/>
+<area shape="rect" href="$class_tomboy_1_1_task_manager_1_1_tests_1_1_test_serialization.html" title="Tests that check tasklist serialization (writing tasklists to xml) works correctly..." alt="" coords="308,112,593,141"/>
+<area shape="rect" href="$class_tomboy_1_1_task_manager_1_1_tests_1_1_test_special_notebooks.html" title="Tests the ContainingNote methods for our 2 Special Notebook classes OpenTasksNotebook..." alt="" coords="291,165,611,195"/>
+<area shape="rect" href="$class_tomboy_1_1_task_manager_1_1_tests_1_1_test_sub_super_tasks.html" title="Tests the Sub and Super Task functionality." alt="" coords="297,219,604,248"/>
+<area shape="rect" href="$class_tomboy_1_1_task_manager_1_1_tests_1_1_test_tasklist.html" title="Tests for the Tasklist methods &amp; behaviour." alt="" coords="321,272,580,301"/>
+</map>

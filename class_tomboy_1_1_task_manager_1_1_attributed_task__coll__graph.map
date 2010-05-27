@@ -1,3 +1,7 @@
 <map id="G" name="G">
-<area shape="rect" href="$class_tomboy_1_1_task_manager_1_1_task_note_utilities.html" title="Class that encapsulates often used accesses to unknown tasks or tasklists (or their..." alt="" coords="5,5,256,35"/>
+<area shape="rect" href="$class_tomboy_1_1_task_manager_1_1_task_list.html" title="A task list is a collection of tasks grouped together. It may have a title and a..." alt="" coords="149,197,352,227"/>
+<area shape="rect" href="$class_tomboy_1_1_task_manager_1_1_date_tag.html" title="Tag that identifies a duedate. It is responsible for listening to clicks (opening..." alt="" coords="5,464,205,493"/>
+<area shape="rect" href="$class_tomboy_1_1_task_manager_1_1_task_manager_note_addin.html" title="Class that describes behaviour of Notes (in terms of TaskManager features)." alt="" coords="136,293,427,323"/>
+<area shape="rect" href="$class_tomboy_1_1_task_manager_1_1_task_manager_gui.html" title="The class that manages the Menu and GUI stuff of our Addin." alt="" coords="233,464,484,493"/>
+<area shape="rect" href="$class_tomboy_1_1_task_manager_1_1_task_note_utilities.html" title="Class that encapsulates often used accesses to unknown tasks or tasklists (or their..." alt="" coords="269,5,520,35"/>
 </map>

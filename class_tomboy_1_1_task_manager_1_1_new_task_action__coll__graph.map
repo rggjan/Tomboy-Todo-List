@@ -1,8 +1,9 @@
 <map id="G" name="G">
-<area shape="rect" href="$class_tomboy_1_1_task_manager_1_1_fix_action.html" title="This class can be used to create Actions that should be carried out on the Buffer..." alt="" coords="280,464,488,493"/>
-<area shape="rect" href="$class_tomboy_1_1_task_manager_1_1_task_manager_note_addin.html" title="Class that describes behaviour of Notes (in terms of TaskManager features)." alt="" coords="188,293,479,323"/>
-<area shape="rect" href="$class_tomboy_1_1_task_manager_1_1_task_manager_gui.html" title="The class that manages the Menu and GUI stuff of our Addin." alt="" coords="5,464,256,493"/>
-<area shape="rect" href="$class_tomboy_1_1_task_manager_1_1_task_note_utilities.html" title="Class that encapsulates often used accesses to unknown tasks or tasklists (or their..." alt="" coords="113,5,364,35"/>
-<area shape="rect" href="$class_tomboy_1_1_task_manager_1_1_attributed_task.html" title="Class that represents the common functionality of TaskList and Task." alt="" coords="276,101,513,131"/>
-<area shape="rect" href="$class_tomboy_1_1_task_manager_1_1_task_list.html" title="A task list is a collection of tasks grouped together. It may have a title and a..." alt="" coords="293,197,496,227"/>
+<area shape="rect" href="$class_tomboy_1_1_task_manager_1_1_fix_action.html" title="This class can be used to create Actions that should be carried out on the Buffer..." alt="" coords="680,325,888,355"/>
+<area shape="rect" href="$class_tomboy_1_1_task_manager_1_1_task_manager_note_addin.html" title="Class that describes behaviour of Notes (in terms of TaskManager features)." alt="" coords="275,101,565,131"/>
+<area shape="rect" href="$class_tomboy_1_1_task_manager_1_1_task_manager_gui.html" title="The class that manages the Menu and GUI stuff of our Addin." alt="" coords="60,272,311,301"/>
+<area shape="rect" href="$class_tomboy_1_1_task_manager_1_1_date_tag.html" title="Tag that identifies a duedate. It is responsible for listening to clicks (opening..." alt="" coords="335,272,535,301"/>
+<area shape="rect" href="$class_tomboy_1_1_task_manager_1_1_task_note_utilities.html" title="Class that encapsulates often used accesses to unknown tasks or tasklists (or their..." alt="" coords="97,5,348,35"/>
+<area shape="rect" href="$class_tomboy_1_1_task_manager_1_1_attributed_task.html" title="Class that represents the common functionality of TaskList and Task." alt="" coords="297,379,535,408"/>
+<area shape="rect" href="$class_tomboy_1_1_task_manager_1_1_task_list.html" title="A task list is a collection of tasks grouped together. It may have a title and a..." alt="" coords="471,459,673,488"/>
 </map>
