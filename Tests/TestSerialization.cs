@@ -138,6 +138,12 @@ namespace Tomboy.TaskManager.Tests
 			Assert.That(singleManager.TaskLists[0].Tasks[0].Done);
 			Assert.That(!singleManager.TaskLists[0].Tasks[1].Done);
 			
+			// we need to disable the searching for subtasks etc. because somehow this testcase magically
+			// crashes Monodevelop!
+			// most likely because its loading stuff in tomboy which is not working in simple unit tests with single
+			// note objects
+			singleManager.TaskLists.ForEach(tl => tl.Tasks.ForEach(t => t.SetAllVisitorPolicies(false, false, false, false)));
+			                                
 			singleManager.TaskLists[0].Tasks[0].Done = false;
 			singleManager.TaskLists[0].Tasks[1].Done = true;
 			singleTaskListNote.Save();
