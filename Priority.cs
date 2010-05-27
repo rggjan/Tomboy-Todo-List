@@ -44,6 +44,7 @@ namespace Tomboy.TaskManager
 		
 		/* Colors: hardcoded
 		 * Note that UNSET does not show the color at all
+		 * Available colors can be found in the X11 color table (X11/rgb.txt), since gdk sticks to those.
 		 */
 		private static string[] color = {"blue", "green", "yellow green", "orange", "orange red", "red"};
 		public static string Color (Priority p)
