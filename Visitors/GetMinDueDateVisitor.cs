@@ -64,7 +64,8 @@ namespace Tomboy.TaskManager
 			}
 			
 			foreach (Task t in tl.Tasks)
-				this.visit (t);
+				if (!visited.Contains (t))
+					this.visit (t);
 		}
 		
 		public void visit (Task t)
@@ -77,7 +78,8 @@ namespace Tomboy.TaskManager
 			}
 			
 			foreach (TaskList tl in t.Subtasks)
-				this.visit (tl);
+				if (!visited.Contains (tl))
+					this.visit (tl);
 		}
 	}
 }
