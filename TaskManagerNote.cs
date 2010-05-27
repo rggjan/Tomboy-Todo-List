@@ -1,8 +1,76 @@
+// Permission is hereby granted, free of charge, to any person obtaining
+// a copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to
+// permit persons to whom the Software is furnished to do so, subject to
+// the following conditions:
+//   
+// The above copyright notice and this permission notice shall be
+// included in all copies or substantial portions of the Software.
+//   
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//  
+// Authors:
+//       Jan Rüegg <rggjan@gmail.com>
+//       Gabriel Walch <walchg@student.ethz.ch>
+//       Gerd Zellweger <mail@gerdzellweger.com>
+// 
+
 using System;
 using System.Collections.Generic;
 using Mono.Unix;
 using Gtk;
 using Tomboy;
+
+/*! \mainpage Developer API of TaskManager for Tomboy
+ *
+ * \section intro This is the developer documentation for the TaskManager for Tomboy project.
+ * This section is only interesting for you if you want to do changes to the code of this project.
+ * 
+ * To just install and use it, and for any other information, just have a look at the main project page:
+ * http://wiki.github.com/rggjan/Tomboy-Todo-List/
+ *
+ * \subsection developers Developer Information
+ * More information for developers is also available on this page.
+ * 
+ * To just get started hacking, however, have a look at this:
+ * http://github.com/rggjan/Tomboy-Todo-List/blob/master/doc/README.developer
+ * 
+ * \subsection License
+ * TaskManager is licensed under the LGPL:
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ *   
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *   
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *  
+ * \subsection authors Authors
+ *       Jan Rüegg <rggjan@gmail.com>
+ *       Gabriel Walch <walchg@student.ethz.ch>
+ *       Gerd Zellweger <mail@gerdzellweger.com>
+ * 
+ */
 
 namespace Tomboy.TaskManager {
 	
