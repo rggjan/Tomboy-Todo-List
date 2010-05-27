@@ -31,18 +31,6 @@ namespace Tomboy.TaskManager
 {
 	
 	/// <summary>
-	/// Enum used for priorities
-	/// </summary>
-	public enum Priority {
-		UNSET,
-		VERY_LOW,
-		LOW,
-		NORMAL,
-		HIGH,
-		VERY_HIGH
-	}
-	
-	/// <summary>
 	/// Class that represents the common functionality of TaskList and Task
 	/// </summary>
 	public abstract class AttributedTask {

@@ -81,6 +81,7 @@
     <Compile Include="Tags\TaskListTag.cs" />
     <Compile Include="Tags\TaskTag.cs" />
     <Compile Include="Visitors\GetAvPriorityVisitor.cs" />
+    <Compile Include="Priority.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

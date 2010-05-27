@@ -53,7 +53,9 @@ namespace Tomboy.TaskManager
 		
 		protected override bool OnActivate (NoteEditor editor, Gtk.TextIter start, Gtk.TextIter end)
 		{
-			string[] prios = {"0 (unset)","1 (very low)","2 (low)","3 (normal)","4 (high)","5 (very high)"};
+			string[] prios = new string[6];
+			for (int i=0;i<6;i++)
+				prios[i] = i.ToString ()+" ("+PriorityUtils.PrettyString ((Priority)i)+")";
 			box = new ComboBox (prios);
 			
 			//Member priority is shadowing the enum, therefore explicit here)
