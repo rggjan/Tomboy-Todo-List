@@ -29,6 +29,9 @@ namespace Tomboy.TaskManager {
 			}
 		}
 		
+		/// <summary>
+		/// Returns true if the TaskList has open Tasks left
+		/// </summary>
 		public bool HasOpenTasks {
 			get {
 				return TaskLists.FindAll(c => c.Done == true).Count == TaskLists.Count;
@@ -40,7 +43,6 @@ namespace Tomboy.TaskManager {
 				return utils;
 			}
 		}
-		
 		
 		/// <summary>
 		/// This constructor is used in Unit tests to initialize the addin 
@@ -236,6 +238,9 @@ namespace Tomboy.TaskManager {
 //			return true;
 //		}
 		
+		/// <summary>
+		/// Look for deleted tasks and delete them from the internal structures, if necessary
+		/// </summary>
 		public void ValidateTaskLists ()
 		{
 			List<TaskList> to_delete = new List<TaskList> ();
@@ -255,7 +260,17 @@ namespace Tomboy.TaskManager {
 			}
 		}
 		
-		void DeleteRange (object o, Gtk.DeleteRangeArgs args)
+				
+		/// <summary>
+		/// Listener for delete events, repairs tasks if necessary...
+		/// </summary>
+		/// <param name="o">
+		/// A <see cref="System.Object"/>
+		/// </param>
+		/// <param name="args">
+		/// A <see cref="Gtk.DeleteRangeArgs"/>
+		/// </param>
+		private void DeleteRange (object o, Gtk.DeleteRangeArgs args)
 		{
 				if (fix_list.Count == 0)
 				{
@@ -313,8 +328,12 @@ namespace Tomboy.TaskManager {
 				}
 				
 				// Insert new checkbox if was onTask
-				TaskList tasklist = utils.GetTaskList (end);
+				TaskList tasklist = utils.GetTaskList (args.Pos);
 				if (tasklist != null) {
+					if (tasklist.Description().Length == 0) {
+						fix_list.Add(new FixUndoAction(this));
+						return;
+					}
 					fix_list.Add(new NewTaskAction(this, tasklist));
 					return;
 				}
@@ -325,6 +344,14 @@ namespace Tomboy.TaskManager {
 				
 				if (utils.IsTextTodoItem (Buffer.GetText (start, end, false))) {
 					fix_list.Add(new NewTaskAction(this));
+				}
+			} else {
+				var iter = args.Pos;
+				iter.BackwardChars(args.Length);
+				if (iter.StartsLine()) {
+					TaskList tasklist = utils.GetTaskList();
+					if (tasklist != null)
+						fix_list.Add(new FixTitleAction(this, tasklist));
 				}
 			}
 		}

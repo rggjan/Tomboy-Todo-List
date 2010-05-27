@@ -394,6 +394,11 @@ namespace Tomboy.TaskManager
 		/// </summary>
 		public void FixTitle ()
 		{
+			var iter = Start;
+			if (iter.LineOffset != 0) {
+				iter.LineOffset = 0;
+				this.Position = Buffer.CreateMark (null, iter, true);
+			}
 			utils.RemoveTaskTags (DescriptionStart, DescriptionEnd);
 			Buffer.ApplyTag (Tag, DescriptionStart, End);
 		}
