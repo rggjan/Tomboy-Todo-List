@@ -523,6 +523,9 @@ namespace Tomboy.TaskManager {
 			DeleteTag ();
 		}
 		
+		/// <summary>
+		/// Delete the Tag of this Task
+		/// </summary>
 		public void DeleteTag ()
 		{
 			Buffer.TagTable.Remove (TaskTag);
@@ -629,7 +632,15 @@ namespace Tomboy.TaskManager {
 			return true;
 		}
 
-		
+		/// <summary>
+		/// Splits this TaskList, creating two TaskLists.
+		/// </summary>
+		/// <param name="name">
+		/// A <see cref="String"/>, the name of the new TaskList
+		/// </param>
+		/// <returns>
+		/// A <see cref="TaskList"/>, the second (the new) TaskList
+		/// </returns>
 		public TaskList Split (String name)
 		{
 			var tasks_following = TasksFollowing ();
@@ -645,11 +656,20 @@ namespace Tomboy.TaskManager {
 			return new_list;
 		}
 		
+		/// <summary>
+		/// Splits with a default name for the new TaskList
+		/// </summary>
+		/// <returns>
+		/// A <see cref="TaskList"/>
+		/// </returns>
 		public TaskList Split ()
 		{
 			return Split (ContainingTaskList.Name + "(2)");
 		}
 		
+		/// <summary>
+		/// Prints the Task to the Console.
+		/// </summary>
 		public void DebugPrint ()
 		{
 			if (!Tomboy.Debugging)
