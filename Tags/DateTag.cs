@@ -44,14 +44,23 @@ namespace Tomboy.TaskManager
 		private NoteEditor editor;
 		private TaskManagerNoteAddin addin;
 		
+		/// <summary>
+		/// Initialisation with the name and the tasknote
+		/// </summary>
+		/// <param name="name">
+		/// A <see cref="System.String"/>
+		/// </param>
+		/// <param name="addin">
+		/// A <see cref="TaskManagerNoteAddin"/>
+		/// </param>
 		public DateTag (string name, TaskManagerNoteAddin addin) : base (name)
 		{
 			this.addin = addin;
 		}
 		
-		public override void Initialize (string element_name)
+		public override void Initialize (string elementName)
 		{
-			base.Initialize (element_name);
+			base.Initialize (elementName);
 
 			//Underline = Pango.Underline.Single;
 			Foreground = "purple";
@@ -59,6 +68,22 @@ namespace Tomboy.TaskManager
 			CanGrow = true;
 		}
 		
+		/// <summary>
+		/// Handles the click on the datetag:
+		/// Opens up a calendar dialog
+		/// </summary>
+		/// <param name="editor">
+		/// A <see cref="NoteEditor"/>
+		/// </param>
+		/// <param name="start">
+		/// A <see cref="Gtk.TextIter"/>
+		/// </param>
+		/// <param name="end">
+		/// A <see cref="Gtk.TextIter"/>
+		/// </param>
+		/// <returns>
+		/// A <see cref="System.Boolean"/>
+		/// </returns>
 		protected override bool OnActivate (NoteEditor editor, Gtk.TextIter start, Gtk.TextIter end)
 		{
 			calendar = new Calendar ();
@@ -72,7 +97,7 @@ namespace Tomboy.TaskManager
 			dialog.AddButton ("OK", ResponseType.Ok);
 			dialog.AddButton ("Cancel", ResponseType.Cancel);
 			
-			dialog.Response += new ResponseHandler (on_dialog_response);
+			dialog.Response += new ResponseHandler (OnDialogResponse);
 			dialog.Run ();
 			dialog.Destroy ();
 			
@@ -88,7 +113,7 @@ namespace Tomboy.TaskManager
 		/// <param name="args">
 		/// A <see cref="ResponseArgs"/>
 		/// </param>
-		void on_dialog_response (object obj, ResponseArgs args)
+		void OnDialogResponse (object obj, ResponseArgs args)
 		{	
 			if (args.ResponseId != ResponseType.Ok)
 				return;
