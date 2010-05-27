@@ -314,14 +314,14 @@ namespace Tomboy.TaskManager {
 				}
 			}
 			
-			if (args.Text == System.Environment.NewLine) {//FIXME enter at very beginning of last task problem
+			if (args.Text == System.Environment.NewLine) {
 				Gtk.TextIter end = args.Pos;
 				end.BackwardChar ();
 				
 				Task task = utils.GetTask ();
 				
 				// Behaviour: onTask\n\n should delete empty checkbox
-				if (task != null && task.LineIsEmpty ()) {
+				if (task != null && task.LineIsEmpty) {
 					fix_list.Add(new FixDeleteEmptyCheckBoxAction(this, task));
 					return;
 				}

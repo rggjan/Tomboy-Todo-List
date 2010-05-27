@@ -27,8 +27,7 @@ using System;
 using System.Collections.Generic;
 using Gtk;
 
-namespace Tomboy.TaskManager
-{
+namespace Tomboy.TaskManager {
 	
 	/// <summary>
 	/// Class that represents the common functionality of TaskList and Task

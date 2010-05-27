@@ -44,24 +44,28 @@ namespace Tomboy.TaskManager
 		private Gtk.ImageMenuItem add_duedate = new Gtk.ImageMenuItem (Catalog.GetString ("Add Duedate"));
 		private Gtk.CheckMenuItem show_priority = new Gtk.CheckMenuItem (Catalog.GetString ("Show Priorities"));
 		private Gtk.MenuToolButton menu_tool_button;
-			
 		private TaskManagerNoteAddin addin;
-		
-		public NoteBuffer Buffer
-		{
-			get {
-				return addin.Buffer;
-			}
-		}
+		private TaskNoteUtilities utils = null;
 
 		
-		public Note Note {
-			
-			get {
-				return addin.Note;
-			}
+		/// <summary>
+		/// The Buffer attached to our gui
+		/// </summary>
+		public NoteBuffer Buffer
+		{
+			get {return addin.Buffer;}
+		}
+
+		/// <summary>
+		/// The Note attached to our gui
+		/// </summary>
+		public Note Note {			
+			get {return addin.Note;}
 		}
 		
+		/// <summary>
+		/// Returns true if the Priority is shown in the Buffer
+		/// </summary>
 		public bool PriorityShown
 		{
 			get {
@@ -75,9 +79,10 @@ namespace Tomboy.TaskManager
 					}
 			}
 		}
-
-		TaskNoteUtilities utils = null;
 		
+		/// <summary>
+		/// Initialization, takes the Addin this gui is attached to.
+		/// </summary>
 		public TaskManagerGui (TaskManagerNoteAddin addin)
 		{
 			this.addin = addin;
@@ -112,6 +117,9 @@ namespace Tomboy.TaskManager
 			addin.AddToolItem (menu_tool_button, -1);
 		}
 		
+		/// <summary>
+		/// Start all the Button etc. listeners of the gui.
+		/// </summary>
 		public void StartListeners ()
 		{
 			add_duedate.Activated += OnAddDuedateActivated;
@@ -122,6 +130,9 @@ namespace Tomboy.TaskManager
 			menu_tool_button.ShowMenu += UpdateMenuSensitivity;
 		}
 		
+		/// <summary>
+		/// Stop all the Button etc. listeners of the gui.
+		/// </summary>
 		public void StopListeners ()
 		{
 			add_duedate.Activated -= OnAddDuedateActivated;
@@ -132,8 +143,13 @@ namespace Tomboy.TaskManager
 			menu_tool_button.ShowMenu -= UpdateMenuSensitivity;
 		}
 		
-		void OnAddDuedateActivated (object sender, EventArgs args)
+		/// <summary>
+		/// The method that gets called when clcked on a duedate.
+		/// </summary>
+		private void OnAddDuedateActivated (object sender, EventArgs args)
 		{
+			addin.StopListeners ();
+			
 			Task t = utils.GetTask ();
 			TaskList tl = utils.GetTaskList ();
 			
@@ -150,17 +166,14 @@ namespace Tomboy.TaskManager
 				
 				tl.AddDueDate (visitor.Result);
 			}
+			
+			utils.ResetCursor();
+			addin.StartListeners();
 		}
 		
 		/// <summary>
 		/// Add a new tasklist into the buffer
 		/// </summary>
-		/// <param name="sender">
-		/// A <see cref="System.Object"/>
-		/// </param>
-		/// <param name="args">
-		/// A <see cref="EventArgs"/>
-		/// </param>
 		void OnAddListActivated (object sender, EventArgs args)
 		{
 			if (utils.InTaskList ())
@@ -175,15 +188,10 @@ namespace Tomboy.TaskManager
 		/// <summary>
 		/// Add priority widget to some task
 		/// </summary>
-		/// <param name="sender">
-		/// A <see cref="System.Object"/>
-		/// </param>
-		/// <param name="args">
-		/// A <see cref="EventArgs"/>
-		/// </param>
 		void OnAddPriorityActivated (object sender, EventArgs args)
 		{
 			addin.StopListeners ();
+			
 			Gtk.TextIter cursor = Buffer.GetIterAtMark (Buffer.InsertMark);
 			cursor.BackwardChar ();
 			
@@ -194,14 +202,21 @@ namespace Tomboy.TaskManager
 			} else {
 				Logger.Debug ("Tried to insert Priority outside of a task");	
 			}
+			
 			addin.StartListeners ();
 		}
 		
+		/// <summary>
+		/// Toggle the visibility of the Priories
+		/// </summary>
 		private void OnShowPriorityActivated (object sender, EventArgs args)
 		{
 			TogglePriorityVisibility ();
 		}
 
+		/// <summary>
+		/// Debug-Print the structure of tasks/tasklists
+		/// </summary>
 		private void OnPrintStructureActivated (object sender, EventArgs args)
 		{
 			Logger.Debug ("----------------Printing structure!------------------");
@@ -210,6 +225,9 @@ namespace Tomboy.TaskManager
 			Logger.Debug ("-----------------------------------------------------");
 		}
 		
+		/// <summary>
+		/// Switch on or of (depending on PriorityShown) the visibility of priorities in the Buffer
+		/// </summary>
 		private void TogglePriorityVisibility ()
 		{
 			addin.StopListeners ();
@@ -233,8 +251,8 @@ namespace Tomboy.TaskManager
 		{
 			// toggle sensitivity
 			Task task = utils.GetTask ();
-			if (task != null && task.PriorityUnset () && show_priority.Active) {
-				//add_priority.Sensitive = true;
+			if (task != null && task.PriorityUnset && show_priority.Active) {
+				//add_priority.Sensitive = true; //TODO still needed?
 			}
 			else {
 				//add_priority.Sensitive = false;
