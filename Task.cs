@@ -375,8 +375,8 @@ namespace Tomboy.TaskManager {
 			dvisitor.visit (this);
 			
 			//Uppward checking
-			CheckDoneVisitor uvisitor = new CheckDoneVisitor ();
-			uvisitor.visit (ContainingTaskList);
+			//CheckDoneVisitor uvisitor = new CheckDoneVisitor ();
+			//uvisitor.visit (ContainingTaskList);
 		}
 		
 		/// <summary>
