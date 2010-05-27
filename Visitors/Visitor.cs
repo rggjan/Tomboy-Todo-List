@@ -24,18 +24,25 @@
 // 
 
 using System;
+using System.Collections.Generic;
 using Tomboy;
 
 namespace Tomboy.TaskManager
 {
+	
 	/// <summary>
 	/// The class that describes the visitor pattern over the tasks structure.
 	/// Although visit (Note n) is not used here, it may turn out to be useful in the future (e.g. for printing or similar)
 	/// </summary>
-	public interface Visitor
+	public abstract class Visitor
 	{
-		void visit (Note n);
-		void visit (TaskList tl);
-		void visit (Task t);
+		/// <summary>
+		/// The tasks and task lists already visited (necessary for detecting cyclic behavior)
+		/// </summary>
+		protected List<AttributedTask> visited;
+		
+		public abstract void visit (Note note);
+		public abstract void visit (TaskList taskList);
+		public abstract void visit (Task task);
 	}
 }
