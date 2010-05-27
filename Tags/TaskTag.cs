@@ -49,9 +49,9 @@ namespace Tomboy.TaskManager
 		/// <param name="element_name">
 		/// A <see cref="System.String"/>
 		/// </param>
-		public override void Initialize (string element_name)
+		public override void Initialize (string elementName)
 		{
-			base.Initialize (element_name);
+			base.Initialize (elementName);
 
 			if (Tomboy.Debugging)
 				Foreground = "red";

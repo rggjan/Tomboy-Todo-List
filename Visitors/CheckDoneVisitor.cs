@@ -28,54 +28,64 @@ using System.Collections.Generic;
 
 namespace Tomboy.TaskManager
 {
+	/// <summary>
+	/// Visitor that checks upwards whether the changes in the level below (task -> subtask or tasklist -> task)
+	/// Made the corresponding task complete (in terms of every child is done) or incomplete
+	/// The correspondonding policies can be adjusted via the Task class
+	/// </summary>
 	public class CheckDoneVisitor : Visitor
 	{
-		private List<AttributedTask> visited;
 		private bool done;
 	
+		/// <summary>
+		/// Expects whether we are checking for 'new' tasks/tasklists to mark as done or not done
+		/// </summary>
+		/// <param name="done">
+		/// A <see cref="System.Boolean"/>
+		/// </param>
 		public CheckDoneVisitor (bool done)
 		{
 			visited = new List<AttributedTask> ();
 			this.done = done;
 		}
 		
-		public void visit (Note n)
+		public override void visit (Note n)
 		{
 			//Not needed here	
 		}
 		
-		public void visit (TaskList tl)
+		public override void visit (TaskList taskList)
 		{
-			visited.Add (tl);
+			visited.Add (taskList);
 			
 			//Can't check here because do not know about other subtasks of the supertasks
-			foreach (Task t in tl.SuperTasks)
-				if (!visited.Contains (t))
-					visit (t);
+			foreach (Task task in taskList.SuperTasks)
+				if (!visited.Contains (task))
+					this.visit (task);
 		}
 		
-		public void visit (Task t)
+		public override void visit (Task task)
 		{
-			visited.Add (t);
+			visited.Add (task);
 			/*If checking upward for freshly completed tasks, check whether all subtasks have been done
 			 *Assume all values have been propagated - change only if this task matters
 			 * x && true = x
 			 */
-			if (done && !t.Done){
-				if (t.Subtasks.FindAll (c => c.Done==true).Count == t.Subtasks.Count)
-					if (t.Done == false) t.Toggle ();
+			if (done && !task.Done){
+				if (task.Subtasks.FindAll (c => c.Done==true).Count == task.Subtasks.Count)
+					if (task.Done == false) task.Toggle ();
 			
-				if (!visited.Contains (t.ContainingTaskList))
-					visit (t.ContainingTaskList);
+				if (!visited.Contains (task.ContainingTaskList))
+					this.visit (task.ContainingTaskList);
 			}
 			
 			/* If checking upward for freshly 'not completed anymore tasks', need no check.
 			 * x && false = false
 			 */
-			if (!done && t.Done){
-				t.Toggle ();
-				if (!visited.Contains (t.ContainingTaskList))
-					visit (t.ContainingTaskList);
+			if (!done && task.Done){
+				task.Toggle ();
+				if (!visited.Contains (task.ContainingTaskList))
+					this.visit (task.ContainingTaskList);
 			}
 		}
 	}
