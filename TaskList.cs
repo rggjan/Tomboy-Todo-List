@@ -38,6 +38,50 @@ namespace Tomboy.TaskManager
 	/// </summary>
 	public class TaskList : AttributedTask
 	{
+		/// <summary>
+		/// Name of this task list
+		/// </summary>
+		public string Name { get; set; }
+				
+		/// <summary>
+		/// Describes what to do when tasklist is marked as done
+		/// </summary>
+		public override bool Done {
+			get {
+				if (Tasks != null) {
+					return Tasks.FindAll (c => c.Done == true).Count == Tasks.Count;
+				} else
+					return true;
+			}
+			set { Tasks.ForEach (c => c.Done = value); }
+		}
+		
+		/// <summary>
+		/// Tasks for ITask interface
+		/// </summary>
+		public List<Task> Tasks { get; set; }
+		
+		/// <summary>
+		/// Returns the last line where a Task is on
+		/// </summary>
+		public int LastTaskLine {
+			get {
+				int line = -1;
+				foreach (Task task in Tasks) {
+					if (task.Line > line)
+						line = task.Line;
+				}
+				return line;
+			}
+		}
+
+		/// <summary>
+		/// Shortcut for attached tag
+		/// </summary>
+		private TaskListTag TaskListTag {
+			get { return (TaskListTag)Tag; }
+			set { Tag = value; }
+		}
 
 		/// <summary>
 		/// Beginning of the description, for TaskLists the same as Start
@@ -56,57 +100,7 @@ namespace Tomboy.TaskManager
 				return start;
 			}
 		}
-
-		protected override NoteBuffer Buffer {
-			get { return ContainingNote.Buffer; }
-		}
-
-
-		/// <summary>
-		/// Name of this task list
-		/// </summary>
-		public string Name { get; set; }
-
-
-		/// <summary>
-		/// Note containing the TaskList.
-		/// </summary>
-		internal Note ContainingNote { get; set; }
-
-		/// <summary>
-		/// Tasks for ITask interface
-		/// </summary>
-		public List<Task> Tasks { get; set; }
-
-		//Dropped for now
-//		/// <summary>
-//		/// LinkingTasks for ITask interface
-//		/// </summary>
-//		public List<Task> LinkinTasks { 
-//			get; set;
-//		}
-
-		/// <summary>
-		/// Describes what to do when tasklist is marked as done
-		/// </summary>
-		public override bool Done {
-			get {
-				if (Tasks != null) {
-					return Tasks.FindAll (c => c.Done == true).Count == Tasks.Count;
-				} else
-					return true;
-			}
-			set { Tasks.ForEach (c => c.Done = value); }
-		}
-
-		/// <summary>
-		/// Shortcut for attached tag
-		/// </summary>
-		private TaskListTag TaskListTag {
-			get { return (TaskListTag)Tag; }
-			set { Tag = value; }
-		}
-
+		
 		/// <summary>
 		/// End of the Tasklist, including all tasks
 		/// </summary>
@@ -119,18 +113,25 @@ namespace Tomboy.TaskManager
 		}
 
 		/// <summary>
-		/// Returns the last line where a Task is on
+		/// The Buffer containing this TaskList
 		/// </summary>
-		public int LastTaskLine {
-			get {
-				int line = -1;
-				foreach (Task task in Tasks) {
-					if (task.Line > line)
-						line = task.Line;
-				}
-				return line;
-			}
+		protected override NoteBuffer Buffer {
+			get { return ContainingNote.Buffer; }
 		}
+
+
+		/// <summary>
+		/// Note containing the TaskList.
+		/// </summary>
+		internal Note ContainingNote { get; set; }
+
+		//Dropped for now
+//		/// <summary>
+//		/// LinkingTasks for ITask interface
+//		/// </summary>
+//		public List<Task> LinkinTasks { 
+//			get; set;
+//		}
 
 		/// <summary>
 		/// Creates a new tasklists including all the given tasks.
@@ -180,78 +181,70 @@ namespace Tomboy.TaskManager
 				AddTask (end);
 			}
 		}
-
+		
 		/// <summary>
-		/// Transfer all the tasks to another tasklist, used for merging
+		/// Creates a new task list with existing tags.
 		/// </summary>
-		/// <param name="tasklist">
-		/// The other <see cref="TaskList"/> tasklist to send the tasks to
+		public TaskList (Note note, Gtk.TextIter start, TaskListTag tag)
+		{
+			ContainingNote = note;
+			Name = ("New TaskList!");
+			//FIXME
+			Initialize (start, tag);
+			Logger.Debug ("TaskList created");
+			
+			Tasks = new List<Task> ();
+		}
+				
+		/// <summary>
+		/// Sets up the TaskList at cursor position.
+		/// </summary>
+		/// <param name="note">
+		/// <see cref="Note"/> where the TaskLists is located.
 		/// </param>
-		public void TransferTasksTo (TaskList tasklist)
+		public TaskList (Note note)
 		{
-			List<Task> to_transfer = new List<Task> ();
+			//TODO: rewrite. looks a bit ugly everything...
+			ContainingNote = note;
+			Name = ("New TaskList!");
 			
-			foreach (Task task in Tasks) {
-				if (!task.WasDeleted) {
-					Logger.Debug ("adding task " + task.Description ());
-					to_transfer.Add (task);
-				}
+			TaskListTag tag = (TaskListTag)ContainingNote.TagTable.CreateDynamicTag ("tasklist");
+			TextIter iter;
+			NoteBuffer buffer = note.Buffer;
+			
+			int line = buffer.GetIterAtMark (buffer.InsertMark).Line;
+			var linestart = buffer.GetIterAtLine (line);
+			var lineend = linestart;
+			lineend.ForwardToLineEnd ();
+			
+			if (buffer.GetText (linestart, lineend, false).Trim ().Length == 0)
+				iter = linestart;
+			else {
+				buffer.Insert (ref lineend, System.Environment.NewLine);
+				iter = lineend;
 			}
 			
-			foreach (Task task in to_transfer) {
-				tasklist.AddFinishedTask (task);
-				task.RemoveTag (Tag);
-				Tasks.Remove (task);
-			}
+			Initialize (iter, tag);
 			
-			Delete ();
-			tasklist.LockEnd ();
-		}
+			var end = Start;
+			buffer.Insert (ref end, "New Tasklist!\n\n");
+			var start = Start;
+			Buffer.ApplyTag (TaskListTag, start, end);
+			
+			/*start = end;
+			start.BackwardChar ();
+			Buffer.ApplyTag ("locked", start, end);*/			//TODO lock start!
 
-		/// <summary>
-		/// Fix the TaskList, for example after heavy deletion operations.
-		/// </summary>
-		/// <param name="line">
-		/// A <see cref="System.Int32"/>, the line on which fixing is needed.
-		/// </param>
-		/// <returns>
-		/// Returns the new <see cref="TaskList"/> if splitting was required.
-		/// </returns>
-		public TaskList FixWithin (int line)
-		{
-			Logger.Debug ("FixWithin");
-			var invalid_list = RemoveDeletedTasks ();
-			if (invalid_list.Count >= 1) {
-				foreach (Task inv_task in invalid_list) {
-					if (inv_task.Line != line) {
-						Logger.Fatal ("Got wrong line!");
-						return null;
-					}
-				}
-			}
+			Logger.Debug ("TaskList created");
+			//Logger.Debug (iter.Char.ToString());
 			
-			TaskTag tasktag = (TaskTag)Buffer.GetDynamicTag ("task", Buffer.GetIterAtLine (line));
-			// Not in title
-			if (tasktag != null) {
-				Task task = tasktag.Task;
-				return task.Fix ();
-			} else {
-				// In title
-				Logger.Debug ("Fixing title");
-				FixTitle ();
-				return null;
-			}
+			Tasks = new List<Task> ();
+			end.BackwardChar ();
+			AddTask (end);
+			
+			LockEnd ();
 		}
-
-		/// <summary>
-		/// Fix the title after merging or deleting operations.
-		/// </summary>
-		public void FixTitle ()
-		{
-			utils.RemoveTaskTags (DescriptionStart, DescriptionEnd);
-			Buffer.ApplyTag (Tag, DescriptionStart, End);
-		}
-
+		
 		/// <summary>
 		/// Remove deleted Tasks.
 		/// </summary>
@@ -338,6 +331,50 @@ namespace Tomboy.TaskManager
 			
 			return false;
 		}
+				
+		/// <summary>
+		/// Fix the TaskList, for example after heavy deletion operations.
+		/// </summary>
+		/// <param name="line">
+		/// A <see cref="System.Int32"/>, the line on which fixing is needed.
+		/// </param>
+		/// <returns>
+		/// Returns the new <see cref="TaskList"/> if splitting was required.
+		/// </returns>
+		public TaskList FixWithin (int line)
+		{
+			Logger.Debug ("FixWithin");
+			var invalid_list = RemoveDeletedTasks ();
+			if (invalid_list.Count >= 1) {
+				foreach (Task inv_task in invalid_list) {
+					if (inv_task.Line != line) {
+						Logger.Fatal ("Got wrong line!");
+						return null;
+					}
+				}
+			}
+			
+			TaskTag tasktag = (TaskTag)Buffer.GetDynamicTag ("task", Buffer.GetIterAtLine (line));
+			// Not in title
+			if (tasktag != null) {
+				Task task = tasktag.Task;
+				return task.Fix ();
+			} else {
+				// In title
+				Logger.Debug ("Fixing title");
+				FixTitle ();
+				return null;
+			}
+		}
+		
+		/// <summary>
+		/// Fix the title after merging or deleting operations.
+		/// </summary>
+		public void FixTitle ()
+		{
+			utils.RemoveTaskTags (DescriptionStart, DescriptionEnd);
+			Buffer.ApplyTag (Tag, DescriptionStart, End);
+		}
 
 		/// <summary>
 		/// Delete all the metadata of the Tasklist.
@@ -365,52 +402,30 @@ namespace Tomboy.TaskManager
 		}
 
 		/// <summary>
-		/// Sets up the TaskList at cursor position.
+		/// Transfer all the tasks to another tasklist, used for merging
 		/// </summary>
-		/// <param name="note">
-		/// <see cref="Note"/> where the TaskLists is located.
+		/// <param name="tasklist">
+		/// The other <see cref="TaskList"/> tasklist to send the tasks to
 		/// </param>
-		public TaskList (Note note)
+		public void TransferTasksTo (TaskList tasklist)
 		{
-			//TODO: rewrite. looks a bit ugly everything...
-			ContainingNote = note;
-			Name = ("New TaskList!");
+			List<Task> to_transfer = new List<Task> ();
 			
-			TaskListTag tag = (TaskListTag)ContainingNote.TagTable.CreateDynamicTag ("tasklist");
-			TextIter iter;
-			NoteBuffer buffer = note.Buffer;
-			
-			int line = buffer.GetIterAtMark (buffer.InsertMark).Line;
-			var linestart = buffer.GetIterAtLine (line);
-			var lineend = linestart;
-			lineend.ForwardToLineEnd ();
-			
-			if (buffer.GetText (linestart, lineend, false).Trim ().Length == 0)
-				iter = linestart;
-			else {
-				buffer.Insert (ref lineend, System.Environment.NewLine);
-				iter = lineend;
+			foreach (Task task in Tasks) {
+				if (!task.WasDeleted) {
+					Logger.Debug ("adding task " + task.Description ());
+					to_transfer.Add (task);
+				}
 			}
 			
-			Initialize (iter, tag);
+			foreach (Task task in to_transfer) {
+				tasklist.AddFinishedTask (task);
+				task.RemoveTag (Tag);
+				Tasks.Remove (task);
+			}
 			
-			var end = Start;
-			buffer.Insert (ref end, "New Tasklist!\n\n");
-			var start = Start;
-			Buffer.ApplyTag (TaskListTag, start, end);
-			
-			/*start = end;
-			start.BackwardChar ();
-			Buffer.ApplyTag ("locked", start, end);*/			//TODO lock start!
-
-			Logger.Debug ("TaskList created");
-			//Logger.Debug (iter.Char.ToString());
-			
-			Tasks = new List<Task> ();
-			end.BackwardChar ();
-			AddTask (end);
-			
-			LockEnd ();
+			Delete ();
+			tasklist.LockEnd ();
 		}
 
 		/// <summary>
@@ -419,20 +434,6 @@ namespace Tomboy.TaskManager
 		public void PlaceCursorAtEnd ()
 		{
 			Buffer.PlaceCursor (End);
-		}
-
-		/// <summary>
-		/// Creates a new task list with existing tags.
-		/// </summary>
-		public TaskList (Note note, Gtk.TextIter start, TaskListTag tag)
-		{
-			ContainingNote = note;
-			Name = ("New TaskList!");
-			//FIXME
-			Initialize (start, tag);
-			Logger.Debug ("TaskList created");
-			
-			Tasks = new List<Task> ();
 		}
 
 		/// <summary>
