@@ -321,7 +321,7 @@ namespace Tomboy.TaskManager {
 				Task task = utils.GetTask ();
 				
 				// Behaviour: onTask\n\n should delete empty checkbox
-				if (task != null && task.LineIsEmpty ()) {
+				if (task != null && task.LineIsEmpty) {
 					fix_list.Add(new FixDeleteEmptyCheckBoxAction(this, task));
 					return;
 				}

@@ -251,7 +251,7 @@ namespace Tomboy.TaskManager
 		{
 			// toggle sensitivity
 			Task task = utils.GetTask ();
-			if (task != null && task.PriorityUnset () && show_priority.Active) {
+			if (task != null && task.PriorityUnset && show_priority.Active) {
 				//add_priority.Sensitive = true; //TODO still needed?
 			}
 			else {
