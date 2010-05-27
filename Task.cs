@@ -725,5 +725,11 @@ namespace Tomboy.TaskManager {
 			
 		    Console.WriteLine ("Task: " + Description ());
 		}
+		
+		public override void AddDueDate (DateTime date)
+		{
+			base.AddDueDate (date);
+			TagUpdate ();
+		}
 	}
 }

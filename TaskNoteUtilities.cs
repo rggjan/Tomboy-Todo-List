@@ -24,6 +24,7 @@
 // 
 
 using System;
+using System.Collections.Generic;
 using Gtk;
 using Tomboy;
 

@@ -153,7 +153,7 @@ namespace Tomboy.TaskManager {
 			}	
 		}
 		
-		public void AddDueDate (DateTime date){
+		public virtual void AddDueDate (DateTime date){
 			TextIter pos = Buffer.GetIterAtMark (Buffer.InsertMark);
 			Buffer.InsertWithTags (
 			                       ref pos, 
