@@ -83,7 +83,6 @@
     <Compile Include="Priority.cs" />
     <Compile Include="Visitors\CheckDoneVisitor.cs" />
     <Compile Include="Tags\ColorTag.cs" />
-    <Compile Include="Tests\TestTasklist.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -95,6 +94,8 @@
     <EmbeddedResource Include="Icons\todo-icon24.png" />
     <EmbeddedResource Include="Icons\duedate-icon22.png" />
     <EmbeddedResource Include="Icons\priority-icon22.png" />
+    <EmbeddedResource Include="Tests\SubTaskNote.xml" />
+    <EmbeddedResource Include="Tests\SuperTaskNote.xml" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -116,7 +117,7 @@
     <Folder Include="Tags\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tests\SubTaskNote.xml" />
-    <None Include="Tests\SuperTaskNote.xml" />
+    <None Include="Tests\TestTasklist.cs" />
+    <None Include="Tests\TestSubSuperTasks.cs" />
   </ItemGroup>
 </Project>
