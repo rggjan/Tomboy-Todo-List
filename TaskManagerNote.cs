@@ -203,10 +203,7 @@ namespace Tomboy.TaskManager {
 		/// </summary>
 		public override void OnNoteOpened ()
 		{
-			
-//			//Now that Buffer and Note exists and does not give bugs, assign it to prio tag
-//			PriorityTag tag = (PriorityTag) Buffer.TagTable.Lookup ("priority");
-//			tag.Buffer = Buffer;
+			Window.DefaultWidth += 200;
 			
 			gui = new TaskManagerGui (this);
 			gui.StartListeners ();
