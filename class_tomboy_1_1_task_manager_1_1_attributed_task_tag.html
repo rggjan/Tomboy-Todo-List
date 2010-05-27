@@ -35,10 +35,10 @@
 <p><a href="class_tomboy_1_1_task_manager_1_1_attributed_task_tag-members.html">List of all members.</a></p>
 <table border="0" cellpadding="0" cellspacing="0">
 <tr><td colspan="2"><h2>Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">override void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tomboy_1_1_task_manager_1_1_attributed_task_tag.html#ab2424dd4a101b0d4ac9baf2fbd885c25">Initialize</a> (string element_name)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Set common (<a class="el" href="class_tomboy_1_1_task_manager_1_1_task_list.html" title="A task list is a collection of tasks grouped together. It may have a title and a...">TaskList</a>, <a class="el" href="class_tomboy_1_1_task_manager_1_1_task.html" title="A Task is a piece of text representing a “todo” item, accompanied with a checkbox...">Task</a>) properties.  <a href="#ab2424dd4a101b0d4ac9baf2fbd885c25"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tomboy_1_1_task_manager_1_1_attributed_task_tag.html#a2476ef39b55ed28da5fecd9af84b66a7">Bind</a> (<a class="el" href="class_tomboy_1_1_task_manager_1_1_attributed_task.html">AttributedTask</a> atask)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Attach a task or tasklist to this tag.  <a href="#a2476ef39b55ed28da5fecd9af84b66a7"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">override void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tomboy_1_1_task_manager_1_1_attributed_task_tag.html#ae792bb3aa206dc2184afc2f06319c3f8">Initialize</a> (string elementName)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Set common (TaskListtag, Tasktag) properties.  <a href="#ae792bb3aa206dc2184afc2f06319c3f8"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tomboy_1_1_task_manager_1_1_attributed_task_tag.html#a3c8bfca4046f5bb5f8782a852091c66e">Bind</a> (<a class="el" href="class_tomboy_1_1_task_manager_1_1_attributed_task.html">AttributedTask</a> attributedTask)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Attach a task or tasklist to this tag.  <a href="#a3c8bfca4046f5bb5f8782a852091c66e"></a><br/></td></tr>
 <tr><td colspan="2"><h2>Properties</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_tomboy_1_1_task_manager_1_1_attributed_task.html">AttributedTask</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tomboy_1_1_task_manager_1_1_attributed_task_tag.html#a5f3e6f79c38dc7444df38625ef3b641a">AttributedTask</a><code> [get, set]</code></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><a class="el" href="class_tomboy_1_1_task_manager_1_1_task.html" title="A Task is a piece of text representing a “todo” item, accompanied with a checkbox...">Task</a> this tag is (currently, but ought to be fixed) attached to.  <a href="#a5f3e6f79c38dc7444df38625ef3b641a"></a><br/></td></tr>
@@ -46,7 +46,7 @@
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <p>Class for the tag representation of a task or tasklist in the buffer Used by <a class="el" href="class_tomboy_1_1_task_manager_1_1_attributed_task.html" title="Class that represents the common functionality of TaskList and Task.">AttributedTask</a> - Sums up the commonalities between tasktag and tasklisttag. </p>
 <hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="a2476ef39b55ed28da5fecd9af84b66a7"></a><!-- doxytag: member="Tomboy::TaskManager::AttributedTaskTag::Bind" ref="a2476ef39b55ed28da5fecd9af84b66a7" args="(AttributedTask atask)" -->
+<a class="anchor" id="a3c8bfca4046f5bb5f8782a852091c66e"></a><!-- doxytag: member="Tomboy::TaskManager::AttributedTaskTag::Bind" ref="a3c8bfca4046f5bb5f8782a852091c66e" args="(AttributedTask attributedTask)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -54,7 +54,7 @@
           <td class="memname">void Tomboy.TaskManager.AttributedTaskTag.Bind </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_tomboy_1_1_task_manager_1_1_attributed_task.html">AttributedTask</a>&nbsp;</td>
-          <td class="paramname"> <em>atask</em></td>
+          <td class="paramname"> <em>attributedTask</em></td>
           <td>&nbsp;)&nbsp;</td>
           <td></td>
         </tr>
@@ -72,7 +72,7 @@
 
 </div>
 </div>
-<a class="anchor" id="ab2424dd4a101b0d4ac9baf2fbd885c25"></a><!-- doxytag: member="Tomboy::TaskManager::AttributedTaskTag::Initialize" ref="ab2424dd4a101b0d4ac9baf2fbd885c25" args="(string element_name)" -->
+<a class="anchor" id="ae792bb3aa206dc2184afc2f06319c3f8"></a><!-- doxytag: member="Tomboy::TaskManager::AttributedTaskTag::Initialize" ref="ae792bb3aa206dc2184afc2f06319c3f8" args="(string elementName)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -80,7 +80,7 @@
           <td class="memname">override void Tomboy.TaskManager.AttributedTaskTag.Initialize </td>
           <td>(</td>
           <td class="paramtype">string&nbsp;</td>
-          <td class="paramname"> <em>element_name</em></td>
+          <td class="paramname"> <em>elementName</em></td>
           <td>&nbsp;)&nbsp;</td>
           <td></td>
         </tr>
@@ -88,7 +88,7 @@
 </div>
 <div class="memdoc">
 
-<p>Set common (<a class="el" href="class_tomboy_1_1_task_manager_1_1_task_list.html" title="A task list is a collection of tasks grouped together. It may have a title and a...">TaskList</a>, <a class="el" href="class_tomboy_1_1_task_manager_1_1_task.html" title="A Task is a piece of text representing a “todo” item, accompanied with a checkbox...">Task</a>) properties. </p>
+<p>Set common (TaskListtag, Tasktag) properties. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>element_name</em>&nbsp;</td><td>A System.String </td></tr>
@@ -96,7 +96,7 @@
   </dd>
 </dl>
 
-<p>Reimplemented in <a class="el" href="class_tomboy_1_1_task_manager_1_1_task_list_tag.html#a1e4e093ef21e29d906fbd2faa8b98953">Tomboy.TaskManager.TaskListTag</a>, and <a class="el" href="class_tomboy_1_1_task_manager_1_1_task_tag.html#a56bed7f11e5a0243f5877cad7ab64d9b">Tomboy.TaskManager.TaskTag</a>.</p>
+<p>Reimplemented in <a class="el" href="class_tomboy_1_1_task_manager_1_1_task_list_tag.html#ad218111b949735541c5dd64ac625c13e">Tomboy.TaskManager.TaskListTag</a>, and <a class="el" href="class_tomboy_1_1_task_manager_1_1_task_tag.html#aafcb1ef53cbae8f55d0469f94d85b327">Tomboy.TaskManager.TaskTag</a>.</p>
 
 </div>
 </div>
@@ -120,7 +120,7 @@
 <li>Tags/AttributedTaskTag.cs</li>
 </ul>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Thu May 27 22:38:46 2010 for TaskManager by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Fri May 28 00:23:12 2010 for TaskManager by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

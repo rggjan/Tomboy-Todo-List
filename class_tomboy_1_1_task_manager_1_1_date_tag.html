@@ -40,21 +40,103 @@ Collaboration diagram for Tomboy.TaskManager.DateTag:</div>
 <p><a href="class_tomboy_1_1_task_manager_1_1_date_tag-members.html">List of all members.</a></p>
 <table border="0" cellpadding="0" cellspacing="0">
 <tr><td colspan="2"><h2>Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5f62dc644ae680575cb4c05d2b9c4bce"></a><!-- doxytag: member="Tomboy::TaskManager::DateTag::DateTag" ref="a5f62dc644ae680575cb4c05d2b9c4bce" args="(string name, TaskManagerNoteAddin addin)" -->
-&nbsp;</td><td class="memItemRight" valign="bottom"><b>DateTag</b> (string name, <a class="el" href="class_tomboy_1_1_task_manager_1_1_task_manager_note_addin.html">TaskManagerNoteAddin</a> addin)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aec72f7e7b97040160413becb60aa9432"></a><!-- doxytag: member="Tomboy::TaskManager::DateTag::Initialize" ref="aec72f7e7b97040160413becb60aa9432" args="(string element_name)" -->
-override void&nbsp;</td><td class="memItemRight" valign="bottom"><b>Initialize</b> (string element_name)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tomboy_1_1_task_manager_1_1_date_tag.html#a5f62dc644ae680575cb4c05d2b9c4bce">DateTag</a> (string name, <a class="el" href="class_tomboy_1_1_task_manager_1_1_task_manager_note_addin.html">TaskManagerNoteAddin</a> addin)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Initialisation with the name and the tasknote.  <a href="#a5f62dc644ae680575cb4c05d2b9c4bce"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a31ebc9d9615a92607ecf2ceb465de626"></a><!-- doxytag: member="Tomboy::TaskManager::DateTag::Initialize" ref="a31ebc9d9615a92607ecf2ceb465de626" args="(string elementName)" -->
+override void&nbsp;</td><td class="memItemRight" valign="bottom"><b>Initialize</b> (string elementName)</td></tr>
 <tr><td colspan="2"><h2>Protected Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8dd36f94cfb9a1e08d37a099e9b1676d"></a><!-- doxytag: member="Tomboy::TaskManager::DateTag::OnActivate" ref="a8dd36f94cfb9a1e08d37a099e9b1676d" args="(NoteEditor editor, Gtk.TextIter start, Gtk.TextIter end)" -->
-override bool&nbsp;</td><td class="memItemRight" valign="bottom"><b>OnActivate</b> (NoteEditor editor, Gtk.TextIter start, Gtk.TextIter end)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">override bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tomboy_1_1_task_manager_1_1_date_tag.html#a8dd36f94cfb9a1e08d37a099e9b1676d">OnActivate</a> (NoteEditor editor, Gtk.TextIter start, Gtk.TextIter end)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Handles the click on the datetag: Opens up a calendar dialog.  <a href="#a8dd36f94cfb9a1e08d37a099e9b1676d"></a><br/></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <p>Tag that identifies a duedate. It is responsible for listening to clicks (opening calendar dialog), but also finding the duedate later on. </p>
+<hr/><h2>Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a5f62dc644ae680575cb4c05d2b9c4bce"></a><!-- doxytag: member="Tomboy::TaskManager::DateTag::DateTag" ref="a5f62dc644ae680575cb4c05d2b9c4bce" args="(string name, TaskManagerNoteAddin addin)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Tomboy.TaskManager.DateTag.DateTag </td>
+          <td>(</td>
+          <td class="paramtype">string&nbsp;</td>
+          <td class="paramname"> <em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_tomboy_1_1_task_manager_1_1_task_manager_note_addin.html">TaskManagerNoteAddin</a>&nbsp;</td>
+          <td class="paramname"> <em>addin</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Initialisation with the name and the tasknote. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>name</em>&nbsp;</td><td>A System.String </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>addin</em>&nbsp;</td><td>A <a class="el" href="class_tomboy_1_1_task_manager_1_1_task_manager_note_addin.html" title="Class that describes behaviour of Notes (in terms of TaskManager features).">TaskManagerNoteAddin</a> </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="a8dd36f94cfb9a1e08d37a099e9b1676d"></a><!-- doxytag: member="Tomboy::TaskManager::DateTag::OnActivate" ref="a8dd36f94cfb9a1e08d37a099e9b1676d" args="(NoteEditor editor, Gtk.TextIter start, Gtk.TextIter end)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">override bool Tomboy.TaskManager.DateTag.OnActivate </td>
+          <td>(</td>
+          <td class="paramtype">NoteEditor&nbsp;</td>
+          <td class="paramname"> <em>editor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Gtk.TextIter&nbsp;</td>
+          <td class="paramname"> <em>start</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Gtk.TextIter&nbsp;</td>
+          <td class="paramname"> <em>end</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td><code> [protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Handles the click on the datetag: Opens up a calendar dialog. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>editor</em>&nbsp;</td><td>A NoteEditor </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>start</em>&nbsp;</td><td>A Gtk.TextIter </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>end</em>&nbsp;</td><td>A Gtk.TextIter </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>A System.Boolean </dd></dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>Tags/DateTag.cs</li>
 </ul>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Thu May 27 22:38:46 2010 for TaskManager by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Fri May 28 00:23:12 2010 for TaskManager by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

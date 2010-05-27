@@ -27,35 +27,71 @@
 </div>
 <div class="contents">
 <h1>Tomboy.TaskManager.GetAvPriorityVisitor Class Reference</h1><!-- doxytag: class="Tomboy::TaskManager::GetAvPriorityVisitor" --><!-- doxytag: inherits="Tomboy::TaskManager::Visitor" -->
-<p>Inherits <a class="el" href="interface_tomboy_1_1_task_manager_1_1_visitor.html">Tomboy::TaskManager::Visitor</a>.</p>
+<p>Traverses the tasks structure depth first for the average priority of the (direct and indirect) children of some task or tasklist The result can be either retrieved as Priority or Integer, rounded. If all lower level attributedtasks' priorities are unset, Priority.NORMAL is passed back.  
+<a href="#_details">More...</a></p>
+
+<p>Inherits <a class="el" href="class_tomboy_1_1_task_manager_1_1_visitor.html">Tomboy::TaskManager::Visitor</a>.</p>
 <div class="dynheader">
 Collaboration diagram for Tomboy.TaskManager.GetAvPriorityVisitor:</div>
 <div class="dynsection">
 <div class="center"><img src="class_tomboy_1_1_task_manager_1_1_get_av_priority_visitor__coll__graph.png" border="0" usemap="#_tomboy_8_task_manager_8_get_av_priority_visitor_coll__map" alt="Collaboration graph"/></div>
 <map name="_tomboy_8_task_manager_8_get_av_priority_visitor_coll__map" id="_tomboy_8_task_manager_8_get_av_priority_visitor_coll__map">
-<area shape="rect" href="interface_tomboy_1_1_task_manager_1_1_visitor.html" title="Tomboy.TaskManager.Visitor" alt="" coords="44,5,233,35"/></map>
+<area shape="rect" href="class_tomboy_1_1_task_manager_1_1_visitor.html" title="The class that describes the visitor pattern over the tasks structure. Although visit..." alt="" coords="44,5,233,35"/></map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 
 <p><a href="class_tomboy_1_1_task_manager_1_1_get_av_priority_visitor-members.html">List of all members.</a></p>
 <table border="0" cellpadding="0" cellspacing="0">
 <tr><td colspan="2"><h2>Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ada3ce799062e3b9915065bff0ef4c3fa"></a><!-- doxytag: member="Tomboy::TaskManager::GetAvPriorityVisitor::visit" ref="ada3ce799062e3b9915065bff0ef4c3fa" args="(Note n)" -->
-void&nbsp;</td><td class="memItemRight" valign="bottom"><b>visit</b> (Note n)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7417c452876b1c715a0420252ce2890f"></a><!-- doxytag: member="Tomboy::TaskManager::GetAvPriorityVisitor::visit" ref="a7417c452876b1c715a0420252ce2890f" args="(TaskList tl)" -->
-void&nbsp;</td><td class="memItemRight" valign="bottom"><b>visit</b> (<a class="el" href="class_tomboy_1_1_task_manager_1_1_task_list.html">TaskList</a> tl)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a260bd6d14cf405f65a1e62b186c8ab7f"></a><!-- doxytag: member="Tomboy::TaskManager::GetAvPriorityVisitor::visit" ref="a260bd6d14cf405f65a1e62b186c8ab7f" args="(Task t)" -->
-void&nbsp;</td><td class="memItemRight" valign="bottom"><b>visit</b> (<a class="el" href="class_tomboy_1_1_task_manager_1_1_task.html">Task</a> t)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaff87798d96aec0521eff4dacd6e1375"></a><!-- doxytag: member="Tomboy::TaskManager::GetAvPriorityVisitor::visit" ref="aaff87798d96aec0521eff4dacd6e1375" args="(Note note)" -->
+override void&nbsp;</td><td class="memItemRight" valign="bottom"><b>visit</b> (Note note)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5ac92e14a99ffa9a9c7f46e6e73f10c9"></a><!-- doxytag: member="Tomboy::TaskManager::GetAvPriorityVisitor::visit" ref="a5ac92e14a99ffa9a9c7f46e6e73f10c9" args="(TaskList taskList)" -->
+override void&nbsp;</td><td class="memItemRight" valign="bottom"><b>visit</b> (<a class="el" href="class_tomboy_1_1_task_manager_1_1_task_list.html">TaskList</a> taskList)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afbe6a2b8e83b469e576fe002f6fcf0b8"></a><!-- doxytag: member="Tomboy::TaskManager::GetAvPriorityVisitor::visit" ref="afbe6a2b8e83b469e576fe002f6fcf0b8" args="(Task task)" -->
+override void&nbsp;</td><td class="memItemRight" valign="bottom"><b>visit</b> (<a class="el" href="class_tomboy_1_1_task_manager_1_1_task.html">Task</a> task)</td></tr>
 <tr><td colspan="2"><h2>Properties</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a620e61c335143263ebd7282c5c509a8f"></a><!-- doxytag: member="Tomboy::TaskManager::GetAvPriorityVisitor::IntResult" ref="a620e61c335143263ebd7282c5c509a8f" args="" -->
-int&nbsp;</td><td class="memItemRight" valign="bottom"><b>IntResult</b><code> [get]</code></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a81d47a43561605f4aff1e95df89554c5"></a><!-- doxytag: member="Tomboy::TaskManager::GetAvPriorityVisitor::Result" ref="a81d47a43561605f4aff1e95df89554c5" args="" -->
-Priority&nbsp;</td><td class="memItemRight" valign="bottom"><b>Result</b><code> [get]</code></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tomboy_1_1_task_manager_1_1_get_av_priority_visitor.html#a620e61c335143263ebd7282c5c509a8f">IntResult</a><code> [get]</code></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">The result of the traversation as an integer.  <a href="#a620e61c335143263ebd7282c5c509a8f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Priority&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tomboy_1_1_task_manager_1_1_get_av_priority_visitor.html#a81d47a43561605f4aff1e95df89554c5">Result</a><code> [get]</code></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">The result of the traversation as Priority instance.  <a href="#a81d47a43561605f4aff1e95df89554c5"></a><br/></td></tr>
 </table>
+<hr/><a name="_details"></a><h2>Detailed Description</h2>
+<p>Traverses the tasks structure depth first for the average priority of the (direct and indirect) children of some task or tasklist The result can be either retrieved as Priority or Integer, rounded. If all lower level attributedtasks' priorities are unset, Priority.NORMAL is passed back. </p>
+<hr/><h2>Property Documentation</h2>
+<a class="anchor" id="a620e61c335143263ebd7282c5c509a8f"></a><!-- doxytag: member="Tomboy::TaskManager::GetAvPriorityVisitor::IntResult" ref="a620e61c335143263ebd7282c5c509a8f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Tomboy.TaskManager.GetAvPriorityVisitor.IntResult<code> [get]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>The result of the traversation as an integer. </p>
+
+</div>
+</div>
+<a class="anchor" id="a81d47a43561605f4aff1e95df89554c5"></a><!-- doxytag: member="Tomboy::TaskManager::GetAvPriorityVisitor::Result" ref="a81d47a43561605f4aff1e95df89554c5" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Priority Tomboy.TaskManager.GetAvPriorityVisitor.Result<code> [get]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>The result of the traversation as Priority instance. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>Visitors/GetAvPriorityVisitor.cs</li>
 </ul>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Thu May 27 22:38:47 2010 for TaskManager by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Fri May 28 00:23:17 2010 for TaskManager by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

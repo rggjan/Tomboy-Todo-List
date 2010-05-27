@@ -27,33 +27,54 @@
 </div>
 <div class="contents">
 <h1>Tomboy.TaskManager.GetMinDueDateVisitor Class Reference</h1><!-- doxytag: class="Tomboy::TaskManager::GetMinDueDateVisitor" --><!-- doxytag: inherits="Tomboy::TaskManager::Visitor" -->
-<p>Inherits <a class="el" href="interface_tomboy_1_1_task_manager_1_1_visitor.html">Tomboy::TaskManager::Visitor</a>.</p>
+<p><a class="el" href="class_tomboy_1_1_task_manager_1_1_visitor.html" title="The class that describes the visitor pattern over the tasks structure. Although visit...">Visitor</a> that traverses the task structure for the minimum duedate of all lower level attributedtasks. If no duedate is set, the default return is the current day.  
+<a href="#_details">More...</a></p>
+
+<p>Inherits <a class="el" href="class_tomboy_1_1_task_manager_1_1_visitor.html">Tomboy::TaskManager::Visitor</a>.</p>
 <div class="dynheader">
 Collaboration diagram for Tomboy.TaskManager.GetMinDueDateVisitor:</div>
 <div class="dynsection">
 <div class="center"><img src="class_tomboy_1_1_task_manager_1_1_get_min_due_date_visitor__coll__graph.png" border="0" usemap="#_tomboy_8_task_manager_8_get_min_due_date_visitor_coll__map" alt="Collaboration graph"/></div>
 <map name="_tomboy_8_task_manager_8_get_min_due_date_visitor_coll__map" id="_tomboy_8_task_manager_8_get_min_due_date_visitor_coll__map">
-<area shape="rect" href="interface_tomboy_1_1_task_manager_1_1_visitor.html" title="Tomboy.TaskManager.Visitor" alt="" coords="52,5,241,35"/></map>
+<area shape="rect" href="class_tomboy_1_1_task_manager_1_1_visitor.html" title="The class that describes the visitor pattern over the tasks structure. Although visit..." alt="" coords="52,5,241,35"/></map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 
 <p><a href="class_tomboy_1_1_task_manager_1_1_get_min_due_date_visitor-members.html">List of all members.</a></p>
 <table border="0" cellpadding="0" cellspacing="0">
 <tr><td colspan="2"><h2>Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeb59464b9c112d64825b10a20091252d"></a><!-- doxytag: member="Tomboy::TaskManager::GetMinDueDateVisitor::visit" ref="aeb59464b9c112d64825b10a20091252d" args="(Note n)" -->
-void&nbsp;</td><td class="memItemRight" valign="bottom"><b>visit</b> (Note n)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2a40158fdcad750e34b213d49ecb1261"></a><!-- doxytag: member="Tomboy::TaskManager::GetMinDueDateVisitor::visit" ref="a2a40158fdcad750e34b213d49ecb1261" args="(TaskList tl)" -->
-void&nbsp;</td><td class="memItemRight" valign="bottom"><b>visit</b> (<a class="el" href="class_tomboy_1_1_task_manager_1_1_task_list.html">TaskList</a> tl)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9a8e6342c384f7d649a65893a729f794"></a><!-- doxytag: member="Tomboy::TaskManager::GetMinDueDateVisitor::visit" ref="a9a8e6342c384f7d649a65893a729f794" args="(Task t)" -->
-void&nbsp;</td><td class="memItemRight" valign="bottom"><b>visit</b> (<a class="el" href="class_tomboy_1_1_task_manager_1_1_task.html">Task</a> t)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab3117dc0f1c85926598b6f6223375b74"></a><!-- doxytag: member="Tomboy::TaskManager::GetMinDueDateVisitor::visit" ref="ab3117dc0f1c85926598b6f6223375b74" args="(Note n)" -->
+override void&nbsp;</td><td class="memItemRight" valign="bottom"><b>visit</b> (Note n)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab5b47e124deafb090152028721ec448d"></a><!-- doxytag: member="Tomboy::TaskManager::GetMinDueDateVisitor::visit" ref="ab5b47e124deafb090152028721ec448d" args="(TaskList tl)" -->
+override void&nbsp;</td><td class="memItemRight" valign="bottom"><b>visit</b> (<a class="el" href="class_tomboy_1_1_task_manager_1_1_task_list.html">TaskList</a> tl)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a201bd35362276c6819426e82daa6bdd0"></a><!-- doxytag: member="Tomboy::TaskManager::GetMinDueDateVisitor::visit" ref="a201bd35362276c6819426e82daa6bdd0" args="(Task t)" -->
+override void&nbsp;</td><td class="memItemRight" valign="bottom"><b>visit</b> (<a class="el" href="class_tomboy_1_1_task_manager_1_1_task.html">Task</a> t)</td></tr>
 <tr><td colspan="2"><h2>Properties</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a515f389dfb31582f6e5da7ffc6c13496"></a><!-- doxytag: member="Tomboy::TaskManager::GetMinDueDateVisitor::Result" ref="a515f389dfb31582f6e5da7ffc6c13496" args="" -->
-DateTime&nbsp;</td><td class="memItemRight" valign="bottom"><b>Result</b><code> [get]</code></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">DateTime&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tomboy_1_1_task_manager_1_1_get_min_due_date_visitor.html#a515f389dfb31582f6e5da7ffc6c13496">Result</a><code> [get]</code></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Public getter for the result Sets the default value.  <a href="#a515f389dfb31582f6e5da7ffc6c13496"></a><br/></td></tr>
 </table>
+<hr/><a name="_details"></a><h2>Detailed Description</h2>
+<p><a class="el" href="class_tomboy_1_1_task_manager_1_1_visitor.html" title="The class that describes the visitor pattern over the tasks structure. Although visit...">Visitor</a> that traverses the task structure for the minimum duedate of all lower level attributedtasks. If no duedate is set, the default return is the current day. </p>
+<hr/><h2>Property Documentation</h2>
+<a class="anchor" id="a515f389dfb31582f6e5da7ffc6c13496"></a><!-- doxytag: member="Tomboy::TaskManager::GetMinDueDateVisitor::Result" ref="a515f389dfb31582f6e5da7ffc6c13496" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DateTime Tomboy.TaskManager.GetMinDueDateVisitor.Result<code> [get]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Public getter for the result Sets the default value. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>Visitors/GetMinDueDateVisitor.cs</li>
 </ul>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Thu May 27 22:38:47 2010 for TaskManager by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Fri May 28 00:23:17 2010 for TaskManager by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

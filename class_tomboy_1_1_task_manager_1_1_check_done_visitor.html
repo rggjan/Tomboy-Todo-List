@@ -27,32 +27,64 @@
 </div>
 <div class="contents">
 <h1>Tomboy.TaskManager.CheckDoneVisitor Class Reference</h1><!-- doxytag: class="Tomboy::TaskManager::CheckDoneVisitor" --><!-- doxytag: inherits="Tomboy::TaskManager::Visitor" -->
-<p>Inherits <a class="el" href="interface_tomboy_1_1_task_manager_1_1_visitor.html">Tomboy::TaskManager::Visitor</a>.</p>
+<p><a class="el" href="class_tomboy_1_1_task_manager_1_1_visitor.html" title="The class that describes the visitor pattern over the tasks structure. Although visit...">Visitor</a> that checks upwards whether the changes in the level below (task -&gt; subtask or tasklist -&gt; task) Made the corresponding task complete (in terms of every child is done) or incomplete The correspondonding policies can be adjusted via the <a class="el" href="class_tomboy_1_1_task_manager_1_1_task.html" title="A Task is a piece of text representing a “todo” item, accompanied with a checkbox...">Task</a> class.  
+<a href="#_details">More...</a></p>
+
+<p>Inherits <a class="el" href="class_tomboy_1_1_task_manager_1_1_visitor.html">Tomboy::TaskManager::Visitor</a>.</p>
 <div class="dynheader">
 Collaboration diagram for Tomboy.TaskManager.CheckDoneVisitor:</div>
 <div class="dynsection">
 <div class="center"><img src="class_tomboy_1_1_task_manager_1_1_check_done_visitor__coll__graph.png" border="0" usemap="#_tomboy_8_task_manager_8_check_done_visitor_coll__map" alt="Collaboration graph"/></div>
 <map name="_tomboy_8_task_manager_8_check_done_visitor_coll__map" id="_tomboy_8_task_manager_8_check_done_visitor_coll__map">
-<area shape="rect" href="interface_tomboy_1_1_task_manager_1_1_visitor.html" title="Tomboy.TaskManager.Visitor" alt="" coords="39,5,228,35"/></map>
+<area shape="rect" href="class_tomboy_1_1_task_manager_1_1_visitor.html" title="The class that describes the visitor pattern over the tasks structure. Although visit..." alt="" coords="39,5,228,35"/></map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 
 <p><a href="class_tomboy_1_1_task_manager_1_1_check_done_visitor-members.html">List of all members.</a></p>
 <table border="0" cellpadding="0" cellspacing="0">
 <tr><td colspan="2"><h2>Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a23e03d698a50ecbadef7cbac9b2a5a39"></a><!-- doxytag: member="Tomboy::TaskManager::CheckDoneVisitor::CheckDoneVisitor" ref="a23e03d698a50ecbadef7cbac9b2a5a39" args="(bool done)" -->
-&nbsp;</td><td class="memItemRight" valign="bottom"><b>CheckDoneVisitor</b> (bool done)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7d838c30ba72dc6108b83e23f032eea0"></a><!-- doxytag: member="Tomboy::TaskManager::CheckDoneVisitor::visit" ref="a7d838c30ba72dc6108b83e23f032eea0" args="(Note n)" -->
-void&nbsp;</td><td class="memItemRight" valign="bottom"><b>visit</b> (Note n)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3eab1c3d49909debddeedc981c277d7b"></a><!-- doxytag: member="Tomboy::TaskManager::CheckDoneVisitor::visit" ref="a3eab1c3d49909debddeedc981c277d7b" args="(TaskList tl)" -->
-void&nbsp;</td><td class="memItemRight" valign="bottom"><b>visit</b> (<a class="el" href="class_tomboy_1_1_task_manager_1_1_task_list.html">TaskList</a> tl)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a99c1f778d2936b6c77ab23fdfe2c154b"></a><!-- doxytag: member="Tomboy::TaskManager::CheckDoneVisitor::visit" ref="a99c1f778d2936b6c77ab23fdfe2c154b" args="(Task t)" -->
-void&nbsp;</td><td class="memItemRight" valign="bottom"><b>visit</b> (<a class="el" href="class_tomboy_1_1_task_manager_1_1_task.html">Task</a> t)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_tomboy_1_1_task_manager_1_1_check_done_visitor.html#a23e03d698a50ecbadef7cbac9b2a5a39">CheckDoneVisitor</a> (bool done)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Expects whether we are checking for 'new' tasks/tasklists to mark as done or not done.  <a href="#a23e03d698a50ecbadef7cbac9b2a5a39"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac9dcb69836ce80ebcd890229c4aa2538"></a><!-- doxytag: member="Tomboy::TaskManager::CheckDoneVisitor::visit" ref="ac9dcb69836ce80ebcd890229c4aa2538" args="(Note n)" -->
+override void&nbsp;</td><td class="memItemRight" valign="bottom"><b>visit</b> (Note n)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4bbf3657c9b3c085080829cbd2ea1e1d"></a><!-- doxytag: member="Tomboy::TaskManager::CheckDoneVisitor::visit" ref="a4bbf3657c9b3c085080829cbd2ea1e1d" args="(TaskList taskList)" -->
+override void&nbsp;</td><td class="memItemRight" valign="bottom"><b>visit</b> (<a class="el" href="class_tomboy_1_1_task_manager_1_1_task_list.html">TaskList</a> taskList)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa7e7d150ddc8e16678cdb7a7a4ade6b5"></a><!-- doxytag: member="Tomboy::TaskManager::CheckDoneVisitor::visit" ref="aa7e7d150ddc8e16678cdb7a7a4ade6b5" args="(Task task)" -->
+override void&nbsp;</td><td class="memItemRight" valign="bottom"><b>visit</b> (<a class="el" href="class_tomboy_1_1_task_manager_1_1_task.html">Task</a> task)</td></tr>
 </table>
+<hr/><a name="_details"></a><h2>Detailed Description</h2>
+<p><a class="el" href="class_tomboy_1_1_task_manager_1_1_visitor.html" title="The class that describes the visitor pattern over the tasks structure. Although visit...">Visitor</a> that checks upwards whether the changes in the level below (task -&gt; subtask or tasklist -&gt; task) Made the corresponding task complete (in terms of every child is done) or incomplete The correspondonding policies can be adjusted via the <a class="el" href="class_tomboy_1_1_task_manager_1_1_task.html" title="A Task is a piece of text representing a “todo” item, accompanied with a checkbox...">Task</a> class. </p>
+<hr/><h2>Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a23e03d698a50ecbadef7cbac9b2a5a39"></a><!-- doxytag: member="Tomboy::TaskManager::CheckDoneVisitor::CheckDoneVisitor" ref="a23e03d698a50ecbadef7cbac9b2a5a39" args="(bool done)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Tomboy.TaskManager.CheckDoneVisitor.CheckDoneVisitor </td>
+          <td>(</td>
+          <td class="paramtype">bool&nbsp;</td>
+          <td class="paramname"> <em>done</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Expects whether we are checking for 'new' tasks/tasklists to mark as done or not done. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>done</em>&nbsp;</td><td>A System.Boolean </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>Visitors/CheckDoneVisitor.cs</li>
 </ul>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Thu May 27 22:38:47 2010 for TaskManager by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Fri May 28 00:23:16 2010 for TaskManager by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

@@ -1,5 +1,5 @@
 <map id="G" name="G">
-<area shape="rect" href="$interface_tomboy_1_1_task_manager_1_1_visitor.html" title="Tomboy.TaskManager.Visitor" alt="" coords="31,101,220,131"/>
+<area shape="rect" href="$class_tomboy_1_1_task_manager_1_1_visitor.html" title="The class that describes the visitor pattern over the tasks structure. Although visit..." alt="" coords="31,101,220,131"/>
 <area shape="rect" href="$class_tomboy_1_1_task_manager_1_1_attributed_task.html" title="Class that represents the common functionality of TaskList and Task." alt="" coords="265,101,503,131"/>
 <area shape="rect" href="$class_tomboy_1_1_task_manager_1_1_task_list.html" title="A task list is a collection of tasks grouped together. It may have a title and a..." alt="" coords="320,197,523,227"/>
 <area shape="rect" href="$class_tomboy_1_1_task_manager_1_1_date_tag.html" title="Tag that identifies a duedate. It is responsible for listening to clicks (opening..." alt="" coords="223,464,423,493"/>

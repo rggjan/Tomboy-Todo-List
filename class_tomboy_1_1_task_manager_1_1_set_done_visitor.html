@@ -27,13 +27,16 @@
 </div>
 <div class="contents">
 <h1>Tomboy.TaskManager.SetDoneVisitor Class Reference</h1><!-- doxytag: class="Tomboy::TaskManager::SetDoneVisitor" --><!-- doxytag: inherits="Tomboy::TaskManager::Visitor" -->
-<p>Inherits <a class="el" href="interface_tomboy_1_1_task_manager_1_1_visitor.html">Tomboy::TaskManager::Visitor</a>.</p>
+<p>Traverses the tasks structure recursively to either set the tasks to done or not done.  
+<a href="#_details">More...</a></p>
+
+<p>Inherits <a class="el" href="class_tomboy_1_1_task_manager_1_1_visitor.html">Tomboy::TaskManager::Visitor</a>.</p>
 <div class="dynheader">
 Collaboration diagram for Tomboy.TaskManager.SetDoneVisitor:</div>
 <div class="dynsection">
 <div class="center"><img src="class_tomboy_1_1_task_manager_1_1_set_done_visitor__coll__graph.png" border="0" usemap="#_tomboy_8_task_manager_8_set_done_visitor_coll__map" alt="Collaboration graph"/></div>
 <map name="_tomboy_8_task_manager_8_set_done_visitor_coll__map" id="_tomboy_8_task_manager_8_set_done_visitor_coll__map">
-<area shape="rect" href="interface_tomboy_1_1_task_manager_1_1_visitor.html" title="Tomboy.TaskManager.Visitor" alt="" coords="31,101,220,131"/><area shape="rect" href="class_tomboy_1_1_task_manager_1_1_attributed_task.html" title="Class that represents the common functionality of TaskList and Task." alt="" coords="265,101,503,131"/><area shape="rect" href="class_tomboy_1_1_task_manager_1_1_task_list.html" title="A task list is a collection of tasks grouped together. It may have a title and a..." alt="" coords="320,197,523,227"/><area shape="rect" href="class_tomboy_1_1_task_manager_1_1_date_tag.html" title="Tag that identifies a duedate. It is responsible for listening to clicks (opening..." alt="" coords="223,464,423,493"/><area shape="rect" href="class_tomboy_1_1_task_manager_1_1_task_manager_note_addin.html" title="Class that describes behaviour of Notes (in terms of TaskManager features)." alt="" coords="320,293,611,323"/><area shape="rect" href="class_tomboy_1_1_task_manager_1_1_task_manager_gui.html" title="The class that manages the Menu and GUI stuff of our Addin." alt="" coords="467,464,717,493"/><area shape="rect" href="class_tomboy_1_1_task_manager_1_1_task_note_utilities.html" title="Class that encapsulates often used accesses to unknown tasks or tasklists (or their..." alt="" coords="435,5,685,35"/></map>
+<area shape="rect" href="class_tomboy_1_1_task_manager_1_1_visitor.html" title="The class that describes the visitor pattern over the tasks structure. Although visit..." alt="" coords="31,101,220,131"/><area shape="rect" href="class_tomboy_1_1_task_manager_1_1_attributed_task.html" title="Class that represents the common functionality of TaskList and Task." alt="" coords="265,101,503,131"/><area shape="rect" href="class_tomboy_1_1_task_manager_1_1_task_list.html" title="A task list is a collection of tasks grouped together. It may have a title and a..." alt="" coords="320,197,523,227"/><area shape="rect" href="class_tomboy_1_1_task_manager_1_1_date_tag.html" title="Tag that identifies a duedate. It is responsible for listening to clicks (opening..." alt="" coords="223,464,423,493"/><area shape="rect" href="class_tomboy_1_1_task_manager_1_1_task_manager_note_addin.html" title="Class that describes behaviour of Notes (in terms of TaskManager features)." alt="" coords="320,293,611,323"/><area shape="rect" href="class_tomboy_1_1_task_manager_1_1_task_manager_gui.html" title="The class that manages the Menu and GUI stuff of our Addin." alt="" coords="467,464,717,493"/><area shape="rect" href="class_tomboy_1_1_task_manager_1_1_task_note_utilities.html" title="Class that encapsulates often used accesses to unknown tasks or tasklists (or their..." alt="" coords="435,5,685,35"/></map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 
 <p><a href="class_tomboy_1_1_task_manager_1_1_set_done_visitor-members.html">List of all members.</a></p>
@@ -41,18 +44,20 @@ Collaboration diagram for Tomboy.TaskManager.SetDoneVisitor:</div>
 <tr><td colspan="2"><h2>Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5da440b6581dcc22899848bcf478c121"></a><!-- doxytag: member="Tomboy::TaskManager::SetDoneVisitor::SetDoneVisitor" ref="a5da440b6581dcc22899848bcf478c121" args="(bool done, Task sender)" -->
 &nbsp;</td><td class="memItemRight" valign="bottom"><b>SetDoneVisitor</b> (bool done, <a class="el" href="class_tomboy_1_1_task_manager_1_1_task.html">Task</a> sender)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af9701fd37f997c466e0823cb814b42d8"></a><!-- doxytag: member="Tomboy::TaskManager::SetDoneVisitor::visit" ref="af9701fd37f997c466e0823cb814b42d8" args="(Note n)" -->
-void&nbsp;</td><td class="memItemRight" valign="bottom"><b>visit</b> (Note n)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af3ce329757c46603ef03c5c3d2fa4bb6"></a><!-- doxytag: member="Tomboy::TaskManager::SetDoneVisitor::visit" ref="af3ce329757c46603ef03c5c3d2fa4bb6" args="(TaskList tl)" -->
-void&nbsp;</td><td class="memItemRight" valign="bottom"><b>visit</b> (<a class="el" href="class_tomboy_1_1_task_manager_1_1_task_list.html">TaskList</a> tl)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af68545eec89a38f742f03c062fb1d91d"></a><!-- doxytag: member="Tomboy::TaskManager::SetDoneVisitor::visit" ref="af68545eec89a38f742f03c062fb1d91d" args="(Task t)" -->
-void&nbsp;</td><td class="memItemRight" valign="bottom"><b>visit</b> (<a class="el" href="class_tomboy_1_1_task_manager_1_1_task.html">Task</a> t)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a693f4049b218cd8795c54dabdb2f124b"></a><!-- doxytag: member="Tomboy::TaskManager::SetDoneVisitor::visit" ref="a693f4049b218cd8795c54dabdb2f124b" args="(Note note)" -->
+override void&nbsp;</td><td class="memItemRight" valign="bottom"><b>visit</b> (Note note)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a77dc8dcdcbb029a71d4949fd300046e7"></a><!-- doxytag: member="Tomboy::TaskManager::SetDoneVisitor::visit" ref="a77dc8dcdcbb029a71d4949fd300046e7" args="(TaskList taskList)" -->
+override void&nbsp;</td><td class="memItemRight" valign="bottom"><b>visit</b> (<a class="el" href="class_tomboy_1_1_task_manager_1_1_task_list.html">TaskList</a> taskList)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a29b58ec8b172df33cb9b134cf7e65f98"></a><!-- doxytag: member="Tomboy::TaskManager::SetDoneVisitor::visit" ref="a29b58ec8b172df33cb9b134cf7e65f98" args="(Task task)" -->
+override void&nbsp;</td><td class="memItemRight" valign="bottom"><b>visit</b> (<a class="el" href="class_tomboy_1_1_task_manager_1_1_task.html">Task</a> task)</td></tr>
 </table>
+<hr/><a name="_details"></a><h2>Detailed Description</h2>
+<p>Traverses the tasks structure recursively to either set the tasks to done or not done. </p>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>Visitors/SetDoneVisitor.cs</li>
 </ul>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Thu May 27 22:38:47 2010 for TaskManager by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Fri May 28 00:23:18 2010 for TaskManager by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

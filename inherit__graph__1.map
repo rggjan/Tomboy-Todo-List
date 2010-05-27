@@ -1,5 +1,5 @@
 <map id="G" name="G">
 <area shape="rect" href="$class_tomboy_1_1_task_manager_1_1_attributed_task_tag.html" title="Class for the tag representation of a task or tasklist in the buffer Used by AttributedTask..." alt="" coords="5,32,264,61"/>
-<area shape="rect" href="$class_tomboy_1_1_task_manager_1_1_task_list_tag.html" title="Marks a Task in a NoteBuffer. Currently this does nothing (used to restore notes)..." alt="" coords="312,5,536,35"/>
-<area shape="rect" href="$class_tomboy_1_1_task_manager_1_1_task_tag.html" title="Marks a Task in a NoteBuffer. Currently this does nothing (used to restore notes)..." alt="" coords="323,59,525,88"/>
+<area shape="rect" href="$class_tomboy_1_1_task_manager_1_1_task_list_tag.html" title="Marks a TaskList in a NoteBuffer." alt="" coords="312,5,536,35"/>
+<area shape="rect" href="$class_tomboy_1_1_task_manager_1_1_task_tag.html" title="Marks a Task in a NoteBuffer." alt="" coords="323,59,525,88"/>
 </map>
