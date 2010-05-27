@@ -83,6 +83,7 @@
     <Compile Include="Priority.cs" />
     <Compile Include="Visitors\CheckDoneVisitor.cs" />
     <Compile Include="Tags\ColorTag.cs" />
+    <Compile Include="Tests\TestTasklist.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -113,5 +114,9 @@
   <ItemGroup>
     <Folder Include="Tests\" />
     <Folder Include="Tags\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Tests\SubTaskNote.xml" />
+    <None Include="Tests\SuperTaskNote.xml" />
   </ItemGroup>
 </Project>

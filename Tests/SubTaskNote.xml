@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<note version="0.3" xmlns:link="http://beatniksoftware.com/tomboy/link" xmlns:size="http://beatniksoftware.com/tomboy/size" xmlns="http://beatniksoftware.com/tomboy">
+  <title>Subnote</title>
+  <text xml:space="preserve"><note-content version="0.1">Subnote
+
+	<tasklist>Subtasks
+		<task Done="False" Priority="UNSET">  stuff</task>
+		<task Done="False" Priority="UNSET">  other stuff</task>
+	</tasklist>
+
+</note-content></text>
+  <last-change-date>2010-05-27T12:10:23.5091260+02:00</last-change-date>
+  <last-metadata-change-date>2010-05-27T12:10:23.5091260+02:00</last-metadata-change-date>
+  <create-date>2010-05-27T12:08:55.8237220+02:00</create-date>
+  <cursor-position>29</cursor-position>
+  <width>569</width>
+  <height>360</height>
+  <x>0</x>
+  <y>0</y>
+  <open-on-startup>False</open-on-startup>
+</note>

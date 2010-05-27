@@ -24,76 +24,64 @@
 // 
 
 using System;
-using System.IO;
 using NUnit.Framework;
-using Gtk;
-using Tomboy;
 
 namespace Tomboy.TaskManager.Tests
 {
 
+	
 	/// <summary>
-	/// Tests the ContainingNote methods for our 2 Special Notebook classes
-	/// OpenTasksNotebook and OverdueTasksNotebook.
+	/// Tests for the Tasklist methods & behaviour.
 	/// </summary>
 	[TestFixture()]
-	public class TestSpecialNotebooks : GtkTest
+	public class TestTasklist : GtkTest
 	{
+
 		// disabled not used warnings for notes
-		#pragma warning disable 0414
-		private Note singleTaskListNote;
-		private TaskManagerNoteAddin singleManager;
-		
-		private Note doubleTaskListNote;
-		private TaskManagerNoteAddin doubleManager;
-		
+		#pragma warning disable 0414		
 		private Note noTaskListNote;
 		private TaskManagerNoteAddin noManager;
-		
-		private Note allDoneTaskListNote;
-		private TaskManagerNoteAddin allDoneManager;
+
+		private Note changedNote;
+		private TaskManagerNoteAddin changedManager;
 		#pragma warning restore 0414
-		
-		private OpenTasksNotebook openTasksNotebook = new OpenTasksNotebook();
-		private OverdueTasksNotebook overdueTasksNotebook = new OverdueTasksNotebook();
-		
+
 		
 		[SetUp()]
 		public override void Initialize ()
 		{
 			base.Initialize (); // set up gtk
 			
-			NotesCreationManager.CreateNote ("AllDoneTaskListNote", out allDoneTaskListNote, out allDoneManager);
 			NotesCreationManager.CreateNote ("NoTaskListNote", out noTaskListNote, out noManager);
-			NotesCreationManager.CreateNote ("SingleTaskListNote", out singleTaskListNote, out singleManager);
-			NotesCreationManager.CreateNote ("DoubleTaskListNote", out doubleTaskListNote, out doubleManager);
 		}
+		
+		
+		/// <summary>
+		/// Insert a Tasklist and checks that its really there by reloading it
+		/// in a different note object afterwards.
+		/// </summary>
+		[Test()]
+		public void InsertTasklist ()
+		{
+			// go to the end of the note
+			var insertIter = noTaskListNote.Buffer.GetIterAtMark (noTaskListNote.Buffer.InsertMark);
+			insertIter.ForwardLines (10);
+			
+			noTaskListNote.Buffer.BeginUserAction ();
+			TaskList tl = new TaskList (noTaskListNote);
+			noTaskListNote.Buffer.EndUserAction ();
+			
+			noTaskListNote.Save ();
+			
+			Assert.That(noManager.TaskLists.Count == 1);
 
-		
-		/// <summary>
-		/// Checks the OpenTasksNotebook to ensure it correctly matches the notes it will contain.
-		/// </summary>
-		[Test()]
-		public void FindOpenTasks ()
-		{
-			Assert.That(openTasksNotebook.ContainsNote(singleTaskListNote));
-			Assert.That(openTasksNotebook.ContainsNote(doubleTaskListNote));
-			Assert.That(!openTasksNotebook.ContainsNote(noTaskListNote));
-			Assert.That(!openTasksNotebook.ContainsNote(allDoneTaskListNote));
-		}
-		
-		/// <summary>
-		/// Checks the OverdueTasksNotebook to ensure it correctly matches the notes it will contain.
-		/// </summary>
-		[Test()]
-		public void FindOverdueTasks ()
-		{
-			Assert.That(overdueTasksNotebook.ContainsNote(doubleTaskListNote));
-			Assert.That(!overdueTasksNotebook.ContainsNote(singleTaskListNote));
-			Assert.That(!overdueTasksNotebook.ContainsNote(allDoneTaskListNote));
-			Assert.That(!overdueTasksNotebook.ContainsNote(noTaskListNote));
-		}
-		
+			// reload as another note object
+			NotesCreationManager.LoadNote(noTaskListNote.FilePath, out changedNote, out changedManager, false);
+			changedManager.DeserializeTasklists();
+			
+			Assert.That(changedManager.TaskLists.Count == 1); // make sure its available even after reload
+		}		
+
 		
 		[TearDown()]
 		public void Cleanup ()
