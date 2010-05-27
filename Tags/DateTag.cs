@@ -24,6 +24,7 @@
 // 
 
 using System;
+using System.Collections.Generic;
 using Gtk;
 
 namespace Tomboy.TaskManager
@@ -41,9 +42,11 @@ namespace Tomboy.TaskManager
 		private Calendar calendar;
 		private TextRange range;
 		private NoteEditor editor;
+		private TaskManagerNoteAddin addin;
 		
-		public DateTag (string name) : base (name)
+		public DateTag (string name, TaskManagerNoteAddin addin) : base (name)
 		{
+			this.addin = addin;
 		}
 		
 		public override void Initialize (string element_name)
@@ -96,6 +99,10 @@ namespace Tomboy.TaskManager
 			string newdate = calendar.GetDate ().ToShortDateString ();
 			editor.Buffer.Delete (ref start, ref end);
 			editor.Buffer.InsertWithTags (ref start, newdate, new TextTag[]{this});
+			
+			Task t = addin.Utils.GetTask (start);
+			if (t != null)
+				t.TagUpdate ();
 		}
 	}
 }

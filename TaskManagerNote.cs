@@ -102,7 +102,7 @@ namespace Tomboy.TaskManager {
 				Note.TagTable.Add (tag);
 			
 			if (Note.TagTable.Lookup ("duedate") == null)
-				Note.TagTable.Add (new DateTag ("duedate"));
+				Note.TagTable.Add (new DateTag ("duedate", this));
 
 			//TaskTag
 			if (!Note.TagTable.IsDynamicTagRegistered ("task"))
@@ -203,10 +203,8 @@ namespace Tomboy.TaskManager {
 		/// </summary>
 		public override void OnNoteOpened ()
 		{
-			
-//			//Now that Buffer and Note exists and does not give bugs, assign it to prio tag
-//			PriorityTag tag = (PriorityTag) Buffer.TagTable.Lookup ("priority");
-//			tag.Buffer = Buffer;
+			//Makes note window wider so it shows by default the tasklist menu
+			Window.DefaultWidth += 200;
 			
 			gui = new TaskManagerGui (this);
 			gui.StartListeners ();
