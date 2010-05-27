@@ -42,7 +42,10 @@ namespace Tomboy.TaskManager
 			return p.ToString ().Replace ('_', ' ').ToLower ();	
 		}
 		
-		private static string[] color = {"grey", "purple", "red", "orange", "green", "blue"};
+		/* Colors: hardcoded
+		 * Note that UNSET does not show the color at all
+		 */
+		private static string[] color = {"blue", "green", "yellow green", "orange", "orange red", "red"};
 		public static string Color (Priority p)
 		{
 			return color[(int)p];	
