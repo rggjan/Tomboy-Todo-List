@@ -29,7 +29,9 @@ using Gtk;
 namespace Tomboy.TaskManager
 {
 
-
+	/// <summary>
+	/// Tag that identifies a priority.
+	/// </summary>
 	public class PriorityTag : NoteTag
 	{
 		private ComboBox box;

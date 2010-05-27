@@ -29,14 +29,11 @@ namespace Tomboy.TaskManager
 {
 	
 	/// <summary>
-	/// Class that represents the tag representation of a task or tasklist in the buffer
+	/// Class for the tag representation of a task or tasklist in the buffer
+	/// Used by AttributedTask - Sums up the commonalities between tasktag and tasklisttag
 	/// </summary>
 	public class AttributedTaskTag : DynamicNoteTag
 	{
-
-		public AttributedTaskTag ()
-		{
-		}
 		
 		/// <summary>
 		/// Set common (TaskList, Task) properties

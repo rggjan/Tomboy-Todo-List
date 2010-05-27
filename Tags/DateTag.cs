@@ -29,10 +29,15 @@ using Gtk;
 namespace Tomboy.TaskManager
 {
 
-
+	/// <summary>
+	/// Tag that identifies a duedate.
+	/// It is responsible for listening to clicks (opening calendar dialog), but also finding the duedate later on
+	/// </summary>
 	public class DateTag : NoteTag
 	{
-		
+		/// <summary>
+		/// Calendar passed to the Dialog
+		/// </summary>
 		private Calendar calendar;
 		private TextRange range;
 		private NoteEditor editor;
@@ -71,6 +76,15 @@ namespace Tomboy.TaskManager
 			return true;
 		}
 		
+		/// <summary>
+		/// Gets the selected date from the calendar and updates the region of the duedate
+		/// </summary>
+		/// <param name="obj">
+		/// A <see cref="System.Object"/>
+		/// </param>
+		/// <param name="args">
+		/// A <see cref="ResponseArgs"/>
+		/// </param>
 		void on_dialog_response (object obj, ResponseArgs args)
 		{	
 			if (args.ResponseId != ResponseType.Ok)
