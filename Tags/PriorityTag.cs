@@ -31,6 +31,7 @@ namespace Tomboy.TaskManager
 
 	/// <summary>
 	/// Tag that identifies a priority.
+	/// Responsible only for mouse listening
 	/// </summary>
 	public class PriorityTag : NoteTag
 	{
@@ -52,6 +53,21 @@ namespace Tomboy.TaskManager
 			CanSerialize = false;
 		}
 		
+		/// <summary>
+		/// Sets up the combo box dialog and shows it
+		/// </summary>
+		/// <param name="editor">
+		/// A <see cref="NoteEditor"/>
+		/// </param>
+		/// <param name="start">
+		/// A <see cref="Gtk.TextIter"/>
+		/// </param>
+		/// <param name="end">
+		/// A <see cref="Gtk.TextIter"/>
+		/// </param>
+		/// <returns>
+		/// A <see cref="System.Boolean"/>
+		/// </returns>
 		protected override bool OnActivate (NoteEditor editor, Gtk.TextIter start, Gtk.TextIter end)
 		{
 			string[] prios = new string[6];
@@ -77,14 +93,23 @@ namespace Tomboy.TaskManager
 			dialog.AddButton ("OK", ResponseType.Ok);
 			dialog.AddButton ("Cancel", ResponseType.Cancel);
 			
-			dialog.Response += new ResponseHandler (on_dialog_response);
+			dialog.Response += new ResponseHandler (OnDialogResponse);
 			dialog.Run ();
 			dialog.Destroy ();
 			
 			return true;
 		}
 		
-		void on_dialog_response (object obj, ResponseArgs args)
+		/// <summary>
+		/// Gets the chosen priority from the combo box and notifies corresponding task
+		/// </summary>
+		/// <param name="obj">
+		/// A <see cref="System.Object"/>
+		/// </param>
+		/// <param name="args">
+		/// A <see cref="ResponseArgs"/>
+		/// </param>
+		void OnDialogResponse (object obj, ResponseArgs args)
 		{	
 			if (args.ResponseId != ResponseType.Ok)
 				return;

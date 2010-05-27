@@ -30,7 +30,7 @@ using Tomboy;
 namespace Tomboy.TaskManager
 {
 	/// <summary>
-	/// Marks a Task in a NoteBuffer. Currently this does nothing (used to restore notes)
+	/// Marks a TaskList in a NoteBuffer.
 	/// </summary>
 	public class TaskListTag : AttributedTaskTag
 	{
@@ -49,9 +49,9 @@ namespace Tomboy.TaskManager
 		/// <param name="element_name">
 		/// A <see cref="System.String"/>
 		/// </param>
-		public override void Initialize (string element_name)
+		public override void Initialize (string elementName)
 		{
-			base.Initialize (element_name);
+			base.Initialize (elementName);
 			
 			ParagraphBackground = "lightgray";
 			LeftMargin = 8;

@@ -36,14 +36,14 @@ namespace Tomboy.TaskManager
 	{
 		
 		/// <summary>
-		/// Set common (TaskList, Task) properties
+		/// Set common (TaskListtag, Tasktag) properties
 		/// </summary>
 		/// <param name="element_name">
 		/// A <see cref="System.String"/>
 		/// </param>
-		public override void Initialize (string element_name)
+		public override void Initialize (string elementName)
 		{
-			base.Initialize (element_name);
+			base.Initialize (elementName);
 			CanGrow = true;
 			LeftMarginSet = true;
 		}
@@ -63,9 +63,9 @@ namespace Tomboy.TaskManager
 		/// <param name="atask">
 		/// A <see cref="AttributedTask"/>
 		/// </param>
-		public void Bind (AttributedTask atask)
+		public void Bind (AttributedTask attributedTask)
 		{
-			AttributedTask = atask;
+			AttributedTask = attributedTask;
 		}
 	}
 }

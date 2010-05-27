@@ -28,6 +28,10 @@ using Tomboy;
 
 namespace Tomboy.TaskManager
 {
+	/// <summary>
+	/// The class that describes the visitor pattern over the tasks structure.
+	/// Although visit (Note n) is not used here, it may turn out to be useful in the future (e.g. for printing or similar)
+	/// </summary>
 	public interface Visitor
 	{
 		void visit (Note n);

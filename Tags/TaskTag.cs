@@ -30,7 +30,7 @@ using Gtk;
 namespace Tomboy.TaskManager
 {
 	/// <summary>
-	/// Marks a Task in a NoteBuffer. Currently this does nothing (used to restore notes)
+	/// Marks a Task in a NoteBuffer.
 	/// </summary>
 	public class TaskTag : AttributedTaskTag
 	{
@@ -67,7 +67,7 @@ namespace Tomboy.TaskManager
 		/// </summary>
 		public Priority TaskPriority {
 			get {
-				return (Priority)Enum.Parse (typeof(Priority), Attributes["Priority"]);
+				return PriorityUtils.FromString(Attributes["Priority"]);
 			}
 			set {
 				Attributes["Priority"] = value.ToString ();
