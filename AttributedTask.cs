@@ -112,7 +112,7 @@ namespace Tomboy.TaskManager {
 		}
 				
 		public TextIter Start {
-			get { return Buffer.GetIterAtMark (Position); }	
+			get { return Buffer.GetIterAtMark (Position); }
 		}
 
 		protected abstract TextIter DescriptionStart {

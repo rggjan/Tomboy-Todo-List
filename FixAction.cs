@@ -66,48 +66,7 @@ namespace Tomboy.TaskManager
 		}
 		
 	}
-
-	/// <summary>
-	/// Does a simple undo.
-	/// </summary>
-	public class FixDeleteEmptyCheckBoxAction : FixAction
-	{
-		Task task;
-
-		public FixDeleteEmptyCheckBoxAction (TaskManagerNoteAddin addin, Task task) : base(addin)
-		{
-			this.task = task;
-			Priority = false;
-		}
-
-		public override void fix ()
-		{
-			var iter = addin.Buffer.GetIterAtLine(task.Start.Line+1);
-			var start = iter;
-			var end = iter;
-			
-			if (!end.EndsLine())
-				end.ForwardToLineEnd();
-			
-			string text = addin.Buffer.GetText(start, end, false);
-			
-			TaskList list;
-			
-			if (text.Trim().Length == 0)
-				list = task.DeleteEmptyCheckBox (null);
-			else
-				list = task.DeleteEmptyCheckBox (string.Empty);
-				
-			
-			if (list != null)
-				addin.TaskLists.Add (list);
-			
-			addin.Utils.ResetCursor ();
-			addin.Buffer.Undoer.ClearUndoHistory ();
-		}
-		
-	}
-
+	
 	/// <summary>
 	/// Action that Deletes (cleanly) a Task
 	/// </summary>
@@ -154,6 +113,67 @@ namespace Tomboy.TaskManager
 			
 			addin.Utils.ResetCursor ();
 			addin.Buffer.Undoer.ClearUndoHistory ();
+		}
+	}
+	
+	
+	/// <summary>
+	/// Does a simple undo.
+	/// </summary>
+	public class FixDeleteEmptyCheckBoxAction : FixAction
+	{
+		Task task;
+
+		public FixDeleteEmptyCheckBoxAction (TaskManagerNoteAddin addin, Task task) : base(addin)
+		{
+			this.task = task;
+			Priority = false;
+		}
+
+		public override void fix ()
+		{
+			var iter = addin.Buffer.GetIterAtLine(task.Start.Line+1);
+			var start = iter;
+			var end = iter;
+			
+			if (!end.EndsLine())
+				end.ForwardToLineEnd();
+			
+			string text = addin.Buffer.GetText(start, end, false);
+			
+			TaskList list;
+			
+			if (text.Trim().Length == 0)
+				list = task.DeleteEmptyCheckBox (null);
+			else
+				list = task.DeleteEmptyCheckBox (string.Empty);
+				
+			
+			if (list != null)
+				addin.TaskLists.Add (list);
+			
+			addin.Utils.ResetCursor ();
+			addin.Buffer.Undoer.ClearUndoHistory ();
+		}
+		
+	}
+
+	/// <summary>
+	/// Action that Fixes the title of a TaskList
+	/// </summary>
+	public class FixTitleAction : FixAction
+	{
+		TaskList tasklist;
+
+		public FixTitleAction (TaskManagerNoteAddin addin, TaskList tasklist) : base(addin)
+		{
+			Priority = false;
+			this.tasklist = tasklist;
+		}
+
+		public override void fix ()
+		{
+			tasklist.FixTitle();
 		}
 	}
 

@@ -340,6 +340,14 @@ namespace Tomboy.TaskManager {
 				if (utils.IsTextTodoItem (Buffer.GetText (start, end, false))) {
 					fix_list.Add(new NewTaskAction(this));
 				}
+			} else {
+				var iter = args.Pos;
+				iter.BackwardChars(args.Length);
+				if (iter.StartsLine()) {
+					TaskList tasklist = utils.GetTaskList();
+					if (tasklist != null)
+						fix_list.Add(new FixTitleAction(this, tasklist));
+				}
 			}
 		}
 
