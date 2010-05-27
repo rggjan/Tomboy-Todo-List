@@ -29,14 +29,13 @@ using System.Collections.Generic;
 namespace Tomboy.TaskManager
 {
 
-	/// <summary>
-	/// Traverses the tasks structure recursively to either set the tasks to done or not done
-	/// </summary>
+
 	public class SetDoneVisitor : Visitor
 	{
 		
 		private bool done;
 		private AttributedTask sender;
+		private List<AttributedTask> visited;
 		public SetDoneVisitor (bool done, Task sender)
 		{
 			this.done = done;
@@ -44,35 +43,36 @@ namespace Tomboy.TaskManager
 			visited = new List<AttributedTask> ();
 		}
 		
-		public override void visit (Note note)
+		public void visit (Note n)
 		{
 			//Should not be used
 			//Go directly from task to subtasks (which is list of tasklist)
 		}
 		
-		public override void visit (TaskList taskList)
+		public void visit (TaskList tl)
 		{
-			if (visited.Contains (taskList))
+			if (visited.Contains (tl))
 				return;
 			
-			visited.Add (taskList);
-			foreach (Task task in taskList.Tasks)
-				if (!visited.Contains (task))
-					this.visit (task);
+			visited.Add (tl);
+			foreach (Task t in tl.Tasks)
+				this.visit (t);
 		}
 		
-		public override void visit (Task task)
-		{	
-			if(task == sender)
-				task.TagUpdate ();
-			else if (!task.Done == done)
-				task.Toggle ();
+		public void visit (Task t)
+		{
+			if (visited.Contains (t))
+				return;
 			
-			visited.Add (task);
+			if(t == sender)
+				t.TagUpdate ();
+			else if (!t.Done == done)
+				t.Toggle ();
 			
-			foreach (TaskList taskList in task.Subtasks)
-				if (!visited.Contains (taskList))
-					this.visit (taskList);
+			visited.Add (t);
+			
+			foreach (TaskList tl in t.Subtasks)
+				this.visit (tl);
 		}
 	}
 }
