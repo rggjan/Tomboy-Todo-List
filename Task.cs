@@ -265,7 +265,7 @@ namespace Tomboy.TaskManager {
 			}
 		}
 		
-		/// <returns>
+				/// <returns>
 		/// A <see cref="Gtk.TextIter"/> marking the end of the textual description of this
 		/// task in the NoteBuffer.
 		/// </returns>

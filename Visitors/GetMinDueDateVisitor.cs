@@ -29,30 +29,19 @@ using System.Collections.Generic;
 namespace Tomboy.TaskManager
 {
 
-	/// <summary>
-	/// Visitor that traverses the task structure for the minimum duedate of all lower level attributedtasks.
-	/// If no duedate is set, the default return is the current day
-	/// </summary>
+
 	public class GetMinDueDateVisitor : Visitor
 	{
 
-		/// <summary>
-		/// The private result
-		/// May be DateTime.MaxValue, meaning unset (no other duedate found with lower value)
-		/// </summary>
-		private DateTime result;
-		
-		/// <summary>
-		/// Public getter for the result
-		/// Sets the default value
-		/// </summary>
+		private DateTime? result;
 		public DateTime Result {
 			get {
-				if (((DateTime)result) == DateTime.MaxValue)
+				if (result == null || ((DateTime)result) == DateTime.MaxValue)
 					return DateTime.Today;
 				return ((DateTime)result);
 			}
 		}
+		private List<AttributedTask> visited;
 		
 		public GetMinDueDateVisitor ()
 		{
@@ -60,18 +49,18 @@ namespace Tomboy.TaskManager
 			visited = new List<AttributedTask>();
 		}
 		
-		public override void visit (Note n)
+		public void visit (Note n)
 		{
 			//Again, nothing here	
 		}
 		
-		public override void visit (TaskList tl)
+		public void visit (TaskList tl)
 		{
 			visited.Add (tl);
 			
 			DateTime? date = tl.DueDate;
 			if (date != null){
-				result = ((DateTime) date) < result? (DateTime)date : result;
+				result = ((DateTime) date) < result? date : result;
 			}
 			
 			foreach (Task t in tl.Tasks)
@@ -79,13 +68,13 @@ namespace Tomboy.TaskManager
 					this.visit (t);
 		}
 		
-		public override void visit (Task t)
+		public void visit (Task t)
 		{
 			visited.Add (t);
 			
 			DateTime? date = t.DueDate;
 			if (date != null){
-				result = ((DateTime) date) < result? (DateTime)date : result;
+				result = ((DateTime) date) < result? date : result;
 			}
 			
 			foreach (TaskList tl in t.Subtasks)
