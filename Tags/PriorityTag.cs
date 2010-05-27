@@ -46,7 +46,6 @@ namespace Tomboy.TaskManager
 			base.Initialize (element_name);
 
 			CanActivate = true;
-			Foreground = "blue";
 			Family = "monospace";
 			CanSerialize = false;
 		}

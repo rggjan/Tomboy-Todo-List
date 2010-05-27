@@ -112,6 +112,9 @@ namespace Tomboy.TaskManager {
 			if (!Note.TagTable.IsDynamicTagRegistered ("tasklist"))
 				Note.TagTable.RegisterDynamicTag ("tasklist", typeof(TaskListTag));
 			
+			if (!Note.TagTable.IsDynamicTagRegistered ("color"))
+				Note.TagTable.RegisterDynamicTag ("color", typeof(ColorTag));
+			
 			//StartListeners ();
 		}
 		
