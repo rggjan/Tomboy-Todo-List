@@ -85,7 +85,7 @@ namespace Tomboy.TaskManager {
 			
 			foreach (TaskList tl in tls) {
 				foreach(Task t in tl.Tasks) {
-					isOverdue |= (!t.Done && t.DueDateSet && t.DueDate <= DateTime.Now);
+					isOverdue |= (!t.Done && t.IsOverdue());
 				}
 			}
 			

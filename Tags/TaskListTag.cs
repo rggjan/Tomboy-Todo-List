@@ -52,9 +52,6 @@ namespace Tomboy.TaskManager
 		public override void Initialize (string element_name)
 		{
 			base.Initialize (element_name);
-			/*
-			if (Tomboy.Debugging)
-				Background = "red";*/
 			
 			ParagraphBackground = "lightgray";
 			LeftMargin = 8;
