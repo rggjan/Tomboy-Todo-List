@@ -411,11 +411,11 @@ namespace Tomboy.TaskManager {
 			var end = start;
 			end.ForwardChars (1);
 			Buffer.ApplyTag ("priority", start, end);
-//			ColorTag tag = (ColorTag)Buffer.GetDynamicTag ("color", start);
-//			if (tag == null)
-//				tag = (ColorTag)ContainingTaskList.ContainingNote.TagTable.CreateDynamicTag ("color");
-//			tag.setColor (Priority);
-//			Buffer.ApplyTag (tag, start, end);
+			ColorTag tag = (ColorTag)Buffer.GetDynamicTag ("color", start);
+			if (tag == null)
+				tag = (ColorTag)ContainingTaskList.ContainingNote.TagTable.CreateDynamicTag ("color");
+			tag.setColor (Priority);
+			Buffer.ApplyTag (tag, start, end);
 		
 			start = Start;
 			end = start;
