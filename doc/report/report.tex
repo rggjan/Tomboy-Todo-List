@@ -31,9 +31,21 @@
 
 \section{Jan Rüegg}
 
+For me, the project was a very good experience overall. I have to admit, it made the java/C\# lecture by far the most work-intensive lecture this Semester.
+
+Still, the motivation in doing something like this is much higher than in other comparable projects, that have a fixed task formulation or Assignments. On one hand, because we could really do something on our own, that we knew we could use lateron. But also, because a contribution to an open source project like this is much more likely to eventually be used by other people, too, and maybe even integrated into the bigger project itself.
+
+In the following sections, I would like to explain a bit more in detail how we tackled the issues we had, what worked and what didn't work and what problems and achievements we had.
+
 \subsection{Building Tomboy}
+The first problems we had was already at the beginning: First of all, we had to be able to build Tomboy and the Addins that were already there before. The problem here was actually not Tomboy itself, but its integration into our IDE of choice, MonoDevelop. It turned out that there were actually project files that could be opened with our MonoDevelop, but these were very old and we had no chance without deeper knowledge of Tomboy to get the compilation working properly out of there. So we just compiled Tomboy the "normal" way with autoconf etc. and created a new project file for our project.
+
+But here we already faced the next problem: Inluding now onay the Binary of Tomboy, and not really the sources, many new problems arose, because all our IDE could refer to were C\# assemblies. Meaning, we had: No autocompletion / documentation for everything Tomboy related, no debugging possibilities, and no easy way to make changes to Tomboy itself, to test the integration with our addin.
+
+Some of these issues we could finally address. For example, including the sources sort of "read-only" without compilation support worked and enabled autocompletion and source code browsing for Tomboy. But things like debugging don't work until now, what made the development of course not really easy.
 
 \subsection{Understanding Tomboy}
+
 
 \subsection{Changing Tomboy}
 
