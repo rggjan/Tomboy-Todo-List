@@ -1,2 +1,37 @@
 \section{Open Issues}
 \label{issues}
+
+This section sums up issues encountered during the process of the project that could not yet be solved.
+Some of them were introduced just before submission therefore not discovered until after.
+
+\begin{itemize}
+\item Unit test failure for wrong locale
+
+  If the test is run in a locale that uses a different format than the one hardcoded in the test XMLs, the corresponding test (LoadingDueDates, FindOverdueTasks) will fail.
+
+\item Gtk# assertion failure upon deleting note
+
+  When deleting a note containing tasklists with tasks, a Gtk# assertion failure may happen.
+
+\item Tomboy crashes for fresh notes with duedate/priority
+
+  If the first thing one does after startup is the creation of a new note with a tasklist and a duedate or priority is added, then tomboy may crash. This does not happen if one tries this to a existing note (even if no task list is inside it), or if other notes (it does not matter whether they contain a tasklist or not) are opened first. 
+This and the fact that this bug was introduced in some of the latest commits made us not discover the bug in time before submission of the code and could probably be fixed without too much effort.
+
+\item Undo/Redo mechanism
+
+  Unfortunately, the undo and redo mechanisms do not work for tasklists (with the widgets and tags) and will lead to unexpected behaviour.
+
+\item Insertion of a tasklist just above an other
+
+  The insertion of a tasklist just above an other tasklist does not work correctly.
+
+\item Strikethrough update
+  
+  The strikethrough update is not done when (un-)marking a task as not done.
+
+\item Window size keeps increasing
+
+  The initial goal of making the window of a note a bit wider so the taskmanager menu will be shown by default lead to the bug that this increased width would be saved and increased further at every new startup of tomboy when opening it.
+
+\end{itemize}
