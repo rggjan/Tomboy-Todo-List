@@ -1,0 +1,16 @@
+\section{The beginning of the project} % TODO better title?
+\label{beginning}
+
+\subsection{Building Tomboy}
+\label{building_tomboy}
+The first problems we had was already at the beginning: First of all, we had to be able to build Tomboy and the Addins that were already there before. The problem here was actually not Tomboy itself, but its integration into our IDE of choice, MonoDevelop. It turned out that there were actually project files that could be opened with our MonoDevelop, but these were very old and we had no chance without deeper knowledge of Tomboy to get the compilation working properly out of there. So we just compiled Tomboy the "normal" way with autoconf etc. and created a new project file for our project.
+
+But here we already faced the next problem: Inluding now onay the Binary of Tomboy, and not really the sources, many new problems arose, because all our IDE could refer to were C\# assemblies. Meaning, we had: No autocompletion / documentation for everything Tomboy related, no debugging possibilities, and no easy way to make changes to Tomboy itself, to test the integration with our addin.
+
+Some of these issues we could finally address. For example, including the sources sort of "read-only" without compilation support worked and enabled autocompletion and source code browsing for Tomboy. But things like debugging don't work until now, what made the development of course not really easy.
+
+\subsection{Understanding Tomboy}
+\label{understanding_tomboy}
+The next challenge was to make actually sense of the thousands of lines of Tomboy code we encountered. Because documentation and comments for Tomboy code ranges from very rare to not-existent, and also there is not much gtk\# documentation around (although for this, most of the things we could infer from the ordinary gtk bindings for c).
+
+Because, for some of the features we had in mind, it turned out that we had to slightly change some Tomboy code or interfaces itself, when the Addin architecture had not enough features. And, lacking knowledge, we had to find out much of the things with "try and error", but that led to frequent crashes of Tomboy. Again, this resulted in another very annoying problem: Everytime such a "heavy crash" occurred, we could not start Tomboy again afterwards. That was because of the dbus interface Tomboy provides, and after such a crash, Tomboy didn't properly unsubscribe itself there. That made it impossible to start Tomboy again, because it thought, it was already started. The only thing one could do in this (in the early days very frequent) situation was to wait for a timeout, what could go up to 10 minutes, or to reboot, closing all the open testfiles, the IDE etc. And only at a very late stage of the project, we had enough knowledge of Tomboy to disable the part responsible for the dbus messaging and therefore making it able to start again after a crash.

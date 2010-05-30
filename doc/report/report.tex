@@ -30,63 +30,10 @@
 \include{title}
 
 
-\section{The beginning of the project} % TODO better title?
-
-\subsection{Building Tomboy}
-The first problems we had was already at the beginning: First of all, we had to be able to build Tomboy and the Addins that were already there before. The problem here was actually not Tomboy itself, but its integration into our IDE of choice, MonoDevelop. It turned out that there were actually project files that could be opened with our MonoDevelop, but these were very old and we had no chance without deeper knowledge of Tomboy to get the compilation working properly out of there. So we just compiled Tomboy the "normal" way with autoconf etc. and created a new project file for our project.
-
-But here we already faced the next problem: Inluding now onay the Binary of Tomboy, and not really the sources, many new problems arose, because all our IDE could refer to were C\# assemblies. Meaning, we had: No autocompletion / documentation for everything Tomboy related, no debugging possibilities, and no easy way to make changes to Tomboy itself, to test the integration with our addin.
-
-Some of these issues we could finally address. For example, including the sources sort of "read-only" without compilation support worked and enabled autocompletion and source code browsing for Tomboy. But things like debugging don't work until now, what made the development of course not really easy.
-
-\subsection{Understanding Tomboy}
-The next challenge was to make actually sense of the thousands of lines of Tomboy code we encountered. Because documentation and comments for Tomboy code ranges from very rare to not-existent, and also there is not much gtk\# documentation around (although for this, most of the things we could infer from the ordinary gtk bindings for c).
-
-Because, for some of the features we had in mind, it turned out that we had to slightly change some Tomboy code or interfaces itself, when the Addin architecture had not enough features. And, lacking knowledge, we had to find out much of the things with "try and error", but that led to frequent crashes of Tomboy. Again, this resulted in another very annoying problem: Everytime such a "heavy crash" occurred, we could not start Tomboy again afterwards. That was because of the dbus interface Tomboy provides, and after such a crash, Tomboy didn't properly unsubscribe itself there. That made it impossible to start Tomboy again, because it thought, it was already started. The only thing one could do in this (in the early days very frequent) situation was to wait for a timeout, what could go up to 10 minutes, or to reboot, closing all the open testfiles, the IDE etc. And only at a very late stage of the project, we had enough knowledge of Tomboy to disable the part responsible for the dbus messaging and therefore making it able to start again after a crash.
-
-
-\section{Requirements Overview}
-insert table with requirements refer to subsections below for not completed requiremetns
-
-\subsection{Testing}
-Unit testing proved to be a tricky part in our environment. We tried our best but we didn't manage to have complete coverage with our tests. But we think that we covered at least the most basic functionality for our addin (namely serialization/deserialization of tasklist).
-The first problem was that our addin was written for tomboy and that tomboy itself was not written with unit tests in mind (tomboy itself had only a small number (about 10) tests in their repository but most of them are outdated so they didn't run cleanly anymore). However since our addin on most parts only relied on the Note class of tomboy we managed to instantiate those on our own and wrote some helper classes for that. With this we were able to write all of our tests.
-Another issue is that a lot of our code is actually GUI related (like the tasklist behaviour) or at least very tightly coupled with the GUI and since we did not need to write tests for that we didn't do it, altough in our case it probably would have made sense.
-In the end we had no tests for the subtasks/supertasks related code which was due to some bug which completely crashed monodevelop when we tried to run the tests for that. We think its because in the background tomboy loads some code in the Note class when you have links in your text which does not work well when you intantiate note classes on your own, but we did not have the time anymore to investigate this more clearly.
-We started writing tests after we already did 3 weeks of development. We think that was a too late and we certainly learned that if you want to do good testing you need to care about it from the start and always write your code having in mind that you need to be able to write tests for it. On the other hand it really took us some time to figure out how we can do unit tests in the first place since we had to find a way work around tomboy.
-
-
-\subsection{Changing Tomboy}
-So, the conclusion is, we had to work with a slightly modified version of Tomboy. In the hope that our Addin could be used without having to deliver its own Tomboy version, and also seeing a chance that the actual Addin could lateron be integrated into the official Tomboy project, we contacted one of the main developers of the project, Sandy Armstrong.
-
-He told us that he appreciates us writing patches and an Addin, and that he would like to support us. However he was really busy this whole time period, meaning that he couldn't help us at all if we had any problems. Additionaly, he has not yet been able to review our Tomboy patches, meaning we had to come up with a different solution.
-
-We solved the problem like this: Besides our own Addin, we created a new project on GitHub, forking it from the official Tomboy project. Next we created a new branch in our fork, called "non-approved", and made all the changes in there. That means, we will always be able to rebase our changes on newer Tomboy versions, but all the while make it very easy for Tomboy developers to review exactly our changes. Once they are approved, they can easily pull from our fork and apply the changes upstream.
-
-
-\section{Open Issues}
-
-
-
-
-\section{Individual Experiences}
-
-\subsection{Jan Rüegg}
-
-For me, the project was a very good experience overall. I have to admit, it made the java/C\# lecture by far the most work-intensive lecture this Semester.
-
-Still, the motivation in doing something like this is much higher than in other comparable projects, that have a fixed task formulation or Assignments. On one hand, because we could really do something on our own, that we knew we could use lateron. But also, because a contribution to an open source project like this is much more likely to eventually be used by other people, too, and maybe even integrated into the bigger project itself.
-
-Despite all our efforts, I think we didn't manage to get the 5000 lines of code that where initially requested. But despite this, we had eventually over 700 commits in the repository we set up, and many of these single revisions took hours to complete, some even whole afternoons, because of various reasons.
-
-In the following sections, I would like to explain a bit more in detail how we tackled the issues we had, what worked and what didn't work and what problems and achievements we had.
-
-\subsection{Gabriel Walch}
-
-
-\subsection{Gerd Zellweger}
-I think all in all the project was a good experience. Although it probably wasn't the most exiting code I wrote in my career as a student I liked that our work could be useful for a lot of people in the future. On the other hand I think it was good that we had to care about the stuff which normally doesn't matter in student projects (like documentation and testing). The project was time consuming but I think its ok since it also counts for the final grade of the course. In my oppinion it could count even more than 50\% since its certainly more effort to finish the project than to learn for the exam.
-I enjoyed working with my teammates and think we worked well together the communication and collaboration was on a high level. It think this was probably also because we used great tools like git, github and skype which smiplified collaboration a lot.
+\input{beginning}
+\input{requirements}
+\input{open_issues}
+\input{individual}
 
 
 \end{document}
