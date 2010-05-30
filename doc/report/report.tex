@@ -35,6 +35,8 @@ For me, the project was a very good experience overall. I have to admit, it made
 
 Still, the motivation in doing something like this is much higher than in other comparable projects, that have a fixed task formulation or Assignments. On one hand, because we could really do something on our own, that we knew we could use lateron. But also, because a contribution to an open source project like this is much more likely to eventually be used by other people, too, and maybe even integrated into the bigger project itself.
 
+Despite all our efforts, I think we didn't manage to get the 5000 lines of code that where initially requested. But despite this, we had eventually over 700 commits in the repository we set up, and many of these single revisions took hours to complete, some even whole afternoons, because of various reasons.
+
 In the following sections, I would like to explain a bit more in detail how we tackled the issues we had, what worked and what didn't work and what problems and achievements we had.
 
 \subsection{Building Tomboy}
@@ -50,6 +52,11 @@ The next challenge was to make actually sense of the thousands of lines of Tombo
 Because, for some of the features we had in mind, it turned out that we had to slightly change some Tomboy code or interfaces itself, when the Addin architecture had not enough features. And, lacking knowledge, we had to find out much of the things with "try and error", but that led to frequent crashes of Tomboy. Again, this resulted in another very annoying problem: Everytime such a "heavy crash" occurred, we could not start Tomboy again afterwards. That was because of the dbus interface Tomboy provides, and after such a crash, Tomboy didn't properly unsubscribe itself there. That made it impossible to start Tomboy again, because it thought, it was already started. The only thing one could do in this (in the early days very frequent) situation was to wait for a timeout, what could go up to 10 minutes, or to reboot, closing all the open testfiles, the IDE etc. And only at a very late stage of the project, we had enough knowledge of Tomboy to disable the part responsible for the dbus messaging and therefore making it able to start again after a crash.
 
 \subsection{Changing Tomboy}
+So, the conclusion is, we had to work with a slightly modified version of Tomboy. In the hope that our Addin could be used without having to deliver its own Tomboy version, and also seeing a chance that the actual Addin could lateron be integrated into the official Tomboy project, we contacted one of the main developers of the project, Sandy Armstrong.
+
+He told us that he appreciates us writing patches and an Addin, and that he would like to support us. However he was really busy this whole time period, meaning that he couldn't help us at all if we had any problems. Additionaly, he has not yet been able to review our Tomboy patches, meaning we had to come up with a different solution.
+
+We solved the problem like this: Besides our own Addin, we created a new project on GitHub, forking it from the official Tomboy project. Next we created a new branch in our fork, called "non-approved", and made all the changes in there. That means, we will always be able to rebase our changes on newer Tomboy versions, but all the while make it very easy for Tomboy developers to review exactly our changes. Once they are approved, they can easily pull from our fork and apply the changes upstream.
 
 \section{Gerd Zellweger}
 
