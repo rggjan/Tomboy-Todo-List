@@ -62,9 +62,16 @@ We solved the problem like this: Besides our own Addin, we created a new project
 
 \subsection{Testing}
 
+Unit testing proved to be a tricky part in our environment. We tried our best but we didn't manage to have complete coverage with our tests. But we think that we covered at least the most basic functionality for our addin (namely serialization/deserialization of tasklist).
+The first problem was that our addin was written for tomboy and that tomboy itself was not written with unit tests in mind (tomboy itself had only a small number (about 10) tests in their repository but most of them are outdated so they didn't run cleanly anymore). However since our addin on most parts only relied on the Note class of tomboy we managed to instantiate those on our own and wrote some helper classes for that. With this we were able to write all of our tests.
+Another issue is that a lot of our code is actually GUI related (like the tasklist behaviour) or at least very tightly coupled with the GUI and since we did not need to write tests for that we didn't do it, altough in our case it probably would have made sense.
+In the end we had no tests for the subtasks/supertasks related code which was due to some bug which completely crashed monodevelop when we tried to run the tests for that. We think its because in the background tomboy loads some code in the Note class when you have links in your text which does not work well when you intantiate note classes on your own, but we did not have the time anymore to investigate this more clearly.
+We started writing tests after we already did 3 weeks of development. We think that was a too late and we certainly learned that if you want to do good testing you need to care about it from the start and always write your code having in mind that you need to be able to write tests for it. On the other hand it really took us some time to figure out how we can do unit tests in the first place since we had to find a way work around tomboy.
+
 \subsection{Changed Requirements}
 
 \subsection{API Documentation}
+
 
 \section{Gabriel Walch}
 
