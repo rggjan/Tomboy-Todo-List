@@ -10,26 +10,26 @@ The first problems we had already at the very beginning: First of all, we had to
 
 But here we already faced the next problem: Including now only the Binary of Tomboy, and not really the sources, many new problems arose. This was because all our IDE could refer to were C\# assemblies, and no actual code or documentation. Meaning, that we had:
 \begin{itemize}
-\item no autocompletion and
+\item no auto completion and
 \item no documentation for everything Tomboy related,
 \item no debugging possibilities and
 \item no easy way to make changes to Tomboy itself,
 \end{itemize}
-the last point sometimes needed to test the integration with our addin.
+the last point sometimes needed to test the integration with our Addin.
 
-Some of these issues we could eventually address. For example, including the sources sort of "read-only" without compilation support worked and enabled autocompletion and source code browsing for Tomboy. But things like debugging don't work until now, what made the development in certain situations really hard and cumbersome.
+Some of these issues we could eventually address. For example, including the sources sort of "read-only" without compilation support worked and enabled auto completion and source code browsing for Tomboy. But things like debugging don't work until now, what made the development in certain situations really hard and cumbersome.
 
 \subsection{Understanding Tomboy}
 \label{understanding_tomboy}
-The next challenge was to make actually sense of the thousands of lines of Tomboy code that were there already. This was a challenge because documentation and comments for Tomboy code ranges from very rare to non-existent, and similarly there is not much gtk\# documentation around (although for this, most of the things we needed to know could be inferred from the ordinary gtk bindings for c).
+The next challenge was to make actually sense of the thousands of lines of Tomboy code that were there already. This was a challenge because documentation and comments for Tomboy code ranges from very rare to non-existent, and similarly there is not much Gtk\# documentation around (although for this, most of the things we needed to know could be inferred from the ordinary Gtk bindings for c).
 
-For some of the features we had in mind, it turned out that we had to slightly change some Tomboy code or interfaces itself. This was, when the Addin architecture had not enough features. Lacking knowledge, we had to find out much of the things with "try and error". But that led in turn to frequent crashes of Tomboy. This resulted in another very annoying problem: Every time such a "heavy crash" occurred, we could not start Tomboy again afterwards, because it complained, that it was already started. The reason for this is because of the dbus interface Tomboy provides, and after such a crash, Tomboy doesn't properly unsubscribe itself from there. That makes it impossible to start it again, at least for some time. The only thing one can do in this (in the early days very frequent) situation is to wait for a timeout, what can take up to 10 minutes, or to reboot, closing all the open test files, the IDE and everything else. And only at a very late stage of the project we had enough knowledge of Tomboy to disable the part responsible for the dbus messaging, and therefore enable it to start again after a crash.
+For some of the features we had in mind, it turned out that we had to slightly change some Tomboy code or interfaces itself. This was, when the Addin architecture had not enough features. Lacking knowledge, we had to find out much of the things with "try and error". But that led in turn to frequent crashes of Tomboy. This resulted in another very annoying problem: Every time such a "heavy crash" occurred, we could not start Tomboy again afterward, because it complained, that it was already started. The reason for this is because of the dbus interface Tomboy provides, and after such a crash, Tomboy doesn't properly unsubscribe itself from there. That makes it impossible to start it again, at least for some time. The only thing one can do in this (in the early days very frequent) situation is to wait for a timeout, what can take up to 10 minutes, or to reboot, closing all the open test files, the IDE and everything else. And only at a very late stage of the project we had enough knowledge of Tomboy to disable the part responsible for the dbus messaging, and therefore enable it to start again after a crash.
 
 
 \subsection{Changing Tomboy}
 \label{changing_tomboy}
 The conclusion is that we had to work with a slightly modified version of Tomboy. In the hope that our Addin could be used without having to deliver its own Tomboy version, and also seeing a chance that the actual Addin could later on be integrated into the official Tomboy project, we contacted one of the main developers of the project, Sandy Armstrong.
 
-He told us that he appreciates us writing patches and an Addin, and that he would like to support us. However he was really busy this whole time period, meaning that he couldn't help us at all if we had any problems. Additionaly, he has not yet been able to review our Tomboy patches, meaning we had to come up with our own solution for compiling and distributing the TaskManager Addin.
+He told us that he appreciates us writing patches and an Addin, and that he would like to support us. However he was really busy this whole time period, meaning that he couldn't help us at all if we had any problems. Additionally, he has not yet been able to review our Tomboy patches, meaning we had to come up with our own solution for compiling and distributing the TaskManager Addin.
 
-We solved the problem like this: Besides our own Addin, we created a new project on GitHub, forking it from the official Tomboy project. Next we created a new branch in our fork, called "non-approved", and made all the changes in there. That means, we will always be able to rebase our changes on newer Tomboy versions, but all the while make it very easy for Tomboy developers to review exactly our changes. Once they are approved, developers can easily pull from our fork and apply the changes upstream.
+We solved the problem like this: Besides our own Addin, we created a new project on GitHub, forking it from the official Tomboy project. Next we created a new branch in our fork, called "non-approved", and made all the changes in there. That means, we will always be able to re-base our changes on newer Tomboy versions, but all the while make it very easy for Tomboy developers to review exactly our changes. Once they are approved, developers can easily pull from our fork and apply the changes upstream.

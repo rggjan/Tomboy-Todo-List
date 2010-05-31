@@ -8,7 +8,7 @@ In this section we refer to the 1.0 version of the requirements document\footnot
 ID  & Requirement Title   & Detailed Explanation	\\
 \completed	R.1		& Introducing Tasks   & 						\\
 \completed	R.2		& Grouping Tasks together & \\
-\parts		R.3		& Priorities for Tasks & No priority for Tasklists\\
+\parts		R.3		& Priorities for Tasks & No priority for task lists\\
 \completed	R.4		& Due Dates for Tasks & \\
 \completed	R.5		& Subtasks & \\
 \notdone	R.6		& Exporting Tasks & Low priority (removed in 1.1)\\
@@ -32,15 +32,15 @@ ID  & Requirement Title   & Detailed Explanation	\\
 \completed	R.24	& Documentation & \\
 \parts		R.25	& Failures & see \ref{issues} \\
 \completed	R.26	& Logging & \\
-\completed	R.27	& Optimisation platform and measure & \\
+\completed	R.27	& Optimization platform and measure & \\
 \completed	R.28	& Response times & \\
-\completed	R.29	& Initialising Tomboy & \\
+\completed	R.29	& Initializing Tomboy & \\
 \completed	R.30	& Git repository & \\
 \completed	R.31	& Bug tracking & \\
 \completed	R.32	& Source documentation & \\
 \parts		R.33	& Unit testing & see \ref{testing}\\
 \completed	R.34	& Installation from library & \\
-\completed	R.35	& Activation of the addin & \\
+\completed	R.35	& Activation of the Addin & \\
 \completed	R.36	& License compliance & \\
 \completed	R.37	& Standard compliance & \\
 \end{tabular}
@@ -50,7 +50,7 @@ ID  & Requirement Title   & Detailed Explanation	\\
 \label{visualduedate}
 We did not implement this requirement because it was probably stated badly:
 "If it is far in the future it will be green, if the day is in near future or even in the past the text color will be red."
-It would have made more sense if we defined far in the future and near future in relation to the other tasks due dates and displayed them accordingly. But here we think its not very meaningful to just define some time delta and if the delta is bigger give the due date a different color. We removed this requirement completly in requirements 1.1 because we did not have the time to implement the modified version.
+It would have made more sense if we defined far in the future and near future in relation to the other tasks due dates and displayed them accordingly. But here we think its not very meaningful to just define some time delta and if the delta is bigger give the due date a different color. We removed this requirement completely in requirements 1.1 because we did not have the time to implement the modified version.
 
 \subsection{Show / hide tasks}
 \label{showhidetasks}
@@ -58,10 +58,10 @@ We did not implement that completed tasks can be hidden in a task list or showed
 
 \subsection{Testing}
 \label{testing}
-Unit testing proved to be a tricky part in our environment. We tried our best, yet we didn't manage to have complete coverage with our tests. But we think that we covered at least the most basic functionality for our Addin (namely serialization/deserialization of tasklist).
+Unit testing proved to be a tricky part in our environment. We tried our best, yet we didn't manage to have complete coverage with our tests. But we think that we covered at least the most basic functionality for our Addin (namely serialization/deserialization of task list).
 The first problem was that our Addin was written for Tomboy and that Tomboy itself was not written with unit tests in mind (Tomboy itself had only a small number (about 10) tests in their repository but most of them outdated so they didn't run cleanly anymore). However since our Addin on most parts only relied on the Note class of Tomboy we managed to instantiate those on our own and wrote some helper classes for that. With this we were able to write all of our tests.
-Another issue is that a lot of our code is actually GUI related (like the tasklist behaviour) or at least very tightly coupled with the GUI. And since we did not need to write tests for that and time was very short, we decided not to do it, although in our case it probably would have made sense.
+Another issue is that a lot of our code is actually GUI related (like the task list behavior) or at least very tightly coupled with the GUI. And since we did not need to write tests for that and time was very short, we decided not to do it, although in our case it probably would have made sense.
 
-In the end we had no tests for the subtasks/supertasks related code which was due to some bug which completely crashed MonoDevelop when we tried to run the tests for that. We think its because in the background Tomboy loads some code in the Note class when you have links in your text, and this does not work well when you intantiate note classes on your own. But we did not have the time anymore to investigate this further.
+In the end we had no tests for the subtasks/supertasks related code which was due to some bug which completely crashed MonoDevelop when we tried to run the tests for that. We think its because in the background Tomboy loads some code in the Note class when you have links in your text, and this does not work well when you instantiate note classes on your own. But we did not have the time anymore to investigate this further.
 
 We started writing tests after we already did 3 weeks of development. We think that was a too late and certainly learned that if you want to do good testing you need to care about it from the start, always writing your code having in mind that you need to be able to write tests for it. On the other hand it really took us some time to figure out how we can do unit tests in the first place since we had to find a way to work around Tomboy.
