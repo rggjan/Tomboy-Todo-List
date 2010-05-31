@@ -6,7 +6,7 @@ In the following sections, we would like to explain a bit more in detail how we 
 
 \subsection{Building Tomboy}
 \label{building_tomboy}
-The first problems we had already at the very beginning: First of all, we had to be able to build Tomboy and the Addins that were already there before. The problem here was actually not Tomboy itself, but its integration into our IDE of choice, MonoDevelop. It turned out that there were actually project files that could be opened with our MonoDevelop, but these were very old. We had no chance to - without deeper knowledge of Tomboy itself - get the compilation working properly from within MonoDevelop. So we just compiled Tomboy the "normal" way with autoconf etc. and created a new project file for our project.
+The first problems showed up already at the very beginning: First of all, we had to be able to build Tomboy and the Addins that were already there before. The problem here was actually not Tomboy itself, but its integration into our IDE of choice, MonoDevelop. It turned out that there were actually project files that could be opened with our MonoDevelop, but these were very old. We had no chance to - without deeper knowledge of Tomboy itself - get the compilation working properly from within MonoDevelop. So we just compiled Tomboy the "normal" way with autoconf etc. and created a new project file for our project.
 
 But here we already faced the next problem: Including now only the Binary of Tomboy, and not really the sources, many new problems arose. This was because all our IDE could refer to were C\# assemblies, and no actual code or documentation. Meaning, that we had:
 \begin{itemize}
@@ -17,7 +17,7 @@ But here we already faced the next problem: Including now only the Binary of Tom
 \end{itemize}
 the last point sometimes needed to test the integration with our Addin.
 
-Some of these issues we could eventually address. For example, including the sources sort of "read-only" without compilation support worked and enabled auto completion and source code browsing for Tomboy. But things like debugging don't work until now, what made the development in certain situations really hard and cumbersome.
+We could eventually address some of these issues. For example, including the sources sort of "read-only" without compilation support worked and enabled auto completion and source code browsing for Tomboy. But things like debugging don't work until now, what made the development in certain situations really hard and cumbersome.
 
 \subsection{Understanding Tomboy}
 \label{understanding_tomboy}

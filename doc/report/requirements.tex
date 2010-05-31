@@ -58,7 +58,7 @@ We did not implement that completed tasks can be hidden in a task list or showed
 
 \subsection{Testing}
 \label{testing}
-Unit testing proved to be a tricky part in our environment. We tried our best, yet we didn't manage to have complete coverage with our tests. But we think that we covered at least the most basic functionality for our Addin (namely serialization/deserialization of task list).
+Unit testing proved to be a tricky part in our environment. We tried our best, yet we didn't manage to have complete coverage with our tests. We think that we covered at least the most basic functionality for our Addin (namely serialization/deserialization of task list).
 The first problem was that our Addin was written for Tomboy and that Tomboy itself was not written with unit tests in mind (Tomboy itself had only a small number (about 10) tests in their repository but most of them outdated so they didn't run cleanly anymore). However since our Addin on most parts only relied on the Note class of Tomboy we managed to instantiate those on our own and wrote some helper classes for that. With this we were able to write all of our tests.
 Another issue is that a lot of our code is actually GUI related (like the task list behavior) or at least very tightly coupled with the GUI. And since we did not need to write tests for that and time was very short, we decided not to do it, although in our case it probably would have made sense.
 
