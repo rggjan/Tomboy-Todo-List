@@ -2,7 +2,7 @@
 \label{issues}
 
 This section sums up issues encountered during the process of the project that could not yet be solved.
-Some of them were introduced just before submission therefore not discovered until after.
+Some of them were introduced just before submission and therefore not discovered until after.
 
 \begin{itemize}
 \item Unit test failure for wrong locale
@@ -17,11 +17,14 @@ Some of them were introduced just before submission therefore not discovered unt
 \item Tomboy crashes for fresh notes with duedate/priority
 
   If the first thing one does after startup is the creation of a new note with a tasklist and a duedate or priority is added, then Tomboy may crash. This does not happen if one tries this to a existing note (even if no task list is inside it), or if other notes (it does not matter whether they contain a tasklist or not) are opened first. 
-This and the fact that this bug was introduced in some of the latest commits made us not discover the bug in time before submission of the code and could probably be fixed without too much effort.
+  
+This, and the fact that this bug was introduced in some of the latest commits, made us not discover the bug in time before the submission of our code. Otherwise, it could have probably be fixed without too much effort.
 
 \item Undo/Redo mechanism
 
-  Unfortunately, the undo and redo mechanisms do not work for tasklists (with the widgets and tags) and will lead to unexpected behaviour.
+  Unfortunately, the undo and redo mechanisms does not work for tasklists (with the widgets and tags) and will lead to unexpected behaviour. This is due to the hard coded and not very flexible way the undo mechanism works in Tomboy, that is not really accessible from within Addins.
+  
+  As a temporary solution we started implementing methods that make it impossible to undo things, where unexpected behaviour would be the result (for example, deleting a task in the Buffer as a result of an undo, but keeping the task in the internal data structures). However, this is not yet complete.
 
 \item Insertion of a tasklist just above an other
 
@@ -30,10 +33,10 @@ This and the fact that this bug was introduced in some of the latest commits mad
 \item Strikethrough update
   
   The strikethrough update is not done when (un-)marking a task as not done.
-  This glitch was introduced while applying maintainence changes and not discovered after.
+  This glitch was introduced while applying maintainence changes and not discovered until after the submission.
 
 \item Window size keeps increasing
 
-  The initial goal of making the window of a note a bit wider so the taskmanager menu will be shown by default lead to the bug that this increased width would be saved and increased further at every new startup of Tomboy when opening it.
+  The initial goal of making the window of a note a bit wider so the taskmanager menu will be shown by default, led to the bug that this increased width would be saved. This introduced the problem that the size would be increased further at every new startup of Tomboy.
 
 \end{itemize}
