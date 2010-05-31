@@ -1,36 +1,36 @@
 \section{Requirements Overview}
 \label{requirements}
 We had to change our requirements document slightly to make it compatible with the end product. The revised requirements document (version 1.1) can be found in our downloads section at github\footnote{\url{http://github.com/downloads/rggjan/Tomboy-Todo-List/requirements-document-1.1.pdf}}.
-In this section we refer to the 1.0 version of the requirements document\footnote{\url{http://github.com/downloads/rggjan/Tomboy-Todo-List/requirements-document-1.0.pdf}} and give a overview what we implemented (green), which requirements we implemented but in a slightly modified version (yellow) and which ones we did not implement (red).
+In this section we refer to the 1.0 version of the requirements document\footnote{\url{http://github.com/downloads/rggjan/Tomboy-Todo-List/requirements-document-1.0.pdf}} and give a overview what requirements we fulfill (green), which requirements we fulfill but in a slightly modified version (yellow) and which ones we do not fulfill (red).
 
 \begin{tabular}{lll}
 \rowcolor[gray]{0.9}
 ID  & Requirement Title   & Detailed Explanation	\\
 \completed	R.1		& Introducing Tasks   & 						\\
 \completed	R.2		& Grouping Tasks together & \\
-\completed	R.3		& Priorities for Tasks & \\
+\parts		R.3		& Priorities for Tasks & No priority for Tasklists\\
 \completed	R.4		& Due Dates for Tasks & \\
 \completed	R.5		& Subtasks & \\
-\notdone	R.6		& Exporting Tasks & low priority requirement\\
+\notdone	R.6		& Exporting Tasks & Low priority (removed in 1.1)\\
 \completed	R.7		& Create Task List & \\
 \completed	R.8		& Edit Task List & \\
 \completed	R.9		& Marking Tasks as Done & \\
 \completed	R.10	& Automatically marking Tasks as Done & \\
 \completed	R.11	& Setting a Due Date & \\
-\parts		R.12	& Due Date visualization & \\
+\notdone	R.12	& Due Date visualization & Removed in 1.1 (see \ref{visualduedate})\\
 \completed	R.13	& Set Priority & \\
 \completed	R.14	& Priority visualization & \\
-\notdone	R.15	& Show / Hide completed Tasks & low priority requirement \\
-\notdone	R.16	& Reorder Task Lists & low priority requirement\\
+\parts		R.15	& Show / Hide completed Tasks & see \ref{showhidetasks}\\
+\notdone	R.16	& Reorder Task Lists & Low priority (removed in 1.1)\\
 \completed	R.17	& Filter Notes & \\
 \completed	R.18	& Tomboy directories & \\
 \completed	R.19	& Tasks Persistence & \\
 \notdone	R.20	& Tomboy Version & see \ref{changing_tomboy}\\
-\parts		R.21	& Platform independence & not tested\\
+\parts		R.21	& Platform independence & Not tested\\
 \completed	R.22	& Default language & \\
 \completed	R.23	& Translations & \\
 \completed	R.24	& Documentation & \\
-\completed	R.25	& Failures & \\
+\parts		R.25	& Failures & see \ref{issues} \\
 \completed	R.26	& Logging & \\
 \completed	R.27	& Optimisation platform and measure & \\
 \completed	R.28	& Response times & \\
@@ -45,6 +45,16 @@ ID  & Requirement Title   & Detailed Explanation	\\
 \completed	R.37	& Standard compliance & \\
 \end{tabular}
 
+
+\subsection{Due Date visualization}
+\label{visualduedate}
+We did not implement this requirement because it was probably stated badly:
+"If it is far in the future it will be green, if the day is in near future or even in the past the text color will be red."
+It would have made more sense if we defined far in the future and near future in relation to the other tasks due dates and displayed them accordingly. But here we think its not very meaningful to just define some time delta and if the delta is bigger give the due date a different color. We removed this requirement completly in requirements 1.1 because we did not have the time to implement the modified version.
+
+\subsection{Show / hide tasks}
+\label{showhidetasks}
+We did not implement that completed tasks can be hidden in a task list or showed after the completed tasks. This requirement got changed in 1.1. The only option right now is that completed tasks are shown crossed out. We think that this requirement probably wasn't very good at all because in most cases the user wants to preserve the order in which he wrote down the tasks anyway, so it's not necessary.
 
 \subsection{Testing}
 \label{testing}
